@@ -49,3 +49,6 @@ prototype boat in a mountain lake · 19-20 seasons pass over the lake, the block
 - Step 3 voice: ElevenLabs "Jason - Calm Storyteller" (JZBRao5Zg3hp0BQgJOEZ), eleven_v4, 2 takes (77.8 s / 78.7 s),
   flow FLP2xqcMzIgHVoc7NfIU. Download blocked: elevenlabsusercontent.com not in the environment's allowed domains.
   Takes are 78 s → needs pause trim + ~1.12x tempo (or a shorter script) to land at 65-70 s.
+- Step 3 redone locally: Kokoro TTS am_michael x1.22 (68 s), words.json by per-word length alignment (ice-short/voice/). User picked the American voice.
+- Step 4 shot plan: remotion/src/videos/ice/story.ts (19 shots, 5 sets, kicks, DOF, foreground), table in ice-short/SHOTPLAN.md.
+  world.ts / cast.ts still build the bridge set (legacy stubs at the bottom of story.ts) until steps 5-6.
