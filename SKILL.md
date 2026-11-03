@@ -10,6 +10,11 @@ Proven example: **The Bridge That Fell for a Song**. It is an original 67 s shor
 - Script, voice and sound: `~/bridge-short/`.
 - Style research: `references/`.
 
+Second proven example: **The Teaspoon That Calmed a Pond** (2026-11-03), 68 s, Benjamin Franklin stilling a London pond with one teaspoon of oil. Built and rendered entirely in a Linux cloud container.
+- Code: `remotion/src/videos/teaspoon/` (composition `TeaspoonShort`), a ready Remotion project in `remotion/` (`npm install` once).
+- Script, voice, sound: `projects/teaspoon-pond/` (SCRIPT.md, voice/, audio/sound.py).
+- Use it as the template for non-bridge stories: it shows what changes per story (story.ts, cast.ts, world.ts, fx.ts) and what stays (ink, lensblur, grade, shade, lights, paint, cardshade, build, toon).
+
 The style reference is a channel studied privately (`references/`: STYLE_BIBLE.md, reports/*.md, frames/).
 - Those videos are private study material. Never upload, publish or send them.
 - Never copy their scripts, characters or shots. Story, characters and voice are always OUR OWN.
@@ -140,6 +145,32 @@ lighting 5-6, ink 6, textures 5-6, characters 7, depth 6-7, composition 6-7 (fro
 3. **Merge** with `python scripts/bridge_merge.py [cam,world,mat,char,post]` (backs main up to `backup/bridge_<time>/`, copies owned files only). Then `npx tsc --noEmit` (filter to the project folder), then **re-sync every sandbox from main** (`cp -f src/videos/<name>/* src/videos/<name>_<n>/`) before the next round.
 4. **Verify** with a fresh Opus max agent: side-by-side sheets (`python scripts/sbs_sheet.py out.jpg --ours a b --ref r1 r2`), score each area out of 10 (colour day / golden, lighting, ink, textures, characters, depth, composition) plus a numbered fix list with frame numbers. Map each fix to the file owner and resume that owner's agent with SendMessage (keeps its context). Bridge scores: round 1 5/3/4/5/4/7/4/6 → round 2 5/4/5/6/4/7/6/6 → round 3 see notes.
 5. Contracts between owners live in exported constants (e.g. `NOINK` layer from ink.ts, `dofAt`/`FOREGROUND` from story.ts, `LIGHTS`/`LOOK` from lights.ts). Changing a contract means telling every owner that reads it.
+
+## Building a new story on the template (learned on the teaspoon short)
+- Copy unchanged: `ink, lensblur, grade, shade, lights, paint, cardshade, build, toon`. Write new: `story.ts` (places, shots, camera, DOF), `cast.ts` (keep the canvas pool / Actor / Fx / person / blob / lidAt part of the bridge cast.ts, replace the staging), `world.ts` (keep sky, light rig, clouds and the actor/fx loop of the bridge world.ts), `fx.ts` (story effects).
+- `build.ts` imports `D0` from story.ts: export `D0 = 0` for a ground-level world. `setSight(rays)` (exported in the teaspoon copy) lets your own builder use the sight-line culling of `prop()` / `house()`.
+- No Kenney files needed: `prop()` draws `tree_*`, `plant_bush*` and `hedge` as cartoon vegetation itself; `loadKit` can return `{}`.
+- toon.ts (teaspoon copy) adds outfits `specs`, `apron`, hats `tricorn`, `longhair` (bald crown + grey hair), props `["spoon", tip]`, `"cane"`, `["caneOil", k]`, `["bucket", k]` and poses `shrug`, `clap`. Reuse them instead of redrawing.
+- Separate places (pond vs. sea) can share one world: put them ~2.5 km apart, fog hides one from the other; move the cloud ring with the camera.
+- Water: one Lambert shader (teaspoon world.ts `WATER_COL`) with cartoon smile-shaped crest marks drifting downwind and a calm mask (circle + capsules). The calm "mirror" colour must be a mid sky blue (#7db4e8 day); the horizon colour reads as white snow at grazing angles.
+- Set pieces that belong to one beat (the bedsheet bed) go in their own group and are shown only in that shot.
+
+## Camera traps (9:16)
+- `dolly()` moves the camera a fraction of the camera-to-look distance: with a far look point (a wide, an aerial) a 7 % push is 5+ m and runs the lens into the foreground. Use `zoom()` for every wide with a far look point.
+- The horizontal half-angle at fov 40 in 9:16 is only ~12 deg: at 2.5 m the frame is ~1.1 m wide. Aim inserts at the prop itself, not at the character.
+- A front-view card's hand (stout build) sits ~0.66 m to camera-right and ~1.12 m above the soles: place props, drops and streams from `pos + right * 0.66, y + 1.12`.
+- To see a hand prop AND the water below it in one insert, put the lens low (~0.9 m) at ~2.5 m with fov ~46.
+- Render a 16-30 still contact sheet (`remotion/scripts/sheet.py`) after every camera change; most early mistakes were framing, not look.
+
+## Cloud container (Linux, no GPU) notes
+- Chrome: `/opt/pw-browsers/chromium_headless_shell-*/chrome-linux64/chrome-headless-shell`, `--gl=swangle`. `remotion/scripts/bridge-stills.mjs` reads `CHROME`, `GL`, `COMP`, `REMOTION_TMP`.
+- Speed (4 CPUs): ~25-30 s per still; ~11 s per frame for the final at 1440x2560 = ~6 h for 68 s. Render in resumable chunks (`remotion/scripts/render_teaspoon.sh <first> <last>`, 128 frames each, `--concurrency=2 --timeout=240000`), then `finish_teaspoon.sh` joins, muxes and runs QA.
+- Scale must be exactly `--scale 1.3333333333333333` (Remotion 4.0.540 rejects 1.3333: height 2559.94 is not an integer). Concurrency 3 timed out frames at 33 s.
+- Working versions: remotion 4.0.540, react 18.3.1, three 0.170.0, @react-three/fiber 8.18.0, @react-three/postprocessing 2.19.1, postprocessing 6.39.6.
+- Blocked hosts seen: kenney.nl, huggingface.co, openaipublic.azureedge.net, alphacephei.com. pypi, npm and GitHub release assets work.
+- Voice without a TTS account: Kokoro via `kokoro-onnx` (the `kokoro` pip package fails on Python 3.13 / spacy), model files from the kokoro-onnx GitHub release. `am_michael` at speed 1.25 put 220 words at 67 s. Generate line by line and keep the line offsets (`lines.json`).
+- Word timings without Whisper: pocketsphinx forced alignment per line (`projects/teaspoon-pond/voice/align.py`); add out-of-dictionary words by hand (e.g. bedsheet, dishwater, maths, unluckily).
+- Sound: `templates/audio/` is bridge-specific (march, soldiers). For a new story write one `sound.py` on top of `dsp.py`, `instruments.py`, `sfx_gen.py` (see `projects/teaspoon-pond/audio/sound.py`): ambience per place, timed SFX cues in frames, a short original score, ducking from words.json, master -15 LUFS. ~11 min to run. Don't commit the stems (~20 MB each).
 
 ## Gotchas
 - Kenney nature-kit materials are teal: recolour them by material name in build.ts.

@@ -4,7 +4,7 @@ The free Claude skill from the video **"How to Make Viral Animated Shorts Using 
 
 It makes 55-70 s vertical animated story shorts: 2D characters in a colourful 3D world, with ink outlines, a painted town, lens blur, gliding cameras, a march score and sound effects. Everything is rendered with three.js inside Remotion on your own PC, with no AI video generator.
 
-Proven on **The Bridge That Fell for a Song**, a 67 s short about the 1831 Broughton bridge.
+Proven on **The Bridge That Fell for a Song**, a 67 s short about the 1831 Broughton bridge, and **The Teaspoon That Calmed a Pond**, a 68 s short about Benjamin Franklin's oil-on-water experiment (built entirely in a Linux cloud container).
 
 ## What's inside
 | Path | What it is |
@@ -12,6 +12,8 @@ Proven on **The Bridge That Fell for a Song**, a 67 s short about the 1831 Broug
 | `SKILL.md` | The skill: the full pipeline, every rule, every fix, and the final look values |
 | `templates/bridge/` | The full source of the bridge short: world, characters, ink, lens blur, grade, story/camera |
 | `templates/audio/` | The synthesized sound: SFX, march music, the mix with ducking and loudness |
+| `remotion/` | A ready Remotion project with both shorts (`npm install`, then the scripts in `remotion/scripts/`) |
+| `projects/teaspoon-pond/` | Script, voice (Kokoro + forced alignment) and sound (`audio/sound.py`) of the teaspoon short |
 | `templates/scripts/` | Stills, side-by-side sheets, shot merge and frame-by-frame QA helpers |
 | `references/STYLE_BIBLE.md` | The script and visual formula measured from 20 reference shorts |
 | `references/reports/` | Seven measured reports: motion, depth, textures, characters, lighting, outlines, grade |

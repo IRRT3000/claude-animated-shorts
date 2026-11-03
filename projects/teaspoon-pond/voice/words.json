@@ -1,0 +1,1097 @@
+[
+ {
+  "word": "Benjamin",
+  "start": 0.25,
+  "end": 0.75
+ },
+ {
+  "word": "Franklin",
+  "start": 0.75,
+  "end": 1.31
+ },
+ {
+  "word": "once",
+  "start": 1.31,
+  "end": 1.56
+ },
+ {
+  "word": "stopped",
+  "start": 1.56,
+  "end": 1.81
+ },
+ {
+  "word": "the",
+  "start": 1.81,
+  "end": 1.88
+ },
+ {
+  "word": "waves",
+  "start": 1.88,
+  "end": 2.25
+ },
+ {
+  "word": "on",
+  "start": 2.25,
+  "end": 2.32
+ },
+ {
+  "word": "a",
+  "start": 2.32,
+  "end": 2.36
+ },
+ {
+  "word": "pond",
+  "start": 2.36,
+  "end": 2.97
+ },
+ {
+  "word": "with",
+  "start": 2.97,
+  "end": 3.15
+ },
+ {
+  "word": "a",
+  "start": 3.15,
+  "end": 3.18
+ },
+ {
+  "word": "single",
+  "start": 3.18,
+  "end": 3.6
+ },
+ {
+  "word": "teaspoon",
+  "start": 3.6,
+  "end": 4.11
+ },
+ {
+  "word": "of",
+  "start": 4.11,
+  "end": 4.21
+ },
+ {
+  "word": "oil.",
+  "start": 4.21,
+  "end": 4.65
+ },
+ {
+  "word": "Years",
+  "start": 4.985,
+  "end": 5.215
+ },
+ {
+  "word": "earlier,",
+  "start": 5.215,
+  "end": 5.655
+ },
+ {
+  "word": "sailing",
+  "start": 5.655,
+  "end": 6.065
+ },
+ {
+  "word": "with",
+  "start": 6.065,
+  "end": 6.185
+ },
+ {
+  "word": "a",
+  "start": 6.185,
+  "end": 6.215
+ },
+ {
+  "word": "fleet,",
+  "start": 6.215,
+  "end": 6.565
+ },
+ {
+  "word": "he'd",
+  "start": 6.905,
+  "end": 7.045
+ },
+ {
+  "word": "noticed",
+  "start": 7.045,
+  "end": 7.435
+ },
+ {
+  "word": "that",
+  "start": 7.435,
+  "end": 7.585
+ },
+ {
+  "word": "behind",
+  "start": 7.585,
+  "end": 8.005
+ },
+ {
+  "word": "two",
+  "start": 8.005,
+  "end": 8.195
+ },
+ {
+  "word": "of",
+  "start": 8.195,
+  "end": 8.265
+ },
+ {
+  "word": "the",
+  "start": 8.265,
+  "end": 8.345
+ },
+ {
+  "word": "ships,",
+  "start": 8.345,
+  "end": 8.715
+ },
+ {
+  "word": "the",
+  "start": 8.715,
+  "end": 8.815
+ },
+ {
+  "word": "sea",
+  "start": 8.815,
+  "end": 9.065
+ },
+ {
+  "word": "was",
+  "start": 9.065,
+  "end": 9.215
+ },
+ {
+  "word": "strangely",
+  "start": 9.215,
+  "end": 9.735
+ },
+ {
+  "word": "calm.",
+  "start": 9.735,
+  "end": 10.165
+ },
+ {
+  "word": "The",
+  "start": 10.453,
+  "end": 10.563
+ },
+ {
+  "word": "captain",
+  "start": 10.563,
+  "end": 10.943
+ },
+ {
+  "word": "just",
+  "start": 10.943,
+  "end": 11.123
+ },
+ {
+  "word": "shrugged.",
+  "start": 11.123,
+  "end": 11.663
+ },
+ {
+  "word": "The",
+  "start": 11.973,
+  "end": 12.043
+ },
+ {
+  "word": "cooks",
+  "start": 12.043,
+  "end": 12.333
+ },
+ {
+  "word": "had",
+  "start": 12.333,
+  "end": 12.453
+ },
+ {
+  "word": "probably",
+  "start": 12.453,
+  "end": 12.903
+ },
+ {
+  "word": "thrown",
+  "start": 12.903,
+  "end": 13.253
+ },
+ {
+  "word": "out",
+  "start": 13.253,
+  "end": 13.403
+ },
+ {
+  "word": "the",
+  "start": 13.403,
+  "end": 13.483
+ },
+ {
+  "word": "greasy",
+  "start": 13.483,
+  "end": 13.863
+ },
+ {
+  "word": "dishwater.",
+  "start": 13.863,
+  "end": 14.473
+ },
+ {
+  "word": "Most",
+  "start": 14.803,
+  "end": 15.013
+ },
+ {
+  "word": "people",
+  "start": 15.013,
+  "end": 15.393
+ },
+ {
+  "word": "would",
+  "start": 15.393,
+  "end": 15.543
+ },
+ {
+  "word": "forget",
+  "start": 15.543,
+  "end": 15.893
+ },
+ {
+  "word": "that.",
+  "start": 15.893,
+  "end": 16.163
+ },
+ {
+  "word": "Franklin",
+  "start": 16.513,
+  "end": 16.963
+ },
+ {
+  "word": "carried",
+  "start": 16.963,
+  "end": 17.293
+ },
+ {
+  "word": "that",
+  "start": 17.293,
+  "end": 17.463
+ },
+ {
+  "word": "question",
+  "start": 17.463,
+  "end": 17.923
+ },
+ {
+  "word": "around",
+  "start": 17.923,
+  "end": 18.223
+ },
+ {
+  "word": "for",
+  "start": 18.223,
+  "end": 18.333
+ },
+ {
+  "word": "years.",
+  "start": 18.333,
+  "end": 18.823
+ },
+ {
+  "word": "Then,",
+  "start": 19.119,
+  "end": 19.389
+ },
+ {
+  "word": "on",
+  "start": 19.389,
+  "end": 19.519
+ },
+ {
+  "word": "a",
+  "start": 19.519,
+  "end": 19.549
+ },
+ {
+  "word": "windy",
+  "start": 19.549,
+  "end": 19.899
+ },
+ {
+  "word": "day",
+  "start": 19.899,
+  "end": 20.109
+ },
+ {
+  "word": "in",
+  "start": 20.109,
+  "end": 20.229
+ },
+ {
+  "word": "London,",
+  "start": 20.229,
+  "end": 20.609
+ },
+ {
+  "word": "he",
+  "start": 20.919,
+  "end": 21.009
+ },
+ {
+  "word": "walked",
+  "start": 21.009,
+  "end": 21.309
+ },
+ {
+  "word": "up",
+  "start": 21.309,
+  "end": 21.429
+ },
+ {
+  "word": "to",
+  "start": 21.429,
+  "end": 21.529
+ },
+ {
+  "word": "a",
+  "start": 21.529,
+  "end": 21.559
+ },
+ {
+  "word": "pond",
+  "start": 21.559,
+  "end": 21.949
+ },
+ {
+  "word": "full",
+  "start": 21.949,
+  "end": 22.159
+ },
+ {
+  "word": "of",
+  "start": 22.159,
+  "end": 22.269
+ },
+ {
+  "word": "waves,",
+  "start": 22.269,
+  "end": 22.809
+ },
+ {
+  "word": "and",
+  "start": 22.999,
+  "end": 23.159
+ },
+ {
+  "word": "tipped",
+  "start": 23.159,
+  "end": 23.439
+ },
+ {
+  "word": "in",
+  "start": 23.439,
+  "end": 23.519
+ },
+ {
+  "word": "one",
+  "start": 23.519,
+  "end": 23.779
+ },
+ {
+  "word": "teaspoon",
+  "start": 23.779,
+  "end": 24.229
+ },
+ {
+  "word": "of",
+  "start": 24.229,
+  "end": 24.319
+ },
+ {
+  "word": "oil.",
+  "start": 24.319,
+  "end": 24.759
+ },
+ {
+  "word": "It",
+  "start": 25.031,
+  "end": 25.151
+ },
+ {
+  "word": "didn't",
+  "start": 25.151,
+  "end": 25.331
+ },
+ {
+  "word": "just",
+  "start": 25.331,
+  "end": 25.551
+ },
+ {
+  "word": "sit",
+  "start": 25.551,
+  "end": 25.761
+ },
+ {
+  "word": "there.",
+  "start": 25.761,
+  "end": 26.041
+ },
+ {
+  "word": "It",
+  "start": 26.361,
+  "end": 26.471
+ },
+ {
+  "word": "raced",
+  "start": 26.471,
+  "end": 26.771
+ },
+ {
+  "word": "across",
+  "start": 26.771,
+  "end": 27.121
+ },
+ {
+  "word": "the",
+  "start": 27.121,
+  "end": 27.181
+ },
+ {
+  "word": "water,",
+  "start": 27.181,
+  "end": 27.801
+ },
+ {
+  "word": "wider,",
+  "start": 27.801,
+  "end": 28.141
+ },
+ {
+  "word": "and",
+  "start": 28.141,
+  "end": 28.241
+ },
+ {
+  "word": "wider,",
+  "start": 28.241,
+  "end": 28.681
+ },
+ {
+  "word": "and",
+  "start": 28.681,
+  "end": 28.831
+ },
+ {
+  "word": "wider,",
+  "start": 28.831,
+  "end": 29.231
+ },
+ {
+  "word": "until",
+  "start": 29.485,
+  "end": 29.665
+ },
+ {
+  "word": "half",
+  "start": 29.665,
+  "end": 29.925
+ },
+ {
+  "word": "an",
+  "start": 29.925,
+  "end": 30.005
+ },
+ {
+  "word": "acre",
+  "start": 30.005,
+  "end": 30.225
+ },
+ {
+  "word": "of",
+  "start": 30.225,
+  "end": 30.295
+ },
+ {
+  "word": "pond",
+  "start": 30.295,
+  "end": 30.795
+ },
+ {
+  "word": "was",
+  "start": 30.795,
+  "end": 31.015
+ },
+ {
+  "word": "as",
+  "start": 31.015,
+  "end": 31.095
+ },
+ {
+  "word": "smooth",
+  "start": 31.095,
+  "end": 31.615
+ },
+ {
+  "word": "as",
+  "start": 31.615,
+  "end": 31.735
+ },
+ {
+  "word": "a",
+  "start": 31.735,
+  "end": 31.775
+ },
+ {
+  "word": "mirror.",
+  "start": 31.775,
+  "end": 32.195
+ },
+ {
+  "word": "Luckily,",
+  "start": 32.551,
+  "end": 32.961
+ },
+ {
+  "word": "the",
+  "start": 32.961,
+  "end": 33.051
+ },
+ {
+  "word": "trick",
+  "start": 33.051,
+  "end": 33.341
+ },
+ {
+  "word": "worked",
+  "start": 33.341,
+  "end": 33.651
+ },
+ {
+  "word": "every",
+  "start": 33.651,
+  "end": 33.911
+ },
+ {
+  "word": "time.",
+  "start": 33.911,
+  "end": 34.361
+ },
+ {
+  "word": "Unluckily",
+  "start": 34.859,
+  "end": 35.359
+ },
+ {
+  "word": "for",
+  "start": 35.359,
+  "end": 35.529
+ },
+ {
+  "word": "his",
+  "start": 35.529,
+  "end": 35.669
+ },
+ {
+  "word": "friends,",
+  "start": 35.669,
+  "end": 36.149
+ },
+ {
+  "word": "he",
+  "start": 36.439,
+  "end": 36.549
+ },
+ {
+  "word": "started",
+  "start": 36.549,
+  "end": 36.869
+ },
+ {
+  "word": "carrying",
+  "start": 36.869,
+  "end": 37.259
+ },
+ {
+  "word": "the",
+  "start": 37.259,
+  "end": 37.379
+ },
+ {
+  "word": "oil",
+  "start": 37.379,
+  "end": 37.699
+ },
+ {
+  "word": "hidden",
+  "start": 37.699,
+  "end": 38.029
+ },
+ {
+  "word": "inside",
+  "start": 38.029,
+  "end": 38.469
+ },
+ {
+  "word": "his",
+  "start": 38.469,
+  "end": 38.609
+ },
+ {
+  "word": "walking",
+  "start": 38.609,
+  "end": 38.969
+ },
+ {
+  "word": "stick.",
+  "start": 38.969,
+  "end": 39.319
+ },
+ {
+  "word": "You",
+  "start": 39.672,
+  "end": 39.762
+ },
+ {
+  "word": "see,",
+  "start": 39.762,
+  "end": 40.022
+ },
+ {
+  "word": "wind",
+  "start": 40.022,
+  "end": 40.322
+ },
+ {
+  "word": "can't",
+  "start": 40.322,
+  "end": 40.592
+ },
+ {
+  "word": "push",
+  "start": 40.592,
+  "end": 40.782
+ },
+ {
+  "word": "flat",
+  "start": 40.782,
+  "end": 41.052
+ },
+ {
+  "word": "water.",
+  "start": 41.052,
+  "end": 41.432
+ },
+ {
+  "word": "It",
+  "start": 41.702,
+  "end": 41.792
+ },
+ {
+  "word": "needs",
+  "start": 41.792,
+  "end": 42.012
+ },
+ {
+  "word": "tiny",
+  "start": 42.012,
+  "end": 42.352
+ },
+ {
+  "word": "ripples",
+  "start": 42.352,
+  "end": 42.712
+ },
+ {
+  "word": "to",
+  "start": 42.712,
+  "end": 42.812
+ },
+ {
+  "word": "grab",
+  "start": 42.812,
+  "end": 43.152
+ },
+ {
+  "word": "first.",
+  "start": 43.152,
+  "end": 43.672
+ },
+ {
+  "word": "Ever",
+  "start": 44.195,
+  "end": 44.375
+ },
+ {
+  "word": "tried",
+  "start": 44.375,
+  "end": 44.675
+ },
+ {
+  "word": "to",
+  "start": 44.675,
+  "end": 44.735
+ },
+ {
+  "word": "pick",
+  "start": 44.735,
+  "end": 44.945
+ },
+ {
+  "word": "up",
+  "start": 44.945,
+  "end": 45.065
+ },
+ {
+  "word": "a",
+  "start": 45.065,
+  "end": 45.105
+ },
+ {
+  "word": "bedsheet",
+  "start": 45.105,
+  "end": 45.605
+ },
+ {
+  "word": "that's",
+  "start": 45.605,
+  "end": 45.795
+ },
+ {
+  "word": "pulled",
+  "start": 45.795,
+  "end": 46.105
+ },
+ {
+  "word": "perfectly",
+  "start": 46.105,
+  "end": 46.585
+ },
+ {
+  "word": "tight?",
+  "start": 46.585,
+  "end": 46.925
+ },
+ {
+  "word": "There's",
+  "start": 47.265,
+  "end": 47.475
+ },
+ {
+  "word": "nothing",
+  "start": 47.475,
+  "end": 47.825
+ },
+ {
+  "word": "to",
+  "start": 47.825,
+  "end": 47.925
+ },
+ {
+  "word": "hold.",
+  "start": 47.925,
+  "end": 48.395
+ },
+ {
+  "word": "The",
+  "start": 48.674,
+  "end": 48.844
+ },
+ {
+  "word": "oil",
+  "start": 48.844,
+  "end": 49.094
+ },
+ {
+  "word": "spreads",
+  "start": 49.094,
+  "end": 49.474
+ },
+ {
+  "word": "into",
+  "start": 49.474,
+  "end": 49.694
+ },
+ {
+  "word": "a",
+  "start": 49.694,
+  "end": 49.724
+ },
+ {
+  "word": "skin",
+  "start": 49.724,
+  "end": 50.144
+ },
+ {
+  "word": "just",
+  "start": 50.144,
+  "end": 50.424
+ },
+ {
+  "word": "one",
+  "start": 50.424,
+  "end": 50.634
+ },
+ {
+  "word": "molecule",
+  "start": 50.634,
+  "end": 51.194
+ },
+ {
+  "word": "thick,",
+  "start": 51.194,
+  "end": 51.594
+ },
+ {
+  "word": "and",
+  "start": 51.864,
+  "end": 52.044
+ },
+ {
+  "word": "it",
+  "start": 52.044,
+  "end": 52.104
+ },
+ {
+  "word": "smooths",
+  "start": 52.104,
+  "end": 52.664
+ },
+ {
+  "word": "every",
+  "start": 52.664,
+  "end": 52.944
+ },
+ {
+  "word": "ripple",
+  "start": 52.944,
+  "end": 53.254
+ },
+ {
+  "word": "before",
+  "start": 53.254,
+  "end": 53.524
+ },
+ {
+  "word": "the",
+  "start": 53.524,
+  "end": 53.594
+ },
+ {
+  "word": "wind",
+  "start": 53.594,
+  "end": 53.964
+ },
+ {
+  "word": "can",
+  "start": 53.964,
+  "end": 54.164
+ },
+ {
+  "word": "catch",
+  "start": 54.164,
+  "end": 54.484
+ },
+ {
+  "word": "it.",
+  "start": 54.484,
+  "end": 54.614
+ },
+ {
+  "word": "And",
+  "start": 54.906,
+  "end": 55.066
+ },
+ {
+  "word": "here's",
+  "start": 55.066,
+  "end": 55.326
+ },
+ {
+  "word": "the",
+  "start": 55.326,
+  "end": 55.416
+ },
+ {
+  "word": "twist:",
+  "start": 55.416,
+  "end": 56.156
+ },
+ {
+  "word": "one",
+  "start": 56.156,
+  "end": 56.376
+ },
+ {
+  "word": "teaspoon,",
+  "start": 56.376,
+  "end": 56.896
+ },
+ {
+  "word": "half",
+  "start": 56.896,
+  "end": 57.156
+ },
+ {
+  "word": "an",
+  "start": 57.156,
+  "end": 57.236
+ },
+ {
+  "word": "acre.",
+  "start": 57.236,
+  "end": 57.666
+ },
+ {
+  "word": "Do",
+  "start": 58.006,
+  "end": 58.116
+ },
+ {
+  "word": "the",
+  "start": 58.116,
+  "end": 58.196
+ },
+ {
+  "word": "division,",
+  "start": 58.196,
+  "end": 58.666
+ },
+ {
+  "word": "and",
+  "start": 58.666,
+  "end": 58.826
+ },
+ {
+  "word": "that",
+  "start": 58.826,
+  "end": 58.986
+ },
+ {
+  "word": "skin",
+  "start": 58.986,
+  "end": 59.356
+ },
+ {
+  "word": "is",
+  "start": 59.356,
+  "end": 59.476
+ },
+ {
+  "word": "a",
+  "start": 59.476,
+  "end": 59.526
+ },
+ {
+  "word": "millionth",
+  "start": 59.526,
+  "end": 60.026
+ },
+ {
+  "word": "of",
+  "start": 60.026,
+  "end": 60.126
+ },
+ {
+  "word": "a",
+  "start": 60.126,
+  "end": 60.176
+ },
+ {
+  "word": "millimetre",
+  "start": 60.176,
+  "end": 60.706
+ },
+ {
+  "word": "thin.",
+  "start": 60.706,
+  "end": 61.126
+ },
+ {
+  "word": "Franklin",
+  "start": 61.475,
+  "end": 61.895
+ },
+ {
+  "word": "had",
+  "start": 61.895,
+  "end": 62.105
+ },
+ {
+  "word": "measured",
+  "start": 62.105,
+  "end": 62.425
+ },
+ {
+  "word": "the",
+  "start": 62.425,
+  "end": 62.485
+ },
+ {
+  "word": "size",
+  "start": 62.485,
+  "end": 62.895
+ },
+ {
+  "word": "of",
+  "start": 62.895,
+  "end": 62.985
+ },
+ {
+  "word": "a",
+  "start": 62.985,
+  "end": 63.015
+ },
+ {
+  "word": "molecule",
+  "start": 63.015,
+  "end": 63.855
+ },
+ {
+  "word": "on",
+  "start": 63.855,
+  "end": 63.975
+ },
+ {
+  "word": "a",
+  "start": 63.975,
+  "end": 64.015
+ },
+ {
+  "word": "London",
+  "start": 64.015,
+  "end": 64.405
+ },
+ {
+  "word": "pond.",
+  "start": 64.405,
+  "end": 64.835
+ },
+ {
+  "word": "He",
+  "start": 65.169,
+  "end": 65.269
+ },
+ {
+  "word": "just",
+  "start": 65.269,
+  "end": 65.519
+ },
+ {
+  "word": "never",
+  "start": 65.519,
+  "end": 65.839
+ },
+ {
+  "word": "did",
+  "start": 65.839,
+  "end": 66.039
+ },
+ {
+  "word": "the",
+  "start": 66.039,
+  "end": 66.109
+ },
+ {
+  "word": "maths.",
+  "start": 66.109,
+  "end": 66.579
+ }
+]
