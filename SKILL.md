@@ -21,7 +21,7 @@ User rules that apply:
 - Voice: one steady tone.
 - Jokes are researched real facts.
 - Standard mix: music +3 dB, SFX -6 dB, voice unchanged.
-- Final export 2K vertical: 1440x2560, `--scale 1.3333`.
+- Final export 2K vertical: 1440x2560, `--scale 1.3333333333333333` (exact 4/3; `1.3333` gives a non-integer height and the render fails). 1080x1920 (no `--scale`) when the user asks for 1080p.
 - Opus max verifies every check.
 - Save after every step.
 - "Just do it" once the script is approved.
@@ -73,7 +73,8 @@ User rules that apply:
    - Make side-by-sides against reference frames with `python scripts/sbs_sheet.py out.jpg --ours ... --ref ...`.
    - Send them to an Opus max verifier: 1-3 images, a ≤200-word verdict.
 10. **Final render.**
-    - `npx remotion render src/index.ts <Comp> out/<name>/video.mp4 --codec h264 --crf 16 --scale 1.3333`
+    - `npx remotion render src/index.ts <Comp> out/<name>/video.mp4 --codec h264 --crf 16 --scale 1.3333333333333333 --timeout 240000`
+    - One-command render + mux for the user's own PC: copy `remotion/scripts/render-ice.mjs` (uses `npx remotion ffmpeg`, so no ffmpeg install) and write a short RENDER.md next to the project.
     - Mux with `-map 0:v:0 -map 1:a:0` (Remotion writes a silent audio track).
     - QA: `python scripts/short_qa.py final.mp4 out/<name>/qa shots.json` checks every frame for black, white, frozen and pop frames, plus loudness and sheets.
     - Fix anything it finds, then run a deep Opus audit.
@@ -152,6 +153,14 @@ lighting 5-6, ink 6, textures 5-6, characters 7, depth 6-7, composition 6-7 (fro
 - Scratch `.ts` files inside `out/` break `tsc`: name them `.txt`.
 - 2K renders run ~4 fps (≈10 min for 67 s). Stills at 0.5 take 3-8 s each after a ~40 s bundle.
 - Film grain at 2.5 % made the 2K file 910 MB instead of ~250 MB and will turn to mush on YouTube; the reference has none. Keep it off.
+
+- The first frame of a big three.js scene takes longer than Remotion's 30 s default: always pass `--timeout 240000`.
+- No GPU (cloud container): render with `--gl swangle --concurrency 1`; concurrency 4 was slower under software GL. Measured ~2.3 s/frame at 1080p and ~3.5 s/frame at 2K (≈80 min / 2 h for 69 s). On a GPU PC try `--gl angle`.
+- Kenney GLBs in `public/` are not in git: a fresh clone logs 404s for FOREGROUND props (harmless, props just missing). Copy `public/` over if those props matter.
+- Kokoro voices are 24 kHz: resample to 48 kHz (`scipy.signal.resample_poly`) before mixing.
+- Dense SFX + march at -15 LUFS pushed the limiter to ~7 dB gain reduction: target -16 LUFS (≤6 dB GR, TP ≤ -1 dBTP).
+- Keep `__pycache__/`, `_cache/` and `stem_*.wav` git-ignored; commit only mix.wav, cues.md and a preview mp3.
+- When waiting on a process, don't use `pgrep -f "<cmd>"` inside the same shell command line: it matches itself and never ends.
 
 ## Readability traps the verifier caught (check every new prop/shot for these)
 - **A swing drawn as one rope that disappears behind the kid reads as a HANGING.** Always two ropes to a wide plank
