@@ -27,7 +27,7 @@ export const JETTY = { x0: -63.5, x1: -56.4, z: 4, w: 2.2, y: 0.18 }; // little 
 export const FR: V3 = [-57.2, JETTY.y, 4];
 export const DROP: V3 = [-56.3, POND.y, 3.8]; // where the oil lands (off the end of the jetty)
 /** the friends' picnic spot just behind him */
-export const FRIENDS: V3[] = [[-64.6, 0, 8.2], [-63.0, 0, 9.4], [-66.3, 0, 9.9]];
+export const FRIENDS: V3[] = [[-61.9, 0, 7.8], [-60.6, 0, 8.9], [-63.3, 0, 9.2]];
 export const BED: V3 = [-74, 0, -9]; // the bedsheet explainer, on the lawn
 export const PATH_Z = 58;            // the walk along the north path (shot 4)
 /** the 1757 fleet, far away from the pond (fog hides one place from the other) */
@@ -130,6 +130,9 @@ const pushK = (f: number, f0: number, rate: number, punch = 0, n = 35) => {
 const dolly = (pos: V3, look: V3, k: number, rest: Partial<Cam> = {}): Shot =>
   ({ pos: [look[0] + (pos[0] - look[0]) * k, look[1] + (pos[1] - look[1]) * k, look[2] + (pos[2] - look[2]) * k], look, ...rest });
 const add = (a: V3, b: V3): V3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+/** zoom push (camera stays put, for wides with a far look point): tan(fov/2) shrinks by k */
+const zoom = (pos: V3, look: V3, fov: number, k: number, rest: Partial<Cam> = {}): Shot =>
+  ({ pos, look, fov: (360 / Math.PI) * Math.atan(Math.tan((fov * Math.PI) / 360) * k), ...rest });
 const sea = (x: number, y: number, z: number): V3 => [SEA[0] + x, SEA[1] + y, SEA[2] + z];
 
 /** Franklin's position over the film (he walks up to the bank in shot 5, walks off at the end) */
@@ -143,23 +146,23 @@ const frEye = (id: number, f: number): V3 => add(franklinAt(id, f), [0, 1.75, 0]
 
 // framings (f -> camera); each pushes in from the frame its key starts
 const S1a = (f: number) => dolly(add(FR, [-1.6, 1.55, 4.6]), add(FR, [0.75, 1.0, -0.6]), pushK(f, 0, 0.0028), { fov: 42 });
-const S1b = (f: number) => dolly(add(FR, [0.75, 1.35, 2.3]), add(FR, [0.75, 0.75, 0]), pushK(f, 89, 0.003, 0.006, 30), { fov: 38, roll: 0.04 });
-const S2a = (f: number) => dolly(sea(-4, SHIP_DECK + 1.7, 1.0), sea(50, 3, -40), pushK(f, 150, 0.0018), { fov: 42 });
-const S2b = (f: number) => dolly(sea(-10, 34, 20), sea(60, 0, -36), pushK(f, 228, 0.0022, 0.005, 30), { fov: 44, roll: -0.03 });
+const S1b = (f: number) => dolly(add(FR, [0.85, 0.72, 2.45]), add(FR, [0.8, 0.55, 0]), pushK(f, 89, 0.003, 0.006, 30), { fov: 46, roll: 0.04 });
+const S2a = (f: number) => zoom(sea(-4, SHIP_DECK + 1.7, 1.0), sea(50, 3, -40), 42, pushK(f, 150, 0.0018));
+const S2b = (f: number) => zoom(sea(-10, 34, 20), sea(60, 0, -36), 44, pushK(f, 228, 0.0022, 0.005, 30), { roll: -0.03 });
 const S3a = (f: number) => dolly(sea(-4.6, SHIP_DECK + 1.6, 3.2), sea(-1.2, SHIP_DECK + 1.5, -0.6), pushK(f, 314, 0.0025, 0.006, 26), { fov: 38 });
-const S3b = (f: number) => dolly(sea(84, 2.4, -6.5), sea(91.4, SHIP_DECK * 0.95 + 0.6, -14.4), pushK(f, 359, 0.0025), { fov: 40, roll: 0.03 });
+const S3b = (f: number) => dolly(sea(89.4, 4.3, -9.8), sea(91.9, 3.3, -15.0), pushK(f, 359, 0.0025), { fov: 44, roll: 0.03 });
 const S4a = (f: number) => { const F = franklinAt(4, f); return dolly([F[0] + 1.0, 1.55, PATH_Z + 7.4], [F[0] + 0.4, 1.3, PATH_Z], pushK(f, 444, 0.0015), { fov: 42 }); };
 const S4b = (f: number) => { const F = franklinAt(4, f); return dolly([F[0] + 4.6, 1.7, PATH_Z + 2.2], [F[0], 1.55, PATH_Z], pushK(f, 495, 0.0025), { fov: 38, roll: 0.035 }); };
-const S5a = (f: number) => dolly([-92, 9, 40], [-20, -1, 0], pushK(f, 574, 0.0018, 0.005, 30), { fov: 42 });
+const S5a = (f: number) => zoom([-92, 9, 40], [-20, -1, 0], 42, pushK(f, 574, 0.0018, 0.005, 30));
 const S5b = (f: number) => { const F = franklinAt(5, f); return dolly([F[0] + 3.4, 1.6, F[2] + 6.4], [F[0] + 1.2, 1.25, F[2]], pushK(f, 628, 0.002), { fov: 40 }); };
-const S5c = (f: number) => dolly(add(FR, [0.8, 1.4, 2.3]), add(FR, [0.75, 0.75, 0]), pushK(f, 695, 0.003, 0.006, 30), { fov: 38, roll: -0.04 });
-const S6a = (f: number) => dolly([-70, 30, 34], [-42, -0.4, 4], pushK(f, 751, 0.0012), { fov: 44 });
-const S6b = (f: number) => dolly([-74, 48, 52], [-36, -0.4, 4], pushK(f, 834, 0.0012), { fov: 46, roll: 0.03 });
-const S7a = (f: number) => dolly([-66.5, 1.2, -6.5], [-25, 0.2, 10], pushK(f, 885, 0.0022, 0.006, 30), { fov: 42 });
-const S8a = (f: number) => dolly(add(FR, [3.6, 1.7, 10.4]), add(FR, [-1.6, 1.3, 5.2]), pushK(f, 977, 0.0025, 0.006, 26), { fov: 40, roll: -0.035 });
-const S9a = (f: number) => dolly(add(FR, [1.6, 1.6, 11.6]), add(FR, [-2.6, 1.5, 7.4]), pushK(f, 1046, 0.002, 0.005, 26), { fov: 38 });
-const S9b = (f: number) => dolly(add(FR, [2.0, 1.75, 4.6]), add(FR, [0.8, 1.6, 0]), pushK(f, 1093, 0.0025), { fov: 38, roll: 0.04 });
-const S9c = (f: number) => dolly(add(FR, [1.2, 1.8, 2.4]), add(FR, [0.85, 1.3, 0]), pushK(f, 1158, 0.003), { fov: 36 });
+const S5c = (f: number) => dolly(add(FR, [0.75, 0.75, 2.45]), add(FR, [0.8, 0.55, 0]), pushK(f, 695, 0.003, 0.006, 30), { fov: 46, roll: -0.04 });
+const S6a = (f: number) => zoom([-70, 30, 34], [-42, -0.4, 4], 44, pushK(f, 751, 0.0012));
+const S6b = (f: number) => zoom([-74, 48, 52], [-36, -0.4, 4], 46, pushK(f, 834, 0.0012), { roll: 0.03 });
+const S7a = (f: number) => zoom([-63.5, 1.5, -5.5], [-25, 0.2, 10], 42, pushK(f, 885, 0.0022, 0.006, 30));
+const S8a = (f: number) => dolly(add(FR, [2.0, 1.6, -3.5]), add(FR, [-1.3, 1.15, 1.9]), pushK(f, 977, 0.0025, 0.006, 26), { fov: 40, roll: -0.035 });
+const S9a = (f: number) => dolly([-57.6, 1.25, 6.8], [-61.6, 0.75, 8.9], pushK(f, 1046, 0.002, 0.005, 26), { fov: 40 });
+const S9b = (f: number) => dolly(add(FR, [1.6, 1.7, 4.4]), add(FR, [0.45, 1.45, 0]), pushK(f, 1093, 0.0025), { fov: 40, roll: 0.04 });
+const S9c = (f: number) => dolly(add(FR, [1.15, 1.5, 2.4]), add(FR, [0.95, 1.15, 0]), pushK(f, 1158, 0.003), { fov: 42 });
 /** the oil's edge at the macro shots: calm (oiled) water on screen-left, open water on screen-right */
 export const MACRO: V3 = [calmC(27)[0] + 27, POND.y, calmC(27)[1]];
 const S10a = (f: number) => dolly(add(MACRO, [-0.4, 0.55, 3.0]), add(MACRO, [-0.4, 0.05, -0.6]), pushK(f, 1190, 0.0025), { fov: 40 });
@@ -170,9 +173,9 @@ const M12: V3 = [calmC(26)[0] + 26, POND.y, calmC(26)[1]];
 const S12a = (f: number) => dolly(add(M12, [0, 0.42, 2.3]), add(M12, [0, 0.02, -0.8]), pushK(f, 1460, 0.0022), { fov: 40 });
 const S12b = (f: number) => dolly(add(M12, [1.2, 0.3, 1.8]), add(M12, [1.5, 0.02, -0.8]), pushK(f, 1556, 0.0025, 0.006, 26), { fov: 38, roll: 0.035 });
 const S13a = (f: number) => dolly(add(FR, [0.7, 1.65, 2.6]), add(FR, [0.45, 1.35, 0]), pushK(f, 1647, 0.0028, 0.006, 26), { fov: 38 });
-const S13b = (f: number) => dolly([-82, 58, 46], [-34, -0.4, 4], pushK(f, 1707, 0.0018, 0.004, 30), { fov: 46 });
+const S13b = (f: number) => zoom([-82, 58, 46], [-34, -0.4, 4], 46, pushK(f, 1707, 0.0018, 0.004, 30));
 const S13c = (f: number) => dolly(add(MACRO, [-1.2, 0.18, 1.6]), add(MACRO, [-1.4, 0.0, -1.2]), pushK(f, 1786, 0.003), { fov: 36, roll: -0.03 });
-const S14a = (f: number) => dolly([-40, 2.4, -12], [FR[0], 1.4, FR[2]], pushK(f, 1844, 0.0022), { fov: 40 });
+const S14a = (f: number) => zoom([-44, 2.2, -9], [FR[0], 1.2, FR[2]], 40, pushK(f, 1844, 0.0022));
 const S15a = (f: number) => { const F = franklinAt(15, Math.min(f, 2000)); return dolly(add(F, [2.4, 1.65, 4.2]), add(F, [0.2, 1.45, 0]), pushK(f, 1955, 0.0025, 0.006, 24), { fov: 38 }); };
 
 const CAMS: Record<number, Key[]> = {
@@ -225,7 +228,8 @@ export const DOF: Dof[] = [
   { f: 628, cInf: 10, focus: (f) => frEye(5, f) },
   { f: 695, cInf: 15 },                                       // spoon insert
   { f: 751, cInf: 0 },                                        // aerial, mirror wide
-  { f: 977, cInf: 11, focus: () => add(FRIENDS[1], [0, 1.6, 0]) }, // friends applaud
+  { f: 977, cInf: 9, focus: () => add(FR, [0, 1.7, 0]) },        // Franklin bows, friends applaud behind
+  { f: 1046, cInf: 11, focus: () => add(FRIENDS[1], [0, 0.9, 0.6]) }, // friends deadpan
   { f: 1093, cInf: 12, focus: (f) => frEye(9, f) },
   { f: 1158, cInf: 14 },                                      // walking-stick insert
   { f: 1190, cInf: 12 },                                      // macro water (focus = look)

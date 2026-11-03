@@ -147,6 +147,7 @@ export class World {
   private sunCache = new Map<number, THREE.Vector3>();
   private cloudMaps: Record<"day" | "golden", THREE.Texture[]>;
   private clouds: THREE.Mesh[] = [];
+  private bed = new THREE.Group();
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
 
@@ -221,7 +222,8 @@ export class World {
     for (let x = -170; x < 170; x += 10) house(b, x, 108 + r() * 2, Math.PI, 9, 9, [9.8, 11.2, 12.6][Math.floor(r() * 3)], Math.floor(r() * 8));
     for (let z = -120; z < 100; z += 10) house(b, 138 + r() * 2, z, -Math.PI / 2, 9, 9, [9.8, 11.2][Math.floor(r() * 2)], Math.floor(r() * 8));
     for (let x = -160; x < 140; x += 10) house(b, x, -112 - r() * 2, 0, 9, 9, [8.4, 9.8, 11.2][Math.floor(r() * 3)], Math.floor(r() * 8));
-    bedInto(b);
+    const bb = new Batch(); bedInto(bb); bb.build(this.bed);
+    R.add(this.bed);
     // the little jetty Franklin stands on: plank deck on posts
     const plank = lam("jettyWood", () => ({ color: "#b98a56" })), post = lam("jettyPost", () => ({ color: "#7a5434" }));
     for (let x = JETTY.x0; x < JETTY.x1 - 0.01; x += 0.32) b.add(boxGeo(V(x + 0.015, JETTY.y - 0.08, JETTY.z - JETTY.w / 2), V(x + 0.3, JETTY.y, JETTY.z + JETTY.w / 2)), plank);
@@ -324,7 +326,7 @@ export class World {
     const W = this.WU, wc = K.water;
     untone(wc.near, W.wNearC.value); untone(wc.mid, W.wMidC.value); untone(wc.far, W.wFarC.value);
     untone(wc.crest, W.wCrest.value); untone(wc.trough, W.wTrough.value); untone(wc.glint, W.wGlint.value);
-    untone(s.light === "day" ? "#cfe2f6" : "#f6c99a", W.wMirror.value);
+    untone(s.light === "day" ? "#7db4e8" : "#e8a98a", W.wMirror.value);
     W.wShade.value.set(...wc.shade); W.wTime.value = t; W.wChop.value = chopAt(id, f);
     W.wScale.value = id === 10 || id === 12 || (id === 13 && f >= 1786) ? 4.5 : s.place === "sea" ? 0.45 : 1;
     W.wSheen.value = id === 12 || (id === 13 && f >= 1786) ? 1 : id === 10 ? 0.6 : 0.25;
@@ -333,6 +335,7 @@ export class World {
     const wake = (k: number, v: THREE.Vector4) => { const sh = SHIPS[k], x0 = SEA[0] + sh.x - 12 * sh.s; v.set(x0, SEA[2] + sh.z, x0 - 260, SEA[2] + sh.z + 6); };
     wake(1, W.wWakeA.value as THREE.Vector4); wake(2, W.wWakeB.value as THREE.Vector4);
     W.wWakeR.value = s.place === "sea" ? 5.5 : 0;
+    this.bed.visible = id === 11;
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
     const st = stage(id, f, { pos: cam.position, right, sun: sunDir });
@@ -418,7 +421,8 @@ const WATER_COL = `
   wc = mix(wc, wCrest, chop * mk * (0.85 - 0.5 * far));
   // the oiled patch: a smooth mirror of the sky, a thin bright rim where the film ends, a faint sheen up close
   float rim = wCalm.w * (1.0 - smoothstep(0.0, 0.5, abs(dC - wCalm.z))) * step(0.5, wCalm.z);
-  vec3 mir = mix(wc, wMirror, 0.62 + 0.25 * wf);
+  vec3 mir = mix(wc, wMirror, 0.55 + 0.15 * wf);
+  mir *= 0.94 + 0.1 * smoothstep(0.7, 1.0, sin(vWP.z * 0.9 / max(wScale, 0.2) * wScale + 1.7 * wNoise(P * 0.08)));  // long glassy streaks
   float sh = 0.5 + 0.5 * sin(dC * 6.0 / max(wScale, 0.2) * wScale + wNoise(P * 0.5) * 4.0);
   mir = mix(mir, mix(vec3(1.0, 0.86, 0.55), vec3(0.85, 0.75, 1.0), sh), 0.22 * wSheen);
   wc = mix(wc, mir, calm);

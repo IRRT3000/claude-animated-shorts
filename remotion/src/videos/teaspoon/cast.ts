@@ -285,14 +285,16 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         stand(out, cam, WHO.sail, sea(1.6, SHIP_DECK, -2.6), { expr: "neutral" }, t);
       } else {
         const k = q(smooth((f - 378) / 10), 20), deck = SHIP_DECK * 0.95;
-        stand(out, cam, WHO.cook, sea(91.4, deck, -14.6), { expr: k > 0.5 ? "smile_closed" : "neutral", prop: ["bucket", k] }, t);
+        const cook = sea(91.6, deck, -15.3);
+        stand(out, cam, WHO.cook, cook, { expr: k > 0.5 ? "smile_closed" : "neutral", prop: ["bucket", k] }, t);
+        const lip = at(cam, cook, 0.62, 1.15);
         if (f >= 386 && f < 436) {
-          const u = q(((f - 386) % 12) / 12, 12);
-          push(out, `slop${u}`, 300, 600, (p) => fxSlop(p, u), SEA[0] + 92.2, deck * 0.55, SEA[2] - 13.6, 0.9, 1.8 * (deck + 0.6) / 1.8);
+          const u = q(((f - 386) % 12) / 12, 12), h = lip[1] + 0.1;
+          push(out, `slop${u}`, 300, 600, (p) => fxSlop(p, u), lip[0] + 0.15, h / 2, SEA[2] - 14.3, 0.55, h);
         }
         if (f >= 392) {
           const u = q(clamp01((f - 392) / 50), 30);
-          push(out, `ring${u}`, 600, 600, (p) => fxRing(p, u), SEA[0] + 92.4, 0.03, SEA[2] - 12.8, 2 + 4 * u, 2 + 4 * u, { flat: true });
+          push(out, `ring${u}`, 600, 600, (p) => fxRing(p, u), lip[0] + 0.3, 0.03, SEA[2] - 13.6, 1.5 + 3 * u, 1.5 + 3 * u, { flat: true });
         }
       }
       break;
@@ -326,7 +328,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 8: {
-      stand(out, cam, WHO.ben, ben, { expr: "smile_closed", prop: "cane", headTilt: 9 * smooth((f - 992) / 8), facing: -1 }, t);
+      stand(out, cam, WHO.ben, ben, { expr: "smile_closed", prop: "cane", headTilt: q(12 * smooth((f - 992) / 8), 4), tilt: q(-6 * smooth((f - 992) / 8), 4), facing: -1 }, t);
       friendsAt(out, cam, t, (k) => ({ expr: k === 1 ? "laugh" : "grin", clap: q(0.5 + 0.5 * Math.sin(t * 16 + k * 2), 10) }));
       push(out, "blanket", 600, 400, fxBlanket, FRIENDS[1][0] - 0.4, 0.02, FRIENDS[1][2] + 1.6, 3.4, 2.3, { flat: true, rot: 0.2 });
       break;
