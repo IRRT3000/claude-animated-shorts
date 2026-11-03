@@ -18,6 +18,8 @@ export type Outfit = {
   jacket: string; pants: string; boots: string; hat?: string | null; belt?: string | null; buttons?: string; rifle?: boolean;
   sash?: string; sword?: boolean; moustache?: string; skin?: string; head?: number; cap?: string; hair?: string; dress?: string;
   build?: Build;
+  /** ice short: beard colour, round glasses, cap band colour */
+  beard?: string; glasses?: boolean; band?: string;
 };
 type P2 = [number, number];
 
@@ -306,7 +308,7 @@ const mouth = (p: Pen, kind: MouthK, mx: number, my: number, u: number, k = 1) =
 /** face v2 (front / 3-4). u = 1 % of the head path width W. Eyes 26u apart on the centre line, brows 20u up, mouth 20u
  *  down, everything slid toward the facing side. No blush, no catchlights. */
 const faceFront = (p: Pen, cx: number, cy: number, W: number, expr: Expr, facing: number, look: number, lid: number, brim: boolean,
-  skin: string, moustache?: string, stout = false) => {
+  skin: string, moustache?: string, stout = false, glasses = false) => {
   const u = W / 100, F = FACE[expr], fx = cx + 7 * u * facing;
   const ex = (F.eye[0] === "shock" ? 12 : 13) * u, ey = cy;
   for (const side of [-1, 1]) {
@@ -322,6 +324,10 @@ const faceFront = (p: Pen, cx: number, cy: number, W: number, expr: Expr, facing
   if (moustache) for (const s of [-1, 1])
     taper(p, [mx + s * 1.5 * u, cy + 12.5 * u], [mx + s * (stout ? 19 : 15) * u, cy + (stout ? 10.5 : 15) * u], stout ? 5.5 * u : 4.5 * u, 1.6 * u, moustache);
   if (expr === "nervous") p.ell(cx + 40 * u * (facing || 1), cy - 22 * u, 3 * u, 5 * u, "#9fd4ff", 2 * u);
+  if (glasses) {
+    for (const side of [-1, 1]) p.ell(fx + side * ex, ey, 10.5 * u, 9.5 * u, null, 2.6 * u);
+    p.stroke([[fx - ex + 10.5 * u, ey - u], [fx + ex - 10.5 * u, ey - u]], 2.4 * u);
+  }
 };
 
 /** profile face (facing screen-right): one eye, brow, nose tick, mouth near the front edge; no skin bump nose, no ear */
@@ -357,7 +363,27 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
     for (let i = 0; i <= 12; i++) { const t = i / 12; base.push([cx + wb * (2 * t - 1), yb + 3 * u * (1 - (2 * t - 1) ** 2)]); }
     return base;
   };
-  if (o.hat === "shako" || o.hat === "shako_tall") {
+  if (o.hat === "peaked") {
+    const yb = crown + 0.24 * HH, ht = 0.27 * HH, wb = 47 * u, wt = 60 * u, col = o.cap ?? "#7a6a44";
+    const body = R([...sag(yb, wb).reverse(), [cx - wt, yb - ht + 7 * u], [cx - wt + 10 * u, yb - ht], [cx + wt - 10 * u, yb - ht], [cx + wt, yb - ht + 7 * u]]);
+    p.shadedFill(body, col, mul(col, SH_FELT), light, wt, 0.4);
+    p.clip(body, () => p.band(R([[cx - wt - 5 * u, yb - 0.07 * HH], [cx + wt + 5 * u, yb - 0.07 * HH]]), o.band ?? shade(col, 0.6), 0.1 * HH, 1.2 * u));
+    p.poly(body, null, ow);
+    const deg = (a * 180) / Math.PI;
+    if (side) p.poly(R([[cx + 36 * u, yb - 1 * u], [cx + 64 * u, yb + 8 * u], [cx + 34 * u, yb + 6 * u]]), "#16171b", 2.5 * u);
+    else {
+      const [px, py] = R([[cx + 3 * u * facing, yb + 3 * u]])[0];
+      p.ell(px, py, 37 * u, 0.05 * HH, "#16171b", 2.5 * u, 0, 180, deg);
+      const [bx, by] = R([[cx, yb - 0.6 * ht]])[0];
+      p.ell(bx, by, 6.5 * u, 5.5 * u, "#e8c45a", 1.8 * u, 0, 360, deg);
+    }
+  } else if (o.hat === "sailor") {
+    const yb = crown + 0.2 * HH, ht = 0.17 * HH, col = "#f4f3ee";
+    const body = R([...sag(yb, 45 * u).reverse(), [cx - 52 * u, yb - ht], [cx + 52 * u, yb - ht]]);
+    p.shadedFill(body, col, mul(col, SH_FELT), light, 52 * u, 0.4);
+    p.clip(body, () => p.band(R([[cx - 60 * u, yb - 0.035 * HH], [cx + 60 * u, yb - 0.035 * HH]]), "#22305a", 0.07 * HH, 1 * u));
+    p.poly(body, null, ow);
+  } else if (o.hat === "shako" || o.hat === "shako_tall") {
     const tall = o.hat === "shako_tall", yb = crown + 0.25 * HH, ht = (tall ? 0.66 : 0.56) * HH, wb = 46 * u, wt = 52 * u;
     const body = R([...sag(yb, wb).reverse(), [cx - wt, yb - ht], [cx + wt, yb - ht]]);
     p.shadedFill(body, "#3a3d47", "#24262d", light, wt, 0.4);
@@ -424,7 +450,7 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
 // ---------------- bodies ----------------
 export type Arms = [P2[], P2[]];
 /** held prop; for the hammer the number is the strike 0 (raised) .. 1 (struck) */
-export type Prop = null | "icecream" | "shako" | ["hammer", number];
+export type Prop = null | "icecream" | "shako" | "pistol" | ["hammer", number];
 
 const BUILD: Record<Build, { a: number; torso: number; legs: number; tw: number }> = {
   adult: { a: 118, torso: 1.1, legs: 1.4, tw: 0.8 },
@@ -520,6 +546,9 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
     } else if (wave !== undefined) {
       const S = sh(1);
       arms.push({ pts: [S, [tcx + 1.1 * T.a + 10 * u + 3 * u * wave, S[1] - 0.22 * HH], [tcx + 1.18 * T.a + 16 * u + 12 * u * wave, S[1] - 0.6 * HH]], front: false });
+    } else if (prop === "pistol") {
+      const S = sh(1);
+      arms.push({ pts: [S, [tcx + 1.15 * T.a + 18 * u, S[1] + 0.03 * HH], [tcx + 1.2 * T.a + 44 * u, S[1] - 0.02 * HH]], front: true });
     } else if (prop === "icecream") {
       const S = sh(1);
       arms.push({ pts: [S, [tcx + 1.05 * T.a + 4 * u, S[1] + 0.45 * HH], [tcx + 0.5 * T.a, S[1] + 0.4 * HH]], front: true });
@@ -573,7 +602,10 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   for (const a of arms) if (a.front) {
     drawArm(a);
     const [hx, hy] = a.pts[2];
-    if (prop === "icecream") {
+    if (prop === "pistol") {
+      p.poly([[hx - 5 * u, hy - 9 * u], [hx + 30 * u, hy - 9 * u], [hx + 30 * u, hy - 1 * u], [hx + 5 * u, hy - 1 * u], [hx + 5 * u, hy + 11 * u], [hx - 6 * u, hy + 11 * u]], "#2e3038", 2.2 * u);
+      p.dot(hx, hy, 5.5 * u);
+    } else if (prop === "icecream") {
       p.poly([[hx - 8 * u, hy - 12 * u], [hx + 8 * u, hy - 12 * u], [hx, hy + 7 * u]], "#e0a35a", 1.8 * u);
       p.ell(hx, hy - 19 * u, 11 * u, 10 * u, "#f7c6d9", 2.2 * u);
       p.dot(hx, hy, 5.5 * u);
@@ -597,10 +629,11 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   hatBehind(p, o, H, 300, hc, light, thick, ow, false);
   const hp = blobPts(300, hc, H);
   p.shadedFill(hp, skin, mul(skin, SH_SKIN), light, H.a);
+  if (o.beard) p.clip(hp, () => p.ell(300 + 6 * u * facing, hc + 0.78 * H.b, 0.7 * H.a, 0.5 * H.b, o.beard!, 0));
   p.inkRing(hp, ow, thick);
   hatOn(p, o, hp, H, 300, hc, light, seed, facing, false);
-  const brim = !!o.hat && o.hat !== "hair" && o.hat !== "bonnet" && o.hat !== "cap";
-  faceFront(p, 300, hc, W, expr, facing, look, lid, brim, skin, o.moustache, o.build === "stout");
+  const brim = !!o.hat && o.hat !== "hair" && o.hat !== "bonnet" && o.hat !== "cap" && o.hat !== "sailor";
+  faceFront(p, 300, hc, W, expr, facing, look, lid, brim, skin, o.moustache, o.build === "stout", o.glasses);
   p.rot = null;
 };
 
@@ -722,7 +755,7 @@ export const bodySide = (p: Pen, o: Outfit, opts: SideOpts) => {
   p.shadedFill(hp, skin, mul(skin, SH_SKIN), light, H.a);
   p.inkRing(hp, ow, thick);
   hatOn(p, o, hp, H, hx, hc, light, seed, 1, true);
-  const brim = !!o.hat && o.hat !== "hair" && o.hat !== "bonnet" && o.hat !== "cap";
+  const brim = !!o.hat && o.hat !== "hair" && o.hat !== "bonnet" && o.hat !== "cap" && o.hat !== "sailor";
   faceSide(p, hx, hc, W, expr, lid, brim, skin, o.moustache, o.build === "stout");
   p.rot = null;
 };
@@ -906,4 +939,66 @@ export const fxBlob = (p: Pen, col: string) => {
   const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
   for (const [r, k] of [[0, 0], [0.5, 0.04], [0.64, 0.18], [0.76, 0.42], [0.87, 0.72], [0.95, 0.92], [1, 1]] as const) gr.addColorStop(r, mix(col, WHITE, k));
   g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+};
+
+// ---------------- ice short: cast + effects ----------------
+export const PYKE: Outfit = { jacket: "#8a6a4a", pants: "#4a4038", boots: "#3a2a20", hat: "hair", hair: "#3b2a22", beard: "#3b2a22", glasses: true, buttons: "#5a4030" };
+export const MOUNTBATTEN: Outfit = { jacket: "#1f2a4a", pants: "#1c2440", boots: INK, hat: "peaked", cap: "#f2f0ea", band: "#1c2440", buttons: "#e8c45a", sash: undefined, build: "adult" };
+export const general = (v = 0): Outfit => ({
+  jacket: ["#8a7a4a", "#6f6b45", "#8a7a4a", "#7d6f48"][v % 4], pants: "#5e5638", boots: "#3a2a20", hat: "peaked",
+  cap: ["#8a7a4a", "#6f6b45", "#8a7a4a", "#7d6f48"][v % 4], band: v % 2 ? "#6b5a3a" : "#b8323a", buttons: "#e8c45a",
+  skin: SKINS[v % 4], moustache: v % 3 === 0 ? "#d8d4cc" : v % 3 === 1 ? "#4a3426" : undefined, build: v % 2 ? "stout" : "adult",
+});
+export const admiral = (v = 0): Outfit => ({ jacket: "#1f2a4a", pants: "#1c2440", boots: INK, hat: "peaked", cap: "#1c2440", band: "#1c2440",
+  buttons: "#e8c45a", skin: SKINS[(v + 2) % 4], moustache: v % 2 ? "#d8d4cc" : undefined, build: "stout" });
+export const sailor = (v = 0): Outfit => ({ jacket: "#2c3e66", pants: "#2a3350", boots: INK, hat: "sailor", buttons: "#f4f3ee", skin: SKINS[v % 4] });
+
+/** idea lightbulb on a 300 x 300 canvas */
+export const fxBulb = (p: Pen, t: number) => {
+  const g = 1 - (1 - Math.min(1, t * 2)) ** 3;
+  for (let i = 0; i < 8; i++) {
+    const a = rad(-90 + (i - 3.5) * 26), r0 = 98, r1 = 98 + 40 * g;
+    p.stroke([[150 + r0 * Math.cos(a), 128 + r0 * Math.sin(a)], [150 + r1 * Math.cos(a), 128 + r1 * Math.sin(a)]], 9, "#f2b630");
+  }
+  p.ell(150, 120, 70, 72, "#fff1a6", 9);
+  p.poly([[118, 182], [182, 182], [176, 238], [124, 238]], "#b9bcc4", 8);
+  p.stroke([[124, 205], [176, 205]], 6); p.stroke([[126, 222], [174, 222]], 6);
+  p.stroke([[132, 150], [142, 100], [158, 100], [168, 150]], 6, "#e08a1c");
+};
+/** ice shards bursting from the centre of a 600 x 600 canvas; t 0..1 */
+export const fxShards = (p: Pen, t: number) => {
+  const e = 1 - (1 - t) ** 2;
+  for (let i = 0; i < 14; i++) {
+    const a = rad(i * 25.7 + 11 * (i % 3)), d = 30 + 250 * e * (0.6 + 0.4 * rnd(i, 1)), s = 26 + 22 * rnd(i, 2), cx = 300 + d * Math.cos(a), cy = 300 + d * Math.sin(a) + 120 * t * t;
+    const pts: P2[] = [[cx, cy - s], [cx + s * 0.7, cy + s * 0.2], [cx - s * 0.2, cy + s * 0.8], [cx - s * 0.8, cy]];
+    p.poly(rotPts(pts, a + t * 4 * (i % 2 ? 1 : -1), cx, cy), i % 3 ? "#dff3fb" : "#a9dcef", 6);
+  }
+  if (t < 0.35) p.ell(300, 300, 90 * (1 - t), 90 * (1 - t), WHITE, 7);
+};
+/** crack front across a 600 x 400 card (u 0..1 of the width), zig-zag with two side branches */
+export const fxCrack = (p: Pen, u: number) => {
+  if (u <= 0) return;
+  const pts: P2[] = [];
+  for (let i = 0; i <= 24; i++) { const x = 10 + 580 * (i / 24); if (x > 10 + 580 * u) break; pts.push([x, 200 + (i % 2 ? 26 : -22) * (0.6 + 0.6 * rnd(i, 4))]); }
+  pts.push([10 + 580 * u, 200]);
+  p.stroke(pts, 11, WHITE); p.stroke(pts, 5, "#2b4a63");
+  if (u > 0.4) p.stroke([[240, 190], [270, 120], [300, 90]], 4, "#2b4a63");
+  if (u > 0.7) p.stroke([[430, 212], [460, 290], [480, 320]], 4, "#2b4a63");
+};
+/** bullet streak (travelling right) on a 600 x 100 canvas */
+export const fxStreak = (p: Pen) => {
+  p.poly([[20, 50], [520, 38], [560, 50], [520, 62]], "#fff3b0", 6);
+  p.ell(548, 50, 24, 14, "#c9a24a", 6);
+};
+/** rubber stamp mark (no text): red ring with a cross, on a 400 x 400 canvas */
+export const fxStamp = (p: Pen) => {
+  p.ell(200, 200, 170, 170, null, 26, 0, 360);
+  p.g.globalCompositeOperation = "source-in"; p.g.fillStyle = "#c62f2f"; p.g.fillRect(0, 0, 400, 400); p.g.globalCompositeOperation = "source-over";
+  p.stroke([[95, 95], [305, 305]], 30, "#c62f2f"); p.stroke([[305, 95], [95, 305]], 30, "#c62f2f");
+};
+/** soft cold mist puff on a 300 x 200 canvas */
+export const fxMist = (p: Pen, seed: number) => {
+  const g = p.g; g.save(); g.filter = "blur(14px)";
+  for (let i = 0; i < 5; i++) { g.fillStyle = "rgba(240,250,255,0.55)"; g.beginPath(); g.ellipse(70 + i * 40, 110 + 20 * Math.sin(i + seed), 55, 38, 0, 0, Math.PI * 2); g.fill(); }
+  g.restore();
 };

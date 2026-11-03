@@ -24,7 +24,7 @@ export const lin = (pts: [number, number][], x: number) => {
 // Mountbatten at the -z end, the two test blocks on a side table at the +z end. insert: a neutral workbench for the
 // crack demos (ice block / mud brick / pykrete). lake: Patricia Lake under mountains, the prototype hull moored.
 export type SetId = "sea" | "study" | "room" | "insert" | "lake";
-export const SETS: Record<SetId, V3> = { sea: [0, 0, 0], study: [600, 0, 0], room: [700, 0, 0], insert: [800, 0, 0], lake: [-700, 0, 0] };
+export const SETS: Record<SetId, V3> = { sea: [0, 0, 0], study: [600, 2, 0], room: [700, 2, 0], insert: [800, 2, 0], lake: [-700, 0, 0] };
 export const at = (set: SetId, p: V3): V3 => [SETS[set][0] + p[0], SETS[set][1] + p[1], SETS[set][2] + p[2]];
 
 // ---------------- word marks (frames, from words.json; reactions land 0-3 f before the word) ----------------
@@ -54,7 +54,7 @@ export const duckU = (f: number) => lin([[RICO - 1, 0], [RICO + 4, 1], [W.luckil
 export const leanU = (f: number) => smooth((f - (W.interested - 20)) / 18);
 /** crack demo: a crack front 0..1 across the block; on straw / sawdust it stops at the first fibre (~0.32) */
 export const crackIce = (f: number) => clamp01((f - (W.crack - 3)) / 26);
-export const crackMud = (f: number) => Math.min(0.32, clamp01((f - (W.catches - 30)) / 30));
+export const crackMud = (f: number) => Math.min(0.55, clamp01((f - (W.catches - 30)) / 30));
 export const crackPyk = (f: number) => Math.min(0.22, clamp01((f - (W.sawdust2 + 8)) / 24));
 /** prototype at Patricia Lake: 1 = full block, shrinks over "three whole summers" (three steps, one per season pulse) */
 export const meltLeft = (f: number) =>
@@ -148,8 +148,8 @@ const zoom = (pos: V3, look: V3, fov: number, k: number, rest: Partial<Cam> = {}
 const P = (set: SetId) => (p: V3) => at(set, p);
 const sea = P("sea"), st = P("study"), rm = P("room"), ins = P("insert"), lk = P("lake");
 // shot 1: low over the swell beside the bow -> rising 3/4 that shows the whole deck (centred on "aircraft carrier")
-const S1a = (f: number) => dolly(sea([-34, 6, 140]), sea([0, 14, 95]), pushK(f, 0, 0.0025), { fov: 44, roll: -0.04 });
-const S1b = (f: number) => dolly(sea([-70, 38, 190]), sea([0, 12, 40]), pushK(f, 66, 0.002), { fov: 42, roll: 0.03 });
+const S1a = (f: number) => dolly(sea([-95, 24, 235 + 6 * T(f)]), sea([0, 13, 110 + 6 * T(f)]), pushK(f, 0, 0.0025), { fov: 42, roll: -0.04 });
+const S1b = (f: number) => dolly(sea([-110, 48, 250 + 6 * T(f)]), sea([0, 12, 50 + 6 * T(f)]), pushK(f, 66, 0.002), { fov: 42, roll: 0.03 });
 // shot 2: convoy wide, punch toward the hit freighter on "sinking"
 const S2a = (f: number) => zoom(sea([60, 18, -260]), sea([0, 4, -140]), 42, pushK(f, 130, 0.002));
 const S2b = (f: number) => zoom(sea([60, 18, -260]), sea([-8, 3, -150]), 34, pushK(f, 186, 0.0015, 0.006, 30), { roll: -0.04 });
@@ -181,14 +181,14 @@ const S9a = (f: number) => dolly(rm([-0.4, 1.3, 2.2]), rm([0.35, 1.1, 4.2]), pus
 const S10a = (f: number) => dolly(rm([-0.5, 1.3, 2.3]), rm([0.35, 1.1, 4.4]), pushK(f, 927, 0.003), { fov: 38, roll: 0.03 });
 const S10b = (f: number) => dolly(rm([0.5, 1.6, 5.6]), rm([0, 1.1, -3]), pushK(f, 990, 0.002), { fov: 46, roll: -0.045 });
 // shot 11: low along the table edge: heads peek up ("Luckily")
-const S11a = (f: number) => dolly(rm([2.4, 0.95, 3.4]), rm([0, 0.95, -1]), pushK(f, 1066, 0.0025), { fov: 40 });
+const S11a = (f: number) => dolly(rm([0.95, 1.6, 5.7]), rm([0, 0.85, -0.5]), pushK(f, 1066, 0.0025), { fov: 50 });
 // shot 12: CU row of generals' faces leaning in, punch on "interested"
 const S12a = (f: number) => dolly(rm([2.6, 1.35, -2.8]), rm([1.2, 1.3, 0.6]), pushK(f, 1119, 0.0025), { fov: 38, roll: 0.03 });
 const S12b = (f: number) => dolly(rm([2.0, 1.3, -1.6]), rm([1.2, 1.3, 0.6]), pushK(f, 1170, 0.002, 0.006, 30), { fov: 34, roll: -0.03 });
 // shots 13-15: workbench inserts, each block centred at insert (0, 1, 0)
 const S13a = (f: number) => dolly(ins([0.6, 1.35, -1.5]), ins([0, 1.05, 0]), pushK(f, 1209, 0.003, 0.006, 30), { fov: 36 });
 const S14a = (f: number) => dolly(ins([-0.6, 1.3, -1.5]), ins([0, 1.05, 0]), pushK(f, 1321, 0.0025), { fov: 38, roll: 0.03 });
-const S14b = (f: number) => dolly(ins([-0.3, 1.15, -0.9]), ins([0, 1.05, 0]), pushK(f, 1398, 0.002, 0.006, 30), { fov: 34, roll: -0.03 });
+const S14b = (f: number) => dolly(ins([-0.05, 1.18, -1.0]), ins([0.05, 1.02, 0]), pushK(f, 1398, 0.002, 0.006, 30), { fov: 34, roll: -0.03 });
 const S15a = (f: number) => dolly(ins([0.5, 1.4, -1.4]), ins([0, 1.05, 0]), pushK(f, 1471, 0.0025), { fov: 36 });
 // shot 16: aerial of the planned 2000 ft ship (scale by tiny planes), punch on "thousand"
 const S16a = (f: number) => dolly(sea([-160, 120, 260]), sea([0, 0, 20]), pushK(f, 1565, 0.0015, 0.005, 30), { fov: 44 });
