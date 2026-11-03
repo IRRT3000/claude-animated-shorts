@@ -172,7 +172,7 @@ const S7d = (f: number) => dolly(st([2.7, 1.2, -0.4]), st([2.7, 1.0, 0.7]), push
 // shot 8: door end of the room (Mountbatten enters) -> high wide of the table ("top Allied generals") ->
 //          CU pistol hand -> over-shoulder down the room at the ice block
 const S8a = (f: number) => dolly(rm([1.4, 1.7, -2.5]), rm([0, 1.5, -6.5]), pushK(f, 671, 0.0025), { fov: 40 });
-const S8b = (f: number) => dolly(rm([4.5, 4.8, -8]), rm([0, 0.9, 1]), pushK(f, 780, 0.002), { fov: 44, roll: 0.03 });
+const S8b = (f: number) => dolly(rm([2.6, 2.95, -7.9]), rm([0, 0.8, 0.8]), pushK(f, 780, 0.002), { fov: 50, roll: 0.03 });
 const S8c = (f: number) => dolly(rm([0.8, 1.45, -4.6]), rm([0.25, 1.3, -5.8]), pushK(f, 819, 0.003, 0.006, 20), { fov: 34, roll: -0.04 });
 const S8d = (f: number) => dolly(rm([-0.6, 1.75, -7.4]), rm([0.4, 1.15, 4.2]), pushK(f, 832, 0.0025), { fov: 36 });
 // shot 9: ice block CU at the far end as it bursts

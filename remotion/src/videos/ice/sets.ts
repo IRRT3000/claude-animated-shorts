@@ -136,7 +136,14 @@ export class Sets {
     const wallM = lam("wallpaper", () => ({ map: rep(wallpaperTex(), 1, 1) })), panel = lam("panel", () => ({ map: panelTex() }));
     const steelM = twoTone(new THREE.MeshPhongMaterial({ color: "#6d7480", specular: "#9aa0a8", shininess: 40 }), 0.15);
     const white = flat("#f2f2ee"), cream = flat("#efe6cf"), green = flat("#3f7a4a"), pine = flat("#2f6b45"), bark = flat("#6b4a33"), rock = flat("#8d8b93");
-    const brass = flat("#c9a24a");
+    const brass = flat("#c9a24a"), ceilM = flat("#efe6cf"), shadeM = flat("#3f6b4f");
+    const bulb = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 1.9, 1.3) }); // HDR: blooms a little
+    /** pendant lamp: cord from the ceiling, green enamel shade, glowing bulb */
+    const lamp = (bb: Batch, set: SetId, x: number, top: number, z: number, drop: number) => {
+      bb.add(new THREE.CylinderGeometry(0.012, 0.012, drop, 5), dark, T(set, x, top - drop / 2, z));
+      bb.add(new THREE.ConeGeometry(0.28, 0.22, 16, 1, true), shadeM, T(set, x, top - drop - 0.05, z));
+      bb.add(new THREE.SphereGeometry(0.08, 10, 8), bulb, T(set, x, top - drop - 0.17, z));
+    };
 
     // ======== SEA ========
     // ice carrier: 300 m speckled-ice hull, flat light deck, a small island, rows of planes (scale reads by the planes)
@@ -196,6 +203,11 @@ export class Sets {
     box(walls, S, [-3.3, 0, 4.5], [-1.6, 3.2, 4.7], wallM, 2); box(walls, S, [0.6, 0, 4.5], [5.7, 3.2, 4.7], wallM, 2);
     box(walls, S, [-1.6, 0, 4.5], [0.6, 0.95, 4.7], wallM, 2); box(walls, S, [-1.6, 2.45, 4.5], [0.6, 3.2, 4.7], wallM, 2);
     box(walls, S, [-3.4, 0, -4.6], [-3.2, 3.2, 4.7], wallM, 2); box(walls, S, [5.6, 0, -4.6], [5.8, 3.2, 4.7], wallM, 2);
+    box(walls, S, [-3.4, 0, -4.8], [5.8, 3.2, -4.6], wallM, 2);
+    // ceiling (casts no shadow, so the high sun still lights the room), cornice and two hanging lamps
+    box(walls, S, [-3.4, 3.2, -4.8], [5.8, 3.32, 4.7], ceilM);
+    box(walls, S, [-3.2, 3.05, 4.38], [5.6, 3.2, 4.5], beamM); box(walls, S, [-3.2, 3.05, -4.6], [5.6, 3.2, -4.48], beamM);
+    for (const x of [0, 3.2]) lamp(walls, S, x, 3.2, 0.2, 1.0);
     box(b, S, [-1.7, 0.9, 4.42], [0.7, 0.98, 4.5], beamM); box(b, S, [-0.6, 0.95, 4.55], [-0.5, 2.45, 4.6], beamM);
     const view = new THREE.Mesh(new THREE.PlaneGeometry(4.4, 3.3), new THREE.MeshBasicMaterial({ map: viewTex(), fog: false }));
     view.position.copy(at(S, -0.5, 1.7, 5.4)); view.rotation.y = Math.PI; R.add(view);
@@ -233,6 +245,9 @@ export class Sets {
     box(b, M, [-3.6, -0.05, -8.6], [3.6, 0, 6.6], wood);
     box(walls, M, [-3.7, 0, -8.6], [-3.5, 3.6, 6.6], panel, 2); box(walls, M, [3.5, 0, -8.6], [3.7, 3.6, 6.6], panel, 2);
     box(walls, M, [-3.7, 0, 6.5], [3.7, 3.6, 6.7], panel, 2);
+    box(walls, M, [-3.7, 3.6, -8.7], [3.7, 3.72, 6.7], ceilM);
+    for (let z = -7.5; z < 6.5; z += 2.5) box(walls, M, [-3.5, 3.38, z], [3.5, 3.6, z + 0.28], beamM); // ceiling beams
+    for (const z of [-1.6, 1.6]) lamp(walls, M, 0, 3.6, z, 1.25);
     box(walls, M, [-3.7, 0, -8.7], [-0.7, 3.6, -8.5], panel, 2); box(walls, M, [0.7, 0, -8.7], [3.7, 3.6, -8.5], panel, 2); box(walls, M, [-0.7, 2.3, -8.7], [0.7, 3.6, -8.5], panel, 2);
     box(b, M, [-0.75, 0.72, -3.2], [0.75, 0.78, 3.2], beamM); for (const z of [-3.0, 2.9]) for (const x of [-0.65, 0.57]) box(b, M, [x, 0, z], [x + 0.08, 0.72, z + 0.08], beamM);
     box(b, M, [-0.7, 0.78, -3.1], [0.7, 0.785, 3.1], green); // baize
@@ -253,6 +268,9 @@ export class Sets {
     box(b, I, [-6, -0.05, -6], [6, 0, 6], wood);
     box(b, I, [-1.6, 0.84, -0.8], [1.6, 0.9, 0.8], beamM); box(b, I, [-1.5, 0, -0.7], [1.5, 0.84, 0.7], beamM);
     box(walls, I, [-6, 0, 1.6], [6, 3.4, 1.8], wallM, 2);
+    box(walls, I, [-6.2, 0, -6], [-6, 3.4, 1.8], wallM, 2); box(walls, I, [6, 0, -6], [6.2, 3.4, 1.8], wallM, 2); box(walls, I, [-6.2, 0, -6.2], [6.2, 3.4, -6], wallM, 2);
+    box(walls, I, [-6.2, 3.4, -6.2], [6.2, 3.52, 1.8], ceilM);
+    lamp(walls, I, 0, 3.4, -0.2, 1.3);
     box(b, I, [-1.4, 0.9, 0.3], [-0.9, 1.05, 0.6], flat("#c99b4a")); box(b, I, [0.9, 0.9, 0.35], [1.3, 1.35, 0.55], flat("#8a8f98")); // props behind
     this.demo = {
       ice: new THREE.Mesh(boxGeo(V(-0.2, 0, -0.15), V(0.2, 0.3, 0.15), 0, true), clear),
