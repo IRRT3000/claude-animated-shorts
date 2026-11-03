@@ -1,37 +1,39 @@
-# Ideas para el próximo cartoon-3d-short
+# Ideas para el próximo cartoon-3d-short (v2: menos conocidas)
 
-Siguen la fórmula de `SKILL.md`: una historia real y sorprendente con causa→efecto física y visual, una analogía cotidiana, chiste deadpan con hechos reales y giro final. (Verificar fuentes en `SCRIPT.md` antes de escribir el guion.)
+Fórmula de `SKILL.md`: historia real, causa→efecto física visual, analogía cotidiana, chiste deadpan con hechos reales, giro final. Datos de memoria: verificar fuentes en `SCRIPT.md` antes del guion.
 
-## 1. The Building That Fried a Car (Londres, 2013) ⭐ recomendada
-- **Hook:** "A skyscraper in London melted a car. Using only sunlight."
-- **Hechos:** la fachada cóncava de cristal del 20 Fenchurch St ("Walkie-Talkie") concentraba el sol en la calle; derritió partes de un Jaguar XJ; un periodista frió un huevo en la acera. El promotor pagó ~£946 de reparación.
-- **Analogía:** la lupa y la hoja seca / cuchara brillante.
-- **Luckily/Unluckily:** "Luckily, it only happened a few weeks a year. Unluckily, it was summer."
-- **Consecuencia/giro:** pusieron una visera permanente de lamas; el edificio ganó el premio "Carbuncle Cup" al peor edificio del año.
-- **Visual:** rayo dorado en la calle, golden light ideal, cards de peatones sudando.
+## 1. The Ship That Sank Before Leaving the Harbour (Vasa, Estocolmo, 1628) ⭐ recomendada
+- **Hook:** "Sweden built the mightiest warship in the world. It sailed about 1,300 metres."
+- **Escalada:** el rey pide más cañones → una segunda cubierta de cañones → barco altísimo y estrecho.
+- **Hechos/chiste:** en la prueba de estabilidad, 30 marineros corrieron de lado a lado de la cubierta; pararon porque se balanceaba demasiado… y lo botaron igual.
+- **Snap:** una ráfaga de viento, se escora, el agua entra por las portas de los cañones.
+- **Analogía:** ponerse de pie en una canoa.
+- **Giro:** lo sacaron del fondo en 1961 casi intacto; hoy es el museo más visitado de Escandinavia. Fracasó como barco, triunfó como atracción.
+- **Visual:** encaja con la fórmula del puente (gente moviéndose a la vez).
 
-## 2. The Bridge That Wobbled (Millennium Bridge, Londres, 2000)
-- Secuela directa del vídeo del puente: callback perfecto.
-- **Hook:** "London opened a brand-new bridge. Two days later it closed it, because people walked on it."
-- **Física:** sincronización lateral: el puente se balancea, la gente ajusta el paso y lo empuja más. Analogía: andar por la cubierta de un barco.
-- **Consecuencia:** amortiguadores, reabierto en 2002; apodo "Wobbly Bridge" para siempre.
+## 2. The Biggest Bell That Never Rang (Tsar Bell, Moscú, 1737)
+- **Hook:** "Russia made the biggest bell in the world. Nobody has ever heard it."
+- **Física:** durante un incendio echaron agua fría sobre la campana caliente → choque térmico, se partió un trozo de ~11 toneladas.
+- **Analogía:** un vaso caliente bajo el grifo frío.
+- **Giro:** hoy está en el Kremlin… con el trozo roto apoyado al lado.
 
-## 3. The Plane That Ran Out of Fuel (Gimli Glider, 1983)
-- **Hook:** "A jet ran out of fuel at 41,000 feet because someone used the wrong units."
-- **Hechos:** Air Canada 767, libras vs. kilos; planeó hasta una antigua base en Gimli donde había un día de carreras de coches con familias. Nadie murió; el capitán era piloto de planeador.
-- **Analogía:** llenar el depósito en litros pensando en galones.
-- **Giro:** el avión siguió volando 25 años más.
+## 3. The Day the Sky Ran the Telegraph (Evento Carrington, 1859)
+- **Hook:** "In 1859, telegraph operators unplugged their batteries… and kept sending messages."
+- **Hechos:** tormenta solar; auroras vistas cerca del trópico; chispas en las estaciones y papel ardiendo; operadores de Boston y Portland transmitieron solo con la corriente inducida.
+- **Analogía:** la dinamo de la bici: imán que se mueve = corriente.
+- **Giro/consecuencia:** si pasara hoy, el problema sería nuestra red eléctrica y los satélites.
 
-## 4. The Tower That Was Saved by a War (Pisa)
-- **Hook:** "The Leaning Tower of Pisa started leaning before it was even finished."
-- **Física:** suelo blando (arcilla/arena); analogía: estar de pie sobre un colchón.
-- **Luckily/Unluckily:** las guerras pararon la obra ~100 años, y eso dejó asentarse el suelo y la salvó.
-- **Giro:** en 2001 la enderezaron un poco… pero no del todo, porque sin inclinación nadie iría a verla.
+## 4. The Teaspoon That Calmed a Pond (Benjamin Franklin, Clapham, 1773)
+- **Hook:** "Benjamin Franklin stopped the waves on a pond with one teaspoon of oil."
+- **Física:** el aceite se extiende en una capa finísima (de una molécula) y amortigua las ondas pequeñas que el viento necesita para crecer.
+- **Analogía:** una sábana estirada sobre la cama.
+- **Giro:** después llevaba aceite en el hueco de su bastón para hacer el "truco" ante amigos.
 
-## 5. The Tower That Grows Every Summer (Eiffel)
-- **Hook:** "The Eiffel Tower is taller in summer."
-- **Física:** dilatación térmica del hierro (~15 cm); analogía: el bote de mermelada que se abre con agua caliente.
-- **Giro:** además se inclina ligeramente alejándose del sol.
+## 5. The Man Who Sold Ice to the Tropics (Frederic Tudor, 1806)
+- **Hook:** "A man from Boston shipped a boatload of ice to the Caribbean. Everyone laughed."
+- **Física:** aislamiento con serrín (aire atrapado = mal conductor del calor). Analogía: la nevera portátil / el abrigo.
+- **Luckily/Unluckily:** "Luckily, the ice arrived. Unluckily, nobody knew what to do with it", y se derretía en las casas.
+- **Giro:** acabó siendo el "Ice King", rico, enviando hielo hasta la India.
 
 ## Recomendación
-Empezar con **#1** (muy visual, golden light, humor de hechos reales) o **#2** si se quiere una serie de "puentes".
+**#1 Vasa**: muy visual, la misma lógica de "mucha gente moviéndose a la vez" del puente, chiste real fortísimo y giro final limpio.
