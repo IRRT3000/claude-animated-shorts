@@ -122,7 +122,7 @@ const shipInto = (b: Batch, x: number, z: number, s: number) => {
 
 /** the bedsheet explainer's bed, standing on the lawn (head toward -x) */
 const bedInto = (b: Batch) => {
-  const [x, , z] = BED, wood = lam("bedWood", () => ({ color: "#9a6236" })), sheet = lam("sheet", () => ({ color: "#f4f6fb" }));
+  const [x, , z] = BED, wood = lam("bedWood", () => ({ color: "#9a6236" })), sheet = lam("sheet", () => ({ color: "#dfe8f4" }));
   const mat = lam("mattress", () => ({ color: "#b9cbe6" })), pil = lam("pillow", () => ({ color: "#fdfcf6" }));
   for (const [dx, dz] of [[-1.05, -0.72], [1.05, -0.72], [-1.05, 0.72], [1.05, 0.72]]) b.add(boxGeo(V(x + dx - 0.06, 0, z + dz - 0.06), V(x + dx + 0.06, dx < 0 ? 1.15 : 0.6, z + dz + 0.06)), wood);
   b.add(boxGeo(V(x - 1.1, 0.68, z - 0.76), V(x - 1.0, 1.1, z + 0.76)), wood);
@@ -326,7 +326,7 @@ export class World {
     const W = this.WU, wc = K.water;
     untone(wc.near, W.wNearC.value); untone(wc.mid, W.wMidC.value); untone(wc.far, W.wFarC.value);
     untone(wc.crest, W.wCrest.value); untone(wc.trough, W.wTrough.value); untone(wc.glint, W.wGlint.value);
-    untone(s.light === "day" ? "#7db4e8" : "#e8a98a", W.wMirror.value);
+    untone(s.light === "day" ? "#7db4e8" : "#c98f8c", W.wMirror.value);
     W.wShade.value.set(...wc.shade); W.wTime.value = t; W.wChop.value = chopAt(id, f);
     W.wScale.value = id === 10 || id === 12 || (id === 13 && f >= 1786) ? 4.5 : s.place === "sea" ? 0.45 : 1;
     W.wSheen.value = id === 12 || (id === 13 && f >= 1786) ? 1 : id === 10 ? 0.6 : 0.25;

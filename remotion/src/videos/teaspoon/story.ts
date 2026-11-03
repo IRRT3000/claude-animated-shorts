@@ -146,16 +146,16 @@ const frEye = (id: number, f: number): V3 => add(franklinAt(id, f), [0, 1.75, 0]
 
 // framings (f -> camera); each pushes in from the frame its key starts
 const S1a = (f: number) => dolly(add(FR, [-1.6, 1.55, 4.6]), add(FR, [0.75, 1.0, -0.6]), pushK(f, 0, 0.0028), { fov: 42 });
-const S1b = (f: number) => dolly(add(FR, [0.85, 0.72, 2.45]), add(FR, [0.8, 0.55, 0]), pushK(f, 89, 0.003, 0.006, 30), { fov: 46, roll: 0.04 });
+const S1b = (f: number) => dolly(add(FR, [0.85, 0.95, 2.6]), add(FR, [0.8, 0.75, 0]), pushK(f, 89, 0.003, 0.006, 30), { fov: 46, roll: 0.04 });
 const S2a = (f: number) => zoom(sea(-4, SHIP_DECK + 1.7, 1.0), sea(50, 3, -40), 42, pushK(f, 150, 0.0018));
 const S2b = (f: number) => zoom(sea(-10, 34, 20), sea(60, 0, -36), 44, pushK(f, 228, 0.0022, 0.005, 30), { roll: -0.03 });
 const S3a = (f: number) => dolly(sea(-4.6, SHIP_DECK + 1.6, 3.2), sea(-1.2, SHIP_DECK + 1.5, -0.6), pushK(f, 314, 0.0025, 0.006, 26), { fov: 38 });
-const S3b = (f: number) => dolly(sea(89.4, 4.3, -9.8), sea(91.9, 3.3, -15.0), pushK(f, 359, 0.0025), { fov: 44, roll: 0.03 });
+const S3b = (f: number) => dolly(sea(89.4, 5.0, -9.8), sea(91.9, 3.8, -15.0), pushK(f, 359, 0.0025), { fov: 44, roll: 0.03 });
 const S4a = (f: number) => { const F = franklinAt(4, f); return dolly([F[0] + 1.0, 1.55, PATH_Z + 7.4], [F[0] + 0.4, 1.3, PATH_Z], pushK(f, 444, 0.0015), { fov: 42 }); };
 const S4b = (f: number) => { const F = franklinAt(4, f); return dolly([F[0] + 4.6, 1.7, PATH_Z + 2.2], [F[0], 1.55, PATH_Z], pushK(f, 495, 0.0025), { fov: 38, roll: 0.035 }); };
 const S5a = (f: number) => zoom([-92, 9, 40], [-20, -1, 0], 42, pushK(f, 574, 0.0018, 0.005, 30));
 const S5b = (f: number) => { const F = franklinAt(5, f); return dolly([F[0] + 3.4, 1.6, F[2] + 6.4], [F[0] + 1.2, 1.25, F[2]], pushK(f, 628, 0.002), { fov: 40 }); };
-const S5c = (f: number) => dolly(add(FR, [0.75, 0.75, 2.45]), add(FR, [0.8, 0.55, 0]), pushK(f, 695, 0.003, 0.006, 30), { fov: 46, roll: -0.04 });
+const S5c = (f: number) => dolly(add(FR, [0.75, 0.95, 2.6]), add(FR, [0.8, 0.75, 0]), pushK(f, 695, 0.003, 0.006, 30), { fov: 46, roll: -0.04 });
 const S6a = (f: number) => zoom([-70, 30, 34], [-42, -0.4, 4], 44, pushK(f, 751, 0.0012));
 const S6b = (f: number) => zoom([-74, 48, 52], [-36, -0.4, 4], 46, pushK(f, 834, 0.0012), { roll: 0.03 });
 const S7a = (f: number) => zoom([-63.5, 1.5, -5.5], [-25, 0.2, 10], 42, pushK(f, 885, 0.0022, 0.006, 30));
@@ -168,11 +168,11 @@ export const MACRO: V3 = [calmC(27)[0] + 27, POND.y, calmC(27)[1]];
 const S10a = (f: number) => dolly(add(MACRO, [-0.4, 0.55, 3.0]), add(MACRO, [-0.4, 0.05, -0.6]), pushK(f, 1190, 0.0025), { fov: 40 });
 const S10b = (f: number) => dolly(add(MACRO, [0.6, 0.45, 2.4]), add(MACRO, [0.9, 0.05, -0.6]), pushK(f, 1251, 0.003, 0.006, 26), { fov: 38, roll: 0.035 });
 const S11a = (f: number) => dolly(add(BED, [0.6, 1.9, 4.6]), add(BED, [0, 0.75, 0]), pushK(f, 1326, 0.0025), { fov: 40 });
-const S11b = (f: number) => dolly(add(BED, [1.5, 1.6, 2.6]), add(BED, [0.4, 1.2, 0.9]), pushK(f, 1418, 0.003, 0.006, 26), { fov: 38, roll: -0.04 });
+const S11b = (f: number) => dolly(add(BED, [-0.3, 1.7, 7.2]), add(BED, [-0.85, 1.15, 1.45]), pushK(f, 1418, 0.003, 0.006, 26), { fov: 46, roll: -0.04 });
 const M12: V3 = [calmC(26)[0] + 26, POND.y, calmC(26)[1]];
 const S12a = (f: number) => dolly(add(M12, [0, 0.42, 2.3]), add(M12, [0, 0.02, -0.8]), pushK(f, 1460, 0.0022), { fov: 40 });
 const S12b = (f: number) => dolly(add(M12, [1.2, 0.3, 1.8]), add(M12, [1.5, 0.02, -0.8]), pushK(f, 1556, 0.0025, 0.006, 26), { fov: 38, roll: 0.035 });
-const S13a = (f: number) => dolly(add(FR, [0.7, 1.65, 2.6]), add(FR, [0.45, 1.35, 0]), pushK(f, 1647, 0.0028, 0.006, 26), { fov: 38 });
+const S13a = (f: number) => dolly(add(FR, [0.55, 1.6, 2.9]), add(FR, [0.32, 1.3, 0]), pushK(f, 1647, 0.0028, 0.006, 26), { fov: 40 });
 const S13b = (f: number) => zoom([-82, 58, 46], [-34, -0.4, 4], 46, pushK(f, 1707, 0.0018, 0.004, 30));
 const S13c = (f: number) => dolly(add(MACRO, [-1.2, 0.18, 1.6]), add(MACRO, [-1.4, 0.0, -1.2]), pushK(f, 1786, 0.003), { fov: 36, roll: -0.03 });
 const S14a = (f: number) => zoom([-44, 2.2, -9], [FR[0], 1.2, FR[2]], 40, pushK(f, 1844, 0.0022));
