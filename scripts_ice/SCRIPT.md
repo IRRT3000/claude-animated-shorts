@@ -43,3 +43,9 @@ It just sat in a lake, and took three whole summers to lose.
 (no text on screen: show a portrait instead) · 7-10 meeting room, two blocks, pistol, ricochet KICK + generals duck ·
 13-15 crack running through ice vs. straw brick insert · 16 aerial wide of the full-size plan · 17 golden light,
 prototype boat in a mountain lake · 19-20 seasons pass over the lake, the block shrinks, last frame: calm water.
+
+## Progress log
+- 2026-11-03 step 1-2 done (facts + script). Remotion project scaffolded in `remotion/` (IceShort = copy of bridge template, renders OK under swangle; Kenney GLBs not in repo → fallbacks).
+- Step 3 voice: ElevenLabs "Jason - Calm Storyteller" (JZBRao5Zg3hp0BQgJOEZ), eleven_v4, 2 takes (77.8 s / 78.7 s),
+  flow FLP2xqcMzIgHVoc7NfIU. Download blocked: elevenlabsusercontent.com not in the environment's allowed domains.
+  Takes are 78 s → needs pause trim + ~1.12x tempo (or a shorter script) to land at 65-70 s.
