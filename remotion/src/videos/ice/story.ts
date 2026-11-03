@@ -148,8 +148,8 @@ const zoom = (pos: V3, look: V3, fov: number, k: number, rest: Partial<Cam> = {}
 const P = (set: SetId) => (p: V3) => at(set, p);
 const sea = P("sea"), st = P("study"), rm = P("room"), ins = P("insert"), lk = P("lake");
 // shot 1: low over the swell beside the bow -> rising 3/4 that shows the whole deck (centred on "aircraft carrier")
-const S1a = (f: number) => dolly(sea([-95, 24, 235 + 6 * T(f)]), sea([0, 13, 110 + 6 * T(f)]), pushK(f, 0, 0.0025), { fov: 42, roll: -0.04 });
-const S1b = (f: number) => dolly(sea([-110, 48, 250 + 6 * T(f)]), sea([0, 12, 50 + 6 * T(f)]), pushK(f, 66, 0.002), { fov: 42, roll: 0.03 });
+const S1a = (f: number) => dolly(sea([-62, 22, 262 + 6 * T(f)]), sea([4, 12, 100 + 6 * T(f)]), pushK(f, 0, 0.0025), { fov: 46, roll: -0.04 });
+const S1b = (f: number) => dolly(sea([-115, 62, 270 + 6 * T(f)]), sea([0, 8, 40 + 6 * T(f)]), pushK(f, 66, 0.002), { fov: 44, roll: 0.03 });
 // shot 2: convoy wide, punch toward the hit freighter on "sinking"
 const S2a = (f: number) => zoom(sea([60, 18, -260]), sea([0, 4, -140]), 42, pushK(f, 130, 0.002));
 const S2b = (f: number) => zoom(sea([60, 18, -260]), sea([-8, 3, -150]), 34, pushK(f, 186, 0.0015, 0.006, 30), { roll: -0.04 });

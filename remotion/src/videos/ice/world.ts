@@ -42,7 +42,7 @@ const haloTex = () => ctex("sunHalo", 256, 256, (g) => {
 });
 /** per-set sun override: interiors have no ceiling, a high sun from behind-right lights the floor and the cast */
 const SUN_SET: Partial<Record<SetId, { az?: number; el?: number }>> = { study: { az: 140, el: 66 }, room: { az: 140, el: 70 }, insert: { az: 130, el: 55 } };
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 2: { az: 110 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 140, el: 40 }, 2: { az: 110 }, 16: { az: 140, el: 50 } };
 type Mats = Record<string, THREE.Material>;
 
 export class World {

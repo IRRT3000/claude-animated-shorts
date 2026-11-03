@@ -23,6 +23,18 @@ const iceTex = () => ctex("iceHD", 1024, 1024, (g, r) => {
   }
   for (let i = 0; i < 900; i++) { g.fillStyle = `rgba(176,140,96,${0.25 + 0.3 * r()})`; g.fillRect(r() * 1024, r() * 1024, 3 + 4 * r(), 2 + 2 * r()); }
 });
+const carrierTex = () => ctex("carrierIce", 1024, 1024, (g, r) => {
+  g.fillStyle = "#eef6f9"; g.fillRect(0, 0, 1024, 1024);
+  for (let y = 0; y < 1024; y += 128) for (let x = (y / 128) % 2 ? -128 : 0; x < 1024; x += 256) { // block courses
+    g.fillStyle = `rgba(${200 + 30 * r()},${225 + 20 * r()},${240},0.9)`; g.fillRect(x + 4, y + 4, 248, 120);
+  }
+  g.strokeStyle = "#7fa9c4"; g.lineWidth = 6;
+  for (let y = 0; y <= 1024; y += 128) { g.beginPath(); g.moveTo(0, y); g.lineTo(1024, y); g.stroke(); }
+  for (let y = 0; y < 1024; y += 128) for (let x = (y / 128) % 2 ? 128 : 0; x <= 1024; x += 256) { g.beginPath(); g.moveTo(x, y); g.lineTo(x, y + 128); g.stroke(); }
+  for (let i = 0; i < 2500; i++) { g.fillStyle = `rgba(170,135,95,${0.25 + 0.3 * r()})`; g.fillRect(r() * 1024, r() * 1024, 3 + 4 * r(), 2 + 2 * r()); }
+  g.strokeStyle = "rgba(255,255,255,0.85)"; g.lineWidth = 8;
+  for (let i = 0; i < 40; i++) { const x = r() * 1024, y = r() * 1024; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 50, y - 30); g.stroke(); }
+});
 const clearIceTex = () => ctex("clearIce", 512, 512, (g, r) => {
   const gr = g.createLinearGradient(0, 0, 512, 512); gr.addColorStop(0, "#d9f1fb"); gr.addColorStop(1, "#9fd2ea");
   g.fillStyle = gr; g.fillRect(0, 0, 512, 512);
@@ -85,7 +97,7 @@ const snowTex = () => ctex("snow", 512, 512, (g, r) => {
 const hullGeo = (len: number, w: number, h: number, d: number, bow = 0.12) => {
   const s = new THREE.Shape();
   const L = len / 2, B = len * bow;
-  s.moveTo(-w / 2, -L); s.lineTo(w / 2, -L); s.lineTo(w / 2, L - B); s.quadraticCurveTo(w / 2, L - B * 0.2, 0, L); s.quadraticCurveTo(-w / 2, L - B * 0.2, -w / 2, L - B); s.closePath();
+  s.moveTo(-w / 2, -L); s.lineTo(w / 2, -L); s.lineTo(w / 2, L - B); s.quadraticCurveTo(w * 0.36, L - B * 0.35, 0, L); s.quadraticCurveTo(-w * 0.36, L - B * 0.35, -w / 2, L - B); s.closePath();
   const g = new THREE.ExtrudeGeometry(s, { depth: h + d, bevelEnabled: false, curveSegments: 6 });
   g.rotateX(Math.PI / 2); g.translate(0, h, 0); // shape xy -> xz, extrude downward from the deck
   g.computeVertexNormals();
@@ -129,13 +141,29 @@ export class Sets {
     // ======== SEA ========
     // ice carrier: 300 m speckled-ice hull, flat light deck, a small island, rows of planes (scale reads by the planes)
     const cb = new Batch();
-    cb.add(hullGeo(300, 50, 16, 10, 0.1), ice);
-    cb.add(boxGeo(V(-24, 16, -148), V(24, 16.4, 135), 0, false), deckM);
-    cb.add(boxGeo(V(18, 16.4, -20), V(24, 30, 15), 0, true), ice);
-    cb.add(boxGeo(V(19, 30, -10), V(23, 33, 6), 0, true), dark);
-    for (let i = 0; i < 14; i++) plane(cb, new THREE.Matrix4().makeTranslation(-12 + (i % 2) * 14, 16.4, -120 + Math.floor(i / 2) * 22), 0.9, planeM, glass);
-    for (let i = 0; i < 6; i++) cb.add(boxGeo(V(-25.5, 3 + i * 0, -140 + i * 50), V(-24.8, 6, -120 + i * 50), 0, true), flat("#c9e3ee")); // refrigeration ports
-    cb.build(this.carrier); R.add(this.carrier);
+    const cIce = lam("carrierIce", () => ({ map: rep(carrierTex(), 1 / 24, 1 / 24) }));
+    if (cIce.map) { cIce.map.wrapS = cIce.map.wrapT = THREE.RepeatWrapping; cIce.map.anisotropy = 16; cIce.map.needsUpdate = true; }
+    cb.add(hullGeo(300, 50, 16, 10, 0.18), cIce);
+    cb.add(hullGeo(296, 48, 16.5, -16, 0.18), deckM);
+    cb.add(boxGeo(V(14, 16.4, -30), V(24, 34, 18), 0, true), ice);
+    cb.add(boxGeo(V(16, 34, -18), V(22, 38, 6), 0, true), dark);
+    for (let z = -140; z < 120; z += 12) cb.add(boxGeo(V(-0.4, 16.41, z), V(0.4, 16.42, z + 6)), flat("#f6f6f0")); // centre-line dashes
+    for (let i = 0; i < 16; i++) plane(cb, new THREE.Matrix4().makeTranslation(-13 + (i % 2) * 14, 16.4, -70 + Math.floor(i / 2) * 20), 1.0, planeM, glass);
+    for (let i = 0; i < 6; i++) cb.add(boxGeo(V(-25.5, 3, -140 + i * 50), V(-24.8, 6, -120 + i * 50), 0, true), flat("#c9e3ee")); // refrigeration ports
+    cb.build(this.carrier);
+    // bow wave + waterline foam (white, flat on the water, travel with the ship)
+    const foam = flat("#ffffff"), fb2 = new Batch();
+    // cartoon bow wave: a white collar around the bow, two wake stripes fanning back from it, a band along the waterline
+    const collar = hullGeo(300, 53, 2.6, 0.6, 0.18); collar.translate(0, 0, 1.2);
+    fb2.add(collar, foam);
+    for (const sd of [-1, 1]) for (const [w, off] of [[5, 0], [2.5, 9]] as const) {
+      const g = new THREE.BoxGeometry(w, 0.3, 210); g.translate(0, 0.5, -105);
+      const m4 = new THREE.Matrix4().makeTranslation(sd * (16 + off), 0, 128 - off * 2).multiply(new THREE.Matrix4().makeRotationY(sd * 0.32));
+      fb2.add(g, foam, m4);
+    }
+    fb2.add(boxGeo(V(-20, 0.6, -200), V(20, 0.8, -150)), foam); // stern wake
+    fb2.build(this.carrier, false);
+    R.add(this.carrier);
     // convoy: grey freighters with a dark band, superstructure and a red-banded funnel, heading +z
     const freighter = (bb: Batch, m4: THREE.Matrix4) => {
       bb.add(hullGeo(60, 10, 5, 4, 0.18), greyHull, m4);
