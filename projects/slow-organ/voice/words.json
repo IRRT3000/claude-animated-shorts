@@ -1,0 +1,1047 @@
+[
+ {
+  "word": "In",
+  "start": 0.31,
+  "end": 0.37
+ },
+ {
+  "word": "a",
+  "start": 0.37,
+  "end": 0.4
+ },
+ {
+  "word": "small",
+  "start": 0.4,
+  "end": 0.84
+ },
+ {
+  "word": "German",
+  "start": 0.84,
+  "end": 1.23
+ },
+ {
+  "word": "church,",
+  "start": 1.23,
+  "end": 1.63
+ },
+ {
+  "word": "an",
+  "start": 1.88,
+  "end": 2.0
+ },
+ {
+  "word": "organ",
+  "start": 2.0,
+  "end": 2.42
+ },
+ {
+  "word": "is",
+  "start": 2.42,
+  "end": 2.53
+ },
+ {
+  "word": "playing",
+  "start": 2.53,
+  "end": 2.82
+ },
+ {
+  "word": "a",
+  "start": 2.82,
+  "end": 2.85
+ },
+ {
+  "word": "song",
+  "start": 2.85,
+  "end": 3.25
+ },
+ {
+  "word": "that",
+  "start": 3.25,
+  "end": 3.38
+ },
+ {
+  "word": "won't",
+  "start": 3.38,
+  "end": 3.67
+ },
+ {
+  "word": "finish",
+  "start": 3.67,
+  "end": 4.11
+ },
+ {
+  "word": "until",
+  "start": 4.31,
+  "end": 4.49
+ },
+ {
+  "word": "the",
+  "start": 4.49,
+  "end": 4.59
+ },
+ {
+  "word": "year",
+  "start": 4.59,
+  "end": 4.77
+ },
+ {
+  "word": "twenty-",
+  "start": 4.77,
+  "end": 5.07
+ },
+ {
+  "word": "six",
+  "start": 5.07,
+  "end": 5.32
+ },
+ {
+  "word": "forty.",
+  "start": 5.32,
+  "end": 5.78
+ },
+ {
+  "word": "John",
+  "start": 6.115,
+  "end": 6.425
+ },
+ {
+  "word": "Cage",
+  "start": 6.425,
+  "end": 6.835
+ },
+ {
+  "word": "wrote",
+  "start": 6.835,
+  "end": 7.015
+ },
+ {
+  "word": "a",
+  "start": 7.015,
+  "end": 7.055
+ },
+ {
+  "word": "piece",
+  "start": 7.055,
+  "end": 7.355
+ },
+ {
+  "word": "called",
+  "start": 7.355,
+  "end": 7.695
+ },
+ {
+  "word": "As",
+  "start": 7.695,
+  "end": 7.805
+ },
+ {
+  "word": "Slow",
+  "start": 7.805,
+  "end": 8.155
+ },
+ {
+  "word": "As",
+  "start": 8.155,
+  "end": 8.245
+ },
+ {
+  "word": "Possible,",
+  "start": 8.245,
+  "end": 8.805
+ },
+ {
+  "word": "and",
+  "start": 9.075,
+  "end": 9.215
+ },
+ {
+  "word": "never",
+  "start": 9.215,
+  "end": 9.455
+ },
+ {
+  "word": "said",
+  "start": 9.455,
+  "end": 9.665
+ },
+ {
+  "word": "how",
+  "start": 9.665,
+  "end": 9.865
+ },
+ {
+  "word": "slow.",
+  "start": 9.865,
+  "end": 10.385
+ },
+ {
+  "word": "Usually,",
+  "start": 10.767,
+  "end": 11.277
+ },
+ {
+  "word": "it",
+  "start": 11.277,
+  "end": 11.387
+ },
+ {
+  "word": "takes",
+  "start": 11.387,
+  "end": 11.647
+ },
+ {
+  "word": "about",
+  "start": 11.647,
+  "end": 11.847
+ },
+ {
+  "word": "an",
+  "start": 11.847,
+  "end": 11.967
+ },
+ {
+  "word": "hour.",
+  "start": 11.967,
+  "end": 12.397
+ },
+ {
+  "word": "Then",
+  "start": 12.866,
+  "end": 13.116
+ },
+ {
+  "word": "the",
+  "start": 13.116,
+  "end": 13.196
+ },
+ {
+  "word": "town",
+  "start": 13.196,
+  "end": 13.496
+ },
+ {
+  "word": "of",
+  "start": 13.496,
+  "end": 13.586
+ },
+ {
+  "word": "Halberstadt",
+  "start": 13.586,
+  "end": 14.156
+ },
+ {
+  "word": "took",
+  "start": 14.156,
+  "end": 14.336
+ },
+ {
+  "word": "it",
+  "start": 14.336,
+  "end": 14.426
+ },
+ {
+  "word": "literally.",
+  "start": 14.426,
+  "end": 14.906
+ },
+ {
+  "word": "Their",
+  "start": 15.386,
+  "end": 15.546
+ },
+ {
+  "word": "first",
+  "start": 15.546,
+  "end": 15.916
+ },
+ {
+  "word": "great",
+  "start": 15.916,
+  "end": 16.186
+ },
+ {
+  "word": "organ",
+  "start": 16.186,
+  "end": 16.616
+ },
+ {
+  "word": "was",
+  "start": 16.616,
+  "end": 16.766
+ },
+ {
+  "word": "built",
+  "start": 16.766,
+  "end": 17.066
+ },
+ {
+  "word": "in",
+  "start": 17.066,
+  "end": 17.206
+ },
+ {
+  "word": "thirteen",
+  "start": 17.206,
+  "end": 17.596
+ },
+ {
+  "word": "sixty-",
+  "start": 17.596,
+  "end": 17.946
+ },
+ {
+  "word": "one,",
+  "start": 17.946,
+  "end": 18.286
+ },
+ {
+  "word": "six",
+  "start": 18.606,
+  "end": 18.836
+ },
+ {
+  "word": "hundred",
+  "start": 18.836,
+  "end": 19.286
+ },
+ {
+  "word": "and",
+  "start": 19.286,
+  "end": 19.436
+ },
+ {
+  "word": "thirty-",
+  "start": 19.436,
+  "end": 19.696
+ },
+ {
+  "word": "nine",
+  "start": 19.696,
+  "end": 19.996
+ },
+ {
+  "word": "years",
+  "start": 19.996,
+  "end": 20.346
+ },
+ {
+  "word": "before",
+  "start": 20.346,
+  "end": 20.616
+ },
+ {
+  "word": "two",
+  "start": 20.616,
+  "end": 20.836
+ },
+ {
+  "word": "thousand.",
+  "start": 20.836,
+  "end": 21.286
+ },
+ {
+  "word": "So",
+  "start": 21.655,
+  "end": 21.765
+ },
+ {
+  "word": "that's",
+  "start": 21.765,
+  "end": 21.975
+ },
+ {
+  "word": "how",
+  "start": 21.975,
+  "end": 22.155
+ },
+ {
+  "word": "long",
+  "start": 22.155,
+  "end": 22.465
+ },
+ {
+  "word": "the",
+  "start": 22.465,
+  "end": 22.525
+ },
+ {
+  "word": "song",
+  "start": 22.525,
+  "end": 22.775
+ },
+ {
+  "word": "would",
+  "start": 22.775,
+  "end": 22.895
+ },
+ {
+  "word": "last.",
+  "start": 22.895,
+  "end": 23.345
+ },
+ {
+  "word": "The",
+  "start": 23.775,
+  "end": 23.895
+ },
+ {
+  "word": "venue,",
+  "start": 23.895,
+  "end": 24.385
+ },
+ {
+  "word": "a",
+  "start": 24.645,
+  "end": 24.695
+ },
+ {
+  "word": "thousand-",
+  "start": 24.695,
+  "end": 25.195
+ },
+ {
+  "word": "year-",
+  "start": 25.195,
+  "end": 25.395
+ },
+ {
+  "word": "old",
+  "start": 25.395,
+  "end": 25.605
+ },
+ {
+  "word": "church",
+  "start": 25.605,
+  "end": 25.985
+ },
+ {
+  "word": "that",
+  "start": 25.985,
+  "end": 26.085
+ },
+ {
+  "word": "had",
+  "start": 26.085,
+  "end": 26.185
+ },
+ {
+  "word": "spent",
+  "start": 26.185,
+  "end": 26.455
+ },
+ {
+  "word": "years",
+  "start": 26.455,
+  "end": 26.845
+ },
+ {
+  "word": "as",
+  "start": 26.845,
+  "end": 26.945
+ },
+ {
+  "word": "a",
+  "start": 26.945,
+  "end": 26.985
+ },
+ {
+  "word": "barn,",
+  "start": 26.985,
+  "end": 27.595
+ },
+ {
+  "word": "and",
+  "start": 27.595,
+  "end": 27.715
+ },
+ {
+  "word": "a",
+  "start": 27.715,
+  "end": 27.745
+ },
+ {
+  "word": "pigsty.",
+  "start": 27.745,
+  "end": 28.345
+ },
+ {
+  "word": "They",
+  "start": 28.642,
+  "end": 28.782
+ },
+ {
+  "word": "built",
+  "start": 28.782,
+  "end": 29.012
+ },
+ {
+  "word": "a",
+  "start": 29.012,
+  "end": 29.072
+ },
+ {
+  "word": "tiny",
+  "start": 29.072,
+  "end": 29.472
+ },
+ {
+  "word": "organ,",
+  "start": 29.472,
+  "end": 30.012
+ },
+ {
+  "word": "switched",
+  "start": 30.202,
+  "end": 30.612
+ },
+ {
+  "word": "on",
+  "start": 30.612,
+  "end": 30.712
+ },
+ {
+  "word": "an",
+  "start": 30.712,
+  "end": 30.772
+ },
+ {
+  "word": "electric",
+  "start": 30.772,
+  "end": 31.262
+ },
+ {
+  "word": "blower,",
+  "start": 31.262,
+  "end": 31.712
+ },
+ {
+  "word": "and",
+  "start": 31.712,
+  "end": 32.012
+ },
+ {
+  "word": "held",
+  "start": 32.012,
+  "end": 32.252
+ },
+ {
+  "word": "the",
+  "start": 32.252,
+  "end": 32.322
+ },
+ {
+  "word": "keys",
+  "start": 32.322,
+  "end": 32.692
+ },
+ {
+  "word": "down",
+  "start": 32.692,
+  "end": 32.942
+ },
+ {
+  "word": "with",
+  "start": 32.942,
+  "end": 33.082
+ },
+ {
+  "word": "weights.",
+  "start": 33.082,
+  "end": 33.482
+ },
+ {
+  "word": "Like",
+  "start": 33.835,
+  "end": 33.975
+ },
+ {
+  "word": "blowing",
+  "start": 33.975,
+  "end": 34.335
+ },
+ {
+  "word": "across",
+  "start": 34.335,
+  "end": 34.645
+ },
+ {
+  "word": "a",
+  "start": 34.645,
+  "end": 34.695
+ },
+ {
+  "word": "bottle,",
+  "start": 34.695,
+  "end": 35.145
+ },
+ {
+  "word": "as",
+  "start": 35.345,
+  "end": 35.485
+ },
+ {
+  "word": "long",
+  "start": 35.485,
+  "end": 35.725
+ },
+ {
+  "word": "as",
+  "start": 35.725,
+  "end": 35.815
+ },
+ {
+  "word": "the",
+  "start": 35.815,
+  "end": 36.005
+ },
+ {
+  "word": "air",
+  "start": 36.005,
+  "end": 36.095
+ },
+ {
+  "word": "flows,",
+  "start": 36.095,
+  "end": 36.745
+ },
+ {
+  "word": "the",
+  "start": 36.745,
+  "end": 36.835
+ },
+ {
+  "word": "note",
+  "start": 36.835,
+  "end": 37.085
+ },
+ {
+  "word": "never",
+  "start": 37.085,
+  "end": 37.365
+ },
+ {
+  "word": "stops.",
+  "start": 37.365,
+  "end": 37.895
+ },
+ {
+  "word": "One",
+  "start": 38.243,
+  "end": 38.453
+ },
+ {
+  "word": "chord",
+  "start": 38.453,
+  "end": 38.783
+ },
+ {
+  "word": "lasted",
+  "start": 38.783,
+  "end": 39.183
+ },
+ {
+  "word": "two",
+  "start": 39.183,
+  "end": 39.383
+ },
+ {
+  "word": "thousand,",
+  "start": 39.383,
+  "end": 39.863
+ },
+ {
+  "word": "five",
+  "start": 40.083,
+  "end": 40.403
+ },
+ {
+  "word": "hundred",
+  "start": 40.403,
+  "end": 40.793
+ },
+ {
+  "word": "and",
+  "start": 40.793,
+  "end": 40.913
+ },
+ {
+  "word": "twenty-",
+  "start": 40.913,
+  "end": 41.163
+ },
+ {
+  "word": "seven",
+  "start": 41.163,
+  "end": 41.463
+ },
+ {
+  "word": "days.",
+  "start": 41.463,
+  "end": 41.913
+ },
+ {
+  "word": "And",
+  "start": 42.267,
+  "end": 42.377
+ },
+ {
+  "word": "every",
+  "start": 42.377,
+  "end": 42.647
+ },
+ {
+  "word": "change",
+  "start": 42.647,
+  "end": 43.087
+ },
+ {
+  "word": "packs",
+  "start": 43.087,
+  "end": 43.397
+ },
+ {
+  "word": "the",
+  "start": 43.397,
+  "end": 43.487
+ },
+ {
+  "word": "church.",
+  "start": 43.487,
+  "end": 43.937
+ },
+ {
+  "word": "In",
+  "start": 44.36,
+  "end": 44.44
+ },
+ {
+  "word": "twenty",
+  "start": 44.44,
+  "end": 44.72
+ },
+ {
+  "word": "twenty-",
+  "start": 44.72,
+  "end": 45.01
+ },
+ {
+  "word": "six,",
+  "start": 45.01,
+  "end": 45.44
+ },
+ {
+  "word": "a",
+  "start": 45.67,
+  "end": 45.74
+ },
+ {
+  "word": "crowd",
+  "start": 45.74,
+  "end": 46.18
+ },
+ {
+  "word": "squeezed",
+  "start": 46.18,
+  "end": 46.64
+ },
+ {
+  "word": "in",
+  "start": 46.64,
+  "end": 46.77
+ },
+ {
+  "word": "to",
+  "start": 46.77,
+  "end": 46.83
+ },
+ {
+  "word": "hear",
+  "start": 46.83,
+  "end": 47.07
+ },
+ {
+  "word": "it",
+  "start": 47.07,
+  "end": 47.13
+ },
+ {
+  "word": "go",
+  "start": 47.13,
+  "end": 47.34
+ },
+ {
+  "word": "from",
+  "start": 47.34,
+  "end": 47.55
+ },
+ {
+  "word": "seven",
+  "start": 47.55,
+  "end": 47.97
+ },
+ {
+  "word": "notes",
+  "start": 47.97,
+  "end": 48.28
+ },
+ {
+  "word": "to",
+  "start": 48.28,
+  "end": 48.45
+ },
+ {
+  "word": "eight.",
+  "start": 48.45,
+  "end": 48.71
+ },
+ {
+  "word": "After",
+  "start": 49.129,
+  "end": 49.399
+ },
+ {
+  "word": "twenty-",
+  "start": 49.399,
+  "end": 49.679
+ },
+ {
+  "word": "five",
+  "start": 49.679,
+  "end": 49.979
+ },
+ {
+  "word": "years,",
+  "start": 49.979,
+  "end": 50.379
+ },
+ {
+  "word": "it's",
+  "start": 50.549,
+  "end": 50.679
+ },
+ {
+  "word": "about",
+  "start": 50.679,
+  "end": 50.909
+ },
+ {
+  "word": "four",
+  "start": 50.909,
+  "end": 51.179
+ },
+ {
+  "word": "percent",
+  "start": 51.179,
+  "end": 51.559
+ },
+ {
+  "word": "done.",
+  "start": 51.559,
+  "end": 51.869
+ },
+ {
+  "word": "Luckily,",
+  "start": 52.247,
+  "end": 52.617
+ },
+ {
+  "word": "you",
+  "start": 52.617,
+  "end": 52.737
+ },
+ {
+  "word": "can",
+  "start": 52.737,
+  "end": 52.827
+ },
+ {
+  "word": "still",
+  "start": 52.827,
+  "end": 53.097
+ },
+ {
+  "word": "hear",
+  "start": 53.097,
+  "end": 53.357
+ },
+ {
+  "word": "it.",
+  "start": 53.357,
+  "end": 53.457
+ },
+ {
+  "word": "Unluckily,",
+  "start": 53.817,
+  "end": 54.397
+ },
+ {
+  "word": "you'll",
+  "start": 54.587,
+  "end": 54.707
+ },
+ {
+  "word": "miss",
+  "start": 54.707,
+  "end": 54.937
+ },
+ {
+  "word": "the",
+  "start": 54.937,
+  "end": 55.077
+ },
+ {
+  "word": "ending",
+  "start": 55.077,
+  "end": 55.427
+ },
+ {
+  "word": "by",
+  "start": 55.427,
+  "end": 55.577
+ },
+ {
+  "word": "about",
+  "start": 55.577,
+  "end": 55.847
+ },
+ {
+  "word": "six",
+  "start": 55.847,
+  "end": 56.117
+ },
+ {
+  "word": "hundred",
+  "start": 56.117,
+  "end": 56.437
+ },
+ {
+  "word": "years.",
+  "start": 56.437,
+  "end": 56.867
+ },
+ {
+  "word": "And",
+  "start": 57.162,
+  "end": 57.342
+ },
+ {
+  "word": "here's",
+  "start": 57.342,
+  "end": 57.582
+ },
+ {
+  "word": "the",
+  "start": 57.582,
+  "end": 57.672
+ },
+ {
+  "word": "twist:",
+  "start": 57.672,
+  "end": 58.292
+ },
+ {
+  "word": "the",
+  "start": 58.292,
+  "end": 58.402
+ },
+ {
+  "word": "piece",
+  "start": 58.402,
+  "end": 58.682
+ },
+ {
+  "word": "starts",
+  "start": 58.682,
+  "end": 58.982
+ },
+ {
+  "word": "with",
+  "start": 58.982,
+  "end": 59.082
+ },
+ {
+  "word": "a",
+  "start": 59.082,
+  "end": 59.112
+ },
+ {
+  "word": "rest.",
+  "start": 59.112,
+  "end": 59.602
+ },
+ {
+  "word": "So",
+  "start": 59.965,
+  "end": 60.125
+ },
+ {
+  "word": "in",
+  "start": 60.125,
+  "end": 60.205
+ },
+ {
+  "word": "two",
+  "start": 60.205,
+  "end": 60.385
+ },
+ {
+  "word": "thousand",
+  "start": 60.385,
+  "end": 60.825
+ },
+ {
+  "word": "one,",
+  "start": 60.825,
+  "end": 61.135
+ },
+ {
+  "word": "the",
+  "start": 61.455,
+  "end": 61.565
+ },
+ {
+  "word": "organ",
+  "start": 61.565,
+  "end": 61.905
+ },
+ {
+  "word": "began",
+  "start": 61.905,
+  "end": 62.315
+ },
+ {
+  "word": "by",
+  "start": 62.315,
+  "end": 62.485
+ },
+ {
+  "word": "playing",
+  "start": 62.485,
+  "end": 62.875
+ },
+ {
+  "word": "absolutely",
+  "start": 62.875,
+  "end": 63.525
+ },
+ {
+  "word": "nothing,",
+  "start": 63.525,
+  "end": 63.895
+ },
+ {
+  "word": "for",
+  "start": 64.145,
+  "end": 64.275
+ },
+ {
+  "word": "seventeen",
+  "start": 64.275,
+  "end": 64.815
+ },
+ {
+  "word": "months.",
+  "start": 64.815,
+  "end": 65.235
+ }
+]
