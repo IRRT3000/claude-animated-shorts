@@ -181,15 +181,15 @@ const S11a = (f: number) => dolly(Ch(-3.6, 2.2, 4.8), O(-0.6, 1.3, 0), pushK(f, 
 const S11b = (f: number) => dolly(O(1.9, 1.8, 2.9), O(0.4, 1.7, -0.2), pushK(f, 1236, 0.003, 0.007, 24), { fov: 42, roll: 0.03 }); // "days"
 const S12a = (f: number) => dolly(Ch(1.6, 2.3, -6.6), Ch(-0.2, 1.4, 6), pushK(f, 1265, 0.0022, 0.006, 24), { fov: 46 });          // the doors open: the crowd pours in
 const S13a = (f: number) => dolly(O(1.3, 2.0, 0.9), Ch(-0.4, 1.0, -1.0), pushK(f, 1328, 0.0018), { fov: 48 });                    // packed
-const S13b = (f: number) => dolly(O(0.15, 1.85, 2.4), O(0.0, 1.75, 0), pushK(f, 1424, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // the eighth pipe
+const S13b = (f: number) => dolly(O(0.3, 1.85, 2.6), O(0.18, 1.75, 0), pushK(f, 1424, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // the eighth pipe
 const S14a = (f: number) => zoom(T(-9, 22, -50), T(0, 0, 30), 46, pushK(f, 1466, 0.0012));                                      // the long score: 4 %
-const S14b = (f: number) => dolly(T(2.1, 0.9, 18.2), T(0.2, 1.7, -10), pushK(f, 1524, 0.003, 0.006, 24), { fov: 40, roll: 0.03 });  // the little flag at 4 %
+const S14b = (f: number) => zoom(T(1.6, 1.0, 19.6), T(0.7, 1.9, -24), 40, pushK(f, 1524, 0.003, 0.006, 24), { roll: 0.03 });  // the little flag at 4 %
 const S15a = (f: number) => dolly(add(VISITOR, [0.4, 1.45, 2.1]), add(VIS_EYE, [0, -0.08, 0]), pushK(f, 1563, 0.0024), { fov: 40 }); // luckily
 const S15b = (f: number) => dolly(add(VISITOR, [-1.6, 1.7, 3.6]), add(VISITOR, [0.6, 1.1, -1.6]), pushK(f, 1613, 0.0018, 0.005, 24), { fov: 44 }); // unluckily: he ages
 const S16a = (f: number) => dolly(add(DESK, [-0.1, 1.12, 0.52]), add(DESK, [-0.2, 0.785, 0.19]), pushK(f, 1710, 0.0026, 0.008, 24), { fov: 38, roll: -0.03 }); // the score's first mark: a rest
-const S17a = (f: number) => dolly(O(-0.15, 1.75, -0.7), Ch(-0.2, 1.0, -1.0), pushK(f, 1791, 0.0018), { fov: 48 });                     // 2001: everyone waits
+const S17a = (f: number) => zoom(O(-0.1, 2.75, -1.5), Ch(-0.2, 0.8, -1.6), 50, pushK(f, 1791, 0.0018));                     // 2001: everyone waits
 const S17b = (f: number) => dolly(add(SEATS[2], [0.25, 1.4, -1.8]), add(SEATS[2], [0, 1.3, 0.14]), pushK(f, 1904, 0.0024, 0.006, 24), { fov: 42, roll: 0.03 }); // nothing
-const S17c = (f: number) => dolly(O(0.25, 1.8, -0.6), Ch(0.0, 1.0, -1.2), pushK(f, 1926, 0.0016, 0.006, 20), { fov: 48 });           // 17 months... the first note
+const S17c = (f: number) => zoom(O(0.3, 2.8, -1.5), Ch(0.1, 0.8, -1.8), 50, pushK(f, 1926, 0.0016, 0.006, 20));           // 17 months... the first note
 
 const CAMS: Record<number, Key[]> = {
   1: [{ f: 0, s: S1a }],

@@ -18,7 +18,7 @@ export const loadKit = async (): Promise<Kit> => ({}); // no external models: tr
 void LFB;
 
 /** per-shot sun (camera-relative az / el overrides) */
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 120, el: 40 }, 14: { az: 110, el: 38 }, 8: { az: 115, el: 36 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 13: { az: 165, el: 40 }, 17: { az: 160, el: 30 }, 1: { az: 120, el: 40 }, 14: { az: 110, el: 38 }, 8: { az: 115, el: 36 } };
 
 /** every lens position of the film looking at its subject (houses and trees there are left out) */
 const sightLines = (): Ray[] => {
@@ -115,7 +115,7 @@ const keysTex = () => ctex("orKeys", 1024, 128, (g) => {
   for (let i = 0; i < n - 1; i++) if (![2, 6].includes(i % 7)) g.fillRect((i + 1) * w - w * 0.3, 0, w * 0.6, 76);
 });
 
-const TIN = new THREE.MeshPhongMaterial({ color: "#d9dbe2", specular: "#ffffff", shininess: 40, emissive: "#2a2a30" });
+const TIN = new THREE.MeshPhongMaterial({ color: "#d9dbe2", specular: "#ffffff", shininess: 40, emissive: "#4a4b54" });
 const MAT = {
   wood: () => lam("orWood", () => ({ color: "#b07a48" })), woodD: () => lam("orWoodD", () => ({ color: "#6a4430" })),
   pine: () => lam("orPine", () => ({ color: "#d8a868" })), brass: () => lam("orBrass", () => ({ color: "#c99a3a" })),
@@ -346,7 +346,7 @@ export class World {
     // pointed windows (deep blue night) and candles
     this.cWindows = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.25, 0.3, 0.7), side: THREE.DoubleSide });
     for (const sx of [-1, 1]) for (const z of [0, 6]) { const w = new THREE.Mesh(pointShape(1.4, 4.2), this.cWindows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(K(sx * 7.97, 5.5, z)); R.add(w); }
-    for (const x of [-5.6, 5.6]) { const w = new THREE.Mesh(pointShape(1.3, 4.6), this.cWindows); w.position.copy(K(x, 4.0, -6.97)); R.add(w); }
+    for (const x of [-4.4, 4.4]) { const w = new THREE.Mesh(pointShape(1.1, 4.6), this.cWindows); w.position.copy(K(x, 4.0, -6.97)); R.add(w); }
     this.flames = new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.0, 0.7) });
     const cand = new Batch();
     for (const [x, z] of [[-4.6, -4.2], [4.6, -4.2], [-4.6, 1.5], [4.6, 1.5], [-1.9, -4.8], [1.9, -4.8]] as const) {

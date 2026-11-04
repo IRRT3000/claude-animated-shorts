@@ -22,3 +22,13 @@ Source of truth: `remotion/src/videos/organ/story.ts`. Frames = word onsets from
 | 17 | 1795-2040 | church, dusk | "So in two thousand one… seventeen months." | 2001: a full house leans in… nothing; nervous faces; time-lapse: snores, crickets, pages, a cobweb; on 1992 the first chord swells: everybody jolts awake (kick), button. |
 
 Rules kept: no captions or readable labels (score, calendar and flag carry no words or numerals); English voice only; every hold creeps; kicks on punch beats only.
+
+## Look check 1 (Opus max, 2026-11-04)
+Scores: colour 7, lighting 6, ink 7, textures 7, characters 6, depth 7, composition 6 (sheets: stills/verify_v1a.jpg, verify_v1b.jpg).
+Fixed after it (stills/verify_v2.jpg, verify_v3.jpg): a wider staved score and a big red flag, the 4 % close-up from
+behind the flag with the church door down the scroll; the crowd shots (13, 17) seen from the organ side, past its pipe
+tops, so everyone faces the organ, and the first note bursts out of the pipes with rings; cathedral lancets that cycle
+day/night, pleated bellows pumping under the monks, hooded monks; the eighth pipe gold and framed whole; every stool
+filled; keyed actions (Cage stands to shrug, the council claps, the mayor points, a hand flips the blower switch);
+an amber bottle held under the lips with a curved airstream; upward air chevrons in the pipe; snore bubbles instead of
+letters; the calendar on the apse wall in the wides; mayor with black hair and moustache, a red pianist.
