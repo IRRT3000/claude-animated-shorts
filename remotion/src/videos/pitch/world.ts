@@ -156,14 +156,14 @@ const apparatus = (): Rig => {
   const falling = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 12), MAT.pitch()); falling.scale.set(1, 1.4, 1); base.add(falling);
   const pileG = new THREE.SphereGeometry(1, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2);
   const pile = new THREE.Mesh(pileG, MAT.pitch()); pile.position.y = y(BEAKER_Y); base.add(pile);
-  const beaker = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.25, 32, 1, true), glassMat(1.0)); beaker.position.y = y(BEAKER_Y + 0.115); beaker.layers.set(NOINK); base.add(beaker);
+  const beaker = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.25, 32, 1, true), glassMat(1.6)); beaker.position.y = y(BEAKER_Y + 0.115); beaker.layers.set(NOINK); base.add(beaker);
   const bfoot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.012, 32), lam("pdGlassFoot", () => ({ color: "#8e9aa4" }))); bfoot.position.y = y(BEAKER_Y - 0.004); base.add(bfoot);
   const brim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.005, 6, 32), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); brim.rotation.x = Math.PI / 2; brim.position.y = y(BEAKER_Y + 0.24); base.add(brim);
   // the bell jar over everything
   const jar = new THREE.Group(); base.add(jar);
   const jprof: THREE.Vector2[] = [new THREE.Vector2(0.3, 0.045)];
   for (let i = 0; i <= 12; i++) { const a = (i / 12) * Math.PI / 2; jprof.push(new THREE.Vector2(0.3 * Math.cos(a), y(1.62) + 0.3 * 0.9 * Math.sin(a))); }
-  const jm = new THREE.Mesh(new THREE.LatheGeometry(jprof, 40), glassMat(1.0)); jm.layers.set(NOINK); jar.add(jm);
+  const jm = new THREE.Mesh(new THREE.LatheGeometry(jprof, 40), glassMat(2.2)); jm.layers.set(NOINK); jar.add(jm);
   const knob = new THREE.Mesh(new THREE.SphereGeometry(0.035, 14, 10), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); knob.position.y = y(1.62) + 0.29; jar.add(knob);
   const jrim = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.008, 6, 40), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); jrim.rotation.x = Math.PI / 2; jrim.position.y = 0.05; jar.add(jrim);
   shadowAll(R); noShadow(jar);
