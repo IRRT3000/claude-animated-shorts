@@ -64,7 +64,7 @@ export const LIGHTS: Record<LightName, LightPreset> = {
   },
   // the lab at dusk, 2013: low golden sun through the windows, long shadows, violet shade
   dusk: {
-    az: 35, el: 12,
+    az: 125, el: 14,
     lit: [1.6, 0.95, 0.5], shade: [0.2, 0.17, 0.32], lift: [0.04, 0.05, 0.14], lambert: 0.4, sideK: 0.82, term: 0.1,
     charTint: [1.0, 0.8, 0.6], charShade: 0.86, charGrad: 0.1, bodyGrad: 0.25, sideTint: [0.85, 0.8, 0.95],
     blob: [0.72, 0.7, 0.88], actorShadow: true,

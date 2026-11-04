@@ -344,7 +344,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       else if (f >= 1115) {
         const p0 = add(DOOR, [0, 0, 0.3]), p1 = add(DOOR, [-0.55, 0, 1.0]), u = clamp01((f - 1115) / 14);
         walk(out, cam, WHO.main[2], p0, p1, f, 1115, 1129, f >= 1131 ? "shock" : "smile");
-        held(out, cam, [p0[0] + (p1[0] - p0[0]) * u, 0, p0[2] + (p1[2] - p0[2]) * u], `mug${q((t * 2) % 1, 8)}`, 300, 300, (p) => fxMug(p, (t * 2) % 1), 0.24, 0.24, -0.2);
+        const mp = at(cam, [p0[0] + (p1[0] - p0[0]) * u, 0, p0[2] + (p1[2] - p0[2]) * u], 0.3, 0.88);
+        push(out, `mug${q((t * 2) % 1, 8)}`, 300, 300, (p) => fxMug(p, (t * 2) % 1), mp[0], mp[1], mp[2] + 0.06, 0.3, 0.3);
       }
       break;
     }
@@ -370,7 +371,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 15: {
       const p: V3 = add(STAGE, [0, STAGE_H, 0]), big = f >= 1610;
       stand(out, cam, WHO.main[2], p, { expr: big ? "laugh" : "smile", wave: big ? q(0.5 + 0.4 * smooth((f - 1610) / 6), 10) : undefined }, t);
-      held(out, cam, p, "prize", 300, 400, fxPrize, 0.26, 0.35, big ? 0.45 : 0.05);
+      const hp = big ? at(cam, p, 0.6, 1.95) : at(cam, p, 0.3, 0.95);
+      push(out, "prize", 300, 400, fxPrize, hp[0], hp[1], hp[2] + 0.06, 0.32, 0.43);
       if (f >= 1612) { const u = q(((f - 1612) / 50) % 1, 20); push(out, `conf${u}`, 600, 800, (pp) => fxConfetti(pp, u), STAGE[0], STAGE_H + 2.6, STAGE[2] + 0.8, 2.6, 3.4, { soft: true }); }
       break;
     }

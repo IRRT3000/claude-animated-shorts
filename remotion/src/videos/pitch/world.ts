@@ -112,7 +112,7 @@ const MAT = {
   brass: () => lam("pdBrass", () => ({ color: "#c99a3a" })), pitch: () => lam("pdPitch", () => ({ color: "#232028" })),
   iron: () => lam("pdIron", () => ({ color: "#4a4a52" })), cream: () => lam("pdCream", () => ({ color: "#efe6d0" })),
 };
-const glassMat = (o = 1) => new THREE.MeshBasicMaterial({ map: glassTex(), color: new THREE.Color(o, o, o), transparent: true, depthWrite: false, side: THREE.DoubleSide, fog: false });
+const glassMat = (o = 1) => new THREE.MeshBasicMaterial({ map: glassTex(), color: new THREE.Color(o, o, o), transparent: true, depthWrite: false, side: THREE.FrontSide, fog: false });
 const noShadow = (o: THREE.Object3D) => o.traverse((m) => { (m as THREE.Mesh).castShadow = false; });
 const shadowAll = (o: THREE.Object3D) => o.traverse((m) => { const x = m as THREE.Mesh; if (x.isMesh && !x.layers.isEnabled(NOINK)) { x.castShadow = true; x.receiveShadow = true; } });
 
@@ -334,7 +334,7 @@ export class World {
     const spout = new THREE.Mesh(new THREE.ConeGeometry(0.03, 0.08, 10), MAT.iron()); spout.rotation.z = -Math.PI / 2; spout.position.set(0.13, 0.05, 0); this.pot.add(spout);
     const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.3, 8), MAT.woodD()); handle.rotation.z = Math.PI / 2; handle.position.set(-0.27, 0.03, 0); this.pot.add(handle);
     shadowAll(this.pot); R.add(this.pot);
-    const cam3 = new THREE.Group(); cam3.position.set(...TRIPOD); R.add(cam3);
+    const cam3 = new THREE.Group(); cam3.position.set(...TRIPOD); cam3.rotation.y = Math.atan2(-(APP[0] - TRIPOD[0]), -(APP[2] - TRIPOD[2])); R.add(cam3);
     for (let i = 0; i < 3; i++) { const a = (i / 3) * Math.PI * 2; const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.3, 6), MAT.iron()); lg.position.set(0.16 * Math.cos(a), 0.62, 0.16 * Math.sin(a)); lg.rotation.set(0.12 * Math.sin(a), 0, -0.12 * Math.cos(a)); cam3.add(lg); }
     const body = new THREE.Mesh(boxGeo(V(-0.11, 1.26, -0.08), V(0.11, 1.42, 0.12)), lam("pdCamBody", () => ({ color: "#2f3542" }))); cam3.add(body);
     const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.09, 16), lam("pdCamLens", () => ({ color: "#1a1c22" }))); lens.rotation.x = Math.PI / 2; lens.position.set(0, 1.34, -0.12); cam3.add(lens);
@@ -351,12 +351,14 @@ export class World {
     shadowAll(wat);
     const hon = new THREE.Group(); hon.position.set(...HONEY); R.add(hon);
     const hj = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.07, 0.16, 24), lam("pdHoney", () => ({ color: "#e8a030" }))); hj.position.y = 0.08; hon.add(hj);
-    const hl = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.03, 24), lam("pdHoneyLid", () => ({ color: "#f6efdc" }))); hl.position.set(0.12, 0.015, 0.08); hon.add(hl);
     shadowAll(hon);
     // Mainstone's cardigan over the chair back, his glasses on the seat (2013)
     const cardi = new THREE.Group(); R.add(cardi);
-    const cg = new THREE.Mesh(boxGeo(V(-0.25, 0.62, -0.27), V(0.25, 1.03, -0.16)), lam("pdCardigan", () => ({ color: "#5d7a3a" }))); cardi.add(cg);
-    const cs = new THREE.Mesh(boxGeo(V(-0.2, 0.3, -0.18), V(-0.1, 0.66, -0.12)), lam("pdCardigan", () => ({ color: "#5d7a3a" }))); cardi.add(cs);
+    const knit = lam("pdCardigan", () => ({ color: "#5d7a3a" }));
+    const cg = new THREE.Mesh(boxGeo(V(-0.22, 0.78, -0.25), V(0.22, 1.04, -0.18)), knit); cardi.add(cg);
+    for (const sx of [-1, 1]) { const sl = new THREE.CylinderGeometry(0.045, 0.055, 0.5, 10); const m = new THREE.Mesh(sl, knit); m.position.set(sx * 0.27, 0.8, -0.2); m.rotation.z = sx * 0.12; cardi.add(m); }
+    const gl1 = new THREE.Mesh(new THREE.TorusGeometry(0.03, 0.006, 6, 16), lam("pdSpecs", () => ({ color: "#241726" }))); gl1.rotation.x = -Math.PI / 2; gl1.position.set(-0.04, 0.475, 0.05); cardi.add(gl1);
+    const gl2 = gl1.clone(); gl2.position.x = 0.04; cardi.add(gl2);
     cardi.position.set(...CHAIR); shadowAll(cardi);
     this.only = { cam: cam3, water: wat, honey: hon, cardigan: cardi, pot: this.pot };
 
@@ -373,7 +375,7 @@ export class World {
     sb.add(boxGeo(S(1.0, STAGE_H, -0.3), S(1.5, STAGE_H + 1.1, 0.1)), MAT.wood());
     sb.add(boxGeo(S(0.95, STAGE_H + 1.1, -0.35), S(1.55, STAGE_H + 1.18, 0.15)), MAT.woodD());
     sb.build(R);
-    this.spot = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.6, 1.4, 1.1), transparent: true, opacity: 0.35, depthWrite: false, blending: THREE.AdditiveBlending });
+    this.spot = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.3, 1.0, 0.6), transparent: true, opacity: 0.14, depthWrite: false, blending: THREE.AdditiveBlending });
     const pool = new THREE.Mesh(new THREE.CircleGeometry(1.3, 40), this.spot); pool.rotation.x = -Math.PI / 2; pool.position.copy(S(0, STAGE_H + 0.01, 0)); pool.layers.set(NOINK); R.add(pool);
     const halo = new THREE.Mesh(new THREE.CircleGeometry(2.0, 40), this.spot); halo.position.copy(S(0, STAGE_H + 2.2, -2.85)); halo.layers.set(NOINK); R.add(halo);
   }
