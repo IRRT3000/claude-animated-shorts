@@ -32,3 +32,9 @@ day/night, pleated bellows pumping under the monks, hooded monks; the eighth pip
 filled; keyed actions (Cage stands to shrug, the council claps, the mayor points, a hand flips the blower switch);
 an amber bottle held under the lips with a curved airstream; upward air chevrons in the pipe; snore bubbles instead of
 letters; the calendar on the apse wall in the wides; mayor with black hair and moustache, a red pianist.
+
+## Final re-check (Opus max): colour 8, lighting 7, ink 8, textures 7, characters 7, depth 8, composition 7
+Fixed after it (stills/verify_v4.jpg; the flag close-up 1540 and the gold pipe 1460 were already fixed in verify_v3):
+seven silver pipes until "eight" (the build pass no longer re-shows the eighth); a high lancet over the great organ
+whose light cycles through the 639 years; the council and the mayor clap at chest height, grinning; the calendar moved
+into the wides.

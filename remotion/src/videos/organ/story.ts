@@ -169,7 +169,7 @@ const S4a = (f: number) => dolly(Su(-0.6, 1.7, 3.0), Su(1.1, 1.5, -1.6), pushK(f
 const S5a = (f: number) => dolly(T(3.2, 1.7, -12), T(0, 1.4, -18), pushK(f, 384, 0.0024, 0.006, 24), { fov: 42 });             // the council on the square
 const S6a = (f: number) => dolly(Ca(-4.6, 2.2, 5.4), Ca(-1.3, 3.4, -5), pushK(f, 456, 0.0018), { fov: 46 });                       // 1361: the great organ
 const S6b = (f: number) => dolly(Ca(-0.6, 1.7, 0.2), Ca(-3.0, 1.3, -4.4), pushK(f, 512, 0.0026, 0.006, 24), { fov: 42, roll: 0.03 }); // monks on the bellows
-const S6c = (f: number) => zoom(Ca(2.6, 1.8, 6), Ca(0, 4, -5.5), 48, pushK(f, 556, 0.0018));                                    // 639 years go by
+const S6c = (f: number) => zoom(Ca(2.4, 2.0, 7), Ca(0, 6.2, -5.5), 50, pushK(f, 556, 0.0018));                                    // 639 years go by
 const S7a = (f: number) => dolly(T(-2.6, 1.6, -13), T(0, 1.4, -18), pushK(f, 646, 0.0026, 0.007, 24), { fov: 40, roll: -0.03 }); // that's how long
 const S8a = (f: number) => zoom(T(15, 1.8, 2), T(0, 7.5, -36), 50, pushK(f, 710, 0.0018));                                       // the old church
 const S8b = (f: number) => dolly(Ch(-1.2, 1.5, 1.2), Ch(0.3, 0.8, -4.0), pushK(f, 798, 0.0024, 0.007, 24), { fov: 44 });          // a barn ... a pigsty

@@ -2,7 +2,7 @@
 // billboards shaded by cardShade(), contact blobs, unlit effect cards on the NOINK layer).
 import * as THREE from "three";
 import { Pen, bodyFront, bodySide, PARNELL_O, mainstone, STAFF, audience, fxContact, fxShadow, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
-import { fxBonk, fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip, fxArm } from "./fx";
+import { fxHammer, fxBonk, fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip, fxArm } from "./fx";
 import { FPS, SHOTS, V3, APP, CAB_H, CHAIR, PARNELL, BLOCK, DOOR, WATER, HONEY, STAGE, STAGE_H, TIP_Y, LAB, FALLS, FALL_F, SEPARATE, SHATTER, STEM_CUT, POUR,
   POWER_OFF, BUMP, calendarAt, hairAge, hammerAt, pileAt, pileTop, smooth, clamp01, add } from "./story";
 import type { LightName } from "./lights";
@@ -333,7 +333,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 10: {
       calendar(out, id, f);
       if (f >= 1032) {
-        walk(out, cam, WHO.main[2], add(DOOR, [0, 0, 0.35]), add(DOOR, [-0.6, 0, 1.0]), f, 1032, 1040, f >= 1040 ? "shock" : "neutral");
+        walk(out, cam, WHO.main[2], add(DOOR, [0, 0, 0.35]), add(DOOR, [-0.6, 0, 1.0]), f, 1032, 1040, f >= 1040 ? "shock" : "neutral", { look: -1 });
         held(out, cam, f >= 1040 ? add(DOOR, [-0.6, 0, 1.0]) : add(DOOR, [-0.6 * clamp01((f - 1032) / 8), 0, 0.35 + 0.65 * clamp01((f - 1032) / 8)]), "case", 300, 260, fxCase, 0.3, 0.26, -0.45);
       }
       break;
@@ -343,7 +343,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       else if (f < 1102) walk(out, cam, WHO.main[2], add(CHAIR, [0.1, 0, 0.3]), add(DOOR, [0, 0, 0.2]), f, 1072, 1100);
       else if (f >= 1115) {
         const p0 = add(DOOR, [0, 0, 0.3]), p1 = add(DOOR, [-0.55, 0, 1.0]), u = clamp01((f - 1115) / 14);
-        walk(out, cam, WHO.main[2], p0, p1, f, 1115, 1129, f >= 1131 ? "shock" : "smile");
+        walk(out, cam, WHO.main[2], p0, p1, f, 1115, 1129, f >= 1131 ? "shock" : "smile", { look: -1 });
         const mp = at(cam, [p0[0] + (p1[0] - p0[0]) * u, 0, p0[2] + (p1[2] - p0[2]) * u], 0.3, 0.88);
         push(out, `mug${q((t * 2) % 1, 8)}`, 300, 300, (p) => fxMug(p, (t * 2) % 1), mp[0], mp[1] + 0.05, mp[2] + 0.06, 0.55, 0.55);
       }
@@ -382,7 +382,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 17: {
       if (f >= 1880 && f < 1940) { // two lab-coat arms reach in from above and lift the bell jar by its sides
         const lift = 0.32 * smooth((f - 1884) / 38) + (f >= 1928 && f < 1936 ? 0.012 * Math.sin((f - 1928) * 2.5) : 0);
-        for (const sd of [-1, 1]) push(out, `arm${sd}`, 200, 900, (p) => fxArm(p, sd), APP[0] + sd * 0.36, CAB_H + 0.62 + lift + 0.52, APP[2] + 0.08, 0.26, 1.17);
+        for (const sd of [-1, 1]) push(out, `arm${sd}`, 200, 900, (p) => fxArm(p, sd), APP[0] + sd * 0.29, CAB_H + 0.62 + lift + 0.5, APP[2] + 0.08, 0.26, 1.17);
       }
       if (f >= BUMP && f < BUMP + 8) { const u = q((f - BUMP) / 8, 8); push(out, `bonk${u}`, 300, 300, (p) => fxBonk(p, u), APP[0] - 0.42, CAB_H + 0.08, APP[2] + 0.3, 0.32, 0.32); }
       plip(out, f, SEPARATE);

@@ -176,6 +176,15 @@ export const fxShards = (p: Pen, t: number) => {
     p.stroke([pts[0], [(pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2]], 4, PITCH_HI);
   }
 };
+/** a full hammer mid-swing with a motion smear, on a 400 x 500 canvas; k 0 raised .. 1 struck */
+export const fxHammer = (p: Pen, k: number) => {
+  const g = p.g; g.save(); g.translate(330, 470); g.rotate(rad(-70 + 70 * k)); g.translate(-330, -470);
+  if (k > 0.3) for (let i = 1; i <= 3; i++) p.arc(330, 470, 330 - i * 18, 330 - i * 18, 200, 240, 8, "#ffffff");
+  p.line([[330, 470], [130, 150]], "#a8743c", 30);
+  p.poly([[60, 80], [200, 80], [205, 170], [55, 170]], "#5a5866", 9);
+  p.stroke([[70, 96], [190, 96]], 6, "#a4a2b0");
+  g.restore();
+};
 /** one wall-calendar page tearing off and flying (cream sheet, red top band, an empty day grid: no numerals), 300 x 300 */
 export const fxCalPage = (p: Pen, t: number) => {
   const g = p.g; g.save(); g.translate(150 + 60 * t, 150 - 40 * t); g.rotate(rad(-25 * t)); g.translate(-150, -150);

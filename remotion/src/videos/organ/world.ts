@@ -299,7 +299,7 @@ export class World {
     for (const sx of [-1, 1]) for (const z of [-9, -3, 3]) { const w = new THREE.Mesh(archShape(1.1, 2.6), this.windows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(C(sx * 4.97, 5.3, z)); R.add(w); }
     const aw = new THREE.Mesh(archShape(1.0, 2.2), this.windows); aw.position.copy(C(0, 5.0, -13.96)); R.add(aw);
     // calendar on the right wall near the organ
-    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("orCalM", () => ({ map: calTex() }))); cal.position.copy(C(-1.6, 2.4, -13.95)); R.add(cal);
+    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("orCalM", () => ({ map: calTex() }))); cal.position.copy(C(-0.7, 2.4, -13.95)); R.add(cal);
     // the organ
     this.organ = tinyOrgan(); this.organ.root.position.set(...ORG); R.add(this.organ.root);
     // chairs: rows facing the organ (-z)
@@ -347,6 +347,7 @@ export class World {
     this.cWindows = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.25, 0.3, 0.7), side: THREE.DoubleSide });
     for (const sx of [-1, 1]) for (const z of [0, 6]) { const w = new THREE.Mesh(pointShape(1.4, 4.2), this.cWindows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(K(sx * 7.97, 5.5, z)); R.add(w); }
     for (const x of [-4.4, 4.4]) { const w = new THREE.Mesh(pointShape(1.1, 4.6), this.cWindows); w.position.copy(K(x, 4.0, -6.97)); R.add(w); }
+    const hiW = new THREE.Mesh(pointShape(1.8, 4.2), this.cWindows); hiW.position.copy(K(0, 9.5, -6.97)); R.add(hiW);
     this.flames = new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.0, 0.7) });
     const cand = new Batch();
     for (const [x, z] of [[-4.6, -4.2], [4.6, -4.2], [-4.6, 1.5], [4.6, 1.5], [-1.9, -4.8], [1.9, -4.8]] as const) {
@@ -481,7 +482,6 @@ export class World {
     this.clockMin.rotation.z = -(mins / 60) * Math.PI * 2; this.clockHr.rotation.z = -((mins / 60 + 2) / 12) * Math.PI * 2;
     // ---- the tiny organ ----
     const O = this.organ, n = pipeCount(id, f);
-    O.pipes.forEach((p, i) => { p.visible = i < 7 || n >= 8 || (id === 13 && f >= 1424); });
     if (id === 13) { const u = smooth(clamp01((f - 1430) / (ADD_PIPE - 1430))); O.pipes[7].position.y = PIPE_Y + 0.7 * (1 - u); }
     else O.pipes[7].position.y = PIPE_Y;
     O.bags.visible = bagsOn(id, f);
@@ -490,6 +490,7 @@ export class World {
     O.lever.rotation.z = id === 9 && f < SWITCH ? 0.6 : -0.6;
     const bu = id === 9 ? buildAt(f) : 1;
     O.parts.forEach((p, i) => { const k = clamp01(bu * O.parts.length - i * 0.6); p.visible = k > 0.02; p.scale.setScalar(id === 9 ? 0.6 + 0.4 * smooth(k) : 1); });
+    O.pipes.forEach((p, i) => { p.visible = p.visible && (i < 7 || n >= 8 || (id === 13 && f >= 1424)); });
     // ---- props by shot ----
     this.only.barn.visible = id === 8;
     this.only.chairs.visible = s.place === "church" && id !== 8 && id !== 9 && id !== 10;

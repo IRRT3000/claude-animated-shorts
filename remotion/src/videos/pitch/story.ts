@@ -196,7 +196,7 @@ const S2a = (f: number) => dolly(P(1.0, 1.65, 3.2), P(0.1, 1.35, 0), pushK(f, 16
 const S2b = (f: number) => dolly(P(0.35, 1.8, 1.55), add(PARNELL_EYE, [0.05, -0.12, 0]), pushK(f, 242, 0.003, 0.006, 24), { fov: 40, roll: -0.035 }); // "secretly"
 const S2c = (f: number) => zoom(P(1.5, 1.6, 4.4), P(0.15, 1.3, 0), 40, pushK(f, 264, 0.003, 0.007, 30));                  // "liquid"
 const S3a = (f: number) => dolly(P(-0.9, 1.7, 2.9), P(0.1, 1.25, 0.4), pushK(f, 296, 0.0024), { fov: 40 });               // pitch + hammer
-const S3b = (f: number) => dolly(add(BLOCK, [0.55, 0.3, 1.5]), add(BLOCK, [-0.12, 0.42, 0]), pushK(f, 359, 0.003, 0.008, 24), { fov: 40, roll: 0.04 }); // shatters
+const S3b = (f: number) => dolly(add(BLOCK, [0.75, 0.5, 2.3]), add(BLOCK, [-0.25, 0.6, 0]), pushK(f, 359, 0.003, 0.008, 24), { fov: 40, roll: 0.04 }); // shatters
 const S4a = (f: number) => dolly(A(0.55, 1.8, 1.1), A(0, 1.52, 0), pushK(f, 423, 0.0028), { fov: 40 });                  // pouring into the funnel
 const S4b = (f: number) => dolly(Lb(3.6, 2.2, 4.6), A(-0.4, 1.5, 0), pushK(f, 474, 0.0016), { fov: 44 });                // three years: the lab time-lapse
 const S5a = (f: number) => dolly(A(0.28, 1.32, 0.68), A(0, 1.32, 0), pushK(f, 534, 0.003, 0.007, 22), { fov: 38 });       // cut the bottom open
@@ -210,10 +210,10 @@ const S8b = (f: number) => dolly(C(0.6, 1.47, 2.0), add(SIT_EYE, [0, -0.05, 0]),
 const S8c = (f: number) => dolly(A(1.6, 1.4, 2.3), A(0.5, 1.2, 0.1), pushK(f, 895, 0.0024), { fov: 42 });                 // fifty-two years
 const S9a = (f: number) => dolly(C(0.22, 1.42, 1.6), add(SIT_EYE, [0, 0.0, 0]), pushK(f, 938, 0.003), { fov: 36, roll: -0.03 }); // his eyes
 const S9b = (f: number) => dolly(A(0.16, 1.25, 0.62), A(0, 1.2, 0), pushK(f, 968, 0.0026), { fov: 36 });                  // the drop that doesn't
-const S10a = (f: number) => zoom(A(-1.6, 1.6, 4.2), A(1.9, 1.25, -0.9), 52, pushK(f, 1013, 0.002));            // empty chair, a day
+const S10a = (f: number) => zoom(A(-1.3, 1.5, 3.3), A(1.5, 1.25, -0.9), 54, pushK(f, 1013, 0.002));            // empty chair, a day
 const S11a = (f: number) => dolly(Lb(-1.6, 1.75, 3.4), Lb(1.9, 1.25, -2.7), pushK(f, 1065, 0.0018), { fov: 46 });           // he steps out
 const S11b = (f: number) => dolly(A(0.3, 1.14, 0.8), A(0, 1.12, 0), pushK(f, 1102, 0.003), { fov: 38 });                  // the drop falls
-const S11c = (f: number) => zoom(A(-1.6, 1.6, 4.2), A(1.75, 1.25, -0.9), 52, pushK(f, 1115, 0.0024, 0.006, 24), { roll: 0.035 }); // five minutes
+const S11c = (f: number) => zoom(A(-1.3, 1.5, 3.3), A(1.7, 1.25, -0.9), 54, pushK(f, 1115, 0.0024, 0.006, 24), { roll: 0.035 }); // five minutes
 const S12a = (f: number) => dolly(Lb(-2.2, 1.6, 3.8), A(0.25, 1.25, 0.7), pushK(f, 1166, 0.0018), { fov: 42 });           // night, the camera
 const S12b = (f: number) => dolly(A(0.7, 1.4, 2.2), A(-0.15, 1.22, 0.3), pushK(f, 1232, 0.0026, 0.006, 24), { fov: 40 });  // lights out, drop falls
 const S12d = (f: number) => dolly(A(0.34, 1.2, 0.86), A(0, 1.14, 0), pushK(f, 1243, 0.004, 0.009, 18), { fov: 38 });             // the drop falls in the flash

@@ -268,7 +268,7 @@ const organNotes = (out: Stage, id: number, f: number) => { if (sounding(id, f))
 const calendar = (out: Stage, id: number, f: number) => {
   for (let k = 1; k <= 12; k++) if (calendarAt(id, f - k) < calendarAt(id, f - k + 1)) {
     const u = q(k / 12, 12), s2 = (k * 7) % 3 - 1;
-    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), CH[0] - 1.6 + 0.5 * u + 0.12 * s2, 2.4 + 0.25 * u - 0.2 * u * u, CH[2] - 13.9 + 0.5 * u, 0.75, 0.75);
+    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), CH[0] - 0.7 + 0.5 * u + 0.12 * s2, 2.4 + 0.25 * u - 0.2 * u * u, CH[2] - 13.9 + 0.5 * u, 0.75, 0.75);
   }
 };
 const pig = (out: Stage, cam: CamInfo, i: number, p: V3, dx: number, f: number, f0: number) => {
@@ -290,9 +290,9 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
   const council = (react: boolean, clap: boolean) => {
     const g: [Who, V3][] = [[WHO.folk[0], T(-1.5, 0.04, -18.6)], [WHO.folk[1], T(1.4, 0.04, -18.8)], [WHO.folk[2], T(0.7, 0.04, -19.8)], [WHO.folk[3], T(-0.6, 0.04, -20.0)]];
     for (const [w, p] of g) stand(out, cam, w, p, { expr: react ? "grin" : "smile", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 14), 6) : undefined, look: p[0] < 0 ? 1 : -1 }, t);
-    stand(out, cam, WHO.mayor, T(0, 0.04, -18.0), { expr: react ? "laugh" : "stern", wave: react ? q(0.7 + 0.3 * smooth((f - 431) / 6), 10) : undefined, headTilt: clap ? q(6 * Math.sin(t * 9), 3) : 0 }, t);
+    stand(out, cam, WHO.mayor, T(0, 0.04, -18.0), { expr: react ? "laugh" : clap ? "grin" : "stern", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 13), 6) : undefined, wave: react ? q(0.7 + 0.3 * smooth((f - 431) / 6), 10) : undefined, headTilt: clap ? q(6 * Math.sin(t * 9), 3) : 0 }, t);
     const hp = add(T(0, 0.04, -18.0), [cam.right.x * 0.62, 1.15, cam.right.z * 0.62 + 0.05]);
-    push(out, "scoreCard", 300, 400, (p) => { p.poly([[30, 30], [270, 40], [262, 370], [24, 360]], "#f6efdc", 9); for (let r2 = 0; r2 < 3; r2++) for (let l = 0; l < 5; l++) p.stroke([[48, 80 + r2 * 100 + l * 12], [252, 84 + r2 * 100 + l * 12]], 3, "#5a5060"); }, hp[0], hp[1], hp[2], 0.34, 0.45);
+    if (!clap) push(out, "scoreCard", 300, 400, (p) => { p.poly([[30, 30], [270, 40], [262, 370], [24, 360]], "#f6efdc", 9); for (let r2 = 0; r2 < 3; r2++) for (let l = 0; l < 5; l++) p.stroke([[48, 80 + r2 * 100 + l * 12], [252, 84 + r2 * 100 + l * 12]], 3, "#5a5060"); }, hp[0], hp[1], hp[2], 0.34, 0.45);
   };
   switch (id) {
     case 1: {

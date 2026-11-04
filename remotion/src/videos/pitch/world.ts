@@ -352,6 +352,9 @@ export class World {
     const vf = new THREE.Mesh(boxGeo(V(-0.04, 1.42, -0.02), V(0.04, 1.47, 0.14)), lam("pdCamBody", () => ({ color: "#7a7f8c" }))); cam3.add(vf);
     this.rec = new THREE.MeshBasicMaterial({ color: new THREE.Color(3, 0.2, 0.15) });
     const led = new THREE.Mesh(new THREE.SphereGeometry(0.015, 10, 8), this.rec); led.position.set(0.112, 1.39, -0.02); led.layers.set(NOINK); cam3.add(led);
+    const cord = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.75, 6), lam("pdCord", () => ({ color: "#1a1c22" }))); cord.position.set(0.06, 0.9, 0.06); cord.rotation.z = 0.25; cord.name = "unplugged"; cam3.add(cord);
+    const plug = new THREE.Mesh(boxGeo(V(-0.025, -0.05, -0.02), V(0.025, 0.02, 0.02)), lam("pdPlug", () => ({ color: "#e8e4dc" }))); plug.position.set(0.15, 0.52, 0.06); plug.rotation.z = 0.25; plug.name = "unplugged"; cam3.add(plug);
+    for (const dx of [-0.012, 0.012]) { const pin = new THREE.Mesh(boxGeo(V(-0.004, -0.09, -0.004), V(0.004, -0.05, 0.004)), MAT.brass()); pin.position.set(0.15 + dx, 0.52, 0.06); pin.rotation.z = 0.25; pin.name = "unplugged"; cam3.add(pin); }
     shadowAll(cam3);
     const wat = new THREE.Group(); wat.position.set(...WATER); R.add(wat);
     const ws = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.6, 6), MAT.brass()); ws.position.set(-0.12, 0.3, 0); wat.add(ws);
@@ -483,7 +486,8 @@ export class World {
     this.only.pot.visible = id === 4 && f < 474 || id <= 3;
     if (id === 4) { const k = THREE.MathUtils.clamp((f - POUR[0] + 8) / 12, 0, 1); this.pot.position.set(APP[0] - 0.22, 1.86 - 0.04 * k, APP[2]); this.pot.rotation.set(0, 0, -0.95 * k); }
     else { this.pot.position.set(BENCH[0] - 0.35, 1.18, BENCH[2] + 0.05); this.pot.rotation.set(0, 0.4, 0); }
-    this.only.cam.visible = id === 12; this.only.water.visible = id === 13; this.only.honey.visible = id === 14; this.only.cardigan.visible = id === 16;
+    this.only.cam.visible = id === 12;
+    this.only.cam.traverse((o) => { if (o.name === "unplugged") o.visible = f >= POWER_OFF; }); this.only.water.visible = id === 13; this.only.honey.visible = id === 14; this.only.cardigan.visible = id === 16;
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
     const st = stage(id, f, { pos: cam.position, right, sun: sunDir });

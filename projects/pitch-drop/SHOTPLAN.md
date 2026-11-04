@@ -45,3 +45,6 @@ pile after every landed drop; a punch-in on the storm drop (1243); the dead came
 mixed-size shards; blue water filling the explainer funnel; white impact arcs at the bump.
 The two misses (shots 10, 11) were reframed wider so the apparatus with its fresh bead sits on the left and Mainstone in
 the door on the right (stills/verify_v4.jpg).
+Final re-check (Opus max): colour 7, lighting 7, ink 7, textures 6, characters 6, depth 6, composition 5. Fixed after it
+(stills/verify_v5.jpg): the misses frame the whole jar and the door, Mainstone looks toward the jar; the arms grip the
+dome closer; an unplugged cord and plug hang below the camera after the cut; the hammer shot is wider.
