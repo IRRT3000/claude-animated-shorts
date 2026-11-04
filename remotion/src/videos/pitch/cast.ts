@@ -2,8 +2,8 @@
 // billboards shaded by cardShade(), contact blobs, unlit effect cards on the NOINK layer).
 import * as THREE from "three";
 import { Pen, bodyFront, bodySide, PARNELL_O, mainstone, STAFF, audience, fxContact, fxShadow, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
-import { fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip } from "./fx";
-import { FPS, SHOTS, V3, APP, CHAIR, PARNELL, BLOCK, DOOR, WATER, HONEY, STAGE, STAGE_H, TIP_Y, LAB, FALLS, FALL_F, SEPARATE, SHATTER, STEM_CUT, POUR,
+import { fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip, fxArm } from "./fx";
+import { FPS, SHOTS, V3, APP, CAB_H, CHAIR, PARNELL, BLOCK, DOOR, WATER, HONEY, STAGE, STAGE_H, TIP_Y, LAB, FALLS, FALL_F, SEPARATE, SHATTER, STEM_CUT, POUR,
   POWER_OFF, calendarAt, hairAge, hammerAt, pileAt, pileTop, smooth, clamp01, add } from "./story";
 import type { LightName } from "./lights";
 import { NOINK } from "./ink";
@@ -266,10 +266,10 @@ const plip = (out: Stage, f: number, f0: number) => {
 /** a calendar page tearing off whenever the page index steps (8 f flight) */
 const calendar = (out: Stage, id: number, f: number) => {
   const c0 = calendarAt(id, f);
-  for (let k = 1; k <= 8; k++) if (calendarAt(id, f - k) < calendarAt(id, f - k + 1) || (k === 1 && calendarAt(id, f - 1) < c0)) {
-    const u = q(k / 8, 8);
-    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), APP[0] - 0.62 + 0.3 * u, 2.25 + 0.1 * u, LAB[2] - 3.9 + 0.2 * u, 0.5, 0.5);
-    break;
+  void c0;
+  for (let k = 1; k <= 12; k++) if (calendarAt(id, f - k) < calendarAt(id, f - k + 1)) {
+    const u = q(k / 12, 12), s2 = (k * 7) % 3 - 1;
+    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), APP[0] - 0.62 + 0.55 * u + 0.12 * s2, 2.25 + 0.25 * u - 0.15 * u * u, LAB[2] - 3.88 + 0.35 * u, 0.75, 0.75);
   }
 };
 const parnell = (out: Stage, cam: CamInfo, t: number, fo: FrontOpts) => stand(out, cam, WHO.parnell, PARNELL, fo, t, 1, false);
@@ -345,7 +345,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const p0 = add(DOOR, [0, 0, 0.3]), p1 = add(DOOR, [-0.55, 0, 1.0]), u = clamp01((f - 1115) / 14);
         walk(out, cam, WHO.main[2], p0, p1, f, 1115, 1129, f >= 1131 ? "shock" : "smile");
         const mp = at(cam, [p0[0] + (p1[0] - p0[0]) * u, 0, p0[2] + (p1[2] - p0[2]) * u], 0.3, 0.88);
-        push(out, `mug${q((t * 2) % 1, 8)}`, 300, 300, (p) => fxMug(p, (t * 2) % 1), mp[0], mp[1], mp[2] + 0.06, 0.3, 0.3);
+        push(out, `mug${q((t * 2) % 1, 8)}`, 300, 300, (p) => fxMug(p, (t * 2) % 1), mp[0], mp[1] + 0.05, mp[2] + 0.06, 0.55, 0.55);
       }
       break;
     }
@@ -371,19 +371,18 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 15: {
       const p: V3 = add(STAGE, [0, STAGE_H, 0]), big = f >= 1610;
       stand(out, cam, WHO.main[2], p, { expr: big ? "laugh" : "smile", wave: big ? q(0.5 + 0.4 * smooth((f - 1610) / 6), 10) : undefined }, t);
-      const hp = big ? at(cam, p, 0.6, 1.95) : at(cam, p, 0.3, 0.95);
+      const hp = big ? at(cam, p, 0.42, 1.72) : at(cam, p, 0.3, 0.95);
       push(out, "prize", 300, 400, fxPrize, hp[0], hp[1], hp[2] + 0.06, 0.32, 0.43);
       if (f >= 1612) for (const [dx, dy, ph] of [[-0.55, 0.3, 0], [0.5, 0.1, 0.37], [0.05, 0.75, 0.71]]) {
         const u = q(((f - 1612) / 45 + ph) % 1, 20);
-        push(out, `conf${u}`, 600, 800, (pp) => fxConfetti(pp, u), STAGE[0] + dx, STAGE_H + 2.1 + dy, STAGE[2] + 0.6, 1.1, 1.45, { soft: true });
+        push(out, `conf${u}`, 600, 800, (pp) => fxConfetti(pp, u), STAGE[0] + dx, STAGE_H + 2.1 + dy, STAGE[2] + 0.9, 1.1, 1.45);
       }
       break;
     }
     case 17: {
-      if (f >= 1880 && f < 1940) {
-        const bumped = f >= SEPARATE;
-        stand(out, cam, WHO.staff[0], A(-0.62, 0, 0.42), { expr: bumped ? "shock" : "neutral", wave: 0.8, look: 1 }, t);
-        stand(out, cam, WHO.staff[1], A(0.62, 0, 0.42), { expr: bumped ? "nervous" : "smile", wave: 0.8, look: -1 }, t);
+      if (f >= 1880 && f < 1940) { // two lab-coat arms reach in from above and lift the bell jar by its sides
+        const lift = 0.32 * smooth((f - 1884) / 38) + (f >= 1928 && f < 1936 ? 0.012 * Math.sin((f - 1928) * 2.5) : 0);
+        for (const sd of [-1, 1]) push(out, `arm${sd}`, 200, 900, (p) => fxArm(p, sd), APP[0] + sd * 0.36, CAB_H + 0.62 + lift + 0.52, APP[2] + 0.08, 0.26, 1.17);
       }
       plip(out, f, SEPARATE);
       break;

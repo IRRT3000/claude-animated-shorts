@@ -22,3 +22,12 @@ Source of truth: `remotion/src/videos/pitch/story.ts`. Frames = word onsets from
 | 17 | 1745-2010 | lab | "And here's the twist… bumped the jar." | ECU: the long ninth drop touches the pile; two staff lift the bell jar, the bump (kick), it breaks off; ECU, plip, hold, button. |
 
 Rules kept: no captions or readable labels (calendar and blackboard carry no numerals or words); English voice only; every hold creeps; kicks on punch beats only.
+
+## Look check 1 (Opus max, 2026-11-04)
+Scores: colour 6, lighting 5, ink 6, textures 4, characters 6, depth 5, composition 4 (sheets: stills/verify_v1a.jpg, verify_v1b.jpg).
+Fixed after it: fresnel glass (pale cyan body, bright rims) so jar/beaker/funnels read; glossy near-black Phong pitch, no
+shadow acne; shorter beaker so the hanging drop is never skewered by the rim; a fresh drop on the pile after the ninth
+breaks off; the jar is lifted by two lab-coat arms from above (no floating staff); hammer framing at bench level with a
+radial shard burst; bigger calendar and a page flurry; the misses framed with the apparatus in the foreground and the
+door in the back, a big red mug; night camera lighter grey, the dead-camera shot looks into its lens; water two-shot with
+a continuous stream; prize near the face, confetti in front of the card.

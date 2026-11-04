@@ -167,8 +167,8 @@ export const fxTick = (p: Pen, t: number) => {
 const PITCH = "#1d1a20", PITCH_HI = "#5a5866";
 /** black glassy shards flying out from the hammer blow, on a 600 x 400 canvas; t 0..1 spreads them */
 export const fxShards = (p: Pen, t: number) => {
-  for (let k = 0; k < 11; k++) {
-    const a = rad(200 + k * 14 + (k % 3) * 5), d = 40 + 230 * t * (0.6 + 0.4 * ((k * 37) % 10) / 10), cx = 300 + d * Math.cos(a), cy = 330 + d * Math.sin(a) + 260 * t * t;
+  for (let k = 0; k < 14; k++) {
+    const a = rad(k * (360 / 14) + (k % 3) * 9), d = 30 + 250 * Math.sqrt(t) * (0.6 + 0.4 * ((k * 37) % 10) / 10), cx = 300 + d * Math.cos(a) * 0.95, cy = 230 + d * Math.sin(a) * 0.7 + 160 * t * t;
     const s = 18 + ((k * 13) % 3) * 9, r0 = rad(k * 47 + t * 400);
     const pts: P2[] = [0, 1, 2].map((i) => [cx + s * Math.cos(r0 + i * 2.2), cy + s * 0.8 * Math.sin(r0 + i * 2.2)] as P2);
     p.poly(pts, PITCH, 6);
@@ -204,8 +204,10 @@ export const fxPour = (p: Pen, t: number, len: number) => {
 };
 /** water running through the second funnel: a quick blue string of drops on a 120 x 600 canvas; t scrolls */
 export const fxWater = (p: Pen, t: number) => {
-  p.line([[60, 0], [60, 150]], "#7cc8f0", 14);
-  for (let k = 0; k < 7; k++) { const y = 170 + ((k * 70 + t * 600) % 430); p.poly([[60, y - 22], [72, y], [60, y + 12], [48, y]], "#7cc8f0", 6); }
+  const pts: P2[] = [];
+  for (let i = 0; i <= 20; i++) pts.push([60 + 3 * Math.sin(i * 0.9 + t * 30), i * 29]);
+  p.line(pts, "#7cc8f0", 16);
+  p.stroke(pts.map(([x, y]) => [x - 4, y] as P2), 4, "#e8f8ff");
 };
 /** a spoon of cold honey with its slow golden thread, on a 400 x 700 canvas; s 0..1 stretches the thread */
 export const fxHoney = (p: Pen, s: number) => {
@@ -235,8 +237,8 @@ export const fxPrize = (p: Pen) => {
 };
 /** a mug of tea with steam, on a 300 x 300 canvas */
 export const fxMug = (p: Pen, t: number) => {
-  p.poly([[80, 120], [200, 120], [195, 260], [85, 260]], "#e9e2d2", 10);
-  p.arc(205, 185, 35, 40, -90, 90, 14, "#e9e2d2");
+  p.poly([[80, 120], [200, 120], [195, 260], [85, 260]], "#d23a3a", 10);
+  p.arc(205, 185, 35, 40, -90, 90, 14, "#d23a3a");
   p.poly([[80, 120], [200, 120], [200, 140], [80, 140]], "#8a5a34", 8);
   for (const k of [0, 1]) { const ph = t * 6 + k * 2; p.stroke([[120 + 40 * k, 105], [110 + 40 * k + 10 * Math.sin(ph), 70], [125 + 40 * k, 30 + 6 * Math.sin(ph)]], 8, "#ffffff"); }
 };
@@ -255,3 +257,13 @@ export const fxPlip = (p: Pen, t: number) => {
 };
 /** the long thin neck of the ninth drop as it touches (just the white glint line), 60 x 400 */
 export const fxGlint = (p: Pen) => { p.stroke([[30, 20], [26, 200], [30, 380]], 7, "#c8c6d2"); };
+/** a lab-coat sleeve reaching down from above with a hand gripping the jar, on a 200 x 900 canvas; side -1 left / 1 right */
+export const fxArm = (p: Pen, side: number) => {
+  const g = p.g; g.save(); if (side < 0) { g.translate(200, 0); g.scale(-1, 1); }
+  p.poly([[40, -20], [150, -20], [140, 700], [60, 720]], "#f4f2ec", 10);
+  p.stroke([[95, 0], [100, 690]], 4, "#d8d4ca");
+  p.poly([[55, 700], [145, 690], [150, 730], [50, 740]], "#e2ddd2", 8);
+  p.ell(95, 790, 52, 62, "#f5c9a0", 10);
+  for (let k = 0; k < 3; k++) p.stroke([[52 + 2 * k, 765 + 20 * k], [88, 768 + 20 * k]], 6, "#241726");
+  g.restore();
+};

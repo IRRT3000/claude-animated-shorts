@@ -12,7 +12,7 @@ import { Pool, Actor, Fx, stage } from "./cast";
 import {
   FPS, SHOTS, ShotDef, LAB, APP, CAB_H, TIP_Y, BEAKER_Y, CHAIR, BENCH, BLOCK, DOOR, TRIPOD, WATER, HONEY, STAGE, STAGE_H,
   camAt, fillAt, jarOn, jarLift, pileAt, pileTop, dropAt, wobbleAt, windowLight, calendarAt, clockMin, POWER_OFF, lightningAt,
-  SHATTER, POUR, V3,
+  SHATTER, POUR, SEPARATE, V3,
 } from "./story";
 
 export const loadKit = async (): Promise<Kit> => ({}); // no external models: trees are drawn by build.ts
@@ -107,18 +107,26 @@ const cabTex = () => ctex("pdCab", 512, 288, (g) => {
   g.fillStyle = "#c99a3a"; for (const [x, y] of [[256, 50], [230, 186], [282, 186]]) { g.beginPath(); g.arc(x, y, 9, 0, 7); g.fill(); }
 });
 
+const PITCH_M = new THREE.MeshPhongMaterial({ color: "#1a171f", specular: "#ffffff", shininess: 90, emissive: "#0a0810" });
 const MAT = {
   wood: () => lam("pdWood", () => ({ color: "#7a4a2e" })), woodD: () => lam("pdWoodD", () => ({ color: "#4e2f1e" })),
-  brass: () => lam("pdBrass", () => ({ color: "#c99a3a" })), pitch: () => lam("pdPitch", () => ({ color: "#232028" })),
+  brass: () => lam("pdBrass", () => ({ color: "#c99a3a" })), pitch: () => PITCH_M,
   iron: () => lam("pdIron", () => ({ color: "#4a4a52" })), cream: () => lam("pdCream", () => ({ color: "#efe6d0" })),
 };
-const glassMat = (o = 1) => new THREE.MeshBasicMaterial({ map: glassTex(), color: new THREE.Color(o, o, o), transparent: true, depthWrite: false, side: THREE.FrontSide, fog: false });
+const glassMat = (o = 1) => new THREE.ShaderMaterial({
+  uniforms: { k: { value: o } },
+  vertexShader: `varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
+  fragmentShader: `uniform float k; varying vec3 vN; varying vec3 vV; void main(){ float c = abs(dot(normalize(vN), normalize(vV)));
+    float rim = pow(1.0 - c, 3.0); float a = clamp((0.05 + 0.85 * rim) * k, 0.0, 0.9);
+    vec3 col = mix(vec3(0.78, 0.92, 0.98), vec3(1.0), rim); gl_FragColor = vec4(col * 1.15, a); }`,
+  transparent: true, depthWrite: false, side: THREE.DoubleSide, fog: false,
+});
 const noShadow = (o: THREE.Object3D) => o.traverse((m) => { (m as THREE.Mesh).castShadow = false; });
 const shadowAll = (o: THREE.Object3D) => o.traverse((m) => { const x = m as THREE.Mesh; if (x.isMesh && !x.layers.isEnabled(NOINK)) { x.castShadow = true; x.receiveShadow = true; } });
 
 type Rig = {
   root: THREE.Group; base: THREE.Group; pitchCone: THREE.Mesh; neck: THREE.Mesh; bulb: THREE.Mesh; falling: THREE.Mesh;
-  pile: THREE.Mesh; jar: THREE.Group;
+  pile: THREE.Mesh; jar: THREE.Group; fresh: THREE.Mesh;
 };
 /** the experiment on its cabinet; local origin = foot of the cabinet */
 const apparatus = (): Rig => {
@@ -156,18 +164,20 @@ const apparatus = (): Rig => {
   const falling = new THREE.Mesh(new THREE.SphereGeometry(0.026, 16, 12), MAT.pitch()); falling.scale.set(1, 1.4, 1); base.add(falling);
   const pileG = new THREE.SphereGeometry(1, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2);
   const pile = new THREE.Mesh(pileG, MAT.pitch()); pile.position.y = y(BEAKER_Y); base.add(pile);
-  const beaker = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.25, 32, 1, true), glassMat(1.6)); beaker.position.y = y(BEAKER_Y + 0.115); beaker.layers.set(NOINK); base.add(beaker);
+  const fresh = new THREE.Mesh(new THREE.SphereGeometry(0.03, 18, 12), MAT.pitch()); fresh.scale.set(1.2, 0.8, 1.2); base.add(fresh);
+  const beaker = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.16, 32, 1, true), glassMat(1.0)); beaker.position.y = y(BEAKER_Y + 0.07); beaker.layers.set(NOINK); base.add(beaker);
   const bfoot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.012, 32), lam("pdGlassFoot", () => ({ color: "#8e9aa4" }))); bfoot.position.y = y(BEAKER_Y - 0.004); base.add(bfoot);
-  const brim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.005, 6, 32), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); brim.rotation.x = Math.PI / 2; brim.position.y = y(BEAKER_Y + 0.24); base.add(brim);
+  const brim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.005, 6, 32), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); brim.rotation.x = Math.PI / 2; brim.position.y = y(BEAKER_Y + 0.15); base.add(brim);
   // the bell jar over everything
   const jar = new THREE.Group(); base.add(jar);
   const jprof: THREE.Vector2[] = [new THREE.Vector2(0.3, 0.045)];
   for (let i = 0; i <= 12; i++) { const a = (i / 12) * Math.PI / 2; jprof.push(new THREE.Vector2(0.3 * Math.cos(a), y(1.62) + 0.3 * 0.9 * Math.sin(a))); }
-  const jm = new THREE.Mesh(new THREE.LatheGeometry(jprof, 40), glassMat(2.2)); jm.layers.set(NOINK); jar.add(jm);
+  const jm = new THREE.Mesh(new THREE.LatheGeometry(jprof, 40), glassMat(1.0)); jm.layers.set(NOINK); jar.add(jm);
   const knob = new THREE.Mesh(new THREE.SphereGeometry(0.035, 14, 10), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); knob.position.y = y(1.62) + 0.29; jar.add(knob);
   const jrim = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.008, 6, 40), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); jrim.rotation.x = Math.PI / 2; jrim.position.y = 0.05; jar.add(jrim);
   shadowAll(R); noShadow(jar);
-  return { root: R, base, pitchCone, neck, bulb, falling, pile, jar };
+  base.traverse((m) => { if ((m as THREE.Mesh).material === PITCH_M) (m as THREE.Mesh).receiveShadow = false; });
+  return { root: R, base, pitchCone, neck, bulb, falling, pile, jar, fresh };
 };
 
 export class World {
@@ -320,7 +330,7 @@ export class World {
     const cf = new THREE.Mesh(new THREE.CircleGeometry(0.22, 32), lam("pdDialM", () => ({ map: dialTex() }))); cf.position.z = 0.03; clock.add(cf);
     const hand = (g: THREE.Group, len: number, w: number) => { const m = new THREE.Mesh(boxGeo(V(-w / 2, -0.02, 0), V(w / 2, len, 0.006)), lam("pdHand", () => ({ color: "#241726" }))); g.add(m); g.position.z = 0.035; clock.add(g); };
     hand(this.clockMin, 0.18, 0.018); hand(this.clockHr, 0.12, 0.026);
-    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.52), lam("pdCalM", () => ({ map: calTex() }))); cal.position.copy(L(-1.05 + 0.0, 2.95, -3.935)); cal.position.x = LAB[0] + 0.0 - 0.15; cal.position.y = 2.35; R.add(cal);
+    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("pdCalM", () => ({ map: calTex() }))); cal.position.copy(L(-1.05 + 0.0, 2.95, -3.935)); cal.position.x = LAB[0] + 0.0 - 0.15; cal.position.y = 2.35; R.add(cal);
     cal.position.set(APP[0] - 0.62, 2.25, LAB[2] - 3.935);
 
     // ---- the experiment ----
@@ -336,10 +346,10 @@ export class World {
     shadowAll(this.pot); R.add(this.pot);
     const cam3 = new THREE.Group(); cam3.position.set(...TRIPOD); cam3.rotation.y = Math.atan2(-(APP[0] - TRIPOD[0]), -(APP[2] - TRIPOD[2])); R.add(cam3);
     for (let i = 0; i < 3; i++) { const a = (i / 3) * Math.PI * 2; const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.3, 6), MAT.iron()); lg.position.set(0.16 * Math.cos(a), 0.62, 0.16 * Math.sin(a)); lg.rotation.set(0.12 * Math.sin(a), 0, -0.12 * Math.cos(a)); cam3.add(lg); }
-    const body = new THREE.Mesh(boxGeo(V(-0.11, 1.26, -0.08), V(0.11, 1.42, 0.12)), lam("pdCamBody", () => ({ color: "#3a3e48" }))); cam3.add(body);
+    const body = new THREE.Mesh(boxGeo(V(-0.11, 1.26, -0.08), V(0.11, 1.42, 0.12)), lam("pdCamBody", () => ({ color: "#7a7f8c" }))); cam3.add(body);
     const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.09, 16), lam("pdCamLens", () => ({ color: "#1a1c22" }))); lens.rotation.x = Math.PI / 2; lens.position.set(0, 1.34, -0.12); cam3.add(lens);
     const hood = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.055, 0.06, 16, 1, true), lam("pdCamLens", () => ({ color: "#1a1c22" }))); hood.rotation.x = Math.PI / 2; hood.position.set(0, 1.34, -0.19); cam3.add(hood);
-    const vf = new THREE.Mesh(boxGeo(V(-0.04, 1.42, -0.02), V(0.04, 1.47, 0.14)), lam("pdCamBody", () => ({ color: "#3a3e48" }))); cam3.add(vf);
+    const vf = new THREE.Mesh(boxGeo(V(-0.04, 1.42, -0.02), V(0.04, 1.47, 0.14)), lam("pdCamBody", () => ({ color: "#7a7f8c" }))); cam3.add(vf);
     this.rec = new THREE.MeshBasicMaterial({ color: new THREE.Color(3, 0.2, 0.15) });
     const led = new THREE.Mesh(new THREE.SphereGeometry(0.015, 10, 8), this.rec); led.position.set(0.112, 1.39, -0.02); led.layers.set(NOINK); cam3.add(led);
     shadowAll(cam3);
@@ -463,6 +473,7 @@ export class World {
     R.falling.visible = d.fall !== null;
     if (d.fall !== null) R.falling.position.set(0, Math.max(top + 0.02, tipL - 0.05 - d.fall), 0);
     R.pile.visible = n > 0; R.pile.scale.set(0.088, Math.max(0.01, top - (BEAKER_Y - CAB_H)), 0.088);
+    R.fresh.visible = f >= SEPARATE; R.fresh.position.set(0.012, top + 0.012, 0.01);
     R.jar.visible = jarOn(f) && s.place === "lab"; R.jar.position.y = jarLift(f);
     R.base.rotation.z = wobbleAt(f);
     // props by shot
