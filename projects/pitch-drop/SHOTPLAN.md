@@ -31,3 +31,12 @@ breaks off; the jar is lifted by two lab-coat arms from above (no floating staff
 radial shard burst; bigger calendar and a page flurry; the misses framed with the apparatus in the foreground and the
 door in the back, a big red mug; night camera lighter grey, the dead-camera shot looks into its lens; water two-shot with
 a continuous stream; prize near the face, confetti in front of the card.
+
+## Look check 2 (Opus max, 2026-11-04) — fixes pending
+Scores: colour 6, lighting 6, ink 7, textures 5, characters 6, depth 6, composition 5 (sheets: stills/verify_v2a.jpg, verify_v2b.jpg).
+1. 1040/1135: show the drop fell (bare stem tip, fresh glossy bead on the pile), calendar flip in 1040, uncrop 1135's clock.
+2. Wides: funnel/pile pitch reads slate-grey chrome; near-black plum, tight highlights, brightest on the drop; smooth the lump.
+3. 1900/1932: fingers wrap the glass; the bump needs a cause (elbow knock, 3° board jolt, speed lines).
+4. 1260/1300: drop too small; lightning flash on the falling drop + punch in; red light off after the cut, dangling plug, navy grade.
+5. 365: full hammer striking with a smear; mixed-size shards scattered outward (not a ring).
+6. 1350/1420: water funnel needs ink, blue fill, reframe.
