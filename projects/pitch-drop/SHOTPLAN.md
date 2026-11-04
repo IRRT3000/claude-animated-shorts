@@ -43,3 +43,5 @@ Scores: colour 6, lighting 6, ink 7, textures 5, characters 6, depth 6, composit
 Applied after check 2 (stills/verify_v3.jpg): glossy near-black plum pitch with tight highlights; a fresh bead on the
 pile after every landed drop; a punch-in on the storm drop (1243); the dead camera's lamp fully off; scattered
 mixed-size shards; blue water filling the explainer funnel; white impact arcs at the bump.
+The two misses (shots 10, 11) were reframed wider so the apparatus with its fresh bead sits on the left and Mainstone in
+the door on the right (stills/verify_v4.jpg).
