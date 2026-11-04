@@ -371,7 +371,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 15: {
       const p: V3 = add(STAGE, [0, STAGE_H, 0]), big = f >= 1610;
       stand(out, cam, WHO.main[2], p, { expr: big ? "laugh" : "smile", wave: big ? q(0.5 + 0.4 * smooth((f - 1610) / 6), 10) : undefined }, t);
-      const hp = big ? at(cam, p, 0.42, 1.72) : at(cam, p, 0.3, 0.95);
+      const hp = big ? at(cam, p, 0.3, 1.5) : at(cam, p, 0.3, 0.95);
       push(out, "prize", 300, 400, fxPrize, hp[0], hp[1], hp[2] + 0.06, 0.32, 0.43);
       if (f >= 1612) for (const [dx, dy, ph] of [[-0.55, 0.3, 0], [0.5, 0.1, 0.37], [0.05, 0.75, 0.71]]) {
         const u = q(((f - 1612) / 45 + ph) % 1, 20);

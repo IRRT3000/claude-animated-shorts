@@ -466,7 +466,7 @@ export class World {
     // apparatus
     const R = this.rig, fill = fillAt(f), d = dropAt(f), n = pileAt(f), top = pileTop(n) - CAB_H, tipL = TIP_Y - CAB_H;
     R.pitchCone.visible = fill > 0.01; R.pitchCone.scale.set(Math.max(0.3, fill ** 0.5), Math.max(0.02, fill), Math.max(0.3, fill ** 0.5));
-    R.neck.visible = R.bulb.visible = d.len > 0.004;
+    R.neck.visible = d.len > 0.004; R.bulb.visible = d.len > 0.004 && f < SEPARATE;
     const br = 0.014 + Math.min(0.016, d.len * 0.12);
     R.neck.scale.set(1, Math.max(0.001, d.len - br * 0.8), 1);
     R.bulb.scale.set(br, br * 1.12, br); R.bulb.position.set(0, tipL - d.len + br * 0.85, 0);
