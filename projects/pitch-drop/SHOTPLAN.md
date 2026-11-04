@@ -40,3 +40,6 @@ Scores: colour 6, lighting 6, ink 7, textures 5, characters 6, depth 6, composit
 4. 1260/1300: drop too small; lightning flash on the falling drop + punch in; red light off after the cut, dangling plug, navy grade.
 5. 365: full hammer striking with a smear; mixed-size shards scattered outward (not a ring).
 6. 1350/1420: water funnel needs ink, blue fill, reframe.
+Applied after check 2 (stills/verify_v3.jpg): glossy near-black plum pitch with tight highlights; a fresh bead on the
+pile after every landed drop; a punch-in on the storm drop (1243); the dead camera's lamp fully off; scattered
+mixed-size shards; blue water filling the explainer funnel; white impact arcs at the bump.
