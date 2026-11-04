@@ -32,7 +32,7 @@ export const COX: V3 = add(HALL, [1.35, 0, 0.9]);             // Cox stands besi
 export const VISITORS: V3[] = [[-1.6, 0, 3.0], [-0.5, 0, 3.4], [0.6, 0, 3.2], [1.7, 0, 3.6], [-1.1, 0, 4.5], [0.2, 0, 4.7]]
   .map((p) => add(HALL, p as V3));
 export const LOTTERY: V3 = add(HALL, [-3.2, 0, 1.2]);         // the prize-lottery wheel
-export const CHEST: V3 = add(HALL, [-1.8, 0, 3.0]);           // the breathing-visitor explainer (shot 12)
+export const CHEST: V3 = add(HALL, [-1.3, 0, 2.3]);           // the breathing-visitor explainer (shot 12)
 export const VA: V3 = [0, 0, -900];             // V&A gallery today: origin = foot of the clock on its plinth
 export const SKY_EYE: V3 = [0, 60, 40];         // over the London rooftops, looking at the clouds
 
@@ -149,7 +149,7 @@ const S5a = (f: number) => dolly(H(-4.6, 2.7, 7.8), H(0, 1.4, 0), pushK(f, 528, 
 const S5b = (f: number) => dolly(H(2.6, 1.3, 4.0), H(0, 1.6, 0), pushK(f, 589, 0.0025), { fov: 40, roll: 0.03 });   // "Month after month"
 const S6a = (f: number) => dolly(H(-1.0, 1.6, 6.4), H(-0.8, 1.5, 3.4), pushK(f, 624, 0.0025, 0.006, 24), { fov: 40 }); // magic (visitor with wand)
 const S6b = (f: number) => dolly(H(1.8, 1.4, 1.4), H(0.4, 1.1, -0.45), pushK(f, 650, 0.003), { fov: 40, roll: -0.035 }); // servant: peek behind the case
-const S6c = (f: number) => dolly(H(0.35, 0.6, 1.5), H(0.85, 0.35, -0.15), pushK(f, 674, 0.003, 0.007, 24), { fov: 44 }); // the cat behind the case
+const S6c = (f: number) => dolly(H(0.4, 0.6, 1.75), H(0.95, 0.32, 0.5), pushK(f, 674, 0.003, 0.007, 24), { fov: 44 }); // the cat behind the case
 const S7a = (f: number) => dolly(add(COX, [0.4, 1.75, 2.0]), coxEye, pushK(f, 712, 0.0028), { fov: 40 });          // Cox just smiled
 const S7b = (f: number) => dolly(add(LOTTERY, [1.5, 1.6, 3.6]), add(LOTTERY, [0, 1.3, 0]), pushK(f, 800, 0.003, 0.006, 30), { fov: 42, roll: 0.035 }); // the lottery wheel
 const S8a = (f: number) => dolly(H(-2.2, 1.2, 5.8), H(0, 1.7, 0), pushK(f, 848, 0.0022, 0.005, 24), { fov: 40, roll: -0.03 }); // luckily: low hero shot
@@ -161,12 +161,12 @@ const S11b = (f: number) => dolly(add(JARS, [-0.3, 0.05, 1.2]), add(JARS, [-0.1,
 const S11c = (f: number) => dolly(H(0.5, 1.25, 1.6), H(0, 1.0, 0), pushK(f, 1260, 0.003, 0.007, 26), { fov: 40, roll: -0.035 }); // tiny push wound the clock
 const S12a = (f: number) => dolly(add(CHEST, [0.9, 1.5, 2.4]), add(CHEST, [0, 1.25, 0]), pushK(f, 1320, 0.0025), { fov: 40 }); // your chest
 const S12b = (f: number) => dolly(H(-1.2, 1.6, 7.4), H(-1.2, 1.1, 1.5), pushK(f, 1383, 0.0025), { fov: 50, roll: 0.03 }); // chest + clock in one frame // chest + jars in one frame
-const S13a = (f: number) => zoom([0, 42, 95], [0, 26, -220], 46, pushK(f, 1445, 0.0015)); // rooftops below, the sky above                              // aerial: rooftops breathing the sky
+const S13a = (f: number) => zoom([0, 42, 95], [0, 14, -220], 46, pushK(f, 1445, 0.0015)); // rooftops below, the sky above                              // aerial: rooftops breathing the sky
 const S14a = (f: number) => zoom([-40, 12, 40], [10, 30, -160], 44, pushK(f, 1512, 0.0018, 0.005, 30), { roll: 0.03 }); // wasn't perpetual
 const S14b = (f: number) => zoom([30, 20, 60], [-10, 50, -260], 46, pushK(f, 1600, 0.0025, 0.007, 30), { roll: -0.04 }); // every cloud and storm
 const S15a = (f: number) => zoom(G(-5.5, 1.7, 8.5), G(0, 1.4, 0), 42, pushK(f, 1675, 0.0016));                       // V&A gallery wide
 const S15b = (f: number) => dolly(G(0.8, 1.6, 3.6), G(0, 1.7, 0), pushK(f, 1769, 0.0025), { fov: 40, roll: 0.03 });  // "the clock that nobody ever had to wind"
-const S16a = (f: number) => dolly(G(-2.4, 1.6, 2.8), G(-1.6, 1.25, 0.6), pushK(f, 1838, 0.003, 0.006, 24), { fov: 40 }); // the guard at the switch
+const S16a = (f: number) => dolly(G(-1.1, 1.55, 3.1), G(-1.85, 1.3, 0.7), pushK(f, 1838, 0.003, 0.006, 24), { fov: 44 }); // guard + switch // the guard at the switch
 const S16b = (f: number) => dolly(G(0.05, 2.08, 0.9), G(0, 2.05, 0.35), pushK(f, 1886, 0.002), { fov: 38 });       // dial: second hand stops
 
 const CAMS: Record<number, Key[]> = {
@@ -235,7 +235,7 @@ export const DOF: Dof[] = [
   { f: 1445, cInf: 0 },                                // aerials
   { f: 1675, cInf: 6 },                                // gallery wide
   { f: 1767, cInf: 12 },
-  { f: 1838, cInf: 11, focus: () => G(-1.6, 1.4, 0.6) },
+  { f: 1838, cInf: 11, focus: () => G(-2.1, 1.6, 0.95) },
   { f: 1886, cInf: 15 },                               // dial CU, the stop
 ];
 export const dofAt = (f: number) => {

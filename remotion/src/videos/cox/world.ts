@@ -60,7 +60,7 @@ const dialTex = () => ctex("coxDial", 512, 512, (g) => {
 /** liquid mercury: chrome bands (dark / bright stripes) so it reads as metal, not paint */
 const mercuryTex = () => ctex("coxMercuryTex", 256, 64, (g) => {
   const gr = g.createLinearGradient(0, 0, 256, 0);
-  for (const [u, c] of [[0, "#3c4452"], [0.18, "#e9eef4"], [0.3, "#8c97a6"], [0.5, "#4a5363"], [0.68, "#f7f9fc"], [0.8, "#9aa5b4"], [1, "#3c4452"]] as const) gr.addColorStop(u, c);
+  for (const [u, c] of [[0, "#2a2e36"], [0.16, "#f4f5f7"], [0.28, "#9a9ea6"], [0.48, "#3a3e46"], [0.66, "#ffffff"], [0.8, "#a6aab2"], [1, "#2a2e36"]] as const) gr.addColorStop(u, c);
   g.fillStyle = gr; g.fillRect(0, 0, 256, 64);
 });
 /** lottery wheel face: coloured wedges with ink spokes */
@@ -91,7 +91,7 @@ const MAT = {
   gilt: () => lam("coxGilt", () => ({ color: "#d6a842" })), brass: () => lam("coxBrass", () => ({ color: "#c99a3a" })),
 };
 type ClockRig = { root: THREE.Group; sec: THREE.Object3D; min: THREE.Object3D; hr: THREE.Object3D; merc: THREE.Mesh[]; weight: THREE.Object3D };
-const glassMat = () => new THREE.MeshBasicMaterial({ color: "#cfeaff", transparent: true, opacity: 0.13, depthWrite: false, side: THREE.DoubleSide });
+const glassMat = () => new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide });
 /** Cox's timepiece: mahogany base, glass-sided middle with the two mercury jars and the winding weight, hood with the dial */
 const clockRig = (): ClockRig => {
   const R = new THREE.Group(), b = new Batch(), W = CASE.w / 2, D = CASE.d / 2;
@@ -223,8 +223,7 @@ export class World {
     }
     house(b, 0, -11.5, 0, 11, 11, 12.6, 5); // Cox's Mechanical Museum: wider, taller, door on the street
     const sign = lam("coxSignBoard", () => ({ color: "#8e2f3a" })), gold = MAT.gilt();
-    b.add(boxGeo(V(-2.2, 4.4, MUSEUM_DOOR[2] - 0.05), V(2.2, 5.2, MUSEUM_DOOR[2] + 0.12)), sign); // a plain board, no lettering
-    b.add(boxGeo(V(-2.3, 4.32, MUSEUM_DOOR[2] + 0.1), V(2.3, 4.42, MUSEUM_DOOR[2] + 0.16)), gold);
+    void sign; void MUSEUM_DOOR;
     for (const z0 of [-38, -66, -94, 38, 66, 94]) for (let x = -110; x <= 110; x += 9) {
       if (r() < 0.12) continue;
       house(b, x + (z0 > 0 ? 4.5 : 0), z0, z0 > 0 ? Math.PI : 0, 9, 9, [9.8, 11.2, 12.6][Math.floor(r() * 3)], Math.floor(r() * 8));
@@ -255,6 +254,7 @@ export class World {
       const pic = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.12), lam("coxPic" + k, () => ({ map: paintingTex(k) })));
       pic.position.copy(H(x, 2.6, z)).add(V(Math.sin(ry) * 0.07, 0, Math.cos(ry) * 0.07)); pic.rotation.y = ry; R.add(pic);
     }
+    hb.add(boxGeo(H(-7.2, 6, -4.2), H(7.2, 6.2, 9.2)), lam("coxCeil", () => ({ color: "#efe4cc" })));
     hb.build(R, false);
     this.windows = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 2.0, 1.6) });
     for (const x of [-2.6, 2.6]) { // tall windows either side of the clock, on the back wall
@@ -281,23 +281,24 @@ export class World {
     const G = (x: number, y: number, z: number) => V(VA[0] + x, VA[1] + y, VA[2] + z);
     const gb = new Batch();
     gb.add(boxGeo(G(-8, -0.1, -5), G(8, 0.02, 9)), lam("coxGalFloor", () => ({ map: planksHD(), color: "#b9aa98" })));
-    const gw = lam("coxGalWall", () => ({ color: "#ecebe6" }));
+    const gw = lam("coxGalWall", () => ({ color: "#ece6da" }));
     gb.add(boxGeo(G(-8, 0, -5.2), G(8, 6.5, -5)), gw); gb.add(boxGeo(G(-8.2, 0, -5), G(-8, 6.5, 9)), gw);
     gb.add(boxGeo(G(8, 0, -5), G(8.2, 6.5, 9)), gw); gb.add(boxGeo(G(-8, 0, 9), G(8, 6.5, 9.2)), gw);
     gb.add(boxGeo(G(-8, 0, -5.02), G(8, 0.15, -4.9)), lam("coxGalSkirt", () => ({ color: "#5a5a60" })));
+    gb.add(boxGeo(G(-8.2, 6.5, -5.2), G(8.2, 6.7, 9.2)), lam("coxGalCeil", () => ({ color: "#f4f3ef" })));
     gb.build(R, false);
     const gp = new Batch();
     gp.add(boxGeo(G(-1.0, 0, -0.6), G(1.0, 0.12, 0.6)), lam("coxPlinth", () => ({ color: "#3e3e44" })));
     for (const x of [-1.6, 1.6]) { const p = new THREE.CylinderGeometry(0.035, 0.05, 0.9, 10); p.translate(VA[0] + x, 0.45, VA[2] + 1.5); gp.add(p, lam("coxSteel", () => ({ color: "#9aa0a8" }))); }
     const grope = new THREE.CylinderGeometry(0.018, 0.018, 3.2, 6); grope.rotateZ(Math.PI / 2); grope.translate(VA[0], 0.82, VA[2] + 1.5); gp.add(grope, red);
     gp.add(boxGeo(G(-1.74, 0, 0.32), G(-1.46, 2.3, 0.5)), gw);                                           // the column with the switch
-    gp.add(boxGeo(G(-1.68, 1.12, 0.5), G(-1.52, 1.38, 0.53)), lam("coxSwitchPlate", () => ({ color: "#f6f4ee" })));
+    gp.add(boxGeo(G(-1.73, 1.05, 0.5), G(-1.47, 1.45, 0.53)), lam("coxSwitchPlate", () => ({ color: "#f6f4ee" })));
     for (const [x, k] of [[-5.5, 1], [5.2, 2]] as const) {
       gp.add(boxGeo(G(x - 0.9, 1.9, -4.98), G(x + 0.9, 3.3, -4.92)), gold);
       const pic = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.2), lam("coxPic" + k, () => ({ map: paintingTex(k) }))); pic.position.copy(G(x, 2.6, -4.9)); R.add(pic);
     }
     gp.build(R);
-    const lv = new THREE.Mesh(boxGeo(V(-0.025, 0, 0), V(0.025, 0.09, 0.03)), lam("coxSwitchLever", () => ({ color: "#3a3a40" })));
+    const lv = new THREE.Mesh(boxGeo(V(-0.04, 0, 0), V(0.04, 0.15, 0.05)), lam("coxSwitchLever", () => ({ color: "#3a3a40" })));
     this.lever.add(lv); this.lever.position.copy(G(-1.6, 1.25, 0.53)); R.add(this.lever);
     setSight([]);
 
@@ -374,8 +375,8 @@ export class World {
     if (s.place === "sky" || s.place === "street") {
       const k = s.place === "sky" ? stormAt(f) : 0.15;
       this.storm.set("#7d8597");
-      for (let i = 0; i < 5; i++) { const c = su["c" + i].value as THREE.Color; c.lerp(untone("#6f7789", this.skyTmp), 0.8 * k * k); }
-      for (const m of this.clouds) (m.material as THREE.MeshBasicMaterial).color.setScalar(1.1 - 0.55 * k);
+      for (let i = 0; i < 5; i++) { const c = su["c" + i].value as THREE.Color; c.lerp(untone(i < 2 ? "#3a3f66" : "#1e2340", this.skyTmp), Math.min(0.92, 1.1 * k * k)); }
+      for (const m of this.clouds) (m.material as THREE.MeshBasicMaterial).color.setRGB(1.1 - 0.78 * k, 1.1 - 0.76 * k, 1.1 - 0.68 * k);
     }
     // ---- the clock ----
     const gal = s.place === "gallery";

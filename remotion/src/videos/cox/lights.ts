@@ -93,6 +93,6 @@ export const LOOK: Record<LightName, WorldLook> = {
     water: { near: "#22a7b6", mid: "#167fb2", far: "#1a5596", crest: "#7ddfe8", trough: "#0e4a80", glint: "#ffffff", shade: [0.5, 0.56, 0.72] },
     cloud: { lit: "#fbf8f1", mid: "#e1e5f3", shade: "#c3cbe9" },
     bounce: [0.0, 0.0, 0.01],
-    sat: 0.96,
+    sat: 1.08,
   },
 };

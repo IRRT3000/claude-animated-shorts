@@ -285,7 +285,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 6: {
       if (f < 648) {
-        crowd(out, cam, t, 1, (k) => ({ expr: k === 4 ? "grin" : "neutral", look: k === 4 ? 1 : look(k) }));
+        crowd(out, cam, t, 2, (k) => ({ expr: k === 4 ? "grin" : "neutral", look: k === 4 ? 1 : look(k) }));
         const pop = popAt(f, THEORY.magic), u = q((t * 1.3) % 1, 20);
         if (pop > 0) { const near = at(cam, VISITORS[4], 0.3, 2.05); push(out, `magic${u}`, 400, 400, (p) => fxMagic(p, u), near[0], near[1], near[2] + 0.3, 0.8 * pop, 0.8 * pop); } // beside her head (her hand is out of frame)
       } else if (f < 674) {
@@ -293,9 +293,9 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         stand(out, cam, WHO.folk[7], H(0.95, 0, -0.75), { expr: "nervous", tilt: lean, look: -1 }, t);
       } else {
         const blink = (f - THEORY.cat) % 50 < 4 && f > THEORY.cat ? 1 : 0, wag = q(Math.sin(t * 5), 6);
-        push(out, `cat${blink}|${wag}`, 400, 500, (p) => fxCat(p, blink, wag), HALL[0] + 0.85, 0.25, HALL[2] - 0.15, 0.4, 0.5);
-        push(out, "blob|catShadow", 128, 128, (p) => fxContact(p, "#5a4a52"), HALL[0] + 0.85, 0.03, HALL[2] - 0.15, 0.45, 0.3, { flat: true });
-        if (f >= 694) { const w = q(Math.sin(t * 2.5), 10); push(out, `q${w}`, 300, 420, (p) => fxQuestion(p, w), HALL[0] + 0.85, 0.65, HALL[2] - 0.12, 0.13 * popAt(f, 694), 0.18 * popAt(f, 694)); }
+        push(out, `cat${blink}|${wag}`, 400, 500, (p) => fxCat(p, blink, wag), HALL[0] + 0.95, 0.27, HALL[2] + 0.5, 0.4, 0.5);
+        push(out, "blob|catShadow", 128, 128, (p) => fxContact(p, "#5a4a52"), HALL[0] + 0.95, 0.035, HALL[2] + 0.5, 0.5, 0.32, { flat: true });
+        if (f >= 694) { const w = q(Math.sin(t * 2.5), 10); push(out, `q${w}`, 300, 420, (p) => fxQuestion(p, w), HALL[0] + 0.95, 0.66, HALL[2] + 0.52, 0.13 * popAt(f, 694), 0.18 * popAt(f, 694)); }
       }
       break;
     }
@@ -314,9 +314,9 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 9: case 13: case 14: {
       const k = stormAt(f);
-      if (k > 0.55 || id === 9) for (let n = 0; n < 6; n++) {
-        const u = q((t * 1.6 + n * 0.17) % 1, 12), base = cam.pos;
-        push(out, `rain${u}`, 400, 800, (p) => fxRain(p, u), base.x - 30 + 12 * n, base.y - 6 + 3 * (n % 3), base.z - 45 - 6 * (n % 2), 9, 18, { soft: true });
+      if (k > 0.55 || id === 9) for (let n = 0; n < 24; n++) {
+        const u = q((t * 1.6 + n * 0.17) % 1, 12), base = cam.pos, col = n % 6, row = Math.floor(n / 6);
+        push(out, `rain${u}`, 400, 800, (p) => fxRain(p, u), base.x - 25 + 10 * col + 3 * (row % 2), base.y - 22 + 16 * row, base.z - 40 - 4 * (row % 2), 10, 20, { soft: true });
       }
       if (id === 14 && f >= 1620 && f < 1630) push(out, "bolt", 300, 600, fxBolt, cam.pos.x - 20, cam.pos.y + 38, cam.pos.z - 160, 18, 36);
       if (id === 9 && f >= 954 && f < 962) push(out, "bolt", 300, 600, fxBolt, cam.pos.x + 25, cam.pos.y + 60, cam.pos.z - 300, 28, 56);
@@ -329,7 +329,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 12: {
       const m = mercuryAt(f), inK = f >= 1386 && f < 1412, outK = f >= 1412 && f < 1440;
       stand(out, cam, WHO.folk[6], CHEST, { expr: inK ? "relief_open" : outK ? "relief" : "smile", look: 1, shrug: q(clamp01((m - 0.5) * 6), 10) }, t, 1 + 0.03 * clamp01((m - 0.5) * 6));
-      if (inK || outK) { const u = q(inK ? (f - 1386) / 26 : (f - 1412) / 28, 10); push(out, `breath${inK ? 1 : -1}|${u}`, 600, 300, (p) => fxBreath(p, inK ? 1 : -1, u), CHEST[0], 1.35, CHEST[2] + 0.3, 1.1, 0.55, { soft: true }); }
+      if (inK || outK) { const u = q(inK ? (f - 1386) / 26 : (f - 1412) / 28, 10); push(out, `breath${inK ? 1 : -1}|${u}`, 600, 300, (p) => fxBreath(p, inK ? 1 : -1, u), CHEST[0] + 0.25, 1.62, CHEST[2] + 0.2, 0.9, 0.45, { soft: true }); }
       break;
     }
     case 15: case 16: {

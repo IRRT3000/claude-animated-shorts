@@ -22,3 +22,11 @@ Source of truth: `remotion/src/videos/cox/story.ts`. Frames = word onsets from `
 
 Rules kept: no captions or readable labels; English voice only; every hold creeps; kicks on punch beats only.
 Next: world (street, hall, case + jars, sky, gallery) in build.ts/world.ts, cast (Cox, visitors, guard, cat) in cast.ts.
+
+## Look check 1 (Opus max, 2026-11-04)
+Scores: colour 6, lighting 6, ink 7, textures 5, characters 7, depth 6, composition 5 (sheet: stills/verify_v1.jpg).
+Fixed after it: storm sky #1E2340-#3A3F66 + dark clouds + full-frame rain; cat moved in front of the case base with a
+contact shadow; blank sign board removed (covered windows / floating slab from the air); ceilings in hall and gallery;
+breath puffs from the mouth toward the clock; guard reframed with a bigger switch; mercury now silver; aerial tilted
+down; crowd costume continuity 5→6; gallery warmer and more saturated (stills/look_v2_fixes.jpg).
+Not changed: shot 1a walker size (it is the establishing wide; the dial push-in follows 2 s later).
