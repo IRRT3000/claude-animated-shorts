@@ -373,7 +373,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       stand(out, cam, WHO.main[2], p, { expr: big ? "laugh" : "smile", wave: big ? q(0.5 + 0.4 * smooth((f - 1610) / 6), 10) : undefined }, t);
       const hp = big ? at(cam, p, 0.6, 1.95) : at(cam, p, 0.3, 0.95);
       push(out, "prize", 300, 400, fxPrize, hp[0], hp[1], hp[2] + 0.06, 0.32, 0.43);
-      if (f >= 1612) { const u = q(((f - 1612) / 50) % 1, 20); push(out, `conf${u}`, 600, 800, (pp) => fxConfetti(pp, u), STAGE[0], STAGE_H + 2.6, STAGE[2] + 0.8, 2.6, 3.4, { soft: true }); }
+      if (f >= 1612) for (const [dx, dy, ph] of [[-0.55, 0.3, 0], [0.5, 0.1, 0.37], [0.05, 0.75, 0.71]]) {
+        const u = q(((f - 1612) / 45 + ph) % 1, 20);
+        push(out, `conf${u}`, 600, 800, (pp) => fxConfetti(pp, u), STAGE[0] + dx, STAGE_H + 2.1 + dy, STAGE[2] + 0.6, 1.1, 1.45, { soft: true });
+      }
       break;
     }
     case 17: {

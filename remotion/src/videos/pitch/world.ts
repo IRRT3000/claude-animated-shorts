@@ -157,7 +157,7 @@ const apparatus = (): Rig => {
   const pileG = new THREE.SphereGeometry(1, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2);
   const pile = new THREE.Mesh(pileG, MAT.pitch()); pile.position.y = y(BEAKER_Y); base.add(pile);
   const beaker = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.25, 32, 1, true), glassMat(1.0)); beaker.position.y = y(BEAKER_Y + 0.115); beaker.layers.set(NOINK); base.add(beaker);
-  const bfoot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.012, 32), lam("pdGlassFoot", () => ({ color: "#cfdde4" }))); bfoot.position.y = y(BEAKER_Y - 0.004); base.add(bfoot);
+  const bfoot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.012, 32), lam("pdGlassFoot", () => ({ color: "#8e9aa4" }))); bfoot.position.y = y(BEAKER_Y - 0.004); base.add(bfoot);
   const brim = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.005, 6, 32), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); brim.rotation.x = Math.PI / 2; brim.position.y = y(BEAKER_Y + 0.24); base.add(brim);
   // the bell jar over everything
   const jar = new THREE.Group(); base.add(jar);
@@ -336,15 +336,19 @@ export class World {
     shadowAll(this.pot); R.add(this.pot);
     const cam3 = new THREE.Group(); cam3.position.set(...TRIPOD); cam3.rotation.y = Math.atan2(-(APP[0] - TRIPOD[0]), -(APP[2] - TRIPOD[2])); R.add(cam3);
     for (let i = 0; i < 3; i++) { const a = (i / 3) * Math.PI * 2; const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 1.3, 6), MAT.iron()); lg.position.set(0.16 * Math.cos(a), 0.62, 0.16 * Math.sin(a)); lg.rotation.set(0.12 * Math.sin(a), 0, -0.12 * Math.cos(a)); cam3.add(lg); }
-    const body = new THREE.Mesh(boxGeo(V(-0.11, 1.26, -0.08), V(0.11, 1.42, 0.12)), lam("pdCamBody", () => ({ color: "#2f3542" }))); cam3.add(body);
+    const body = new THREE.Mesh(boxGeo(V(-0.11, 1.26, -0.08), V(0.11, 1.42, 0.12)), lam("pdCamBody", () => ({ color: "#3a3e48" }))); cam3.add(body);
     const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.05, 0.09, 16), lam("pdCamLens", () => ({ color: "#1a1c22" }))); lens.rotation.x = Math.PI / 2; lens.position.set(0, 1.34, -0.12); cam3.add(lens);
+    const hood = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.055, 0.06, 16, 1, true), lam("pdCamLens", () => ({ color: "#1a1c22" }))); hood.rotation.x = Math.PI / 2; hood.position.set(0, 1.34, -0.19); cam3.add(hood);
+    const vf = new THREE.Mesh(boxGeo(V(-0.04, 1.42, -0.02), V(0.04, 1.47, 0.14)), lam("pdCamBody", () => ({ color: "#3a3e48" }))); cam3.add(vf);
     this.rec = new THREE.MeshBasicMaterial({ color: new THREE.Color(3, 0.2, 0.15) });
-    const led = new THREE.Mesh(new THREE.SphereGeometry(0.015, 10, 8), this.rec); led.position.set(0.07, 1.4, 0.125); led.layers.set(NOINK); cam3.add(led);
+    const led = new THREE.Mesh(new THREE.SphereGeometry(0.015, 10, 8), this.rec); led.position.set(0.112, 1.39, -0.02); led.layers.set(NOINK); cam3.add(led);
     shadowAll(cam3);
     const wat = new THREE.Group(); wat.position.set(...WATER); R.add(wat);
     const ws = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.6, 6), MAT.brass()); ws.position.set(-0.12, 0.3, 0); wat.add(ws);
     const wa = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.14, 6), MAT.brass()); wa.rotation.z = Math.PI / 2; wa.position.set(-0.05, 0.56, 0); wat.add(wa);
     const wf = new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0.01, 0.36), new THREE.Vector2(0.01, 0.46), new THREE.Vector2(0.022, 0.48), new THREE.Vector2(0.1, 0.6), new THREE.Vector2(0.104, 0.61)], 24), glassMat(1.0)); wf.layers.set(NOINK); wat.add(wf);
+    const wrim = new THREE.Mesh(new THREE.TorusGeometry(0.104, 0.005, 6, 28), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); wrim.rotation.x = Math.PI / 2; wrim.position.y = 0.61; wat.add(wrim);
+    const grim = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.004, 6, 28), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); grim.rotation.x = Math.PI / 2; grim.position.y = 0.2; wat.add(grim);
     const wtop = new THREE.Mesh(new THREE.CircleGeometry(0.092, 24), new THREE.MeshBasicMaterial({ color: "#7cc8f0" })); wtop.rotation.x = -Math.PI / 2; wtop.position.y = 0.59; wat.add(wtop);
     const wglass = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.2, 24, 1, true), glassMat(1.0)); wglass.position.y = 0.1; wglass.layers.set(NOINK); wat.add(wglass);
     const wfill = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.12, 24), new THREE.MeshBasicMaterial({ color: "#6ab8e6" })); wfill.position.y = 0.06; wat.add(wfill);
@@ -354,11 +358,9 @@ export class World {
     shadowAll(hon);
     // Mainstone's cardigan over the chair back, his glasses on the seat (2013)
     const cardi = new THREE.Group(); R.add(cardi);
-    const knit = lam("pdCardigan", () => ({ color: "#5d7a3a" }));
-    const cg = new THREE.Mesh(boxGeo(V(-0.22, 0.78, -0.25), V(0.22, 1.04, -0.18)), knit); cardi.add(cg);
-    for (const sx of [-1, 1]) { const sl = new THREE.CylinderGeometry(0.045, 0.055, 0.5, 10); const m = new THREE.Mesh(sl, knit); m.position.set(sx * 0.27, 0.8, -0.2); m.rotation.z = sx * 0.12; cardi.add(m); }
-    const gl1 = new THREE.Mesh(new THREE.TorusGeometry(0.03, 0.006, 6, 16), lam("pdSpecs", () => ({ color: "#241726" }))); gl1.rotation.x = -Math.PI / 2; gl1.position.set(-0.04, 0.475, 0.05); cardi.add(gl1);
-    const gl2 = gl1.clone(); gl2.position.x = 0.04; cardi.add(gl2);
+    const gl1 = new THREE.Mesh(new THREE.TorusGeometry(0.045, 0.009, 6, 18), lam("pdSpecs", () => ({ color: "#241726" }))); gl1.rotation.x = -Math.PI / 2; gl1.position.set(-0.055, 0.48, 0.05); cardi.add(gl1);
+    const gl2 = gl1.clone(); gl2.position.x = 0.055; cardi.add(gl2);
+    const br = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.03, 6), lam("pdSpecs", () => ({ color: "#241726" }))); br.rotation.z = Math.PI / 2; br.position.set(0, 0.48, 0.05); cardi.add(br);
     cardi.position.set(...CHAIR); shadowAll(cardi);
     this.only = { cam: cam3, water: wat, honey: hon, cardigan: cardi, pot: this.pot };
 
@@ -377,7 +379,6 @@ export class World {
     sb.build(R);
     this.spot = new THREE.MeshBasicMaterial({ color: new THREE.Color(1.3, 1.0, 0.6), transparent: true, opacity: 0.14, depthWrite: false, blending: THREE.AdditiveBlending });
     const pool = new THREE.Mesh(new THREE.CircleGeometry(1.3, 40), this.spot); pool.rotation.x = -Math.PI / 2; pool.position.copy(S(0, STAGE_H + 0.01, 0)); pool.layers.set(NOINK); R.add(pool);
-    const halo = new THREE.Mesh(new THREE.CircleGeometry(2.0, 40), this.spot); halo.position.copy(S(0, STAGE_H + 2.2, -2.85)); halo.layers.set(NOINK); R.add(halo);
   }
 
   /** camera-relative sun, frozen per shot */
