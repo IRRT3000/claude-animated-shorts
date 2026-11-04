@@ -998,10 +998,10 @@ export const audience = (v = 0): Outfit => {
 // ---------------- the slow-organ cast (our own designs) ----------------
 /** John Cage (our cartoon): lean, short grey hair, denim shirt and jeans, a big grin */
 export const CAGE: Outfit = { jacket: "#5b82b8", pants: "#34496e", boots: "#3a2a20", hat: "hair", hair: "#a8a29a", buttons: "#e8e4dc", skin: "#f5d2b0" };
-export const PIANIST: Outfit = { jacket: "#2a2430", pants: "#2a2430", boots: INK, hat: "hair", hair: "#3a2a20", dress: "#2a2430", skin: "#f5c9a0" };
-export const MAYOR: Outfit = { jacket: "#3b3f52", pants: "#2f3542", boots: INK, hat: "hair", hair: "#9a948c", moustache: "#8a847c", sash: "#d6a842", buttons: "#d6a842", build: "stout", skin: "#f5d2b0" };
+export const PIANIST: Outfit = { jacket: "#c0353a", pants: "#c0353a", boots: INK, hat: "hair", hair: "#3a2a20", dress: "#c0353a", skin: "#f5c9a0" };
+export const MAYOR: Outfit = { jacket: "#3b3f52", pants: "#2f3542", boots: INK, hat: "hair", hair: "#2a201a", moustache: "#2a201a", sash: "#e8bc4a", buttons: "#d6a842", build: "stout", skin: "#f5d2b0" };
 /** monks of 1361: brown habit, tonsure (the longhair crown) */
-export const MONK = (v = 0): Outfit => ({ jacket: "#6a4a32", pants: "#6a4a32", boots: "#3a2a20", hat: "longhair", hair: ["#5a3b2a", "#9a948c"][v % 2], dress: "#6a4a32", build: v % 2 ? "stout" : "adult", skin: SKINS[v % 3] });
+export const MONK = (v = 0): Outfit => ({ jacket: "#6a4a32", pants: "#6a4a32", boots: "#3a2a20", hat: "hair", hair: "#5a3b2a", dress: "#6a4a32", build: v % 2 ? "stout" : "adult", skin: SKINS[v % 3] });
 export const WORKER = (v = 0): Outfit => ({ jacket: ["#e07a3a", "#5bab6a"][v % 2], pants: "#3b5b9a", boots: "#3a2a20", hat: "cap", cap: ["#3b5b9a", "#c0353a"][v % 2], apron: v % 2 ? undefined : "#3b5b9a", skin: SKINS[(v + 2) % 4] });
 /** the visitor by age: 0 dark hair, 1 grey, 2 white */
 export const visitor = (age = 0): Outfit => ({ jacket: "#c25a3a", pants: "#3b3f52", boots: "#3a2a20", hat: "hair", hair: ["#4a3426", "#9a948c", "#ece8e2"][age], specs: age > 0, buttons: "#f0c64a", skin: "#f5c9a0" });

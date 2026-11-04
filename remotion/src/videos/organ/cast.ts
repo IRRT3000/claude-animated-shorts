@@ -1,7 +1,7 @@
 // The slow-organ cast as lit flat cards in the 3D world (same machinery as the bridge short: canvas pool, yaw-only
 // billboards shaded by cardShade(), contact blobs, unlit effect cards on the NOINK layer).
 import * as THREE from "three";
-import { Pen, bodyFront, bodySide, CAGE, PIANIST, MAYOR, MONK, WORKER, KID, visitor, audience, pigCard, fxContact, fxShadow, fxNote, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
+import { fxRing, Pen, bodyFront, bodySide, CAGE, PIANIST, MAYOR, MONK, WORKER, KID, visitor, audience, pigCard, fxContact, fxShadow, fxNote, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
 import { fxCalPage, fxBottle, fxAir, fxHandBag, fxZzz, fxCobweb, fxHandSwitch, fxClapMarks, fxSparkle } from "./fx";
 import { FPS, SHOTS, V3, CH, ORG, PIPES, PIPE_Y, KEY_Y, BLOWER, CA, DESK, PIANO, SEATS, VISITOR, TOWN, CHURCH_Z, WEIGHT, SWITCH, ADD_PIPE, FIRST_NOTE,
   calendarAt, visitorAge, bellowsAt, sounding, pipeCount, smooth, clamp01, add } from "./story";
@@ -262,13 +262,13 @@ const notes = (out: Stage, f: number, from: V3[], col = "#1f2a44", size = 0.16, 
     }
   });
 };
-const pipeTops = (n: number, k = 3): V3[] => PIPES.slice(0, n).filter((_, i) => i % k === 1).map(([x, h]) => add(ORG, [x, PIPE_Y + 0.12 + h, -0.05]));
+const pipeTops = (n: number, k = 3): V3[] => PIPES.slice(0, Math.min(n, 7)).filter((_, i) => k === 1 || i % k === 1).map(([x, h]) => add(ORG, [x, PIPE_Y + 0.12 + h, -0.05]));
 const organNotes = (out: Stage, id: number, f: number) => { if (sounding(id, f)) notes(out, f, pipeTops(pipeCount(id, f), 2), "#1f2a44", 0.15); };
 /** a calendar page tearing off whenever the page index steps (8 f flight), on the church's right wall */
 const calendar = (out: Stage, id: number, f: number) => {
   for (let k = 1; k <= 12; k++) if (calendarAt(id, f - k) < calendarAt(id, f - k + 1)) {
     const u = q(k / 12, 12), s2 = (k * 7) % 3 - 1;
-    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), CH[0] + 4.85 - 0.35 * u, 2.3 + 0.25 * u - 0.2 * u * u, CH[2] - 7.6 + 0.55 * u + 0.12 * s2, 0.75, 0.75);
+    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), CH[0] - 1.6 + 0.5 * u + 0.12 * s2, 2.4 + 0.25 * u - 0.2 * u * u, CH[2] - 13.9 + 0.5 * u, 0.75, 0.75);
   }
 };
 const pig = (out: Stage, cam: CamInfo, i: number, p: V3, dx: number, f: number, f0: number) => {
@@ -290,7 +290,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
   const council = (react: boolean, clap: boolean) => {
     const g: [Who, V3][] = [[WHO.folk[0], T(-1.5, 0.04, -18.6)], [WHO.folk[1], T(1.4, 0.04, -18.8)], [WHO.folk[2], T(0.7, 0.04, -19.8)], [WHO.folk[3], T(-0.6, 0.04, -20.0)]];
     for (const [w, p] of g) stand(out, cam, w, p, { expr: react ? "grin" : "smile", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 14), 6) : undefined, look: p[0] < 0 ? 1 : -1 }, t);
-    stand(out, cam, WHO.mayor, T(0, 0.04, -18.0), { expr: react ? "laugh" : "stern", wave: react ? q(0.6 + 0.3 * smooth((f - 431) / 6), 10) : undefined, headTilt: clap ? q(6 * Math.sin(t * 9), 3) : 0 }, t);
+    stand(out, cam, WHO.mayor, T(0, 0.04, -18.0), { expr: react ? "laugh" : "stern", wave: react ? q(0.7 + 0.3 * smooth((f - 431) / 6), 10) : undefined, headTilt: clap ? q(6 * Math.sin(t * 9), 3) : 0 }, t);
     const hp = add(T(0, 0.04, -18.0), [cam.right.x * 0.62, 1.15, cam.right.z * 0.62 + 0.05]);
     push(out, "scoreCard", 300, 400, (p) => { p.poly([[30, 30], [270, 40], [262, 370], [24, 360]], "#f6efdc", 9); for (let r2 = 0; r2 < 3; r2++) for (let l = 0; l < 5; l++) p.stroke([[48, 80 + r2 * 100 + l * 12], [252, 84 + r2 * 100 + l * 12]], 3, "#5a5060"); }, hp[0], hp[1], hp[2], 0.34, 0.45);
   };
@@ -309,7 +309,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 3: {
       const big = f >= 231, shrug = f >= 284 ? q(smooth((f - 284) / 10), 10) : 0;
-      sitAt(out, cam, WHO.cage, add(DESK, [0, 0, -0.42]), { expr: f >= 284 ? "grin" : big ? "smile_closed" : "smile", shrug, look: f < 231 ? 0 : 1 }, t, 0.1);
+      if (f < 270) sitAt(out, cam, WHO.cage, add(DESK, [0, 0, -0.42]), { expr: big ? "smile_closed" : "smile", look: f < 231 ? 0 : 1 }, t, 0.1);
+      else stand(out, cam, WHO.cage, add(DESK, [0, 0, -0.3]), { expr: f >= 284 ? "grin" : "smile_closed", shrug }, t, 1, false);
       break;
     }
     case 4: {
@@ -318,10 +319,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 5: council(f >= 431, false); break;
-    case 7: council(false, f >= 683); break;
+    case 7: council(false, true); if (f >= 656) push(out, `claps${q((t * 2) % 1, 8)}`, 400, 300, (p) => fxClapMarks(p, (t * 2) % 1), TOWN[0], 2.0, TOWN[2] - 18.6, 2.4, 1.8); break;
     case 6: {
       for (let k = 0; k < 2; k++) {
-        const bp = add(CA, [-2.4 - k * 1.25, 0, -4.3]), top = 0.25 + 0.3 * bellowsAt(f, k);
+        const bp = add(CA, [-2.4 - k * 1.25, 0, -4.3]), top = 0.2 + 0.5 * bellowsAt(f, k);
         out.places.push(person(cam, WHO.monk[k], bp[0], top, bp[2] + 0.1, FRONT, { mode: "stand", expr: k ? "whistle" : "neutral", blink: lidAt(t, WHO.monk[k].i), tilt: q(4 * (bellowsAt(f, k) - 0.5), 4) }, {}, 1));
       }
       notes(out, f, [add(CA, [-1.8, 7.5, -5.8]), add(CA, [0, 8.4, -5.6]), add(CA, [1.9, 7.5, -5.8])], "#f0d890", 0.45);
@@ -335,8 +336,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 9: {
       if (f < 958) {
         stand(out, cam, WHO.worker[0], O(0.78, 0, 0.8), { expr: f >= 884 ? "grin" : "smile", look: -1 }, t);
-        stand(out, cam, WHO.worker[1], add(BLOWER, [0.12, 0, 0.75]), { expr: f >= SWITCH ? "relief_open" : "neutral", look: 1 }, t);
-        if (f >= 910 && f < 936) { const k = q(smooth((f - 912) / 12), 8); push(out, `switch${k}`, 300, 400, (p) => fxHandSwitch(p, k), BLOWER[0] - 0.12, 0.92 - 0.0, BLOWER[2] + 0.3, 0.3, 0.4); }
+        stand(out, cam, WHO.worker[1], add(BLOWER, [-0.5, 0, 0.5]), { expr: f >= SWITCH ? "relief_open" : "neutral", look: 1 }, t);
+        if (f >= 910 && f < 936) { const k = q(smooth((f - 912) / 12), 8); push(out, `switch${k}`, 300, 400, (p) => fxHandSwitch(p, k), BLOWER[0] - 0.08, 0.98, BLOWER[2] + 0.4, 0.42, 0.56); }
         if (f >= SWITCH && f < SWITCH + 6) { const u = q((f - SWITCH) / 6, 6); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), BLOWER[0] + 0.18, 0.56, BLOWER[2] + 0.3, 0.22, 0.22); }
         if (f >= 940) notes(out, f, pipeTops(7, 3), "#1f2a44", 0.15);
       } else {
@@ -375,7 +376,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 13: {
       const clap = f >= 1454;
-      for (let k = 0; k < SEATS.length; k++) if (k % 5 !== 4) sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: clap ? (k % 2 ? "laugh" : "grin") : k % 3 ? "smile" : "smile_closed", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 16 + k), 6) : undefined }, t);
+      for (let k = 0; k < SEATS.length; k++) sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: clap ? (k % 2 ? "laugh" : "grin") : k % 3 ? "smile" : "smile_closed", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 16 + k), 6) : undefined }, t);
       for (const [k, p] of [[20, Ch(-4.3, 0.02, -2)], [21, Ch(-4.3, 0.02, 0.5)], [22, Ch(4.3, 0.02, -1)], [23, Ch(4.2, 0.02, 1.8)], [24, Ch(-4.2, 0.02, 3)]] as const)
         stand(out, cam, WHO.folk[k], p, { expr: clap ? "grin" : "smile", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 15 + k), 6) : undefined }, t);
       stand(out, cam, WHO.worker[0], O(0.95, 0, 0.6), { expr: f >= ADD_PIPE ? "grin" : "smile", look: -1, wave: f >= 1426 && f < ADD_PIPE ? 0.9 : undefined }, t);
@@ -391,14 +392,17 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 17: {
       const sleep = f >= 1944 && f < FIRST_NOTE, woke = f >= FIRST_NOTE;
-      for (let k = 0; k < SEATS.length; k++) if (k % 4 !== 3) {
+      for (let k = 0; k < SEATS.length; k++) {
         const e: Expr = woke ? "shock" : sleep ? "neutral" : f >= 1886 ? (k % 2 ? "nervous" : "neutral") : "smile";
         sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: e, blink: sleep ? 1 : undefined, headTilt: sleep ? (k % 2 ? 12 : -12) : 0, look: f >= 1886 && f < 1944 ? (k % 2 ? 1 : -1) : 0 }, t);
       }
       if (sleep) for (const k of [0, 8, 13]) { const sp = SEATS[k]; push(out, `zzz${q((t * 0.8 + k * 0.3) % 1, 12)}`, 300, 300, (p) => fxZzz(p, (t * 0.8 + k * 0.3) % 1), sp[0] + 0.25, 1.95, sp[2] + 0.2, 0.45, 0.45); }
       if (f >= 1940) push(out, "web", 400, 400, fxCobweb, ORG[0] - 0.72, PIPE_Y, ORG[2] + 0.31, 0.4, 0.4, { soft: true });
       calendar(out, id, f);
-      if (woke) notes(out, f, pipeTops(2, 1), "#1f2a44", 0.2, 0.7);
+      if (woke) {
+        notes(out, f, pipeTops(8, 1), "#1f2a44", 0.22, 0.7);
+        if (f < FIRST_NOTE + 14) { const u = q((f - FIRST_NOTE) / 14, 14); push(out, `ring${u}`, 600, 600, (p) => fxRing(p, u), ORG[0], PIPE_Y + 0.6, ORG[2] + 0.4, 2.2, 2.2, { soft: true }); }
+      }
       break;
     }
   }

@@ -164,7 +164,7 @@ const S1a = (f: number) => zoom(T(-13, 2.2, 22), T(0, 7, -26), 46, pushK(f, 0, 0
 const S2a = (f: number) => dolly(O(0.75, 1.75, 2.6), O(0, 1.55, 0), pushK(f, 56, 0.003, 0.006, 24), { fov: 40, roll: 0.03 });  // "an organ": the pipes sing
 const S2b = (f: number) => dolly(Ch(-1.6, 3.0, 2.6), O(-0.3, 1.3, 0), pushK(f, 120, 0.0016), { fov: 44 });                      // the whole church: until 2640
 const S3a = (f: number) => dolly(add(DESK, [0.6, 1.5, 2.6]), add(CAGE_EYE, [0, -0.2, 0]), pushK(f, 180, 0.0022), { fov: 40 });  // Cage at his desk
-const S3b = (f: number) => dolly(add(DESK, [0.25, 1.55, 1.85]), add(CAGE_EYE, [0, -0.05, 0]), pushK(f, 270, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // never said how slow
+const S3b = (f: number) => dolly(add(DESK, [0.25, 1.75, 2.3]), add(CAGE_EYE, [0, 0.12, 0]), pushK(f, 270, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // never said how slow
 const S4a = (f: number) => dolly(Su(-0.6, 1.7, 3.0), Su(1.1, 1.5, -1.6), pushK(f, 320, 0.0024), { fov: 44 });                 // piano + the clock: an hour
 const S5a = (f: number) => dolly(T(3.2, 1.7, -12), T(0, 1.4, -18), pushK(f, 384, 0.0024, 0.006, 24), { fov: 42 });             // the council on the square
 const S6a = (f: number) => dolly(Ca(-4.6, 2.2, 5.4), Ca(-1.3, 3.4, -5), pushK(f, 456, 0.0018), { fov: 46 });                       // 1361: the great organ
@@ -173,23 +173,23 @@ const S6c = (f: number) => zoom(Ca(2.6, 1.8, 6), Ca(0, 4, -5.5), 48, pushK(f, 55
 const S7a = (f: number) => dolly(T(-2.6, 1.6, -13), T(0, 1.4, -18), pushK(f, 646, 0.0026, 0.007, 24), { fov: 40, roll: -0.03 }); // that's how long
 const S8a = (f: number) => zoom(T(15, 1.8, 2), T(0, 7.5, -36), 50, pushK(f, 710, 0.0018));                                       // the old church
 const S8b = (f: number) => dolly(Ch(-1.2, 1.5, 1.2), Ch(0.3, 0.8, -4.0), pushK(f, 798, 0.0024, 0.007, 24), { fov: 44 });          // a barn ... a pigsty
-const S9a = (f: number) => dolly(O(-0.5, 1.7, 5.0), O(-0.15, 1.15, 0), pushK(f, 856, 0.0022), { fov: 46 });                       // the tiny organ, the blower
+const S9a = (f: number) => dolly(O(-0.45, 1.75, 5.6), O(-0.25, 1.15, 0), pushK(f, 856, 0.0022), { fov: 50 });                       // the tiny organ, the blower
 const S9b = (f: number) => dolly(O(0.25, 1.32, 1.05), O(0.05, KEY_Y + 0.05, 0.3), pushK(f, 958, 0.003, 0.007, 24), { fov: 40, roll: 0.035 }); // weights on the keys
 const S10a = (f: number) => dolly(O(-1.7, 1.5, 3.5), O(-1.9, 1.32, 1.6), pushK(f, 1012, 0.0028), { fov: 40 });                  // blowing across a bottle
 const S10b = (f: number) => dolly(O(0.2, 2.0, 1.25), O(-0.08, 2.05, 0), pushK(f, 1078, 0.003, 0.006, 24), { fov: 40, roll: -0.03 }); // air flows, never stops
 const S11a = (f: number) => dolly(Ch(-3.6, 2.2, 4.8), O(-0.6, 1.3, 0), pushK(f, 1144, 0.0016), { fov: 44 });                    // 2,527 days time-lapse
 const S11b = (f: number) => dolly(O(1.9, 1.8, 2.9), O(0.4, 1.7, -0.2), pushK(f, 1236, 0.003, 0.007, 24), { fov: 42, roll: 0.03 }); // "days"
 const S12a = (f: number) => dolly(Ch(1.6, 2.3, -6.6), Ch(-0.2, 1.4, 6), pushK(f, 1265, 0.0022, 0.006, 24), { fov: 46 });          // the doors open: the crowd pours in
-const S13a = (f: number) => dolly(Ch(-3.2, 2.0, 2.4), O(-0.4, 1.3, 0), pushK(f, 1328, 0.0018), { fov: 46 });                    // packed
-const S13b = (f: number) => dolly(O(0.6, 1.9, 1.7), O(0.3, 1.75, 0), pushK(f, 1424, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // the eighth pipe
+const S13a = (f: number) => dolly(O(1.3, 2.0, 0.9), Ch(-0.4, 1.0, -1.0), pushK(f, 1328, 0.0018), { fov: 48 });                    // packed
+const S13b = (f: number) => dolly(O(0.15, 1.85, 2.4), O(0.0, 1.75, 0), pushK(f, 1424, 0.003, 0.007, 24), { fov: 40, roll: -0.035 }); // the eighth pipe
 const S14a = (f: number) => zoom(T(-9, 22, -50), T(0, 0, 30), 46, pushK(f, 1466, 0.0012));                                      // the long score: 4 %
-const S14b = (f: number) => dolly(T(4.6, 1.3, 19.5), T(0.7, 0.75, 14), pushK(f, 1524, 0.003, 0.006, 24), { fov: 40, roll: 0.03 });  // the little flag at 4 %
+const S14b = (f: number) => dolly(T(2.1, 0.9, 18.2), T(0.2, 1.7, -10), pushK(f, 1524, 0.003, 0.006, 24), { fov: 40, roll: 0.03 });  // the little flag at 4 %
 const S15a = (f: number) => dolly(add(VISITOR, [0.4, 1.45, 2.1]), add(VIS_EYE, [0, -0.08, 0]), pushK(f, 1563, 0.0024), { fov: 40 }); // luckily
 const S15b = (f: number) => dolly(add(VISITOR, [-1.6, 1.7, 3.6]), add(VISITOR, [0.6, 1.1, -1.6]), pushK(f, 1613, 0.0018, 0.005, 24), { fov: 44 }); // unluckily: he ages
 const S16a = (f: number) => dolly(add(DESK, [-0.1, 1.12, 0.52]), add(DESK, [-0.2, 0.785, 0.19]), pushK(f, 1710, 0.0026, 0.008, 24), { fov: 38, roll: -0.03 }); // the score's first mark: a rest
-const S17a = (f: number) => dolly(Ch(2.6, 1.8, 4.6), O(-0.6, 1.2, 0), pushK(f, 1791, 0.0018), { fov: 44 });                     // 2001: everyone waits
+const S17a = (f: number) => dolly(O(-0.15, 1.75, -0.7), Ch(-0.2, 1.0, -1.0), pushK(f, 1791, 0.0018), { fov: 48 });                     // 2001: everyone waits
 const S17b = (f: number) => dolly(add(SEATS[2], [0.25, 1.4, -1.8]), add(SEATS[2], [0, 1.3, 0.14]), pushK(f, 1904, 0.0024, 0.006, 24), { fov: 42, roll: 0.03 }); // nothing
-const S17c = (f: number) => dolly(Ch(-2.6, 2.0, 4.8), O(-0.5, 1.2, 0), pushK(f, 1926, 0.0016, 0.006, 20), { fov: 44 });           // 17 months... the first note
+const S17c = (f: number) => dolly(O(0.25, 1.8, -0.6), Ch(0.0, 1.0, -1.2), pushK(f, 1926, 0.0016, 0.006, 20), { fov: 48 });           // 17 months... the first note
 
 const CAMS: Record<number, Key[]> = {
   1: [{ f: 0, s: S1a }],
@@ -255,16 +255,16 @@ export const DOF: Dof[] = [
   { f: 1144, cInf: 5 },
   { f: 1236, cInf: 11 },
   { f: 1265, cInf: 5 },
-  { f: 1328, cInf: 6 },
+  { f: 1328, cInf: 6, focus: () => Ch(-0.4, 1.3, -3.9) },
   { f: 1424, cInf: 13 },
   { f: 1466, cInf: 0 },
-  { f: 1524, cInf: 12 },
+  { f: 1524, cInf: 9, focus: () => T(0.95, 1.6, 14) },
   { f: 1563, cInf: 13, focus: () => VIS_EYE },
   { f: 1613, cInf: 8, focus: () => VIS_EYE },
   { f: 1710, cInf: 15 },
-  { f: 1791, cInf: 5 },
+  { f: 1791, cInf: 7, focus: () => Ch(-0.2, 1.3, -4.6) },
   { f: 1904, cInf: 12, focus: () => add(SEATS[2], [0, 1.4, 0.14]) },
-  { f: 1926, cInf: 5 },
+  { f: 1926, cInf: 7, focus: () => Ch(0, 1.3, -4.6) },
 ];
 export const dofAt = (f: number) => {
   let i = 0; while (i + 1 < DOF.length && f >= DOF[i + 1].f) i++;

@@ -157,6 +157,8 @@ const tinyOrgan = (): Organ => {
     const mouth = new THREE.Mesh(boxGeo(V(-0.02, 0.15, 0.036), V(0.02, 0.18, 0.047)), lam("orMouth", () => ({ color: "#3a3446" }))); pm.add(mouth);
     pm.position.set(x, PIPE_Y, -0.05); add(pm); pipes.push(pm);
   });
+  const GOLD = new THREE.MeshPhongMaterial({ color: "#e2b04a", specular: "#fff4c0", shininess: 50, emissive: "#3a2a08" });
+  pipes[7].material = GOLD; (pipes[7].children[0] as THREE.Mesh).material = GOLD;
   const bags = new THREE.Group();
   for (const x of [-0.3, -0.06, 0.22]) {
     const bg = new THREE.Mesh(new THREE.SphereGeometry(0.06, 14, 10), MAT.sand()); bg.scale.set(1.15, 0.6, 1); bg.position.set(x, KEY_Y + 0.03, 0.44); bags.add(bg);
@@ -263,12 +265,12 @@ export class World {
     b.build(R);
     setSight([]);
     // the long score (shot 14): a paper strip from the church door down the road; a little red flag at 4 %
-    this.ribbonTex = scoreTex("orRibbon", 1024, 256, 1, false, 7).clone(); this.ribbonTex.needsUpdate = true;
-    this.ribbon = new THREE.Mesh(new THREE.PlaneGeometry(3.0, 1), lam("orRibbonM", () => ({ map: this.ribbonTex, side: THREE.DoubleSide })));
+    this.ribbonTex = scoreTex("orRibbon", 512, 256, 1, false, 4).clone(); this.ribbonTex.needsUpdate = true;
+    this.ribbon = new THREE.Mesh(new THREE.PlaneGeometry(5.0, 1), lam("orRibbonM", () => ({ map: this.ribbonTex, side: THREE.DoubleSide })));
     this.ribbon.rotation.x = -Math.PI / 2; this.ribbon.receiveShadow = true; R.add(this.ribbon);
     const flag = new THREE.Group(); flag.position.set(0.95, 0, Z0 + 38); R.add(flag);
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.3, 8), MAT.woodD()); pole.position.y = 0.65; flag.add(pole);
-    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(0.42, 0.28), lam("orFlag", () => ({ color: "#d23a3a", side: THREE.DoubleSide }))); cloth.position.set(0.22, 1.15, 0); flag.add(cloth);
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.6, 8), MAT.woodD()); pole.position.y = 1.3; flag.add(pole);
+    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.8), new THREE.MeshBasicMaterial({ color: "#e0302a", side: THREE.DoubleSide })); cloth.position.set(0.62, 2.2, 0); flag.add(cloth);
     shadowAll(flag);
     this.only.ribbon = this.ribbon; this.only.flag = flag;
 
@@ -297,7 +299,7 @@ export class World {
     for (const sx of [-1, 1]) for (const z of [-9, -3, 3]) { const w = new THREE.Mesh(archShape(1.1, 2.6), this.windows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(C(sx * 4.97, 5.3, z)); R.add(w); }
     const aw = new THREE.Mesh(archShape(1.0, 2.2), this.windows); aw.position.copy(C(0, 5.0, -13.96)); R.add(aw);
     // calendar on the right wall near the organ
-    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("orCalM", () => ({ map: calTex() }))); cal.rotation.y = -Math.PI / 2; cal.position.copy(C(4.96, 2.3, -7.6)); R.add(cal);
+    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("orCalM", () => ({ map: calTex() }))); cal.position.copy(C(-1.6, 2.4, -13.95)); R.add(cal);
     // the organ
     this.organ = tinyOrgan(); this.organ.root.position.set(...ORG); R.add(this.organ.root);
     // chairs: rows facing the organ (-z)
@@ -344,6 +346,7 @@ export class World {
     // pointed windows (deep blue night) and candles
     this.cWindows = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.25, 0.3, 0.7), side: THREE.DoubleSide });
     for (const sx of [-1, 1]) for (const z of [0, 6]) { const w = new THREE.Mesh(pointShape(1.4, 4.2), this.cWindows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(K(sx * 7.97, 5.5, z)); R.add(w); }
+    for (const x of [-5.6, 5.6]) { const w = new THREE.Mesh(pointShape(1.3, 4.6), this.cWindows); w.position.copy(K(x, 4.0, -6.97)); R.add(w); }
     this.flames = new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.0, 0.7) });
     const cand = new Batch();
     for (const [x, z] of [[-4.6, -4.2], [4.6, -4.2], [-4.6, 1.5], [4.6, 1.5], [-1.9, -4.8], [1.9, -4.8]] as const) {
@@ -354,7 +357,7 @@ export class World {
     cand.build(R);
     // the bellows the monks tread: three wedge boxes beside the organ
     for (let i = 0; i < 2; i++) {
-      const bm = new THREE.Mesh(boxGeo(V(-0.55, 0, -0.4), V(0.55, 1, 0.4)), lam("orBellows", () => ({ color: "#8a5a34" })));
+      const bm = new THREE.Mesh(boxGeo(V(-0.55, 0, -0.4), V(0.55, 1, 0.4)), lam("orBellows", () => ({ map: ctex("orPleats", 128, 256, (g) => { g.fillStyle = "#8a5a34"; g.fillRect(0, 0, 128, 256); g.fillStyle = "#5a3820"; for (let y = 0; y < 256; y += 32) g.fillRect(0, y, 128, 10); g.fillStyle = "#6a4430"; g.fillRect(0, 226, 128, 30); }) })));
       bm.position.copy(K(-2.4 - i * 1.25 + 0.0, 0, -4.4)); shadowAll(bm); R.add(bm); this.bellows.push(bm);
     }
 
@@ -470,7 +473,8 @@ export class World {
     const dusk = s.light === "dusk";
     if (dusk) this.windows.color.setRGB(0.6 + 1.8 * wl, 0.4 + 1.1 * wl, 0.35 + 0.45 * wl);
     else this.windows.color.setRGB(0.25 + 1.95 * wl, 0.3 + 1.7 * wl, 0.5 + 1.1 * wl);
-    this.cWindows.color.setRGB(0.2 + 1.8 * (1 - wl) * (id === 6 && f >= 560 ? 1 : 0) + 0.05, 0.25 + 1.6 * (1 - wl) * (id === 6 && f >= 560 ? 1 : 0), 0.65 + 0.8 * (1 - wl) * (id === 6 && f >= 560 ? 1 : 0));
+    const dk = id === 6 && f >= 560 ? wl : 0.1;
+    this.cWindows.color.setRGB(0.22 + 2.0 * dk, 0.26 + 1.75 * dk, 0.7 + 0.9 * dk);
     const fk = 1 + 0.15 * Math.sin(t * 19) + 0.1 * Math.sin(t * 31);
     this.flames.color.setRGB(3.2 * fk, 2.0 * fk, 0.7 * fk);
     const mins = clockMin(id, f);
@@ -499,7 +503,7 @@ export class World {
       this.ribbonTex.repeat.set(1, len / 10);
       this.ribbon.rotation.set(-Math.PI / 2, 0, 0);
     }
-    this.bellows.forEach((bm, i) => { bm.scale.y = id === 6 ? 0.25 + 0.3 * bellowsAt(f, i) : 0.4; });
+    this.bellows.forEach((bm, i) => { bm.scale.y = id === 6 ? 0.2 + 0.5 * bellowsAt(f, i) : 0.4; });
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
     const st = stage(id, f, { pos: cam.position, right, sun: sunDir });

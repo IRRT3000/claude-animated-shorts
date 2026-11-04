@@ -271,20 +271,22 @@ export const fxArm = (p: Pen, side: number) => {
 // ---------------- the slow-organ effects (our own designs) ----------------
 /** a kid's lips at a green glass bottle, air lines skimming across the mouth, on a 500 x 600 canvas; t 0..1 loops */
 export const fxBottle = (p: Pen, t: number) => {
-  const G = "#4f9a6a", GH = "#bfe8c8";
+  const G = "#c98a2a", GH = "#f6d79a";
   p.poly([[205, 140], [255, 140], [255, 230], [320, 300], [320, 590], [140, 590], [140, 300], [205, 230]], G, 9);
   p.stroke([[170, 320], [170, 560]], 12, GH);
   p.poly([[198, 128], [262, 128], [262, 146], [198, 146]], "#3f7a54", 7);
-  for (let k = 0; k < 3; k++) {
-    const u = (t + k / 3) % 1, x0 = 20 + 380 * u;
-    p.stroke([[x0, 112 + k * 8], [x0 + 90, 104 + k * 8]], 7, "#ffffff");
+  p.ell(230, 430, 105, 62, "#f5c9a0", 9);                                     // the hand holding it
+  for (let k = 0; k < 3; k++) p.stroke([[150 + 4 * k, 405 + 22 * k], [222, 410 + 22 * k]], 6, "#241726");
+  for (let k = 0; k < 3; k++) {                                                // a curved airstream over the mouth
+    const u = (t + k / 3) % 1, x0 = 10 + 330 * u;
+    p.stroke([[x0, 70 + k * 10], [x0 + 60, 95 + k * 8], [x0 + 120, 112 + k * 6]], 7, "#ffffff");
   }
 };
 /** air rising up an organ pipe's mouth and out of its top: white wisps on a 200 x 700 canvas; t loops */
 export const fxAir = (p: Pen, t: number) => {
   for (let k = 0; k < 4; k++) {
     const u = (t + k / 4) % 1, y = 660 - 640 * u, x = 100 + 26 * Math.sin(u * 9 + k);
-    p.stroke([[x, y + 50], [x + 8, y + 25], [x - 4, y]], 9, "#ffffff");
+    p.stroke([[x - 30, y + 30], [x, y], [x + 30, y + 30]], 10, "#ffffff");
   }
 };
 /** a hand from screen top lowering a little sandbag onto a key, 300 x 700 canvas; k 0 high .. 1 placed (sleeve colour) */
@@ -299,9 +301,10 @@ export const fxHandBag = (p: Pen, k: number, sleeve = "#5bab6a") => {
 };
 /** "Z z z" of a sleeper drawn as three bubbles of shrinking zig-zags (no letters read at this size), 300 x 300; t loops */
 export const fxZzz = (p: Pen, t: number) => {
-  for (let k = 0; k < 3; k++) {
-    const u = (t + k / 3) % 1, s = 18 + 26 * u, x = 80 + 140 * u, y = 240 - 200 * u;
-    p.stroke([[x - s, y - s], [x + s, y - s], [x - s, y + s], [x + s, y + s]], 7, "#f4f1ea");
+  for (let k = 0; k < 3; k++) {                       // snore bubbles drifting up and swelling
+    const u = (t + k / 3) % 1, s = 12 + 34 * u, x = 90 + 120 * u, y = 250 - 200 * u;
+    p.ell(x, y, s, s, null, 7);
+    p.arc(x - s * 0.3, y - s * 0.3, s * 0.4, s * 0.4, 200, 280, 5, "#ffffff");
   }
 };
 /** a cobweb in a corner, 400 x 400 */
