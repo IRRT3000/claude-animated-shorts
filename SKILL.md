@@ -160,6 +160,8 @@ lighting 5-6, ink 6, textures 5-6, characters 7, depth 6-7, composition 6-7 (fro
 - The horizontal half-angle at fov 40 in 9:16 is only ~12 deg: at 2.5 m the frame is ~1.1 m wide. Aim inserts at the prop itself, not at the character.
 - A front-view card's hand (stout build) sits ~0.66 m to camera-right and ~1.12 m above the soles: place props, drops and streams from `pos + right * 0.66, y + 1.12`.
 - To see a hand prop AND the water below it in one insert, put the lens low (~0.9 m) at ~2.5 m with fov ~46.
+- A camera parked just behind a foreground prop must use `zoom()`, not `dolly()`: the dolly push walks the lens through the prop (the 2001 crowd shot went through the organ pipes).
+- Cards always face the camera, so a seated audience shot from behind looks like it faces away from the stage: shoot crowds from the stage side (past soft foreground props) and give chairs no backrests.
 - Render a 16-30 still contact sheet (`remotion/scripts/sheet.py`) after every camera change; most early mistakes were framing, not look.
 
 ## Cloud container (Linux, no GPU) notes
