@@ -1,0 +1,1042 @@
+[
+ {
+  "word": "In",
+  "start": 0.31,
+  "end": 0.39
+ },
+ {
+  "word": "nineteen",
+  "start": 0.39,
+  "end": 0.82
+ },
+ {
+  "word": "twenty-",
+  "start": 0.82,
+  "end": 1.12
+ },
+ {
+  "word": "seven,",
+  "start": 1.12,
+  "end": 1.51
+ },
+ {
+  "word": "a",
+  "start": 1.82,
+  "end": 1.87
+ },
+ {
+  "word": "professor",
+  "start": 1.87,
+  "end": 2.31
+ },
+ {
+  "word": "started",
+  "start": 2.31,
+  "end": 2.69
+ },
+ {
+  "word": "an",
+  "start": 2.69,
+  "end": 2.75
+ },
+ {
+  "word": "experiment",
+  "start": 2.75,
+  "end": 3.38
+ },
+ {
+  "word": "that",
+  "start": 3.38,
+  "end": 3.54
+ },
+ {
+  "word": "nobody",
+  "start": 3.54,
+  "end": 4.01
+ },
+ {
+  "word": "has",
+  "start": 4.01,
+  "end": 4.22
+ },
+ {
+  "word": "ever",
+  "start": 4.22,
+  "end": 4.43
+ },
+ {
+  "word": "seen",
+  "start": 4.43,
+  "end": 4.74
+ },
+ {
+  "word": "happen.",
+  "start": 4.74,
+  "end": 5.1
+ },
+ {
+  "word": "Thomas",
+  "start": 5.437,
+  "end": 5.817
+ },
+ {
+  "word": "Parnell",
+  "start": 5.817,
+  "end": 6.257
+ },
+ {
+  "word": "wanted",
+  "start": 6.257,
+  "end": 6.637
+ },
+ {
+  "word": "to",
+  "start": 6.637,
+  "end": 6.697
+ },
+ {
+  "word": "prove",
+  "start": 6.697,
+  "end": 6.957
+ },
+ {
+  "word": "that",
+  "start": 6.957,
+  "end": 7.107
+ },
+ {
+  "word": "something",
+  "start": 7.107,
+  "end": 7.447
+ },
+ {
+  "word": "solid",
+  "start": 7.447,
+  "end": 7.907
+ },
+ {
+  "word": "could",
+  "start": 7.907,
+  "end": 8.117
+ },
+ {
+  "word": "secretly",
+  "start": 8.117,
+  "end": 8.677
+ },
+ {
+  "word": "be",
+  "start": 8.677,
+  "end": 8.837
+ },
+ {
+  "word": "a",
+  "start": 8.837,
+  "end": 8.877
+ },
+ {
+  "word": "liquid.",
+  "start": 8.877,
+  "end": 9.327
+ },
+ {
+  "word": "So",
+  "start": 9.893,
+  "end": 10.023
+ },
+ {
+  "word": "he",
+  "start": 10.023,
+  "end": 10.093
+ },
+ {
+  "word": "took",
+  "start": 10.093,
+  "end": 10.293
+ },
+ {
+  "word": "pitch,",
+  "start": 10.293,
+  "end": 10.713
+ },
+ {
+  "word": "a",
+  "start": 11.013,
+  "end": 11.093
+ },
+ {
+  "word": "tar",
+  "start": 11.093,
+  "end": 11.403
+ },
+ {
+  "word": "so",
+  "start": 11.403,
+  "end": 11.683
+ },
+ {
+  "word": "hard",
+  "start": 11.683,
+  "end": 11.993
+ },
+ {
+  "word": "it",
+  "start": 11.993,
+  "end": 12.103
+ },
+ {
+  "word": "shatters",
+  "start": 12.103,
+  "end": 12.493
+ },
+ {
+  "word": "like",
+  "start": 12.493,
+  "end": 12.653
+ },
+ {
+  "word": "glass",
+  "start": 12.653,
+  "end": 13.073
+ },
+ {
+  "word": "under",
+  "start": 13.073,
+  "end": 13.283
+ },
+ {
+  "word": "a",
+  "start": 13.283,
+  "end": 13.313
+ },
+ {
+  "word": "hammer.",
+  "start": 13.313,
+  "end": 13.743
+ },
+ {
+  "word": "He",
+  "start": 14.121,
+  "end": 14.221
+ },
+ {
+  "word": "melted",
+  "start": 14.221,
+  "end": 14.591
+ },
+ {
+  "word": "it",
+  "start": 14.591,
+  "end": 14.671
+ },
+ {
+  "word": "into",
+  "start": 14.671,
+  "end": 14.931
+ },
+ {
+  "word": "a",
+  "start": 14.931,
+  "end": 14.961
+ },
+ {
+  "word": "funnel,",
+  "start": 14.961,
+  "end": 15.491
+ },
+ {
+  "word": "and",
+  "start": 15.731,
+  "end": 15.881
+ },
+ {
+  "word": "waited",
+  "start": 15.881,
+  "end": 16.231
+ },
+ {
+  "word": "three",
+  "start": 16.231,
+  "end": 16.441
+ },
+ {
+  "word": "years",
+  "start": 16.441,
+  "end": 16.761
+ },
+ {
+  "word": "for",
+  "start": 16.761,
+  "end": 16.901
+ },
+ {
+  "word": "it",
+  "start": 16.901,
+  "end": 16.971
+ },
+ {
+  "word": "to",
+  "start": 16.971,
+  "end": 17.061
+ },
+ {
+  "word": "settle.",
+  "start": 17.061,
+  "end": 17.501
+ },
+ {
+  "word": "Then",
+  "start": 17.797,
+  "end": 17.967
+ },
+ {
+  "word": "he",
+  "start": 17.967,
+  "end": 18.047
+ },
+ {
+  "word": "cut",
+  "start": 18.047,
+  "end": 18.257
+ },
+ {
+  "word": "the",
+  "start": 18.257,
+  "end": 18.327
+ },
+ {
+  "word": "bottom",
+  "start": 18.327,
+  "end": 18.737
+ },
+ {
+  "word": "open.",
+  "start": 18.737,
+  "end": 19.117
+ },
+ {
+  "word": "And",
+  "start": 19.117,
+  "end": 19.447
+ },
+ {
+  "word": "waited.",
+  "start": 19.447,
+  "end": 19.867
+ },
+ {
+  "word": "Eight",
+  "start": 20.405,
+  "end": 20.545
+ },
+ {
+  "word": "years",
+  "start": 20.545,
+  "end": 20.785
+ },
+ {
+  "word": "later,",
+  "start": 20.785,
+  "end": 21.105
+ },
+ {
+  "word": "one",
+  "start": 21.105,
+  "end": 21.395
+ },
+ {
+  "word": "drop",
+  "start": 21.395,
+  "end": 21.665
+ },
+ {
+  "word": "fell.",
+  "start": 21.665,
+  "end": 22.045
+ },
+ {
+  "word": "Nine",
+  "start": 22.565,
+  "end": 22.825
+ },
+ {
+  "word": "years",
+  "start": 22.825,
+  "end": 23.075
+ },
+ {
+  "word": "later,",
+  "start": 23.075,
+  "end": 23.395
+ },
+ {
+  "word": "another.",
+  "start": 23.395,
+  "end": 23.775
+ },
+ {
+  "word": "About",
+  "start": 24.045,
+  "end": 24.325
+ },
+ {
+  "word": "one",
+  "start": 24.325,
+  "end": 24.505
+ },
+ {
+  "word": "drop",
+  "start": 24.505,
+  "end": 24.785
+ },
+ {
+  "word": "a",
+  "start": 24.785,
+  "end": 24.825
+ },
+ {
+  "word": "decade.",
+  "start": 24.825,
+  "end": 25.395
+ },
+ {
+  "word": "Luckily,",
+  "start": 25.768,
+  "end": 26.268
+ },
+ {
+  "word": "it",
+  "start": 26.268,
+  "end": 26.378
+ },
+ {
+  "word": "got",
+  "start": 26.378,
+  "end": 26.558
+ },
+ {
+  "word": "a",
+  "start": 26.558,
+  "end": 26.608
+ },
+ {
+  "word": "devoted",
+  "start": 26.608,
+  "end": 27.108
+ },
+ {
+  "word": "new",
+  "start": 27.108,
+  "end": 27.308
+ },
+ {
+  "word": "guardian,",
+  "start": 27.308,
+  "end": 27.988
+ },
+ {
+  "word": "John",
+  "start": 27.988,
+  "end": 28.368
+ },
+ {
+  "word": "Mainstone,",
+  "start": 28.368,
+  "end": 28.978
+ },
+ {
+  "word": "who",
+  "start": 29.288,
+  "end": 29.358
+ },
+ {
+  "word": "watched",
+  "start": 29.358,
+  "end": 29.728
+ },
+ {
+  "word": "it",
+  "start": 29.728,
+  "end": 29.788
+ },
+ {
+  "word": "for",
+  "start": 29.788,
+  "end": 29.908
+ },
+ {
+  "word": "fifty-",
+  "start": 29.908,
+  "end": 30.248
+ },
+ {
+  "word": "two",
+  "start": 30.248,
+  "end": 30.468
+ },
+ {
+  "word": "years.",
+  "start": 30.468,
+  "end": 30.898
+ },
+ {
+  "word": "Unluckily,",
+  "start": 31.335,
+  "end": 32.005
+ },
+ {
+  "word": "he",
+  "start": 32.005,
+  "end": 32.105
+ },
+ {
+  "word": "never",
+  "start": 32.105,
+  "end": 32.345
+ },
+ {
+  "word": "saw",
+  "start": 32.345,
+  "end": 32.555
+ },
+ {
+  "word": "a",
+  "start": 32.555,
+  "end": 32.605
+ },
+ {
+  "word": "drop",
+  "start": 32.605,
+  "end": 32.925
+ },
+ {
+  "word": "fall.",
+  "start": 32.925,
+  "end": 33.325
+ },
+ {
+  "word": "Once,",
+  "start": 33.785,
+  "end": 34.085
+ },
+ {
+  "word": "he",
+  "start": 34.085,
+  "end": 34.205
+ },
+ {
+  "word": "missed",
+  "start": 34.205,
+  "end": 34.445
+ },
+ {
+  "word": "it",
+  "start": 34.445,
+  "end": 34.505
+ },
+ {
+  "word": "by",
+  "start": 34.505,
+  "end": 34.705
+ },
+ {
+  "word": "a",
+  "start": 34.705,
+  "end": 34.735
+ },
+ {
+  "word": "day.",
+  "start": 34.735,
+  "end": 35.085
+ },
+ {
+  "word": "Once,",
+  "start": 35.514,
+  "end": 35.824
+ },
+ {
+  "word": "he",
+  "start": 35.824,
+  "end": 35.944
+ },
+ {
+  "word": "stepped",
+  "start": 35.944,
+  "end": 36.264
+ },
+ {
+  "word": "out",
+  "start": 36.264,
+  "end": 36.414
+ },
+ {
+  "word": "for",
+  "start": 36.414,
+  "end": 36.544
+ },
+ {
+  "word": "a",
+  "start": 36.544,
+  "end": 36.574
+ },
+ {
+  "word": "drink,",
+  "start": 36.574,
+  "end": 36.954
+ },
+ {
+  "word": "and",
+  "start": 37.174,
+  "end": 37.314
+ },
+ {
+  "word": "missed",
+  "start": 37.314,
+  "end": 37.534
+ },
+ {
+  "word": "it",
+  "start": 37.534,
+  "end": 37.594
+ },
+ {
+  "word": "by",
+  "start": 37.594,
+  "end": 37.774
+ },
+ {
+  "word": "five",
+  "start": 37.774,
+  "end": 38.154
+ },
+ {
+  "word": "minutes.",
+  "start": 38.154,
+  "end": 38.554
+ },
+ {
+  "word": "Then",
+  "start": 38.871,
+  "end": 39.081
+ },
+ {
+  "word": "they",
+  "start": 39.081,
+  "end": 39.191
+ },
+ {
+  "word": "finally",
+  "start": 39.191,
+  "end": 39.681
+ },
+ {
+  "word": "pointed",
+  "start": 39.681,
+  "end": 40.061
+ },
+ {
+  "word": "a",
+  "start": 40.061,
+  "end": 40.101
+ },
+ {
+  "word": "camera",
+  "start": 40.101,
+  "end": 40.491
+ },
+ {
+  "word": "at",
+  "start": 40.491,
+  "end": 40.681
+ },
+ {
+  "word": "it,",
+  "start": 40.681,
+  "end": 40.791
+ },
+ {
+  "word": "and",
+  "start": 41.091,
+  "end": 41.211
+ },
+ {
+  "word": "the",
+  "start": 41.211,
+  "end": 41.271
+ },
+ {
+  "word": "drop",
+  "start": 41.271,
+  "end": 41.631
+ },
+ {
+  "word": "fell",
+  "start": 41.631,
+  "end": 41.971
+ },
+ {
+  "word": "during",
+  "start": 41.971,
+  "end": 42.261
+ },
+ {
+  "word": "a",
+  "start": 42.261,
+  "end": 42.321
+ },
+ {
+  "word": "twenty-",
+  "start": 42.321,
+  "end": 42.691
+ },
+ {
+  "word": "minute",
+  "start": 42.691,
+  "end": 42.931
+ },
+ {
+  "word": "power",
+  "start": 42.931,
+  "end": 43.211
+ },
+ {
+  "word": "cut.",
+  "start": 43.211,
+  "end": 43.481
+ },
+ {
+  "word": "You",
+  "start": 43.819,
+  "end": 43.899
+ },
+ {
+  "word": "see,",
+  "start": 43.899,
+  "end": 44.219
+ },
+ {
+  "word": "pitch",
+  "start": 44.219,
+  "end": 44.559
+ },
+ {
+  "word": "really",
+  "start": 44.559,
+  "end": 44.839
+ },
+ {
+  "word": "is",
+  "start": 44.839,
+  "end": 44.979
+ },
+ {
+  "word": "a",
+  "start": 44.979,
+  "end": 45.009
+ },
+ {
+  "word": "liquid,",
+  "start": 45.009,
+  "end": 45.459
+ },
+ {
+  "word": "just",
+  "start": 45.779,
+  "end": 46.029
+ },
+ {
+  "word": "over",
+  "start": 46.029,
+  "end": 46.239
+ },
+ {
+  "word": "two",
+  "start": 46.239,
+  "end": 46.489
+ },
+ {
+  "word": "hundred",
+  "start": 46.489,
+  "end": 46.859
+ },
+ {
+  "word": "billion",
+  "start": 46.859,
+  "end": 47.219
+ },
+ {
+  "word": "times",
+  "start": 47.219,
+  "end": 47.649
+ },
+ {
+  "word": "thicker",
+  "start": 47.649,
+  "end": 47.969
+ },
+ {
+  "word": "than",
+  "start": 47.969,
+  "end": 48.149
+ },
+ {
+  "word": "water.",
+  "start": 48.149,
+  "end": 48.469
+ },
+ {
+  "word": "Think",
+  "start": 48.909,
+  "end": 49.069
+ },
+ {
+  "word": "of",
+  "start": 49.069,
+  "end": 49.159
+ },
+ {
+  "word": "cold",
+  "start": 49.159,
+  "end": 49.539
+ },
+ {
+  "word": "honey,",
+  "start": 49.539,
+  "end": 49.909
+ },
+ {
+  "word": "then",
+  "start": 50.119,
+  "end": 50.309
+ },
+ {
+  "word": "give",
+  "start": 50.309,
+  "end": 50.459
+ },
+ {
+  "word": "it",
+  "start": 50.459,
+  "end": 50.519
+ },
+ {
+  "word": "a",
+  "start": 50.519,
+  "end": 50.559
+ },
+ {
+  "word": "few",
+  "start": 50.559,
+  "end": 50.769
+ },
+ {
+  "word": "decades.",
+  "start": 50.769,
+  "end": 51.379
+ },
+ {
+  "word": "The",
+  "start": 51.658,
+  "end": 51.808
+ },
+ {
+  "word": "experiment",
+  "start": 51.808,
+  "end": 52.378
+ },
+ {
+  "word": "even",
+  "start": 52.378,
+  "end": 52.628
+ },
+ {
+  "word": "won",
+  "start": 52.628,
+  "end": 52.898
+ },
+ {
+  "word": "an",
+  "start": 52.898,
+  "end": 53.008
+ },
+ {
+  "word": "Ig",
+  "start": 53.008,
+  "end": 53.268
+ },
+ {
+  "word": "Nobel",
+  "start": 53.268,
+  "end": 53.718
+ },
+ {
+  "word": "Prize.",
+  "start": 53.718,
+  "end": 54.278
+ },
+ {
+  "word": "In",
+  "start": 54.583,
+  "end": 54.733
+ },
+ {
+  "word": "twenty",
+  "start": 54.733,
+  "end": 55.003
+ },
+ {
+  "word": "thirteen,",
+  "start": 55.003,
+  "end": 55.593
+ },
+ {
+  "word": "John",
+  "start": 55.593,
+  "end": 55.903
+ },
+ {
+  "word": "Mainstone",
+  "start": 55.903,
+  "end": 56.413
+ },
+ {
+  "word": "passed",
+  "start": 56.413,
+  "end": 56.693
+ },
+ {
+  "word": "away,",
+  "start": 56.693,
+  "end": 57.163
+ },
+ {
+  "word": "still",
+  "start": 57.163,
+  "end": 57.413
+ },
+ {
+  "word": "waiting.",
+  "start": 57.413,
+  "end": 57.843
+ },
+ {
+  "word": "And",
+  "start": 58.207,
+  "end": 58.307
+ },
+ {
+  "word": "here's",
+  "start": 58.307,
+  "end": 58.577
+ },
+ {
+  "word": "the",
+  "start": 58.577,
+  "end": 58.657
+ },
+ {
+  "word": "twist:",
+  "start": 58.657,
+  "end": 59.137
+ },
+ {
+  "word": "the",
+  "start": 59.397,
+  "end": 59.497
+ },
+ {
+  "word": "next",
+  "start": 59.497,
+  "end": 59.757
+ },
+ {
+  "word": "drop",
+  "start": 59.757,
+  "end": 60.067
+ },
+ {
+  "word": "never",
+  "start": 60.067,
+  "end": 60.357
+ },
+ {
+  "word": "really",
+  "start": 60.357,
+  "end": 60.637
+ },
+ {
+  "word": "fell.",
+  "start": 60.637,
+  "end": 61.027
+ },
+ {
+  "word": "It",
+  "start": 61.357,
+  "end": 61.477
+ },
+ {
+  "word": "touched",
+  "start": 61.477,
+  "end": 61.787
+ },
+ {
+  "word": "the",
+  "start": 61.787,
+  "end": 61.857
+ },
+ {
+  "word": "pile",
+  "start": 61.857,
+  "end": 62.177
+ },
+ {
+  "word": "below,",
+  "start": 62.177,
+  "end": 62.727
+ },
+ {
+  "word": "and",
+  "start": 62.727,
+  "end": 62.837
+ },
+ {
+  "word": "only",
+  "start": 62.837,
+  "end": 63.147
+ },
+ {
+  "word": "broke",
+  "start": 63.147,
+  "end": 63.497
+ },
+ {
+  "word": "off",
+  "start": 63.497,
+  "end": 63.747
+ },
+ {
+  "word": "when",
+  "start": 63.747,
+  "end": 63.857
+ },
+ {
+  "word": "somebody",
+  "start": 63.857,
+  "end": 64.267
+ },
+ {
+  "word": "bumped",
+  "start": 64.267,
+  "end": 64.507
+ },
+ {
+  "word": "the",
+  "start": 64.507,
+  "end": 64.567
+ },
+ {
+  "word": "jar.",
+  "start": 64.567,
+  "end": 65.047
+ }
+]
