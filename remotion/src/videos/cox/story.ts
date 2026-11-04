@@ -88,7 +88,7 @@ export const mercuryAt = (f: number) => lin([[0, 0.5], [1190, 0.5], [1205, 0.5],
 /** the winding weight inside the case climbs a notch each time the mercury moves (0..1) */
 export const weightAt = (f: number) => lin([[0, 0.4], [1281, 0.4], [1296, 0.55], [1402, 0.55], [1410, 0.62]], f);
 /** cloud cover over London in the sky shots (0 clear .. 1 storm); "storm" on 1622 */
-export const stormAt = (f: number) => lin([[922, 0.25], [956, 0.6], [1445, 0.35], [1600, 0.45], [1622, 1.0], [1675, 0.9]], f);
+export const stormAt = (f: number) => lin([[922, 0.3], [950, 0.9], [975, 0.9], [1445, 0.35], [1600, 0.45], [1622, 1.0], [1675, 0.9]], f);
 /** shot 5: the window light cycles day -> dusk -> day across "Day after day / Week after week / Month after month" */
 export const windowLight = (f: number) => lin([[528, 1], [547, 1], [556, 0.3], [571, 0.3], [589, 1], [604, 0.15], [624, 1]], f);
 /** shot 6 theory cards pop in on their words: magic 633, servant 652, cat 685 (0..1 pop) */
@@ -143,7 +143,7 @@ const S3a = (f: number) => dolly([7, 1.8, 5], add(MUSEUM_DOOR, [0, 1.4, 0]), pus
 const S3b = (f: number) => dolly(H(0.3, 1.5, 1.0), H(0, 1.5, 4), pushK(f, 365, 0.003, 0.006, 24), { fov: 44, roll: 0.035 }); // reverse: faces staring
 const S4a = (f: number) => dolly(H(0.35, 2.15, 1.1), add(DIAL, [0, 0, 0]), pushK(f, 400, 0.003), { fov: 38 });       // "No key": dial, no keyhole
 const S4b = (f: number) => dolly(H(-1.3, 1.2, 1.4), H(-0.66, 1.2, 0), pushK(f, 418, 0.003), { fov: 40, roll: -0.03 }); // "No crank": side of the case
-const S4c = (f: number) => dolly(H(0.2, 0.9, 1.6), H(0, 0.4, 0.2), pushK(f, 437, 0.0025), { fov: 40 });              // "No weights": empty chains below
+const S4c = (f: number) => dolly(H(0.55, 1.3, 1.25), H(0.42, 1.48, 0.12), pushK(f, 437, 0.0025), { fov: 40 }); // the empty weight hook              // "No weights": empty chains below
 const S4d = (f: number) => dolly(H(0.05, 2.08, 0.75), DIAL, pushK(f, 479, 0.003, 0.007, 30), { fov: 36, roll: 0.04 }); // "And still, it kept on ticking"
 const S5a = (f: number) => dolly(H(-4.6, 2.7, 7.8), H(0, 1.4, 0), pushK(f, 528, 0.0016), { fov: 42 });               // hall wide, window light cycles
 const S5b = (f: number) => dolly(H(2.6, 1.3, 4.0), H(0, 1.6, 0), pushK(f, 589, 0.0025), { fov: 40, roll: 0.03 });   // "Month after month"

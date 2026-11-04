@@ -1,6 +1,6 @@
 # Cox clock short: sound cues
 
-mix: -16.45 LUFS, true peak -1.92 dBTP, 64.667 s
+mix: -16.44 LUFS, true peak -1.92 dBTP, 64.667 s
 
 stems (at mix gain): voice -16.5, music -23.5, sfx -30.5 LUFS
 

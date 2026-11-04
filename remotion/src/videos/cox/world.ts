@@ -132,6 +132,10 @@ const clockRig = (): ClockRig => {
     const mg = new THREE.CylinderGeometry(0.155, 0.155, 1, 24); mg.translate(0, 0.5, 0);
     const m = new THREE.Mesh(mg, mercM); m.position.set(x, 0.54, 0); R.add(m); merc.push(m);
   }
+  for (const x of [-0.42, 0.42]) { // two EMPTY weight hooks under the hood: "no weights to pull up"
+    const hk = new THREE.Mesh(new THREE.TorusGeometry(0.035, 0.01, 6, 16, Math.PI * 1.4), brass); hk.position.set(x, 1.5, 0.12); hk.rotation.z = Math.PI * 0.8; R.add(hk);
+    const st2 = new THREE.Mesh(new THREE.CylinderGeometry(0.008, 0.008, 0.06, 6), brass); st2.position.set(x, 1.565, 0.12); R.add(st2);
+  }
   const weight = new THREE.Mesh(boxGeo(V(-0.045, -0.06, 0.08), V(0.045, 0.06, 0.16)), brass); weight.castShadow = true; R.add(weight);
   for (const [sx, rot] of [[-1, 0], [1, 0], [0, 1]] as const) { // glass panes: sides and front of the middle section
     const pane = new THREE.Mesh(new THREE.PlaneGeometry(rot ? CASE.w : CASE.d, 1.05), glassMat());

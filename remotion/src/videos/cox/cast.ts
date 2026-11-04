@@ -287,7 +287,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       if (f < 648) {
         crowd(out, cam, t, 1, (k) => ({ expr: k === 4 ? "grin" : "neutral", look: k === 4 ? 1 : look(k) }));
         const pop = popAt(f, THEORY.magic), u = q((t * 1.3) % 1, 20);
-        if (pop > 0) { const hand = at(cam, VISITORS[4], HAND_R + 0.1, HAND_UP + 0.25); push(out, `magic${u}`, 400, 400, (p) => fxMagic(p, u), hand[0], hand[1], hand[2], 0.7 * pop, 0.7 * pop); }
+        if (pop > 0) { const near = at(cam, VISITORS[4], 0.3, 2.05); push(out, `magic${u}`, 400, 400, (p) => fxMagic(p, u), near[0], near[1], near[2] + 0.3, 0.8 * pop, 0.8 * pop); } // beside her head (her hand is out of frame)
       } else if (f < 674) {
         const lean = q(-16 * smooth((f - THEORY.servant + 4) / 6), 2);
         stand(out, cam, WHO.folk[7], H(0.95, 0, -0.75), { expr: "nervous", tilt: lean, look: -1 }, t);
