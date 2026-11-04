@@ -997,7 +997,7 @@ export const audience = (v = 0): Outfit => {
 
 // ---------------- the slow-organ cast (our own designs) ----------------
 /** John Cage (our cartoon): lean, short grey hair, denim shirt and jeans, a big grin */
-export const CAGE: Outfit = { jacket: "#5b82b8", pants: "#34496e", boots: "#3a2a20", hat: "hair", hair: "#cfcac2", buttons: "#e8e4dc", skin: "#f5d2b0" };
+export const CAGE: Outfit = { jacket: "#5b82b8", pants: "#34496e", boots: "#3a2a20", hat: "hair", hair: "#a8a29a", buttons: "#e8e4dc", skin: "#f5d2b0" };
 export const PIANIST: Outfit = { jacket: "#2a2430", pants: "#2a2430", boots: INK, hat: "hair", hair: "#3a2a20", dress: "#2a2430", skin: "#f5c9a0" };
 export const MAYOR: Outfit = { jacket: "#3b3f52", pants: "#2f3542", boots: INK, hat: "hair", hair: "#9a948c", moustache: "#8a847c", sash: "#d6a842", buttons: "#d6a842", build: "stout", skin: "#f5d2b0" };
 /** monks of 1361: brown habit, tonsure (the longhair crown) */

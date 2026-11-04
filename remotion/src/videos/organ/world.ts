@@ -264,7 +264,7 @@ export class World {
     setSight([]);
     // the long score (shot 14): a paper strip from the church door down the road; a little red flag at 4 %
     this.ribbonTex = scoreTex("orRibbon", 1024, 256, 1, false, 7).clone(); this.ribbonTex.needsUpdate = true;
-    this.ribbon = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1), lam("orRibbonM", () => ({ map: this.ribbonTex, side: THREE.DoubleSide })));
+    this.ribbon = new THREE.Mesh(new THREE.PlaneGeometry(3.0, 1), lam("orRibbonM", () => ({ map: this.ribbonTex, side: THREE.DoubleSide })));
     this.ribbon.rotation.x = -Math.PI / 2; this.ribbon.receiveShadow = true; R.add(this.ribbon);
     const flag = new THREE.Group(); flag.position.set(0.95, 0, Z0 + 38); R.add(flag);
     const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 1.3, 8), MAT.woodD()); pole.position.y = 0.65; flag.add(pole);
@@ -306,15 +306,14 @@ export class World {
       const x = s[0], z = s[2];
       chairs.add(boxGeo(V(x - 0.22, 0.44, z - 0.2), V(x + 0.22, 0.48, z + 0.2)), MAT.wood());
       for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) chairs.add(boxGeo(V(x + sx * 0.18 - 0.02, 0, z + sz * 0.16 - 0.02), V(x + sx * 0.18 + 0.02, 0.44, z + sz * 0.16 + 0.02)), MAT.woodD());
-      chairs.add(boxGeo(V(x - 0.22, 0.48, z + 0.17), V(x + 0.22, 0.95, z + 0.21)), MAT.wood());
     }
     const chg = new THREE.Group(); chairs.build(chg); shadowAll(chg); R.add(chg); this.only.chairs = chg;
     // the barn / pigsty dressing (shot 8): hay bales, a plank pen, straw on the floor
     const barn = new Batch(), hay = lam("orHayM", () => ({ map: hayTex() }));
     for (const [x, z, y] of [[-3.8, -9, 0], [-3.8, -7.9, 0], [-3.8, -8.4, 0.5], [3.6, -11, 0], [2.5, -11.4, 0], [3.0, -11.2, 0.5], [-3.6, -3, 0]] as const)
       barn.add(boxGeo(C(x - 0.55, y, z - 0.4), C(x + 0.55, y + 0.5, z + 0.4)), hay);
-    for (let x = -1.8; x <= 2.6; x += 0.6) barn.add(boxGeo(C(x - 0.04, 0, -1.8), C(x + 0.04, 0.9, -1.72)), MAT.woodD());
-    for (const y of [0.35, 0.75]) barn.add(boxGeo(C(-1.85, y, -1.82), C(2.65, y + 0.1, -1.7)), MAT.wood());
+    for (let x = -2.4; x <= 2.4; x += 0.6) barn.add(boxGeo(C(x - 0.04, 0, -5.2), C(x + 0.04, 0.9, -5.12)), MAT.woodD());
+    for (const y of [0.35, 0.75]) barn.add(boxGeo(C(-2.45, y, -5.22), C(2.45, y + 0.1, -5.1)), MAT.wood());
     const straw = new THREE.PlaneGeometry(9, 12); straw.rotateX(-Math.PI / 2); straw.translate(CH[0], 0.03, CH[2] - 6); barn.add(straw, lam("orStraw", () => ({ map: hayTex(), color: "#c9a860" })));
     const bg = new THREE.Group(); barn.build(bg); shadowAll(bg); R.add(bg); this.only.barn = bg;
 
@@ -497,7 +496,7 @@ export class World {
     if (id === 14) {
       const len = ribbonAt(f);
       this.ribbon.scale.set(1, len, 1); this.ribbon.position.set(0, 0.06, CHURCH_Z + 0.2 + len / 2);
-      this.ribbonTex.repeat.set(1, len / 6);
+      this.ribbonTex.repeat.set(1, len / 10);
       this.ribbon.rotation.set(-Math.PI / 2, 0, 0);
     }
     this.bellows.forEach((bm, i) => { bm.scale.y = id === 6 ? 0.25 + 0.3 * bellowsAt(f, i) : 0.4; });

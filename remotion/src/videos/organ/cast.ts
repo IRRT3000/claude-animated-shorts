@@ -275,7 +275,7 @@ const pig = (out: Stage, cam: CamInfo, i: number, p: V3, dx: number, f: number, 
   const s = Math.max(0, (f - f0) / FPS) * 0.7, x = p[0] + dx * s, ph = q(((f - f0) / FPS * 1.6 + i * 0.3) % 1, 12);
   const mirror = dx * cam.right.x < 0 === false ? false : true;
   const sn = q(0.5 + 0.5 * Math.sin(f / 5 + i), 4);
-  out.places.push({ key: `pig|${ph}|${sn}`, x, y: p[1], z: p[2], mirror, scale: 0.55, draw: (pp) => pigCard(pp, ph, sn), size: [480, 800, 0.8] });
+  out.places.push({ key: `pig|${ph}|${sn}`, x, y: p[1], z: p[2], mirror, scale: 0.7, draw: (pp) => pigCard(pp, ph, sn), size: [480, 800, 0.8] });
   blob(out, x, p[1], p[2], 0.7);
 };
 
@@ -334,8 +334,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 9: {
       if (f < 958) {
-        stand(out, cam, WHO.worker[0], O(0.95, 0, 0.75), { expr: f >= 884 ? "grin" : "smile", look: -1 }, t);
-        stand(out, cam, WHO.worker[1], add(BLOWER, [-0.15, 0, 0.75]), { expr: f >= SWITCH ? "relief_open" : "neutral", look: 1 }, t);
+        stand(out, cam, WHO.worker[0], O(0.78, 0, 0.8), { expr: f >= 884 ? "grin" : "smile", look: -1 }, t);
+        stand(out, cam, WHO.worker[1], add(BLOWER, [0.12, 0, 0.75]), { expr: f >= SWITCH ? "relief_open" : "neutral", look: 1 }, t);
         if (f >= 910 && f < 936) { const k = q(smooth((f - 912) / 12), 8); push(out, `switch${k}`, 300, 400, (p) => fxHandSwitch(p, k), BLOWER[0] - 0.12, 0.92 - 0.0, BLOWER[2] + 0.3, 0.3, 0.4); }
         if (f >= SWITCH && f < SWITCH + 6) { const u = q((f - SWITCH) / 6, 6); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), BLOWER[0] + 0.18, 0.56, BLOWER[2] + 0.3, 0.22, 0.22); }
         if (f >= 940) notes(out, f, pipeTops(7, 3), "#1f2a44", 0.15);
@@ -349,7 +349,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       if (f < 1078) {
         const kp = O(-1.9, 0, 1.6);
         stand(out, cam, WHO.worker[1], kp, { expr: "whistle", look: 1 }, t);
-        const u = q((t * 1.4) % 1, 12), hp = add(kp, [cam.right.x * 0.12, 1.42, cam.right.z * 0.12 + 0.06]);
+        const u = q((t * 1.4) % 1, 12), hp = add(kp, [cam.right.x * 0.04, 1.47, cam.right.z * 0.04 + 0.06]);
         push(out, `bottle${u}`, 500, 600, (p) => fxBottle(p, u), hp[0], hp[1] - 0.12, hp[2], 0.2, 0.24);
         if (f >= 1040) notes(out, f, [add(hp, [0.06, 0.1, 0])], "#1f2a44", 0.09);
       } else {

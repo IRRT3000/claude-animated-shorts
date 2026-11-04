@@ -42,14 +42,14 @@ export const LIGHTS: Record<LightName, LightPreset> = {
     sunCol: "#ffe8c4", sunI: 2.6, sky: "#f3e2c8", ground: "#8a6a50", hemiI: 0.6,
     bias: -0.00025, normalBias: 0.01,
   },
-  // the lab at night under its lamps, a storm outside (world.ts dims everything at the power cut)
+  // the 1361 cathedral by candle light: warm amber key, warm umber shade (never violet)
   night: {
-    az: 35, el: 55,
-    lit: [1.3, 1.08, 0.78], shade: [0.14, 0.14, 0.26], lift: [0.03, 0.04, 0.1], lambert: 0.45, sideK: 0.8, term: 0.18,
-    charTint: [1.0, 0.88, 0.74], charShade: 0.8, charGrad: 0.1, bodyGrad: 0.26, sideTint: [0.8, 0.82, 0.98],
-    blob: [0.5, 0.48, 0.6], actorShadow: false,
-    top: "#1e2340", hor: "#2c3358", skyCurve: [0.0, 0.5, 0.6], fog: "#2c3358", fogNear: 40, fogFar: 400, sunDisc: "#000000",
-    sunCol: "#ffd9a0", sunI: 2.4, sky: "#5a6090", ground: "#3a3040", hemiI: 0.4,
+    az: 60, el: 40,
+    lit: [1.5, 1.1, 0.72], shade: [0.34, 0.25, 0.22], lift: [0.05, 0.04, 0.05], lambert: 0.45, sideK: 0.82, term: 0.18,
+    charTint: [1.0, 0.86, 0.68], charShade: 0.84, charGrad: 0.1, bodyGrad: 0.24, sideTint: [0.92, 0.86, 0.86],
+    blob: [0.55, 0.48, 0.48], actorShadow: false,
+    top: "#2a2030", hor: "#3a2a30", skyCurve: [0.0, 0.5, 0.6], fog: "#3a2a30", fogNear: 40, fogFar: 400, sunDisc: "#000000",
+    sunCol: "#ffcf90", sunI: 2.6, sky: "#a08070", ground: "#40302a", hemiI: 0.4,
     bias: -0.00025, normalBias: 0.01,
   },
   // the prize stage: one warm spotlight, plum shadows
