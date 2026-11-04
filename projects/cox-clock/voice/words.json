@@ -1,1017 +1,1012 @@
 [
  {
-  "word": "words)",
-  "start": 0.36,
-  "end": 0.72
- },
- {
   "word": "In",
-  "start": 2.702,
-  "end": 2.782
+  "start": 0.31,
+  "end": 0.39
  },
  {
   "word": "the",
-  "start": 2.782,
-  "end": 2.842
+  "start": 0.39,
+  "end": 0.45
  },
  {
   "word": "seventeen-",
-  "start": 2.842,
-  "end": 3.342
+  "start": 0.45,
+  "end": 0.95
  },
  {
   "word": "sixties,",
-  "start": 3.342,
-  "end": 3.932
+  "start": 0.95,
+  "end": 1.54
  },
  {
   "word": "a",
-  "start": 4.232,
-  "end": 4.292
+  "start": 1.84,
+  "end": 1.9
  },
  {
   "word": "London",
-  "start": 4.292,
-  "end": 4.722
+  "start": 1.9,
+  "end": 2.33
  },
  {
   "word": "jeweller",
-  "start": 4.722,
-  "end": 5.102
+  "start": 2.33,
+  "end": 2.71
  },
  {
   "word": "built",
-  "start": 5.102,
-  "end": 5.342
+  "start": 2.71,
+  "end": 2.95
  },
  {
   "word": "a",
-  "start": 5.342,
-  "end": 5.382
+  "start": 2.95,
+  "end": 2.99
  },
  {
   "word": "clock",
-  "start": 5.382,
-  "end": 5.792
+  "start": 2.99,
+  "end": 3.4
  },
  {
   "word": "that",
-  "start": 5.792,
-  "end": 5.952
+  "start": 3.4,
+  "end": 3.56
  },
  {
   "word": "nobody",
-  "start": 5.952,
-  "end": 6.452
+  "start": 3.56,
+  "end": 4.06
  },
  {
   "word": "ever",
-  "start": 6.452,
-  "end": 6.702
+  "start": 4.06,
+  "end": 4.31
  },
  {
   "word": "had",
-  "start": 6.702,
-  "end": 6.892
+  "start": 4.31,
+  "end": 4.5
  },
  {
   "word": "to",
-  "start": 6.892,
-  "end": 6.972
+  "start": 4.5,
+  "end": 4.58
  },
  {
   "word": "wind.",
-  "start": 6.972,
-  "end": 7.422
+  "start": 4.58,
+  "end": 5.03
  },
  {
   "word": "His",
-  "start": 7.771,
-  "end": 7.921
+  "start": 5.379,
+  "end": 5.529
  },
  {
   "word": "name",
-  "start": 7.921,
-  "end": 8.261
+  "start": 5.529,
+  "end": 5.869
  },
  {
   "word": "was",
-  "start": 8.261,
-  "end": 8.421
+  "start": 5.869,
+  "end": 6.029
  },
  {
   "word": "James",
-  "start": 8.421,
-  "end": 8.811
+  "start": 6.029,
+  "end": 6.419
  },
  {
   "word": "Cox,",
-  "start": 8.811,
-  "end": 9.281
+  "start": 6.419,
+  "end": 6.889
  },
  {
   "word": "and",
-  "start": 9.531,
-  "end": 9.681
+  "start": 7.139,
+  "end": 7.289
  },
  {
   "word": "he",
-  "start": 9.681,
-  "end": 9.751
+  "start": 7.289,
+  "end": 7.359
  },
  {
   "word": "called",
-  "start": 9.751,
-  "end": 10.121
+  "start": 7.359,
+  "end": 7.729
  },
  {
   "word": "it,",
-  "start": 10.121,
-  "end": 10.211
+  "start": 7.729,
+  "end": 7.819
  },
  {
   "word": "quite",
-  "start": 10.211,
-  "end": 10.541
+  "start": 7.819,
+  "end": 8.149
  },
  {
   "word": "modestly,",
-  "start": 10.541,
-  "end": 11.211
+  "start": 8.149,
+  "end": 8.819
  },
  {
   "word": "The",
-  "start": 11.211,
-  "end": 11.311
+  "start": 8.819,
+  "end": 8.919
  },
  {
   "word": "Perpetual",
-  "start": 11.311,
-  "end": 11.821
+  "start": 8.919,
+  "end": 9.429
  },
  {
   "word": "Motion.",
-  "start": 11.821,
-  "end": 12.291
+  "start": 9.429,
+  "end": 9.899
  },
  {
   "word": "People",
-  "start": 12.567,
-  "end": 12.937
+  "start": 10.175,
+  "end": 10.545
  },
  {
   "word": "paid",
-  "start": 12.937,
-  "end": 13.247
+  "start": 10.545,
+  "end": 10.855
  },
  {
   "word": "to",
-  "start": 13.247,
-  "end": 13.307
+  "start": 10.855,
+  "end": 10.915
  },
  {
   "word": "walk",
-  "start": 13.307,
-  "end": 13.597
+  "start": 10.915,
+  "end": 11.205
  },
  {
   "word": "into",
-  "start": 13.597,
-  "end": 13.787
+  "start": 11.205,
+  "end": 11.395
  },
  {
   "word": "his",
-  "start": 13.787,
-  "end": 13.937
+  "start": 11.395,
+  "end": 11.545
  },
  {
   "word": "museum",
-  "start": 13.937,
-  "end": 14.637
+  "start": 11.545,
+  "end": 12.245
  },
  {
   "word": "and",
-  "start": 14.637,
-  "end": 14.757
+  "start": 12.245,
+  "end": 12.365
  },
  {
   "word": "stare",
-  "start": 14.757,
-  "end": 15.117
+  "start": 12.365,
+  "end": 12.725
  },
  {
   "word": "at",
-  "start": 15.117,
-  "end": 15.287
+  "start": 12.725,
+  "end": 12.895
  },
  {
   "word": "it.",
-  "start": 15.287,
-  "end": 15.447
+  "start": 12.895,
+  "end": 13.055
  },
  {
   "word": "No",
-  "start": 15.797,
-  "end": 15.987
+  "start": 13.405,
+  "end": 13.595
  },
  {
   "word": "key.",
-  "start": 15.987,
-  "end": 16.337
+  "start": 13.595,
+  "end": 13.945
  },
  {
   "word": "No",
-  "start": 16.337,
-  "end": 16.527
+  "start": 13.945,
+  "end": 14.135
  },
  {
   "word": "crank.",
-  "start": 16.527,
-  "end": 16.957
+  "start": 14.135,
+  "end": 14.565
  },
  {
   "word": "No",
-  "start": 16.957,
-  "end": 17.157
+  "start": 14.565,
+  "end": 14.765
  },
  {
   "word": "weights",
-  "start": 17.157,
-  "end": 17.517
+  "start": 14.765,
+  "end": 15.125
  },
  {
   "word": "to",
-  "start": 17.517,
-  "end": 17.607
+  "start": 15.125,
+  "end": 15.215
  },
  {
   "word": "pull",
-  "start": 17.607,
-  "end": 17.907
+  "start": 15.215,
+  "end": 15.515
  },
  {
   "word": "up.",
-  "start": 17.907,
-  "end": 18.367
+  "start": 15.515,
+  "end": 15.975
  },
  {
   "word": "And",
-  "start": 18.367,
-  "end": 18.497
+  "start": 15.975,
+  "end": 16.105
  },
  {
   "word": "still,",
-  "start": 18.497,
-  "end": 18.857
+  "start": 16.105,
+  "end": 16.465
  },
  {
   "word": "it",
-  "start": 18.857,
-  "end": 18.947
+  "start": 16.465,
+  "end": 16.555
  },
  {
   "word": "kept",
-  "start": 18.947,
-  "end": 19.207
+  "start": 16.555,
+  "end": 16.815
  },
  {
   "word": "on",
-  "start": 19.207,
-  "end": 19.367
+  "start": 16.815,
+  "end": 16.975
  },
  {
   "word": "ticking.",
-  "start": 19.367,
-  "end": 19.787
+  "start": 16.975,
+  "end": 17.395
  },
  {
   "word": "Day",
-  "start": 20.082,
-  "end": 20.312
+  "start": 17.69,
+  "end": 17.92
  },
  {
   "word": "after",
-  "start": 20.312,
-  "end": 20.612
+  "start": 17.92,
+  "end": 18.22
  },
  {
   "word": "day.",
-  "start": 20.612,
-  "end": 20.872
+  "start": 18.22,
+  "end": 18.48
  },
  {
   "word": "Week",
-  "start": 20.872,
-  "end": 21.192
+  "start": 18.48,
+  "end": 18.8
  },
  {
   "word": "after",
-  "start": 21.192,
-  "end": 21.432
+  "start": 18.8,
+  "end": 19.04
  },
  {
   "word": "week.",
-  "start": 21.432,
-  "end": 21.822
+  "start": 19.04,
+  "end": 19.43
  },
  {
   "word": "Month",
-  "start": 22.012,
-  "end": 22.322
+  "start": 19.62,
+  "end": 19.93
  },
  {
   "word": "after",
-  "start": 22.322,
-  "end": 22.542
+  "start": 19.93,
+  "end": 20.15
  },
  {
   "word": "month.",
-  "start": 22.542,
-  "end": 22.912
+  "start": 20.15,
+  "end": 20.52
  },
  {
   "word": "Was",
-  "start": 23.281,
-  "end": 23.421
+  "start": 20.889,
+  "end": 21.029
  },
  {
   "word": "it",
-  "start": 23.421,
-  "end": 23.481
+  "start": 21.029,
+  "end": 21.089
  },
  {
   "word": "magic?",
-  "start": 23.481,
-  "end": 24.031
+  "start": 21.089,
+  "end": 21.639
  },
  {
   "word": "A",
-  "start": 24.031,
-  "end": 24.111
+  "start": 21.639,
+  "end": 21.719
  },
  {
   "word": "hidden",
-  "start": 24.111,
-  "end": 24.371
+  "start": 21.719,
+  "end": 21.979
  },
  {
   "word": "servant?",
-  "start": 24.371,
-  "end": 24.931
+  "start": 21.979,
+  "end": 22.539
  },
  {
   "word": "A",
-  "start": 24.931,
-  "end": 24.981
+  "start": 22.539,
+  "end": 22.589
  },
  {
   "word": "very",
-  "start": 24.981,
-  "end": 25.241
+  "start": 22.589,
+  "end": 22.849
  },
  {
   "word": "patient",
-  "start": 25.241,
-  "end": 25.641
+  "start": 22.849,
+  "end": 23.249
  },
  {
   "word": "cat?",
-  "start": 25.641,
-  "end": 25.831
+  "start": 23.249,
+  "end": 23.439
  },
  {
   "word": "Cox",
-  "start": 26.231,
-  "end": 26.591
+  "start": 23.839,
+  "end": 24.199
  },
  {
   "word": "just",
-  "start": 26.591,
-  "end": 26.781
+  "start": 24.199,
+  "end": 24.389
  },
  {
   "word": "smiled.",
-  "start": 26.781,
-  "end": 27.301
+  "start": 24.389,
+  "end": 24.909
  },
  {
   "word": "It",
-  "start": 27.621,
-  "end": 27.691
+  "start": 25.229,
+  "end": 25.299
  },
  {
   "word": "was",
-  "start": 27.691,
-  "end": 27.791
+  "start": 25.299,
+  "end": 25.399
  },
  {
   "word": "so",
-  "start": 27.791,
-  "end": 28.041
+  "start": 25.399,
+  "end": 25.649
  },
  {
   "word": "impressive",
-  "start": 28.041,
-  "end": 28.521
+  "start": 25.649,
+  "end": 26.129
  },
  {
   "word": "he",
-  "start": 28.521,
-  "end": 28.641
+  "start": 26.129,
+  "end": 26.249
  },
  {
   "word": "offered",
-  "start": 28.641,
-  "end": 28.971
+  "start": 26.249,
+  "end": 26.579
  },
  {
   "word": "it",
-  "start": 28.971,
-  "end": 29.051
+  "start": 26.579,
+  "end": 26.659
  },
  {
   "word": "as",
-  "start": 29.051,
-  "end": 29.171
+  "start": 26.659,
+  "end": 26.769
  },
  {
   "word": "a",
-  "start": 29.171,
-  "end": 29.211
+  "start": 26.769,
+  "end": 26.819
  },
  {
   "word": "prize",
-  "start": 29.211,
-  "end": 29.691
+  "start": 26.819,
+  "end": 27.299
  },
  {
   "word": "in",
-  "start": 29.691,
-  "end": 29.771
+  "start": 27.299,
+  "end": 27.379
  },
  {
   "word": "a",
-  "start": 29.771,
-  "end": 29.801
+  "start": 27.379,
+  "end": 27.409
  },
  {
   "word": "lottery.",
-  "start": 29.801,
-  "end": 30.391
+  "start": 27.409,
+  "end": 27.999
  },
  {
   "word": "Luckily,",
-  "start": 30.751,
-  "end": 31.201
+  "start": 28.359,
+  "end": 28.809
  },
  {
   "word": "the",
-  "start": 31.201,
-  "end": 31.301
+  "start": 28.809,
+  "end": 28.909
  },
  {
   "word": "clock",
-  "start": 31.301,
-  "end": 31.691
+  "start": 28.909,
+  "end": 29.299
  },
  {
   "word": "never",
-  "start": 31.691,
-  "end": 31.951
+  "start": 29.299,
+  "end": 29.559
  },
  {
   "word": "needed",
-  "start": 31.951,
-  "end": 32.261
+  "start": 29.559,
+  "end": 29.869
  },
  {
   "word": "winding.",
-  "start": 32.261,
-  "end": 32.791
+  "start": 29.869,
+  "end": 30.399
  },
  {
   "word": "Unluckily,",
-  "start": 33.225,
-  "end": 33.825
+  "start": 30.833,
+  "end": 31.433
  },
  {
   "word": "it",
-  "start": 33.825,
-  "end": 33.925
+  "start": 31.433,
+  "end": 31.533
  },
  {
   "word": "needed",
-  "start": 33.925,
-  "end": 34.255
+  "start": 31.533,
+  "end": 31.863
  },
  {
   "word": "weather.",
-  "start": 34.255,
-  "end": 34.635
+  "start": 31.863,
+  "end": 32.243
  },
  {
   "word": "You",
-  "start": 34.961,
-  "end": 35.041
+  "start": 32.569,
+  "end": 32.649
  },
  {
   "word": "see,",
-  "start": 35.041,
-  "end": 35.391
+  "start": 32.649,
+  "end": 32.999
  },
  {
   "word": "inside",
-  "start": 35.391,
-  "end": 35.811
+  "start": 32.999,
+  "end": 33.419
  },
  {
   "word": "the",
-  "start": 35.811,
-  "end": 35.881
+  "start": 33.419,
+  "end": 33.489
  },
  {
   "word": "case",
-  "start": 35.881,
-  "end": 36.191
+  "start": 33.489,
+  "end": 33.799
  },
  {
   "word": "sat",
-  "start": 36.191,
-  "end": 36.361
+  "start": 33.799,
+  "end": 33.969
  },
  {
   "word": "a",
-  "start": 36.361,
-  "end": 36.411
+  "start": 33.969,
+  "end": 34.019
  },
  {
   "word": "giant",
-  "start": 36.411,
-  "end": 36.841
+  "start": 34.019,
+  "end": 34.449
  },
  {
   "word": "barometer,",
-  "start": 36.841,
-  "end": 37.431
+  "start": 34.449,
+  "end": 35.039
  },
  {
   "word": "with",
-  "start": 37.751,
-  "end": 37.841
+  "start": 35.359,
+  "end": 35.449
  },
  {
   "word": "about",
-  "start": 37.841,
-  "end": 38.121
+  "start": 35.449,
+  "end": 35.729
  },
  {
   "word": "seventy",
-  "start": 38.121,
-  "end": 38.541
+  "start": 35.729,
+  "end": 36.149
  },
  {
   "word": "kilos",
-  "start": 38.541,
-  "end": 39.041
+  "start": 36.149,
+  "end": 36.649
  },
  {
   "word": "of",
-  "start": 39.041,
-  "end": 39.121
+  "start": 36.649,
+  "end": 36.729
  },
  {
   "word": "mercury.",
-  "start": 39.121,
-  "end": 39.661
+  "start": 36.729,
+  "end": 37.269
  },
  {
   "word": "Every",
-  "start": 40.018,
-  "end": 40.238
+  "start": 37.626,
+  "end": 37.846
  },
  {
   "word": "time",
-  "start": 40.238,
-  "end": 40.558
+  "start": 37.846,
+  "end": 38.166
  },
  {
   "word": "the",
-  "start": 40.558,
-  "end": 40.708
+  "start": 38.166,
+  "end": 38.316
  },
  {
   "word": "air",
-  "start": 40.708,
-  "end": 40.828
+  "start": 38.316,
+  "end": 38.436
  },
  {
   "word": "pressure",
-  "start": 40.828,
-  "end": 41.168
+  "start": 38.436,
+  "end": 38.776
  },
  {
   "word": "changed,",
-  "start": 41.168,
-  "end": 41.768
+  "start": 38.776,
+  "end": 39.376
  },
  {
   "word": "the",
-  "start": 42.058,
-  "end": 42.118
+  "start": 39.666,
+  "end": 39.726
  },
  {
   "word": "mercury",
-  "start": 42.118,
-  "end": 42.558
+  "start": 39.726,
+  "end": 40.166
  },
  {
   "word": "rose",
-  "start": 42.558,
-  "end": 42.998
+  "start": 40.166,
+  "end": 40.606
  },
  {
   "word": "or",
-  "start": 42.998,
-  "end": 43.088
+  "start": 40.606,
+  "end": 40.696
  },
  {
   "word": "fell,",
-  "start": 43.088,
-  "end": 43.528
+  "start": 40.696,
+  "end": 41.136
  },
  {
   "word": "just",
-  "start": 43.528,
-  "end": 43.828
+  "start": 41.136,
+  "end": 41.436
  },
  {
   "word": "a",
-  "start": 43.828,
-  "end": 43.858
+  "start": 41.436,
+  "end": 41.466
  },
  {
   "word": "little,",
-  "start": 43.858,
-  "end": 44.208
+  "start": 41.466,
+  "end": 41.816
  },
  {
   "word": "and",
-  "start": 44.458,
-  "end": 44.588
+  "start": 42.066,
+  "end": 42.196
  },
  {
   "word": "that",
-  "start": 44.588,
-  "end": 44.738
+  "start": 42.196,
+  "end": 42.346
  },
  {
   "word": "tiny",
-  "start": 44.738,
-  "end": 45.098
+  "start": 42.346,
+  "end": 42.706
  },
  {
   "word": "push",
-  "start": 45.098,
-  "end": 45.398
+  "start": 42.706,
+  "end": 43.006
  },
  {
   "word": "wound",
-  "start": 45.398,
-  "end": 45.728
+  "start": 43.006,
+  "end": 43.336
  },
  {
   "word": "the",
-  "start": 45.728,
-  "end": 45.788
+  "start": 43.336,
+  "end": 43.396
  },
  {
   "word": "clock.",
-  "start": 45.788,
-  "end": 46.238
+  "start": 43.396,
+  "end": 43.846
  },
  {
   "word": "Think",
-  "start": 46.571,
-  "end": 46.741
+  "start": 44.179,
+  "end": 44.349
  },
  {
   "word": "of",
-  "start": 46.741,
-  "end": 46.811
+  "start": 44.349,
+  "end": 44.419
  },
  {
   "word": "it",
-  "start": 46.811,
-  "end": 46.871
+  "start": 44.419,
+  "end": 44.479
  },
  {
   "word": "like",
-  "start": 46.871,
-  "end": 47.071
+  "start": 44.479,
+  "end": 44.679
  },
  {
   "word": "your",
-  "start": 47.071,
-  "end": 47.161
+  "start": 44.679,
+  "end": 44.769
  },
  {
   "word": "chest",
-  "start": 47.161,
-  "end": 47.531
+  "start": 44.769,
+  "end": 45.139
  },
  {
   "word": "when",
-  "start": 47.531,
-  "end": 47.621
+  "start": 45.139,
+  "end": 45.229
  },
  {
   "word": "you",
-  "start": 47.621,
-  "end": 47.731
+  "start": 45.229,
+  "end": 45.339
  },
  {
   "word": "breathe.",
-  "start": 47.731,
-  "end": 48.171
+  "start": 45.339,
+  "end": 45.779
  },
  {
   "word": "The",
-  "start": 48.501,
-  "end": 48.651
+  "start": 46.109,
+  "end": 46.259
  },
  {
   "word": "air",
-  "start": 48.651,
-  "end": 48.831
+  "start": 46.259,
+  "end": 46.439
  },
  {
   "word": "pushes",
-  "start": 48.831,
-  "end": 49.231
+  "start": 46.439,
+  "end": 46.839
  },
  {
   "word": "in,",
-  "start": 49.231,
-  "end": 49.461
+  "start": 46.839,
+  "end": 47.069
  },
  {
   "word": "the",
-  "start": 49.461,
-  "end": 49.631
+  "start": 47.069,
+  "end": 47.239
  },
  {
   "word": "air",
-  "start": 49.631,
-  "end": 49.821
+  "start": 47.239,
+  "end": 47.429
  },
  {
   "word": "pulls",
-  "start": 49.821,
-  "end": 50.161
+  "start": 47.429,
+  "end": 47.769
  },
  {
   "word": "out.",
-  "start": 50.161,
-  "end": 50.411
+  "start": 47.769,
+  "end": 48.019
  },
  {
   "word": "Cox's",
-  "start": 50.695,
-  "end": 51.135
+  "start": 48.303,
+  "end": 48.743
  },
  {
   "word": "clock",
-  "start": 51.135,
-  "end": 51.525
+  "start": 48.743,
+  "end": 49.133
  },
  {
   "word": "was",
-  "start": 51.525,
-  "end": 51.665
+  "start": 49.133,
+  "end": 49.273
  },
  {
   "word": "breathing",
-  "start": 51.665,
-  "end": 52.035
+  "start": 49.273,
+  "end": 49.643
  },
  {
   "word": "the",
-  "start": 52.035,
-  "end": 52.095
+  "start": 49.643,
+  "end": 49.703
  },
  {
   "word": "sky.",
-  "start": 52.095,
-  "end": 52.555
+  "start": 49.703,
+  "end": 50.163
  },
  {
   "word": "So",
-  "start": 52.913,
-  "end": 53.023
+  "start": 50.521,
+  "end": 50.631
  },
  {
   "word": "it",
-  "start": 53.023,
-  "end": 53.093
+  "start": 50.631,
+  "end": 50.701
  },
  {
   "word": "wasn't",
-  "start": 53.093,
-  "end": 53.433
+  "start": 50.701,
+  "end": 51.041
  },
  {
   "word": "perpetual",
-  "start": 53.433,
-  "end": 53.963
+  "start": 51.041,
+  "end": 51.571
  },
  {
   "word": "motion.",
-  "start": 53.963,
-  "end": 54.463
+  "start": 51.571,
+  "end": 52.071
  },
  {
   "word": "It",
-  "start": 54.823,
-  "end": 54.883
+  "start": 52.431,
+  "end": 52.491
  },
  {
   "word": "was",
-  "start": 54.883,
-  "end": 55.003
+  "start": 52.491,
+  "end": 52.611
  },
  {
   "word": "powered",
-  "start": 55.003,
-  "end": 55.393
+  "start": 52.611,
+  "end": 53.001
  },
  {
   "word": "by",
-  "start": 55.393,
-  "end": 55.543
+  "start": 53.001,
+  "end": 53.151
  },
  {
   "word": "every",
-  "start": 55.543,
-  "end": 55.883
+  "start": 53.151,
+  "end": 53.491
  },
  {
   "word": "cloud",
-  "start": 55.883,
-  "end": 56.353
+  "start": 53.491,
+  "end": 53.961
  },
  {
   "word": "and",
-  "start": 56.353,
-  "end": 56.463
+  "start": 53.961,
+  "end": 54.071
  },
  {
   "word": "storm",
-  "start": 56.463,
-  "end": 56.953
+  "start": 54.071,
+  "end": 54.561
  },
  {
   "word": "that",
-  "start": 56.953,
-  "end": 57.073
+  "start": 54.561,
+  "end": 54.681
  },
  {
   "word": "rolled",
-  "start": 57.073,
-  "end": 57.443
+  "start": 54.681,
+  "end": 55.051
  },
  {
   "word": "over",
-  "start": 57.443,
-  "end": 57.643
+  "start": 55.051,
+  "end": 55.251
  },
  {
   "word": "London.",
-  "start": 57.643,
-  "end": 58.083
+  "start": 55.251,
+  "end": 55.691
  },
  {
   "word": "Today",
-  "start": 58.359,
-  "end": 58.729
+  "start": 55.967,
+  "end": 56.337
  },
  {
   "word": "it",
-  "start": 58.729,
-  "end": 58.869
+  "start": 56.337,
+  "end": 56.477
  },
  {
   "word": "sits",
-  "start": 58.869,
-  "end": 59.229
+  "start": 56.477,
+  "end": 56.837
  },
  {
   "word": "in",
-  "start": 59.229,
-  "end": 59.339
+  "start": 56.837,
+  "end": 56.947
  },
  {
   "word": "the",
-  "start": 59.339,
-  "end": 59.409
+  "start": 56.947,
+  "end": 57.017
  },
  {
   "word": "Victoria",
-  "start": 59.409,
-  "end": 60.009
+  "start": 57.017,
+  "end": 57.617
  },
  {
   "word": "and",
-  "start": 60.009,
-  "end": 60.119
+  "start": 57.617,
+  "end": 57.727
  },
  {
   "word": "Albert",
-  "start": 60.119,
-  "end": 60.489
+  "start": 57.727,
+  "end": 58.097
  },
  {
   "word": "Museum,",
-  "start": 60.489,
-  "end": 61.019
+  "start": 58.097,
+  "end": 58.627
  },
  {
   "word": "the",
-  "start": 61.369,
-  "end": 61.439
+  "start": 58.977,
+  "end": 59.047
  },
  {
   "word": "clock",
-  "start": 61.439,
-  "end": 61.809
+  "start": 59.047,
+  "end": 59.417
  },
  {
   "word": "that",
-  "start": 61.809,
-  "end": 61.959
+  "start": 59.417,
+  "end": 59.567
  },
  {
   "word": "nobody",
-  "start": 61.959,
-  "end": 62.489
+  "start": 59.567,
+  "end": 60.097
  },
  {
   "word": "ever",
-  "start": 62.489,
-  "end": 62.739
+  "start": 60.097,
+  "end": 60.347
  },
  {
   "word": "had",
-  "start": 62.739,
-  "end": 62.929
+  "start": 60.347,
+  "end": 60.537
  },
  {
   "word": "to",
-  "start": 62.929,
-  "end": 63.009
+  "start": 60.537,
+  "end": 60.617
  },
  {
   "word": "wind.",
-  "start": 63.009,
-  "end": 63.459
+  "start": 60.617,
+  "end": 61.067
  },
  {
   "word": "And",
-  "start": 63.808,
-  "end": 63.958
+  "start": 61.416,
+  "end": 61.566
  },
  {
   "word": "here's",
-  "start": 63.958,
-  "end": 64.178
+  "start": 61.566,
+  "end": 61.786
  },
  {
   "word": "the",
-  "start": 64.178,
-  "end": 64.278
+  "start": 61.786,
+  "end": 61.886
  },
  {
   "word": "twist:",
-  "start": 64.278,
-  "end": 64.838
+  "start": 61.886,
+  "end": 62.446
  },
  {
   "word": "they",
-  "start": 64.838,
-  "end": 64.998
+  "start": 62.446,
+  "end": 62.606
  },
  {
   "word": "switched",
-  "start": 64.998,
-  "end": 65.348
+  "start": 62.606,
+  "end": 62.956
  },
  {
   "word": "it",
-  "start": 65.348,
-  "end": 65.428
+  "start": 62.956,
+  "end": 63.036
  },
  {
   "word": "off.",
-  "start": 65.428,
-  "end": 65.758
+  "start": 63.036,
+  "end": 63.366
  }
 ]

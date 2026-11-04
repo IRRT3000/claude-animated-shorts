@@ -13,7 +13,7 @@ Format: cartoon-3d-short (~60-65 s, ~3.7 words/s), one steady voice, English onl
 - Not real perpetual motion: the energy comes from the weather (pressure changes). (Univ. of Houston "Engines of Our Ingenuity" ep. 527)
 - TO CHECK before voice: whether it is ever run today; exact museum location (Spring Gardens vs Charing Cross wording).
 
-## Script (~235 words)
+## Script
 In the seventeen-sixties, a London jeweller built a clock that nobody ever had to wind.
 His name was James Cox, and he called it, quite modestly, The Perpetual Motion.
 People paid to walk into his museum and stare at it.
@@ -31,7 +31,7 @@ So it wasn't perpetual motion. It was powered by every cloud and storm that roll
 Today it sits in the Victoria and Albert Museum, the clock that nobody ever had to wind.
 And here's the twist: they switched it off.
 
-## Beat map
+## Beat map (script ~235 words)
 Hook (clock nobody winds) → Setting (1765 London, Cox, modest name) → Action (no key/crank/weights, day/week/month ×3,
 magic/servant/cat) → Snap (lottery prize) → Luckily/Unluckily (weather) → Explanation (barometer + breathing chest)
 → Consequence (powered by the weather) → Callback twist (switched off).
