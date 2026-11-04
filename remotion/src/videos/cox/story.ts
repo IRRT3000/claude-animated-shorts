@@ -32,7 +32,7 @@ export const COX: V3 = add(HALL, [1.35, 0, 0.9]);             // Cox stands besi
 export const VISITORS: V3[] = [[-1.6, 0, 3.0], [-0.5, 0, 3.4], [0.6, 0, 3.2], [1.7, 0, 3.6], [-1.1, 0, 4.5], [0.2, 0, 4.7]]
   .map((p) => add(HALL, p as V3));
 export const LOTTERY: V3 = add(HALL, [-3.2, 0, 1.2]);         // the prize-lottery wheel
-export const CHEST: V3 = add(HALL, [-2.4, 0, 3.0]);           // the breathing-visitor explainer (shot 12)
+export const CHEST: V3 = add(HALL, [-1.8, 0, 3.0]);           // the breathing-visitor explainer (shot 12)
 export const VA: V3 = [0, 0, -900];             // V&A gallery today: origin = foot of the clock on its plinth
 export const SKY_EYE: V3 = [0, 60, 40];         // over the London rooftops, looking at the clouds
 
@@ -140,28 +140,28 @@ const S2a = (f: number) => dolly(H(2.8, 1.7, 4.4), H(0.9, 1.45, 0.7), pushK(f, 1
 const S2b = (f: number) => dolly(add(COX, [-0.6, 1.7, 2.3]), add(coxEye, [0.1, -0.15, 0]), pushK(f, 232, 0.003, 0.006, 26), { fov: 40, roll: -0.035 }); // "called it, quite modestly"
 const S2c = (f: number) => zoom(H(0, 1.4, 6.5), H(0, 1.5, 0), 40, pushK(f, 264, 0.003, 0.007, 30));                  // "The Perpetual Motion" reveal
 const S3a = (f: number) => dolly([7, 1.8, 5], add(MUSEUM_DOOR, [0, 1.4, 0]), pushK(f, 300, 0.0022), { fov: 42 });     // queue paying at the door
-const S3b = (f: number) => dolly(H(0.6, 1.45, 0.5), H(0, 1.5, 4), pushK(f, 365, 0.003, 0.006, 24), { fov: 44, roll: 0.035 }); // reverse: faces staring
+const S3b = (f: number) => dolly(H(0.3, 1.5, 1.0), H(0, 1.5, 4), pushK(f, 365, 0.003, 0.006, 24), { fov: 44, roll: 0.035 }); // reverse: faces staring
 const S4a = (f: number) => dolly(H(0.35, 2.15, 1.1), add(DIAL, [0, 0, 0]), pushK(f, 400, 0.003), { fov: 38 });       // "No key": dial, no keyhole
 const S4b = (f: number) => dolly(H(-1.3, 1.2, 1.4), H(-0.66, 1.2, 0), pushK(f, 418, 0.003), { fov: 40, roll: -0.03 }); // "No crank": side of the case
 const S4c = (f: number) => dolly(H(0.2, 0.9, 1.6), H(0, 0.4, 0.2), pushK(f, 437, 0.0025), { fov: 40 });              // "No weights": empty chains below
 const S4d = (f: number) => dolly(H(0.05, 2.08, 0.75), DIAL, pushK(f, 479, 0.003, 0.007, 30), { fov: 36, roll: 0.04 }); // "And still, it kept on ticking"
-const S5a = (f: number) => dolly(H(-3.4, 1.6, 5.2), H(0, 1.4, 0), pushK(f, 528, 0.0016), { fov: 42 });               // hall wide, window light cycles
+const S5a = (f: number) => dolly(H(-4.6, 2.7, 7.8), H(0, 1.4, 0), pushK(f, 528, 0.0016), { fov: 42 });               // hall wide, window light cycles
 const S5b = (f: number) => dolly(H(2.6, 1.3, 4.0), H(0, 1.6, 0), pushK(f, 589, 0.0025), { fov: 40, roll: 0.03 });   // "Month after month"
 const S6a = (f: number) => dolly(H(-1.0, 1.6, 6.4), H(-0.8, 1.5, 3.4), pushK(f, 624, 0.0025, 0.006, 24), { fov: 40 }); // magic (visitor with wand)
 const S6b = (f: number) => dolly(H(1.8, 1.4, 1.4), H(0.4, 1.1, -0.45), pushK(f, 650, 0.003), { fov: 40, roll: -0.035 }); // servant: peek behind the case
-const S6c = (f: number) => dolly(H(-0.2, 0.55, 1.6), H(0.35, 0.3, -0.5), pushK(f, 674, 0.003, 0.007, 24), { fov: 44 }); // the cat behind the case
+const S6c = (f: number) => dolly(H(0.35, 0.6, 1.5), H(0.85, 0.35, -0.15), pushK(f, 674, 0.003, 0.007, 24), { fov: 44 }); // the cat behind the case
 const S7a = (f: number) => dolly(add(COX, [0.4, 1.75, 2.0]), coxEye, pushK(f, 712, 0.0028), { fov: 40 });          // Cox just smiled
 const S7b = (f: number) => dolly(add(LOTTERY, [1.5, 1.6, 3.6]), add(LOTTERY, [0, 1.3, 0]), pushK(f, 800, 0.003, 0.006, 30), { fov: 42, roll: 0.035 }); // the lottery wheel
 const S8a = (f: number) => dolly(H(-2.2, 1.2, 5.8), H(0, 1.7, 0), pushK(f, 848, 0.0022, 0.005, 24), { fov: 40, roll: -0.03 }); // luckily: low hero shot
 const S9a = (f: number) => zoom(SKY_EYE, [0, 140, -400], 46, pushK(f, 922, 0.0025, 0.007, 26));                    // unluckily: the sky
 const S10a = (f: number) => dolly(H(0.2, 1.2, 2.2), add(JARS, [0, 0.2, 0]), pushK(f, 975, 0.0022), { fov: 40 });     // case front turns transparent
-const S10b = (f: number) => dolly(add(JARS, [0.55, 0.15, 0.9]), JARS, pushK(f, 1082, 0.003, 0.006, 26), { fov: 38, roll: 0.035 }); // "seventy kilos of mercury"
+const S10b = (f: number) => dolly(add(JARS, [0.45, 0.1, 1.15]), add(JARS, [0.2, 0, 0]), pushK(f, 1082, 0.003, 0.006, 26), { fov: 38, roll: 0.035 }); // "seventy kilos of mercury"
 const S11a = (f: number) => zoom([-30, 18, 30], [0, 40, -200], 46, pushK(f, 1125, 0.002));                            // clouds roll over, pressure changes
-const S11b = (f: number) => dolly(add(JARS, [-0.35, 0.1, 0.8]), add(JARS, [0, 0.05, 0]), pushK(f, 1188, 0.0025), { fov: 38 }); // mercury rose / fell
-const S11c = (f: number) => dolly(H(0.3, 1.65, 0.9), H(0, 1.5, 0), pushK(f, 1260, 0.003, 0.007, 26), { fov: 40, roll: -0.035 }); // tiny push wound the clock
+const S11b = (f: number) => dolly(add(JARS, [-0.3, 0.05, 1.2]), add(JARS, [-0.1, 0.0, 0]), pushK(f, 1188, 0.0025), { fov: 38 }); // mercury rose / fell
+const S11c = (f: number) => dolly(H(0.5, 1.25, 1.6), H(0, 1.0, 0), pushK(f, 1260, 0.003, 0.007, 26), { fov: 40, roll: -0.035 }); // tiny push wound the clock
 const S12a = (f: number) => dolly(add(CHEST, [0.9, 1.5, 2.4]), add(CHEST, [0, 1.25, 0]), pushK(f, 1320, 0.0025), { fov: 40 }); // your chest
-const S12b = (f: number) => dolly(add(CHEST, [2.4, 1.4, 2.6]), add(CHEST, [1.1, 1.1, 0]), pushK(f, 1383, 0.0025), { fov: 42, roll: 0.03 }); // chest + jars in one frame
-const S13a = (f: number) => zoom([0, 90, 120], [0, 4, -6], 44, pushK(f, 1445, 0.0015));                              // aerial: rooftops breathing the sky
+const S12b = (f: number) => dolly(H(-1.2, 1.6, 7.4), H(-1.2, 1.1, 1.5), pushK(f, 1383, 0.0025), { fov: 50, roll: 0.03 }); // chest + clock in one frame // chest + jars in one frame
+const S13a = (f: number) => zoom([0, 42, 95], [0, 26, -220], 46, pushK(f, 1445, 0.0015)); // rooftops below, the sky above                              // aerial: rooftops breathing the sky
 const S14a = (f: number) => zoom([-40, 12, 40], [10, 30, -160], 44, pushK(f, 1512, 0.0018, 0.005, 30), { roll: 0.03 }); // wasn't perpetual
 const S14b = (f: number) => zoom([30, 20, 60], [-10, 50, -260], 46, pushK(f, 1600, 0.0025, 0.007, 30), { roll: -0.04 }); // every cloud and storm
 const S15a = (f: number) => zoom(G(-5.5, 1.7, 8.5), G(0, 1.4, 0), 42, pushK(f, 1675, 0.0016));                       // V&A gallery wide
