@@ -316,7 +316,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const k = q(clamp01((f - (STEM_CUT - 6)) / 6), 6);
         if (f < STEM_CUT + 14) push(out, `snips${k}`, 400, 300, (p) => fxSnips(p, k), APP[0] + 0.12, 1.35, APP[2] + 0.05, 0.22, 0.165);
         if (f >= STEM_CUT && f < STEM_CUT + 5) { const u = q((f - STEM_CUT) / 5, 5); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), APP[0] + 0.02, 1.36, APP[2] + 0.06, 0.1, 0.1); }
-      } else sit(out, cam, WHO.parnell, { expr: f < 590 ? "neutral" : "dazed", look: -1, headTilt: f >= 590 ? -6 : 0 }, t);
+      } else sit(out, cam, WHO.parnell, { expr: "neutral", look: -1, headTilt: f >= 590 ? -10 : 0 }, t);
       break;
     }
     case 6: case 7: calendar(out, id, f); break;
