@@ -272,7 +272,7 @@ const calendar = (out: Stage, id: number, f: number) => {
   }
 };
 const pig = (out: Stage, cam: CamInfo, i: number, p: V3, dx: number, f: number, f0: number) => {
-  const s = Math.max(0, (f - f0) / FPS) * 0.7, x = p[0] + dx * s, ph = q(((f - f0) / FPS * 1.6 + i * 0.3) % 1, 12);
+  const s = Math.max(0, (f - f0) / FPS) * 0.25, x = p[0] + dx * s, ph = q(((f - f0) / FPS * 1.6 + i * 0.3) % 1, 12);
   const mirror = dx * cam.right.x < 0 === false ? false : true;
   const sn = q(0.5 + 0.5 * Math.sin(f / 5 + i), 4);
   out.places.push({ key: `pig|${ph}|${sn}`, x, y: p[1], z: p[2], mirror, scale: 0.7, draw: (pp) => pigCard(pp, ph, sn), size: [480, 800, 0.8] });
@@ -328,7 +328,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 8: {
-      if (f >= 828) for (let k = 0; k < 3; k++) pig(out, cam, k, Ch(-1.4 + k * 1.1, 0.03, -2.9 - (k % 2) * 0.9), k % 2 ? -1 : 1, f, 826 - k * 6);
+      if (f >= 828) for (let k = 0; k < 3; k++) pig(out, cam, k, Ch(-0.55 + k * 0.75, 0.03, -2.6 - (k % 2) * 0.8), k % 2 ? -1 : 1, f, 826 - k * 6);
       if (f >= 828 && f < 836) { const u = q((f - 828) / 8, 8); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), CH[0] - 0.2, 1.2, CH[2] - 2.6, 0.4, 0.4); }
       break;
     }
@@ -349,7 +349,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       if (f < 1078) {
         const kp = O(-1.9, 0, 1.6);
         stand(out, cam, WHO.worker[1], kp, { expr: "whistle", look: 1 }, t);
-        const u = q((t * 1.4) % 1, 12), hp = add(kp, [cam.right.x * 0.04, 1.47, cam.right.z * 0.04 + 0.06]);
+        const u = q((t * 1.4) % 1, 12), hp = add(kp, [cam.right.x * 0.04, 1.41, cam.right.z * 0.04 + 0.06]);
         push(out, `bottle${u}`, 500, 600, (p) => fxBottle(p, u), hp[0], hp[1] - 0.12, hp[2], 0.2, 0.24);
         if (f >= 1040) notes(out, f, [add(hp, [0.06, 0.1, 0])], "#1f2a44", 0.09);
       } else {

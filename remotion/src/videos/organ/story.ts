@@ -175,7 +175,7 @@ const S8a = (f: number) => zoom(T(15, 1.8, 2), T(0, 7.5, -36), 50, pushK(f, 710,
 const S8b = (f: number) => dolly(Ch(-1.2, 1.5, 1.2), Ch(0.3, 0.8, -4.0), pushK(f, 798, 0.0024, 0.007, 24), { fov: 44 });          // a barn ... a pigsty
 const S9a = (f: number) => dolly(O(-0.5, 1.7, 5.0), O(-0.15, 1.15, 0), pushK(f, 856, 0.0022), { fov: 46 });                       // the tiny organ, the blower
 const S9b = (f: number) => dolly(O(0.25, 1.32, 1.05), O(0.05, KEY_Y + 0.05, 0.3), pushK(f, 958, 0.003, 0.007, 24), { fov: 40, roll: 0.035 }); // weights on the keys
-const S10a = (f: number) => dolly(O(-1.9, 1.45, 3.1), O(-1.9, 1.3, 1.6), pushK(f, 1012, 0.0028), { fov: 40 });                  // blowing across a bottle
+const S10a = (f: number) => dolly(O(-1.7, 1.5, 3.5), O(-1.9, 1.32, 1.6), pushK(f, 1012, 0.0028), { fov: 40 });                  // blowing across a bottle
 const S10b = (f: number) => dolly(O(0.2, 2.0, 1.25), O(-0.08, 2.05, 0), pushK(f, 1078, 0.003, 0.006, 24), { fov: 40, roll: -0.03 }); // air flows, never stops
 const S11a = (f: number) => dolly(Ch(-3.6, 2.2, 4.8), O(-0.6, 1.3, 0), pushK(f, 1144, 0.0016), { fov: 44 });                    // 2,527 days time-lapse
 const S11b = (f: number) => dolly(O(1.9, 1.8, 2.9), O(0.4, 1.7, -0.2), pushK(f, 1236, 0.003, 0.007, 24), { fov: 42, roll: 0.03 }); // "days"
