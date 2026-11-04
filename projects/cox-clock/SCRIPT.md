@@ -14,7 +14,7 @@ Format: cartoon-3d-short (~60-65 s, ~3.7 words/s), one steady voice, English onl
 - TO CHECK before voice: whether it is ever run today; exact museum location (Spring Gardens vs Charing Cross wording).
 
 ## Script (~235 words)
-In seventeen sixty-five, a London jeweller built a clock that nobody ever had to wind.
+In the seventeen-sixties, a London jeweller built a clock that nobody ever had to wind.
 His name was James Cox, and he called it, quite modestly, The Perpetual Motion.
 People paid to walk into his museum and stare at it.
 No key. No crank. No weights to pull up. And still, it kept on ticking.
