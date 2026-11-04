@@ -216,6 +216,7 @@ const S11b = (f: number) => dolly(A(0.3, 1.14, 0.8), A(0, 1.12, 0), pushK(f, 110
 const S11c = (f: number) => dolly(A(-1.4, 1.5, 4.6), A(0.85, 1.25, 0.75), pushK(f, 1115, 0.0024, 0.006, 24), { fov: 42, roll: 0.035 }); // five minutes
 const S12a = (f: number) => dolly(Lb(-2.2, 1.6, 3.8), A(0.25, 1.25, 0.7), pushK(f, 1166, 0.0018), { fov: 42 });           // night, the camera
 const S12b = (f: number) => dolly(A(0.7, 1.4, 2.2), A(-0.15, 1.22, 0.3), pushK(f, 1232, 0.0026, 0.006, 24), { fov: 40 });  // lights out, drop falls
+const S12d = (f: number) => dolly(A(0.34, 1.2, 0.86), A(0, 1.14, 0), pushK(f, 1243, 0.004, 0.009, 18), { fov: 38 });             // the drop falls in the flash
 const S12c = (f: number) => dolly(A(-0.08, 1.44, 0.55), add(TRIPOD, [0, 1.34, 0]), pushK(f, 1286, 0.003, 0.008, 22), { fov: 38, roll: -0.04 }); // dead camera
 const S13a = (f: number) => dolly(A(-0.31, 1.42, 2.0), A(-0.31, 1.25, 0.06), pushK(f, 1314, 0.0022), { fov: 40 });            // water vs pitch
 const S13b = (f: number) => dolly(A(-0.8, 1.34, 0.95), A(-0.62, 1.22, 0.12), pushK(f, 1383, 0.003, 0.006, 26), { fov: 40, roll: 0.03 }); // 200 billion
@@ -241,7 +242,7 @@ const CAMS: Record<number, Key[]> = {
   9: [{ f: 938, s: S9a }, { f: 968, cut: true, s: S9b }],
   10: [{ f: 1013, s: S10a }],
   11: [{ f: 1065, s: S11a }, { f: 1102, cut: true, s: S11b }, { f: 1115, cut: true, s: S11c }],
-  12: [{ f: 1162, s: S12a }, { f: 1232, cut: true, s: S12b }, { f: 1286, cut: true, s: S12c }],
+  12: [{ f: 1162, s: S12a }, { f: 1232, cut: true, s: S12b }, { f: 1243, cut: true, s: S12d }, { f: 1286, cut: true, s: S12c }],
   13: [{ f: 1310, s: S13a }, { f: 1383, dur: 30, s: S13b }],
   14: [{ f: 1467, s: S14a }, { f: 1502, cut: true, s: S14b }],
   15: [{ f: 1546, s: S15a }, { f: 1608, cut: true, s: S15b }],
@@ -299,6 +300,7 @@ export const DOF: Dof[] = [
   { f: 1115, cInf: 7, focus: () => add(DOOR, [-0.55, 1.6, 1.0]) },
   { f: 1162, cInf: 6 },
   { f: 1232, cInf: 11 },
+  { f: 1243, cInf: 15 },
   { f: 1286, cInf: 14 },
   { f: 1310, cInf: 11 },
   { f: 1467, cInf: 14 },

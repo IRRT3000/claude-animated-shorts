@@ -2,9 +2,9 @@
 // billboards shaded by cardShade(), contact blobs, unlit effect cards on the NOINK layer).
 import * as THREE from "three";
 import { Pen, bodyFront, bodySide, PARNELL_O, mainstone, STAFF, audience, fxContact, fxShadow, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
-import { fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip, fxArm } from "./fx";
+import { fxBonk, fxSparkle, fxRain, fxShards, fxCalPage, fxSnips, fxPour, fxWater, fxHoney, fxConfetti, fxPrize, fxMug, fxCase, fxPlip, fxArm } from "./fx";
 import { FPS, SHOTS, V3, APP, CAB_H, CHAIR, PARNELL, BLOCK, DOOR, WATER, HONEY, STAGE, STAGE_H, TIP_Y, LAB, FALLS, FALL_F, SEPARATE, SHATTER, STEM_CUT, POUR,
-  POWER_OFF, calendarAt, hairAge, hammerAt, pileAt, pileTop, smooth, clamp01, add } from "./story";
+  POWER_OFF, BUMP, calendarAt, hairAge, hammerAt, pileAt, pileTop, smooth, clamp01, add } from "./story";
 import type { LightName } from "./lights";
 import { NOINK } from "./ink";
 import { cardShade, blobMaterial, CARD_K } from "./cardshade";
@@ -384,6 +384,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const lift = 0.32 * smooth((f - 1884) / 38) + (f >= 1928 && f < 1936 ? 0.012 * Math.sin((f - 1928) * 2.5) : 0);
         for (const sd of [-1, 1]) push(out, `arm${sd}`, 200, 900, (p) => fxArm(p, sd), APP[0] + sd * 0.36, CAB_H + 0.62 + lift + 0.52, APP[2] + 0.08, 0.26, 1.17);
       }
+      if (f >= BUMP && f < BUMP + 8) { const u = q((f - BUMP) / 8, 8); push(out, `bonk${u}`, 300, 300, (p) => fxBonk(p, u), APP[0] - 0.42, CAB_H + 0.08, APP[2] + 0.3, 0.32, 0.32); }
       plip(out, f, SEPARATE);
       break;
     }

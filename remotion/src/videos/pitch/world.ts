@@ -12,7 +12,7 @@ import { Pool, Actor, Fx, stage } from "./cast";
 import {
   FPS, SHOTS, ShotDef, LAB, APP, CAB_H, TIP_Y, BEAKER_Y, CHAIR, BENCH, BLOCK, DOOR, TRIPOD, WATER, HONEY, STAGE, STAGE_H,
   camAt, fillAt, jarOn, jarLift, pileAt, pileTop, dropAt, wobbleAt, windowLight, calendarAt, clockMin, POWER_OFF, lightningAt,
-  SHATTER, POUR, SEPARATE, V3,
+  SHATTER, POUR, SEPARATE, V3, FALLS, FALL_F,
 } from "./story";
 
 export const loadKit = async (): Promise<Kit> => ({}); // no external models: trees are drawn by build.ts
@@ -107,7 +107,7 @@ const cabTex = () => ctex("pdCab", 512, 288, (g) => {
   g.fillStyle = "#c99a3a"; for (const [x, y] of [[256, 50], [230, 186], [282, 186]]) { g.beginPath(); g.arc(x, y, 9, 0, 7); g.fill(); }
 });
 
-const PITCH_M = new THREE.MeshPhongMaterial({ color: "#1a171f", specular: "#ffffff", shininess: 90, emissive: "#0a0810" });
+const PITCH_M = new THREE.MeshPhongMaterial({ color: "#150f1a", specular: "#cfc6de", shininess: 180, emissive: "#060309" });
 const MAT = {
   wood: () => lam("pdWood", () => ({ color: "#7a4a2e" })), woodD: () => lam("pdWoodD", () => ({ color: "#4e2f1e" })),
   brass: () => lam("pdBrass", () => ({ color: "#c99a3a" })), pitch: () => PITCH_M,
@@ -336,7 +336,7 @@ export class World {
     // ---- the experiment ----
     this.rig = apparatus(); this.rig.root.position.set(...APP); R.add(this.rig.root);
     // the lump of pitch on the bench, its broken pieces, the pouring pot, the 2000 camera, the water funnel, the honey
-    const blk = new THREE.Mesh(new THREE.DodecahedronGeometry(0.11, 0), MAT.pitch()); blk.scale.set(1.2, 0.75, 1); blk.position.set(...BLOCK); blk.position.y += 0.07; blk.castShadow = true; R.add(blk); this.block = blk;
+    const blk = new THREE.Mesh(new THREE.DodecahedronGeometry(0.11, 1), MAT.pitch()); blk.scale.set(1.2, 0.75, 1); blk.position.set(...BLOCK); blk.position.y += 0.07; blk.castShadow = true; R.add(blk); this.block = blk;
     const pieces = new THREE.Group();
     for (let k = 0; k < 7; k++) { const pz = new THREE.Mesh(new THREE.TetrahedronGeometry(0.03 + 0.02 * ((k * 7) % 3) / 2, 0), MAT.pitch()); pz.position.set(BLOCK[0] + 0.22 * Math.cos(k * 2.1), BLOCK[1] + 0.02, BLOCK[2] + 0.14 * Math.sin(k * 2.1)); pz.rotation.set(k, k * 2, k * 3); pz.castShadow = true; pieces.add(pz); }
     R.add(pieces); this.pieces = pieces;
@@ -359,6 +359,7 @@ export class World {
     const wf = new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0.01, 0.36), new THREE.Vector2(0.01, 0.46), new THREE.Vector2(0.022, 0.48), new THREE.Vector2(0.1, 0.6), new THREE.Vector2(0.104, 0.61)], 24), glassMat(1.0)); wf.layers.set(NOINK); wat.add(wf);
     const wrim = new THREE.Mesh(new THREE.TorusGeometry(0.104, 0.005, 6, 28), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); wrim.rotation.x = Math.PI / 2; wrim.position.y = 0.61; wat.add(wrim);
     const grim = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.004, 6, 28), lam("pdGlassRim", () => ({ color: "#d8e4ea" }))); grim.rotation.x = Math.PI / 2; grim.position.y = 0.2; wat.add(grim);
+    const wcone = new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0.006, 0.36), new THREE.Vector2(0.006, 0.46), new THREE.Vector2(0.018, 0.48), new THREE.Vector2(0.088, 0.59), new THREE.Vector2(0, 0.59)], 24), new THREE.MeshBasicMaterial({ color: "#6ab8e6" })); wat.add(wcone);
     const wtop = new THREE.Mesh(new THREE.CircleGeometry(0.092, 24), new THREE.MeshBasicMaterial({ color: "#7cc8f0" })); wtop.rotation.x = -Math.PI / 2; wtop.position.y = 0.59; wat.add(wtop);
     const wglass = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.2, 24, 1, true), glassMat(1.0)); wglass.position.y = 0.1; wglass.layers.set(NOINK); wat.add(wglass);
     const wfill = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.12, 24), new THREE.MeshBasicMaterial({ color: "#6ab8e6" })); wfill.position.y = 0.06; wat.add(wfill);
@@ -460,7 +461,7 @@ export class World {
     else this.windows.color.setRGB(0.25 + 1.95 * wl, 0.3 + 1.7 * wl, 0.5 + 1.1 * wl);
     const lampOn = night && f < POWER_OFF;
     this.lamps.color.setRGB(lampOn ? 3.2 : 0.35, lampOn ? 2.8 : 0.33, lampOn ? 2.0 : 0.3);
-    this.rec.color.setRGB(night && f < POWER_OFF ? 3 : 0.12, night && f < POWER_OFF ? 0.2 : 0.05, night && f < POWER_OFF ? 0.15 : 0.05);
+    this.rec.color.setRGB(night && f < POWER_OFF ? 3 : 0.02, night && f < POWER_OFF ? 0.2 : 0.02, night && f < POWER_OFF ? 0.15 : 0.025);
     const mins = clockMin(f);
     this.clockMin.rotation.z = -(mins / 60) * Math.PI * 2; this.clockHr.rotation.z = -((mins / 60 + 3) / 12) * Math.PI * 2;
     // apparatus
@@ -473,7 +474,8 @@ export class World {
     R.falling.visible = d.fall !== null;
     if (d.fall !== null) R.falling.position.set(0, Math.max(top + 0.02, tipL - 0.05 - d.fall), 0);
     R.pile.visible = n > 0; R.pile.scale.set(0.088, Math.max(0.01, top - (BEAKER_Y - CAB_H)), 0.088);
-    R.fresh.visible = f >= SEPARATE; R.fresh.position.set(0.012, top + 0.012, 0.01);
+    const landed = FALLS.some((x) => f >= x + FALL_F && f < x + FALL_F + 60);
+    R.fresh.visible = f >= SEPARATE || landed; R.fresh.position.set(0.012, top + 0.012, 0.01);
     R.jar.visible = jarOn(f) && s.place === "lab"; R.jar.position.y = jarLift(f);
     R.base.rotation.z = wobbleAt(f);
     // props by shot

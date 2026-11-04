@@ -167,10 +167,11 @@ export const fxTick = (p: Pen, t: number) => {
 const PITCH = "#1d1a20", PITCH_HI = "#5a5866";
 /** black glassy shards flying out from the hammer blow, on a 600 x 400 canvas; t 0..1 spreads them */
 export const fxShards = (p: Pen, t: number) => {
-  for (let k = 0; k < 14; k++) {
-    const a = rad(k * (360 / 14) + (k % 3) * 9), d = 30 + 250 * Math.sqrt(t) * (0.6 + 0.4 * ((k * 37) % 10) / 10), cx = 300 + d * Math.cos(a) * 0.95, cy = 230 + d * Math.sin(a) * 0.7 + 160 * t * t;
-    const s = 18 + ((k * 13) % 3) * 9, r0 = rad(k * 47 + t * 400);
-    const pts: P2[] = [0, 1, 2].map((i) => [cx + s * Math.cos(r0 + i * 2.2), cy + s * 0.8 * Math.sin(r0 + i * 2.2)] as P2);
+  for (let k = 0; k < 16; k++) {
+    const h1 = ((k * 73) % 100) / 100, h2 = ((k * 37 + 11) % 100) / 100;
+    const a = rad(k * 41 + 200 * h1), d = (40 + 280 * Math.sqrt(t)) * (0.35 + 0.65 * h2), cx = 300 + d * Math.cos(a) * 0.95, cy = 240 + d * Math.sin(a) * 0.6 - 120 * t * (1 - t) * 4 * h1 + 200 * t * t;
+    const s = 10 + 34 * h1 * h2 + (k % 4 === 0 ? 14 : 0), r0 = rad(k * 47 + t * 400);
+    const pts: P2[] = [0, 1, 2, 3].map((i) => [cx + s * (i % 2 ? 0.6 : 1) * Math.cos(r0 + i * 1.6), cy + s * 0.8 * (i % 2 ? 0.6 : 1) * Math.sin(r0 + i * 1.6)] as P2);
     p.poly(pts, PITCH, 6);
     p.stroke([pts[0], [(pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2]], 4, PITCH_HI);
   }
