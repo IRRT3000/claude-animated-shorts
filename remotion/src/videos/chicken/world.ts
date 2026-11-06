@@ -423,7 +423,6 @@ export class World {
       // the statue: a stone plinth (the metal rooster is a card from cast.ts)
       b.add(boxGeo(V(X + 2.2, 0, Z - 6.6), V(X + 3.6, 1.2, Z - 5.2)), lam("ckPlinth", () => ({ map: stoneHD("ckPlinthT") })));
       for (let i = 0; i < 16; i++) { const a = r() * Math.PI * 2, d = 50 + r() * 120; tree(b, kit, X + Math.cos(a) * d, Z + Math.sin(a) * d * 0.6 - 30, 7 + r() * 5, i + 90); }
-      for (const [x, z, w, h] of [[-100, -260, 160, 70], [60, -300, 200, 90], [200, -240, 140, 60]] as const) mesa(b, X + x, Z + z, w, h, x + z + 7);
       b.build(R);
     }
     setSight([]);
@@ -484,8 +483,8 @@ export class World {
       m.lookAt(cam.position.x, m.position.y, cam.position.z); m.visible = s.place === "farm" || s.place === "show" || s.place === "town";
     }
     // ---- the set pieces by shot ----
-    { const u = id === 12 ? clamp01((f - 1186) / 40) : -1;
-      this.road.visible = u >= 0; this.road.position.set(SHOW[0] - 34 + 68 * u, 0, SHOW[2] + 35.6); this.road.rotation.y = 0; }
+    { const u = id === 12 ? clamp01((f - 1188) / 34) : -1;
+      this.road.visible = u >= 0; this.road.position.set(SHOW[0] - 9 + 12 * u, 0, SHOW[2] + 35.6); this.road.rotation.y = 0; }
     this.parked.visible = s.place === "motel";
     this.crate.visible = id === 10;
     void smooth;

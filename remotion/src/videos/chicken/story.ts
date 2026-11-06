@@ -153,7 +153,7 @@ const S6a = (f: number) => dolly(FA(2.75, 1.25, 7.6), FA(2.0, 0.95, 2.0), pushK(
 const S7a = (f: number) => dolly(L(0.15, 1.65, 0.6), L(0.0, 1.72, -2.4), pushK(f, 484, 0.0028, 0.006, 24), { fov: 40 });              // the x-ray lightbox
 const S8a = (f: number) => dolly(FA(3.5, 0.95, 4.7), FA(2.4, 0.5, 2.6), pushK(f, 586, 0.0026, 0.007, 24), { fov: 46 });              // he shook it off
 const S8b = (f: number) => dolly(FA(3.15, 0.38, 4.2), FA(2.6, 0.25, 2.9), pushK(f, 632, 0.003, 0.008, 22), { fov: 44, roll: -0.03 }); // pecking
-const S9a = (f: number) => dolly(FA(7.05, 1.2, -2.1), FA(7.05, 1.1, -5.9), pushK(f, 676, 0.0024, 0.006, 24), { fov: 46 });             // the roost at night
+const S9a = (f: number) => dolly(FA(7.05, 1.15, -2.9), FA(7.05, 1.08, -5.9), pushK(f, 676, 0.0024, 0.006, 24), { fov: 50 });             // the roost at night
 const S10a = (f: number) => dolly(K(0.0, 1.5, 2.4), K(0.0, 1.05, -0.5), pushK(f, 784, 0.0022, 0.006, 24), { fov: 48 });              // the Olsens and Mike
 const S10b = (f: number) => dolly(K(0.3, 1.2, 1.25), K(0.02, 1.0, 0.0), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 });   // the eyedropper
 const S11a = (f: number) => dolly(L(0.3, 1.5, 2.2), L(0.0, 1.2, -1.5), pushK(f, 948, 0.0022, 0.006, 24), { fov: 54 });                // scientists round the bench
