@@ -321,7 +321,7 @@ const axeCard = (pp: Pen) => {
   pp.poly([[100, 60], [180, 40], [190, 150], [100, 130]], "#9aa2ae", 7); pp.stroke([[182, 46], [190, 146]], 6, "#e6eaf0");
 };
 const beam = (pp: Pen) => {
-  const g = pp.g, gr = g.createLinearGradient(0, 0, 0, 600); gr.addColorStop(0, "rgba(190,210,255,0.0)"); gr.addColorStop(0.3, "rgba(190,210,255,0.35)"); gr.addColorStop(1, "rgba(190,210,255,0.5)");
+  const g = pp.g, gr = g.createLinearGradient(0, 0, 0, 600); gr.addColorStop(0, "rgba(190,210,255,0.0)"); gr.addColorStop(0.3, "rgba(190,210,255,0.12)"); gr.addColorStop(1, "rgba(190,210,255,0.22)");
   g.fillStyle = gr; g.beginPath(); g.moveTo(130, 0); g.lineTo(170, 0); g.lineTo(290, 600); g.lineTo(10, 600); g.closePath(); g.fill();
 };
 const dropperFx = (pp: Pen) => {
@@ -415,10 +415,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 9: {
       const py = 0.92, pz = COOP[2] - 0.9;
-      chick(out, cam, [COOP[0] - 0.8, py, pz], { mode: "tuck", v: 1 }, 0.5, [1, 0], false, 9);
-      chick(out, cam, [COOP[0] - 0.35, py, pz], { mode: "tuck", v: 2 }, 0.5, [1, 0], false, 10);
-      chick(out, cam, [COOP[0] + 0.75, py, pz], { mode: "tuck", v: 3 }, 0.5, [-1, 0], false, 11);
-      chick(out, cam, [COOP[0] + 0.2, py, pz + 0.02], f >= TUCK ? { mode: "tuck", head: false } : { mode: "stand", head: false }, 0.52, [1, 0], false, 12);
+      chick(out, cam, [COOP[0] - 0.65, py, pz], { mode: "tuck", v: 1 }, 0.5, [1, 0], false, 9);
+      chick(out, cam, [COOP[0] - 0.25, py, pz], { mode: "tuck", v: 2 }, 0.5, [1, 0], false, 10);
+      chick(out, cam, [COOP[0] + 0.6, py, pz], { mode: "tuck", v: 3 }, 0.5, [-1, 0], false, 11);
+      chick(out, cam, [COOP[0] + 0.17, py, pz + 0.02], f >= TUCK ? { mode: "tuck", head: false } : { mode: "stand", head: false }, 0.52, [1, 0], false, 12);
       if (f >= HABIT) zzz(out, [COOP[0] + 0.5, py + 0.5, pz + 0.05], f, 0.3);
       zzz(out, [COOP[0] - 0.8, py + 0.45, pz + 0.05], f + 20, 0.25);
       break;
@@ -429,10 +429,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         stand(out, cam, W.lloyd, LLOYD_K, { expr: f >= KEEP - 4 ? "grin" : "neutral", look: 1 }, t);
         stand(out, cam, W.clara, CLARA_K, { expr: "smile", look: -1 }, t);
       } else {
-        const neck: V3 = add(MIKE_K, [0.11, 0.27, 0.02]);
-        const dy = f < DROP - 6 ? 0.25 : 0.12;
-        push(out, "dropper", 200, 480, dropperFx, neck[0], neck[1] + dy + 0.12, neck[2], 0.075, 0.18);
-        for (const f0 of [DROP, 875, 905, THROAT]) if (f >= f0 && f < f0 + 8) push(out, "drop", 120, 160, (pp) => fxDrop(pp), neck[0], neck[1] + dy - 0.02 - 0.012 * (f - f0), neck[2], 0.025, 0.033);
+        const neck: V3 = add(MIKE_K, [0.146, 0.31, 0.03]);
+        const dy = f < DROP - 6 ? 0.18 : 0.05;
+        push(out, "dropper", 200, 480, dropperFx, neck[0], neck[1] + dy + 0.09, neck[2], 0.075, 0.18);
+        for (const f0 of [DROP, 875, 905, THROAT]) if (f >= f0 && f < f0 + 8) push(out, "drop", 120, 160, (pp) => fxDrop(pp), neck[0], neck[1] + dy - 0.005 * (f - f0), neck[2], 0.025, 0.033);
         if (f >= MILK - 2 && f < WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.5, -TABLE_TOP + 0.04, -0.4]), { expr: "smile", prop: "milk", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.65, -0.3]), f, MILK, 0.15, 8); }
         if (f >= WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.5, -TABLE_TOP + 0.04, -0.4]), { expr: "smile", prop: "glass", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.62, -0.3]), f, WATER, 0.15, 8); }
       }
@@ -442,9 +442,9 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const mike: V3 = L(0.0, 0.92, -1.6);
       if (f < 1030 || f >= 1116) {
         chick(out, cam, mike, { mode: "stand", head: false }, 0.5, [1, 0], false, 14);
-        stand(out, cam, W.sci[0], L(-0.85, 0.04, -1.0), { expr: f >= REST ? "grin" : "neutral", prop: f >= EXAM - 6 && f < 1030 ? "stetho" : null, look: 1 }, t);
-        stand(out, cam, W.sci[1], L(1.0, 0.04, -1.0), { expr: f >= REST - 2 ? "relief" : "shock", shrug: f >= REST - 2 ? q(smooth((f - REST + 2) / 6), 6) : 0, look: -1 }, t);
-        stand(out, cam, W.sci[2], L(0.5, 0.04, -0.85), { expr: "nervous", look: -1 }, t);
+        stand(out, cam, W.sci[0], L(-0.85, 0.04, -1.1), { expr: f >= REST ? "grin" : "neutral", prop: f >= EXAM - 6 && f < 1030 ? "stetho" : null, look: 1 }, t);
+        stand(out, cam, W.sci[1], L(0.85, 0.04, -1.1), { expr: f >= REST - 2 ? "relief" : "shock", shrug: f >= REST - 2 ? q(smooth((f - REST + 2) / 6), 6) : 0, look: -1 }, t);
+        stand(out, cam, W.sci[2], L(-0.45, 0.04, -2.25), { expr: "nervous", look: -1 }, t);
       } else {
         const c = f < CLOT - 2 ? 0 : q(0.6 + 0.4 * Math.abs(Math.sin(((f - CLOT) / FPS) * 5)), 8);
         const st = f < STEM2 - 2 ? 0.25 : q(smooth((f - STEM2 + 2) / 6), 8);
@@ -455,7 +455,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 12: {
       if (f < 1188) {
         stand(out, cam, W.lloyd, SH(-2.0, 0.04, 4.6), { expr: f >= PROMO ? "shock" : "neutral", look: -1 }, t);
-        chick(out, cam, SH(-1.75, 0.06, 5.6), { mode: "stand", head: false }, 0.5, [-1, 0], true, 15);
+        chick(out, cam, SH(-2.45, 0.06, 5.7), { mode: "stand", head: false }, 0.5, [-1, 0], true, 15);
         if (f >= PROMO - 2) stand(out, cam, W.promo, SH(-2.9, 0.04, 5.0), { expr: "grin", prop: f < PROMO + 30 ? "hatoff" : "cane2", look: 1 }, t);
         puff(out, SH(-2.9, 1.0, 5.1), f, PROMO - 3, 1.4, 8);
       } else if (f >= 1220) {
@@ -472,10 +472,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 13: {
       const ped: V3 = SH(-1.2, 0.95, -1.0);
       chick(out, cam, ped, { mode: f >= SNAP - 10 ? "flex" : "stand", head: false }, 0.55, [1, 0], false, 16);
-      stand(out, cam, W.photo, SH(1.0, 0.04, 0.1), { expr: f >= SNAP ? "grin" : "neutral", prop: ["camera", f >= SNAP && f < SNAP + 4 ? 1 : 0], look: -1 }, t);
+      stand(out, cam, W.photo, SH(0.15, 0.04, -0.3), { expr: f >= SNAP ? "grin" : "neutral", prop: ["camera", f >= SNAP && f < SNAP + 4 ? 1 : 0], look: -1 }, t);
       stand(out, cam, W.promo, SH(-2.3, 0.04, -0.4), { expr: "grin", prop: "cane2", look: 1 }, t);
       stand(out, cam, W.lloyd, SH(-0.3, 0.04, -2.2), { expr: "smile", look: -1 }, t);
-      burst(out, SH(1.2, 1.75, 0.15), f, SNAP, 0.9, "#fffbe0");
+      burst(out, SH(0.35, 1.75, -0.25), f, SNAP, 0.9, "#fffbe0");
       break;
     }
     case 14: {
@@ -523,7 +523,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const tab: V3 = SH(-0.45, 0.885, -0.45);
       push(out, "syringe", 260, 100, syringeCard, tab[0], tab[1] + 0.003, tab[2], 0.3, 0.115, { flat: true, rot: 0.4 });
       if (id === 18) sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, LEFT - 2, 0.16, 10);
-      else { sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, FORGOT + 8, 0.12, 10); push(out, "beam", 300, 600, beam, tab[0], 2.0, tab[2] - 0.2, 1.4, 2.8, { soft: true }); }
+      else { sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, FORGOT + 8, 0.12, 10); push(out, "beam", 300, 600, beam, tab[0] - 0.1, 1.6, tab[2] - 0.35, 0.7, 1.6, { soft: true }); }
       break;
     }
     case 19: {

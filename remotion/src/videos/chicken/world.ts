@@ -476,7 +476,7 @@ export class World {
     su.e.value.set(e[1], e[2], e[3], e[4]);
     this.sky.position.copy(cam.position);
     if (s.place === "kitchen" || s.place === "lab" || s.place === "room") { untone(L.fog, this.fog.color); this.fog.near = 50; this.fog.far = 400; }
-    else { untone(L.fog, this.fog.color); this.fog.near = L.fogNear; this.fog.far = L.fogFar; }
+    else { untone(L.fog, this.fog.color); this.fog.near = L.fogNear; this.fog.far = s.place === "farm" || s.place === "town" ? Math.max(L.fogFar, 900) : L.fogFar; }
     scene.fog = this.fog; scene.background = null;
     for (const m of this.clouds) {
       const i = m.userData.k as number, near = i >= 7, a = ((i % 7) / 7) * Math.PI * 2 + (near ? 0.65 : 0.3), d = near ? 300 + (i % 3) * 40 : 600 + (i % 3) * 60, w = (near ? 80 : 130) + (i % 4) * 30;

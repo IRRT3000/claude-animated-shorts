@@ -153,16 +153,16 @@ const S6a = (f: number) => dolly(FA(2.75, 1.25, 7.6), FA(2.0, 0.95, 2.0), pushK(
 const S7a = (f: number) => dolly(L(0.15, 1.65, 0.6), L(0.0, 1.72, -2.4), pushK(f, 484, 0.0028, 0.006, 24), { fov: 40 });              // the x-ray lightbox
 const S8a = (f: number) => dolly(FA(3.5, 0.95, 4.7), FA(2.4, 0.5, 2.6), pushK(f, 586, 0.0026, 0.007, 24), { fov: 46 });              // he shook it off
 const S8b = (f: number) => dolly(FA(3.15, 0.38, 4.2), FA(2.6, 0.25, 2.9), pushK(f, 632, 0.003, 0.008, 22), { fov: 44, roll: -0.03 }); // pecking
-const S9a = (f: number) => dolly(FA(7.1, 1.3, -2.6), FA(7.05, 1.05, -5.9), pushK(f, 676, 0.0024, 0.006, 24), { fov: 46 });             // the roost at night
+const S9a = (f: number) => dolly(FA(7.05, 1.2, -2.1), FA(7.05, 1.1, -5.9), pushK(f, 676, 0.0024, 0.006, 24), { fov: 46 });             // the roost at night
 const S10a = (f: number) => dolly(K(0.0, 1.5, 2.4), K(0.0, 1.05, -0.5), pushK(f, 784, 0.0022, 0.006, 24), { fov: 48 });              // the Olsens and Mike
 const S10b = (f: number) => dolly(K(0.3, 1.2, 1.25), K(0.02, 1.0, 0.0), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 });   // the eyedropper
-const S11a = (f: number) => dolly(L(1.2, 1.6, 2.0), L(0.0, 1.15, -1.4), pushK(f, 948, 0.0022, 0.006, 24), { fov: 46 });                // scientists round the bench
+const S11a = (f: number) => dolly(L(0.3, 1.5, 2.2), L(0.0, 1.2, -1.5), pushK(f, 948, 0.0022, 0.006, 24), { fov: 54 });                // scientists round the bench
 const S11b = (f: number) => dolly(L(-0.1, 1.68, 0.2), L(0.0, 1.72, -2.4), pushK(f, 1030, 0.003, 0.007, 22), { fov: 40 });             // the clot, the brain stem
-const S11c = (f: number) => dolly(L(-1.2, 1.5, 1.4), L(0.0, 1.2, -1.6), pushK(f, 1116, 0.0026, 0.007, 22), { fov: 44, roll: -0.03 }); // the shrug
+const S11c = (f: number) => dolly(L(0.25, 1.45, 1.6), L(0.15, 1.25, -1.4), pushK(f, 1116, 0.0026, 0.007, 22), { fov: 50, roll: -0.03 }); // the shrug
 const S12a = (f: number) => dolly(SH(-3.4, 1.6, 9.5), SH(-2.4, 1.3, 4.8), pushK(f, 1141, 0.0026, 0.007, 24), { fov: 44 });            // the promoter pops in
 const S12b = (f: number) => zoom(SH(-14, 3, 46), SH(0, 1.0, 34), 34, pushK(f, 1188, 0.0016));                                          // the car on the desert road
 const S12c = (f: number) => dolly(SH(3.0, 1.5, 9.0), SH(1.6, 1.2, 5.6), pushK(f, 1220, 0.0026, 0.007, 22), { fov: 44, roll: 0.03 });   // coins in the jar
-const S13a = (f: number) => dolly(SH(1.4, 1.45, 2.6), SH(-0.7, 1.05, -0.8), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 44 });            // the photographer, flash
+const S13a = (f: number) => dolly(SH(0.2, 1.4, 3.6), SH(-0.5, 1.1, -0.6), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 44 });            // the photographer, flash
 const S14a = (f: number) => dolly(FA(-8.6, 1.5, 4.2), FA(-9.0, 1.0, -2.0), pushK(f, 1331, 0.0022, 0.006, 24), { fov: 46 });           // other farmers
 const S15a = (f: number) => dolly(SH(1.6, 1.25, 2.4), SH(0.9, 1.0, -1.2), pushK(f, 1429, 0.0024, 0.007, 24), { fov: 42 });            // Mike on the scale
 const S15b = (f: number) => dolly(SH(1.15, 0.95, 1.0), SH(0.9, 0.85, -1.2), pushK(f, 1540, 0.003, 0.009, 20), { fov: 40, roll: 0.03 }); // with no head
