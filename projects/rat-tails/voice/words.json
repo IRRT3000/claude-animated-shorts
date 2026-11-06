@@ -1,0 +1,1002 @@
+[
+ {
+  "word": "In",
+  "start": 0.32,
+  "end": 0.42
+ },
+ {
+  "word": "nineteen-",
+  "start": 0.42,
+  "end": 0.77
+ },
+ {
+  "word": "oh-",
+  "start": 0.77,
+  "end": 0.89
+ },
+ {
+  "word": "two,",
+  "start": 0.89,
+  "end": 1.4
+ },
+ {
+  "word": "a",
+  "start": 1.4,
+  "end": 1.47
+ },
+ {
+  "word": "city",
+  "start": 1.47,
+  "end": 1.74
+ },
+ {
+  "word": "paid",
+  "start": 1.74,
+  "end": 2.04
+ },
+ {
+  "word": "people",
+  "start": 2.04,
+  "end": 2.41
+ },
+ {
+  "word": "to",
+  "start": 2.41,
+  "end": 2.51
+ },
+ {
+  "word": "kill",
+  "start": 2.51,
+  "end": 2.78
+ },
+ {
+  "word": "rats.",
+  "start": 2.78,
+  "end": 3.24
+ },
+ {
+  "word": "So",
+  "start": 3.55,
+  "end": 3.68
+ },
+ {
+  "word": "people",
+  "start": 3.68,
+  "end": 4.04
+ },
+ {
+  "word": "started",
+  "start": 4.04,
+  "end": 4.42
+ },
+ {
+  "word": "farming",
+  "start": 4.42,
+  "end": 4.87
+ },
+ {
+  "word": "rats.",
+  "start": 4.87,
+  "end": 5.27
+ },
+ {
+  "word": "Hanoi,",
+  "start": 5.646,
+  "end": 6.086
+ },
+ {
+  "word": "French",
+  "start": 6.086,
+  "end": 6.486
+ },
+ {
+  "word": "Indochina.",
+  "start": 6.486,
+  "end": 7.266
+ },
+ {
+  "word": "The",
+  "start": 7.636,
+  "end": 7.696
+ },
+ {
+  "word": "French",
+  "start": 7.696,
+  "end": 7.976
+ },
+ {
+  "word": "had",
+  "start": 7.976,
+  "end": 8.086
+ },
+ {
+  "word": "built",
+  "start": 8.086,
+  "end": 8.326
+ },
+ {
+  "word": "a",
+  "start": 8.326,
+  "end": 8.356
+ },
+ {
+  "word": "shiny",
+  "start": 8.356,
+  "end": 8.776
+ },
+ {
+  "word": "new",
+  "start": 8.776,
+  "end": 9.006
+ },
+ {
+  "word": "sewer",
+  "start": 9.006,
+  "end": 9.426
+ },
+ {
+  "word": "under",
+  "start": 9.426,
+  "end": 9.566
+ },
+ {
+  "word": "their",
+  "start": 9.566,
+  "end": 9.726
+ },
+ {
+  "word": "side",
+  "start": 9.726,
+  "end": 10.016
+ },
+ {
+  "word": "of",
+  "start": 10.016,
+  "end": 10.096
+ },
+ {
+  "word": "town.",
+  "start": 10.096,
+  "end": 10.506
+ },
+ {
+  "word": "The",
+  "start": 10.794,
+  "end": 10.914
+ },
+ {
+  "word": "rats",
+  "start": 10.914,
+  "end": 11.264
+ },
+ {
+  "word": "loved",
+  "start": 11.264,
+  "end": 11.534
+ },
+ {
+  "word": "it.",
+  "start": 11.534,
+  "end": 11.674
+ },
+ {
+  "word": "Dark,",
+  "start": 11.904,
+  "end": 12.324
+ },
+ {
+  "word": "warm,",
+  "start": 12.324,
+  "end": 12.784
+ },
+ {
+  "word": "no",
+  "start": 12.784,
+  "end": 12.964
+ },
+ {
+  "word": "predators.",
+  "start": 12.964,
+  "end": 13.554
+ },
+ {
+  "word": "Some",
+  "start": 13.804,
+  "end": 13.974
+ },
+ {
+  "word": "even",
+  "start": 13.974,
+  "end": 14.204
+ },
+ {
+  "word": "popped",
+  "start": 14.204,
+  "end": 14.514
+ },
+ {
+  "word": "up",
+  "start": 14.514,
+  "end": 14.664
+ },
+ {
+  "word": "in",
+  "start": 14.664,
+  "end": 14.754
+ },
+ {
+  "word": "French",
+  "start": 14.754,
+  "end": 15.094
+ },
+ {
+  "word": "toilets.",
+  "start": 15.094,
+  "end": 15.584
+ },
+ {
+  "word": "And",
+  "start": 15.965,
+  "end": 16.085
+ },
+ {
+  "word": "plague",
+  "start": 16.085,
+  "end": 16.415
+ },
+ {
+  "word": "was",
+  "start": 16.415,
+  "end": 16.535
+ },
+ {
+  "word": "spreading",
+  "start": 16.535,
+  "end": 16.925
+ },
+ {
+  "word": "across",
+  "start": 16.925,
+  "end": 17.275
+ },
+ {
+  "word": "Asia.",
+  "start": 17.275,
+  "end": 17.705
+ },
+ {
+  "word": "So",
+  "start": 18.055,
+  "end": 18.175
+ },
+ {
+  "word": "the",
+  "start": 18.175,
+  "end": 18.255
+ },
+ {
+  "word": "city",
+  "start": 18.255,
+  "end": 18.535
+ },
+ {
+  "word": "sent",
+  "start": 18.535,
+  "end": 18.785
+ },
+ {
+  "word": "hunters",
+  "start": 18.785,
+  "end": 19.175
+ },
+ {
+  "word": "down",
+  "start": 19.175,
+  "end": 19.475
+ },
+ {
+  "word": "into",
+  "start": 19.475,
+  "end": 19.615
+ },
+ {
+  "word": "the",
+  "start": 19.615,
+  "end": 19.695
+ },
+ {
+  "word": "pipes.",
+  "start": 19.695,
+  "end": 20.135
+ },
+ {
+  "word": "By",
+  "start": 20.442,
+  "end": 20.602
+ },
+ {
+  "word": "June,",
+  "start": 20.602,
+  "end": 21.032
+ },
+ {
+  "word": "they",
+  "start": 21.032,
+  "end": 21.112
+ },
+ {
+  "word": "were",
+  "start": 21.112,
+  "end": 21.212
+ },
+ {
+  "word": "killing",
+  "start": 21.212,
+  "end": 21.582
+ },
+ {
+  "word": "ten",
+  "start": 21.582,
+  "end": 21.832
+ },
+ {
+  "word": "thousand",
+  "start": 21.832,
+  "end": 22.252
+ },
+ {
+  "word": "rats",
+  "start": 22.252,
+  "end": 22.532
+ },
+ {
+  "word": "a",
+  "start": 22.532,
+  "end": 22.572
+ },
+ {
+  "word": "day.",
+  "start": 22.572,
+  "end": 22.902
+ },
+ {
+  "word": "One",
+  "start": 23.322,
+  "end": 23.522
+ },
+ {
+  "word": "day,",
+  "start": 23.522,
+  "end": 23.762
+ },
+ {
+  "word": "over",
+  "start": 23.762,
+  "end": 23.992
+ },
+ {
+  "word": "twenty",
+  "start": 23.992,
+  "end": 24.282
+ },
+ {
+  "word": "thousand.",
+  "start": 24.282,
+  "end": 24.772
+ },
+ {
+  "word": "It",
+  "start": 25.074,
+  "end": 25.204
+ },
+ {
+  "word": "wasn't",
+  "start": 25.204,
+  "end": 25.484
+ },
+ {
+  "word": "enough.",
+  "start": 25.484,
+  "end": 25.874
+ },
+ {
+  "word": "So",
+  "start": 26.164,
+  "end": 26.284
+ },
+ {
+  "word": "the",
+  "start": 26.284,
+  "end": 26.354
+ },
+ {
+  "word": "city",
+  "start": 26.354,
+  "end": 26.614
+ },
+ {
+  "word": "made",
+  "start": 26.614,
+  "end": 26.854
+ },
+ {
+  "word": "everyone",
+  "start": 26.854,
+  "end": 27.274
+ },
+ {
+  "word": "a",
+  "start": 27.274,
+  "end": 27.304
+ },
+ {
+  "word": "rat",
+  "start": 27.304,
+  "end": 27.584
+ },
+ {
+  "word": "hunter.",
+  "start": 27.584,
+  "end": 28.054
+ },
+ {
+  "word": "One",
+  "start": 28.294,
+  "end": 28.474
+ },
+ {
+  "word": "cent",
+  "start": 28.474,
+  "end": 28.774
+ },
+ {
+  "word": "per",
+  "start": 28.774,
+  "end": 28.914
+ },
+ {
+  "word": "rat.",
+  "start": 28.914,
+  "end": 29.274
+ },
+ {
+  "word": "But",
+  "start": 29.621,
+  "end": 29.761
+ },
+ {
+  "word": "nobody",
+  "start": 29.761,
+  "end": 30.161
+ },
+ {
+  "word": "wanted",
+  "start": 30.161,
+  "end": 30.501
+ },
+ {
+  "word": "piles",
+  "start": 30.501,
+  "end": 30.961
+ },
+ {
+  "word": "of",
+  "start": 30.961,
+  "end": 31.051
+ },
+ {
+  "word": "dead",
+  "start": 31.051,
+  "end": 31.301
+ },
+ {
+  "word": "rats",
+  "start": 31.301,
+  "end": 31.631
+ },
+ {
+  "word": "at",
+  "start": 31.631,
+  "end": 31.711
+ },
+ {
+  "word": "city",
+  "start": 31.711,
+  "end": 31.921
+ },
+ {
+  "word": "hall.",
+  "start": 31.921,
+  "end": 32.331
+ },
+ {
+  "word": "So",
+  "start": 32.581,
+  "end": 32.731
+ },
+ {
+  "word": "the",
+  "start": 32.731,
+  "end": 32.811
+ },
+ {
+  "word": "rule",
+  "start": 32.811,
+  "end": 33.071
+ },
+ {
+  "word": "was:",
+  "start": 33.071,
+  "end": 33.531
+ },
+ {
+  "word": "just",
+  "start": 33.721,
+  "end": 33.941
+ },
+ {
+  "word": "bring",
+  "start": 33.941,
+  "end": 34.201
+ },
+ {
+  "word": "the",
+  "start": 34.201,
+  "end": 34.271
+ },
+ {
+  "word": "tail.",
+  "start": 34.271,
+  "end": 34.701
+ },
+ {
+  "word": "Luckily,",
+  "start": 35.058,
+  "end": 35.428
+ },
+ {
+  "word": "the",
+  "start": 35.428,
+  "end": 35.508
+ },
+ {
+  "word": "tails",
+  "start": 35.508,
+  "end": 35.858
+ },
+ {
+  "word": "poured",
+  "start": 35.858,
+  "end": 36.188
+ },
+ {
+  "word": "in.",
+  "start": 36.188,
+  "end": 36.418
+ },
+ {
+  "word": "Unluckily,",
+  "start": 36.758,
+  "end": 37.348
+ },
+ {
+  "word": "the",
+  "start": 37.348,
+  "end": 37.448
+ },
+ {
+  "word": "rats",
+  "start": 37.448,
+  "end": 37.808
+ },
+ {
+  "word": "didn't",
+  "start": 37.808,
+  "end": 38.028
+ },
+ {
+  "word": "go",
+  "start": 38.028,
+  "end": 38.268
+ },
+ {
+  "word": "anywhere.",
+  "start": 38.268,
+  "end": 38.708
+ },
+ {
+  "word": "Officials",
+  "start": 39.061,
+  "end": 39.421
+ },
+ {
+  "word": "started",
+  "start": 39.421,
+  "end": 39.781
+ },
+ {
+  "word": "seeing",
+  "start": 39.781,
+  "end": 40.141
+ },
+ {
+  "word": "rats",
+  "start": 40.141,
+  "end": 40.481
+ },
+ {
+  "word": "running",
+  "start": 40.481,
+  "end": 40.771
+ },
+ {
+  "word": "around",
+  "start": 40.771,
+  "end": 41.121
+ },
+ {
+  "word": "with",
+  "start": 41.121,
+  "end": 41.251
+ },
+ {
+  "word": "no",
+  "start": 41.251,
+  "end": 41.471
+ },
+ {
+  "word": "tails.",
+  "start": 41.471,
+  "end": 41.961
+ },
+ {
+  "word": "Hunters",
+  "start": 42.466,
+  "end": 42.896
+ },
+ {
+  "word": "were",
+  "start": 42.896,
+  "end": 42.996
+ },
+ {
+  "word": "catching",
+  "start": 42.996,
+  "end": 43.436
+ },
+ {
+  "word": "rats,",
+  "start": 43.436,
+  "end": 43.876
+ },
+ {
+  "word": "cutting",
+  "start": 44.116,
+  "end": 44.406
+ },
+ {
+  "word": "off",
+  "start": 44.406,
+  "end": 44.556
+ },
+ {
+  "word": "the",
+  "start": 44.556,
+  "end": 44.636
+ },
+ {
+  "word": "tail,",
+  "start": 44.636,
+  "end": 45.016
+ },
+ {
+  "word": "and",
+  "start": 45.016,
+  "end": 45.136
+ },
+ {
+  "word": "letting",
+  "start": 45.136,
+  "end": 45.406
+ },
+ {
+  "word": "them",
+  "start": 45.406,
+  "end": 45.576
+ },
+ {
+  "word": "go,",
+  "start": 45.576,
+  "end": 45.966
+ },
+ {
+  "word": "to",
+  "start": 46.186,
+  "end": 46.296
+ },
+ {
+  "word": "make",
+  "start": 46.296,
+  "end": 46.516
+ },
+ {
+  "word": "more",
+  "start": 46.516,
+  "end": 46.746
+ },
+ {
+  "word": "rats,",
+  "start": 46.746,
+  "end": 47.136
+ },
+ {
+  "word": "with",
+  "start": 47.136,
+  "end": 47.306
+ },
+ {
+  "word": "more",
+  "start": 47.306,
+  "end": 47.526
+ },
+ {
+  "word": "tails.",
+  "start": 47.526,
+  "end": 48.046
+ },
+ {
+  "word": "Outside",
+  "start": 48.469,
+  "end": 48.809
+ },
+ {
+  "word": "the",
+  "start": 48.809,
+  "end": 48.869
+ },
+ {
+  "word": "city,",
+  "start": 48.869,
+  "end": 49.219
+ },
+ {
+  "word": "people",
+  "start": 49.409,
+  "end": 49.799
+ },
+ {
+  "word": "even",
+  "start": 49.799,
+  "end": 50.079
+ },
+ {
+  "word": "raised",
+  "start": 50.079,
+  "end": 50.439
+ },
+ {
+  "word": "rats",
+  "start": 50.439,
+  "end": 50.789
+ },
+ {
+  "word": "on",
+  "start": 50.789,
+  "end": 50.929
+ },
+ {
+  "word": "farms.",
+  "start": 50.929,
+  "end": 51.529
+ },
+ {
+  "word": "It's",
+  "start": 51.799,
+  "end": 51.979
+ },
+ {
+  "word": "like",
+  "start": 51.979,
+  "end": 52.159
+ },
+ {
+  "word": "paying",
+  "start": 52.159,
+  "end": 52.439
+ },
+ {
+  "word": "a",
+  "start": 52.439,
+  "end": 52.479
+ },
+ {
+  "word": "gardener",
+  "start": 52.479,
+  "end": 52.919
+ },
+ {
+  "word": "for",
+  "start": 52.919,
+  "end": 53.129
+ },
+ {
+  "word": "every",
+  "start": 53.129,
+  "end": 53.389
+ },
+ {
+  "word": "weed.",
+  "start": 53.389,
+  "end": 53.749
+ },
+ {
+  "word": "Soon,",
+  "start": 54.059,
+  "end": 54.589
+ },
+ {
+  "word": "your",
+  "start": 54.589,
+  "end": 54.719
+ },
+ {
+  "word": "garden",
+  "start": 54.719,
+  "end": 55.169
+ },
+ {
+  "word": "is",
+  "start": 55.169,
+  "end": 55.289
+ },
+ {
+  "word": "full",
+  "start": 55.289,
+  "end": 55.539
+ },
+ {
+  "word": "of",
+  "start": 55.539,
+  "end": 55.659
+ },
+ {
+  "word": "weeds.",
+  "start": 55.659,
+  "end": 56.159
+ },
+ {
+  "word": "The",
+  "start": 56.453,
+  "end": 56.563
+ },
+ {
+  "word": "city",
+  "start": 56.563,
+  "end": 56.773
+ },
+ {
+  "word": "scrapped",
+  "start": 56.773,
+  "end": 57.123
+ },
+ {
+  "word": "the",
+  "start": 57.123,
+  "end": 57.183
+ },
+ {
+  "word": "bounty.",
+  "start": 57.183,
+  "end": 57.673
+ },
+ {
+  "word": "And",
+  "start": 57.903,
+  "end": 58.033
+ },
+ {
+  "word": "plague",
+  "start": 58.033,
+  "end": 58.373
+ },
+ {
+  "word": "reached",
+  "start": 58.373,
+  "end": 58.643
+ },
+ {
+  "word": "Hanoi",
+  "start": 58.643,
+  "end": 58.963
+ },
+ {
+  "word": "anyway.",
+  "start": 58.963,
+  "end": 59.463
+ },
+ {
+  "word": "Hanoi",
+  "start": 59.831,
+  "end": 60.121
+ },
+ {
+  "word": "never",
+  "start": 60.121,
+  "end": 60.411
+ },
+ {
+  "word": "paid",
+  "start": 60.411,
+  "end": 60.731
+ },
+ {
+  "word": "for",
+  "start": 60.731,
+  "end": 60.891
+ },
+ {
+  "word": "dead",
+  "start": 60.891,
+  "end": 61.161
+ },
+ {
+  "word": "rats.",
+  "start": 61.161,
+  "end": 61.621
+ },
+ {
+  "word": "It",
+  "start": 61.811,
+  "end": 61.911
+ },
+ {
+  "word": "paid",
+  "start": 61.911,
+  "end": 62.181
+ },
+ {
+  "word": "for",
+  "start": 62.181,
+  "end": 62.331
+ },
+ {
+  "word": "tails.",
+  "start": 62.331,
+  "end": 62.851
+ },
+ {
+  "word": "And",
+  "start": 63.111,
+  "end": 63.241
+ },
+ {
+  "word": "a",
+  "start": 63.241,
+  "end": 63.271
+ },
+ {
+  "word": "rat",
+  "start": 63.271,
+  "end": 63.581
+ },
+ {
+  "word": "can",
+  "start": 63.581,
+  "end": 63.781
+ },
+ {
+  "word": "live",
+  "start": 63.781,
+  "end": 64.011
+ },
+ {
+  "word": "without",
+  "start": 64.011,
+  "end": 64.201
+ },
+ {
+  "word": "one.",
+  "start": 64.201,
+  "end": 64.381
+ }
+]
