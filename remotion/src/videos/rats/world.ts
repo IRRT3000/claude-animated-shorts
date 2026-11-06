@@ -150,13 +150,13 @@ const gable = (b: Batch, x0: number, x1: number, y: number, z0: number, z1: numb
 const at = (g: THREE.BufferGeometry, x: number, y: number, z: number) => g.translate(x, y, z);
 /** a palm: a gently curved trunk and a crown of drooping fronds */
 const palm = (b: Batch, x: number, z: number, h: number, seed: number) => {
-  const r = rng(seed), lean = (r() - 0.5) * 0.5, n = 6, tm = lam("rtPalmTrunk", () => ({ color: "#9a7a5a" }));
+  const r = rng(seed), lean = (r() - 0.5) * 0.3, n = 10, tm = lam("rtPalmTrunk", () => ({ color: "#9a7a5a" }));
   let px = x, pz = z, py = 0;
   for (let i = 0; i < n; i++) {
-    const seg = new THREE.CylinderGeometry(0.16 - i * 0.012, 0.19 - i * 0.012, h / n + 0.05, 8);
-    const nx = x + lean * h * ((i + 1) / n) ** 2;
-    at(seg, (px + nx) / 2, py + h / n / 2, pz); b.add(seg, tm);
-    px = nx; py += h / n;
+    const nx = x + lean * h * ((i + 1) / n) ** 2, dy = h / n, ang = Math.atan2(nx - px, dy);
+    const seg = new THREE.CylinderGeometry(0.15 - i * 0.006, 0.18 - i * 0.006, Math.hypot(dy, nx - px) + 0.08, 8);
+    seg.rotateZ(-ang); at(seg, (px + nx) / 2, py + dy / 2, pz); b.add(seg, tm);
+    px = nx; py += dy;
   }
   const fm = lam("rtFrondM", () => ({ map: frondTex(), alphaTest: 0.5, side: THREE.DoubleSide }));
   for (let k = 0; k < 8; k++) {
@@ -343,7 +343,7 @@ export class World {
       for (const s of [-1, 1]) { const cap = new THREE.PlaneGeometry(2 * SEW_W, SEW_H + SEW_R + 1); cap.rotateY(s > 0 ? Math.PI : 0); cap.translate(X, (SEW_H + SEW_R - 1) / 2, Z0 + s * L); sb.add(cap, DARKM()); }
       // the ladder shaft (over the west walkway) and the grate shaft (over the channel)
       for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.7]] as const) {
-        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - sx * sx) - 0.4;
+        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - (Math.abs(sx) + 0.55) ** 2) - 0.05;
         for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const)
           sb.add(boxGeo(V(X + sx + a, y0, Z0 + sz + c), V(X + sx + d, top, Z0 + sz + e), 2), br);
       }
