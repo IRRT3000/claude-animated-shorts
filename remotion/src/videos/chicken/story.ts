@@ -29,7 +29,7 @@ export const COOP: V3 = [7, 0, -5];               // the coop (front opening fac
 export const STUMP: V3 = [2, 0, 2];               // the chopping stump (top 0.5 m)
 export const STUMP_TOP = 0.5;
 export const FENCE_Z = 5;                         // the rail fence along z = 5
-export const POST: V3 = [2.2, 0, 5];              // the fence post that hides the axe
+export const POST: V3 = [2.4, 0, 5];              // the fence post that hides the axe
 export const KITCHEN: V3 = [-2000, 0, 0];         // 5 x 5 m, table at its centre, window in the back wall
 export const TABLE_TOP = 0.78;
 export const LAB: V3 = [2000, 0, 0];              // 6 x 5 m, bench in front of the back wall, lightbox on it
@@ -145,13 +145,13 @@ const S1a = (f: number) => dolly(FA(5.4, 1.7, 1.2), FA(1.4, 1.25, -9.0), pushK(f
 const S2a = (f: number) => dolly(FA(3.6, 0.32, 0.9), FA(2.0, 0.85, -3.4), pushK(f, 106, 0.003, 0.008, 22), { fov: 50, roll: 0.03 }); // low: headless Mike struts past
 const S3a = (f: number) => zoom(FA(14, 34, 80), FA(0, 6, -40), 50, pushK(f, 154, 0.0016));                                         // over the farm to the mesas
 const S3b = (f: number) => dolly(FA(7.7, 1.45, -1.7), FA(7.0, 1.25, -4.3), pushK(f, 222, 0.003, 0.008, 22), { fov: 42 });           // Lloyd lifts Mike
-const S3c = (f: number) => dolly(FA(4.2, 1.35, 5.6), FA(1.7, 1.15, 1.7), pushK(f, 274, 0.0026, 0.007, 22), { fov: 44, roll: -0.03 }); // the axe goes up
+const S3c = (f: number) => dolly(FA(3.9, 1.35, 4.7), FA(1.6, 1.15, 1.7), pushK(f, 274, 0.0026, 0.007, 22), { fov: 44, roll: -0.03 }); // the axe goes up
 const S4a = (f: number) => dolly(K(0.35, 1.25, 1.75), K(0.0, 1.05, -0.7), pushK(f, 312, 0.003, 0.008, 22), { fov: 42 });              // Ma at the table
 const S5a = (f: number) => dolly(FA(3.3, 1.2, 4.1), FA(1.75, 1.0, 1.9), pushK(f, 364, 0.0028, 0.007, 22), { fov: 42, roll: 0.03 });  // Lloyd aims
 const S5b = (f: number) => dolly(FA(2.35, 0.95, 3.0), FA(1.95, 0.85, 2.0), pushK(f, 404, 0.003, 0.009, 20), { fov: 40 });            // too high: close on Mike
 const S6a = (f: number) => dolly(FA(2.75, 1.25, 7.6), FA(2.0, 0.95, 2.0), pushK(f, 440, 0.0026, 0.008, 20), { fov: 44 });            // behind the fence post
 const S7a = (f: number) => dolly(L(0.15, 1.65, 0.6), L(0.0, 1.72, -2.4), pushK(f, 484, 0.0028, 0.006, 24), { fov: 40 });              // the x-ray lightbox
-const S8a = (f: number) => dolly(FA(3.6, 0.9, 6.0), FA(2.4, 0.55, 2.8), pushK(f, 586, 0.0026, 0.007, 24), { fov: 46 });              // he shook it off
+const S8a = (f: number) => dolly(FA(3.5, 0.95, 4.7), FA(2.4, 0.5, 2.6), pushK(f, 586, 0.0026, 0.007, 24), { fov: 46 });              // he shook it off
 const S8b = (f: number) => dolly(FA(3.15, 0.38, 4.2), FA(2.6, 0.25, 2.9), pushK(f, 632, 0.003, 0.008, 22), { fov: 44, roll: -0.03 }); // pecking
 const S9a = (f: number) => dolly(FA(7.2, 1.25, -2.2), FA(7.0, 1.0, -4.6), pushK(f, 676, 0.0024, 0.006, 24), { fov: 44 });             // the roost at night
 const S10a = (f: number) => dolly(K(0.0, 1.45, 1.9), K(0.0, 1.0, -0.6), pushK(f, 784, 0.0022, 0.006, 24), { fov: 46 });              // the Olsens and Mike
@@ -162,8 +162,8 @@ const S11c = (f: number) => dolly(L(-1.2, 1.5, 1.4), L(0.0, 1.2, -1.6), pushK(f,
 const S12a = (f: number) => dolly(SH(-3.4, 1.6, 9.5), SH(-2.4, 1.3, 4.8), pushK(f, 1141, 0.0026, 0.007, 24), { fov: 44 });            // the promoter pops in
 const S12b = (f: number) => zoom(SH(-30, 6, 52), SH(0, 1.2, 34), 46, pushK(f, 1188, 0.0016));                                          // the car on the desert road
 const S12c = (f: number) => dolly(SH(3.0, 1.5, 9.0), SH(1.6, 1.2, 5.6), pushK(f, 1220, 0.0026, 0.007, 22), { fov: 44, roll: 0.03 });   // coins in the jar
-const S13a = (f: number) => dolly(SH(-1.4, 1.4, 3.2), SH(0.3, 1.1, -0.9), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 44 });            // the photographer, flash
-const S14a = (f: number) => dolly(FA(-9.0, 1.5, 9.5), FA(-9.0, 1.0, 3.6), pushK(f, 1331, 0.0022, 0.006, 24), { fov: 46 });           // other farmers
+const S13a = (f: number) => dolly(SH(1.4, 1.45, 2.6), SH(-0.7, 1.05, -0.8), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 44 });            // the photographer, flash
+const S14a = (f: number) => dolly(FA(-8.6, 1.5, 4.2), FA(-9.0, 1.0, -2.0), pushK(f, 1331, 0.0022, 0.006, 24), { fov: 46 });           // other farmers
 const S15a = (f: number) => dolly(SH(1.6, 1.25, 2.4), SH(0.9, 1.0, -1.2), pushK(f, 1429, 0.0024, 0.007, 24), { fov: 42 });            // Mike on the scale
 const S15b = (f: number) => dolly(SH(1.15, 0.95, 1.0), SH(0.9, 0.85, -1.2), pushK(f, 1540, 0.003, 0.009, 20), { fov: 40, roll: 0.03 }); // with no head
 const S16a = (f: number) => zoom(M(16, 3.2, 22), M(3, 2.8, -4), 48, pushK(f, 1571, 0.0018, 0.005, 24));                                 // the motel at night

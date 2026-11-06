@@ -477,15 +477,15 @@ type Style = { wall: string; shutter: string; roof: string; timber?: boolean; br
 // lavender: the two-tone shade multiplies by a blue-violet, so a near-neutral albedo turns lilac on every shaded face)
 // round 3: saturation -35 % on every wall (neutral warm grey / beige; the salmon became a warm greige)
 // round 4: the pale greiges still read lavender-grey in shade -> a muted brick / cream / ochre / terracotta spread
-const STYLES: Style[] = [ // Hanoi 1902: French villas in yellow ochre and cream with green shutters; tube houses in faded washes
-  { wall: "#e9c66a", shutter: "#2f6a43", roof: "#c9775a" },  // colonial yellow
-  { wall: "#efe0b8", shutter: "#2f6a43", roof: "#b8644f" },  // cream
-  { wall: "#e2b26a", shutter: "#3f6a5a", roof: "#c9775a" },  // ochre
-  { wall: "#f0d48a", shutter: "#2f5f6a", roof: "#a8584a" },  // butter yellow
-  { wall: "#e8d2a8", shutter: "#4a7a4a", roof: "#c9775a" },  // sand
-  { wall: "#d9a87a", shutter: "#5a3b2a", roof: "#a8584a" },  // tube house: terracotta wash
-  { wall: "#b9cbc0", shutter: "#3a5a8a", roof: "#9a5a48" },  // tube house: faded green-blue
-  { wall: "#e6c89a", shutter: "#8c3b4a", roof: "#b8644f" },  // tube house: warm plaster
+const STYLES: Style[] = [ // a small Colorado main street, 1945: red brick, white clapboard, mint, butter and sand fronts
+  { wall: "#c8643f", shutter: "#2f5f6a", roof: "#5a5f6a", brick: true },
+  { wall: "#efe6d2", shutter: "#3f6a4a", roof: "#6a5a5a" },
+  { wall: "#b9d8c4", shutter: "#8c3b4a", roof: "#5a5f6a" },
+  { wall: "#f0d48a", shutter: "#3a5a8a", roof: "#7a5a4a" },
+  { wall: "#e2c49a", shutter: "#5a3b2a", roof: "#5a5f6a" },
+  { wall: "#d9a87a", shutter: "#2f5f6a", roof: "#6a5a5a" },
+  { wall: "#c9d4e0", shutter: "#8c3b4a", roof: "#5a5f6a" },
+  { wall: "#e8b8a0", shutter: "#2f6a43", roof: "#7a5a4a" },
 ];
 const roofMat = (col: string) => lam("roof" + col, () => ({ map: roofHD(col, col === "#8f97a8"), side: THREE.DoubleSide }));
 

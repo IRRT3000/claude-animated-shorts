@@ -1,11 +1,11 @@
-// "The Rats That Kept Their Lives": our original 67 s short in the flat-characters-in-a-3D-toon-world style (bridge pipeline).
+// "The Chicken That Lived Without a Head": our original 67 s short in the flat-characters-in-a-3D-toon-world style (bridge pipeline).
 // One three.js world (world.ts) posed per frame from the story timeline (story.ts). Post chain (look-match pass):
 //   InkPass (world ink lines, own pass) -> lens blur pre + main (thin-lens DOF per shot from dofAt) ->
 //   [bloom (emissive only) + NEUTRAL tone mapping + colour grade] (one merged EffectPass), MSAA 4.
 // Ink runs before the DOF so lines blur with what they belong to; bloom after the DOF so glows defocus with their
 // source; the grade is display-referred, so it comes after tone mapping. Every pixel-sized parameter is specified at
 // 1080x1920 and scaled with the output size, so stills at --scale 0.5 and the 1440x2560 final match.
-// Place changes crossfade by stacking a second canvas for the fade frames; the hook ends on a 4-frame white flash.
+// Place changes crossfade by stacking a second canvas for the fade frames; the hook ends on a 4-frame white flash, and so does the press camera.
 import React, { useEffect, useMemo, useState } from "react";
 import * as THREE from "three";
 import { AbsoluteFill, continueRender, delayRender, getInputProps, useCurrentFrame } from "remotion";
@@ -19,9 +19,9 @@ import { LensBlur, GrainEffect } from "./lensblur";
 import { GradeEffect, GRADES, GRADE_STRENGTH, gradeFor } from "./grade";
 import { Kit } from "./build";
 
-import { TOTAL, FLASH_AT, SHOTS, layersAt, dofAt } from "./story";
+import { TOTAL, FLASH_AT, FLASH2_AT, SHOTS, layersAt, dofAt } from "./story";
 
-export const RATS_FRAMES = TOTAL;
+export const CHICKEN_FRAMES = TOTAL;
 
 /** A/B switches for test stills only (Remotion inputProps `{ post: { ink: false, ... } }`); everything is on by default. */
 type PostToggles = { ink: boolean; lens: boolean; pre: boolean; bloom: boolean; grade: boolean; grain: boolean };
@@ -42,7 +42,7 @@ const fwd = new THREE.Vector3(), fpt = new THREE.Vector3();
 
 const useKit = () => {
   const [kit, setKit] = useState<Kit | null>(null);
-  const [handle] = useState(() => delayRender("rats kit"));
+  const [handle] = useState(() => delayRender("chicken kit"));
   useEffect(() => { loadKit().then((k) => { setKit(k); continueRender(handle); }); }, [handle]);
   return kit;
 };
@@ -104,11 +104,12 @@ const ShotView: React.FC<{ id: number; kit: Kit; alpha: number }> = ({ id, kit, 
   </AbsoluteFill>
 );
 
-export const RatShort: React.FC = () => {
+export const ChickenShort: React.FC = () => {
   const f = useCurrentFrame();
   const kit = useKit();
   if (!kit) return null;
-  const flash = f >= FLASH_AT && f < FLASH_AT + 4 ? [1, 0.75, 0.45, 0.2][f - FLASH_AT] : 0;
+  const fl = (a: number) => (f >= a && f < a + 4 ? [1, 0.75, 0.45, 0.2][f - a] : 0);
+  const flash = Math.max(fl(FLASH_AT), fl(FLASH2_AT));
   return (
     <AbsoluteFill style={{ background: "#e8d6bc" }}>
       {layersAt(f).map((l, i) => <ShotView key={i ? "over" : "base"} id={l.id} kit={kit} alpha={l.alpha} />)}
