@@ -446,8 +446,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const bulbY = neck[1] + dy + 0.09 + 0.06;
         push(out, "dropHand", 200, 200, dropHand, neck[0] + 0.028, bulbY + 0.03, neck[2] + 0.01, 0.12, 0.12);
         for (const f0 of [DROP, 875, 905, THROAT]) if (f >= f0 && f < f0 + 8) push(out, "drop", 120, 160, (pp) => fxDrop(pp), neck[0], neck[1] + dy - 0.005 * (f - f0), neck[2], 0.025, 0.033);
-        if (f >= MILK - 2 && f < WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "milk", look: -1 }, t); sparkle(out, add(MIKE_K, [0.44, 0.65, -0.35]), f, MILK, 0.15, 8); }
-        if (f >= WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "glass", look: -1 }, t); sparkle(out, add(MIKE_K, [0.44, 0.62, -0.35]), f, WATER, 0.15, 8); }
+        if (f >= MILK - 2 && f < WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "milk", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.72, -0.3]), f, MILK, 0.15, 8); }
+        if (f >= WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "glass", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.7, -0.3]), f, WATER, 0.15, 8); }
       }
       break;
     }

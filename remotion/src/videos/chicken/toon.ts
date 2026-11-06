@@ -1528,9 +1528,9 @@ const hanoiProp = (p: Pen, kind: string, k: number, first: P2, last: P2, u: numb
     } else if (kind === "hatHeart") { // a straw hat held over the heart: side-on and tilted, brim from hand to hand
       const dx = last[0] - first[0], dy = last[1] - first[1], L = Math.hypot(dx, dy) || 1, nx = dy / L, ny = -dx / L; // normal pointing up
       const at = (t: number, h: number): P2 => [first[0] + dx * t + nx * h * u, first[1] + dy * t + ny * h * u];
-      p.poly([at(0.2, 0), at(0.24, 30), at(0.76, 30), at(0.8, 0)], "#e8c97a", 2.4 * u);
-      p.band([at(0.22, 8), at(0.78, 8)], "#b84a3a", 6 * u, 1.2 * u);
-      p.band([at(-0.08, 0), at(1.08, 0)], "#d6b46a", 8 * u, 2.2 * u, "round");
+      p.poly([at(0.08, 0), at(0.14, 44), at(0.86, 44), at(0.92, 0)], "#e8c97a", 2.4 * u);
+      p.band([at(0.1, 10), at(0.9, 10)], "#b84a3a", 8 * u, 1.2 * u);
+      p.band([at(-0.35, 0), at(1.35, 0)], "#d6b46a", 10 * u, 2.2 * u, "round");
     }
     if (kind === "sack") {
       const sp: P2[] = [[cx - 30 * u, cy - 6 * u], [cx + 30 * u, cy - 6 * u], [cx + 40 * u, cy + 34 * u], [cx + 30 * u, cy + 62 * u], [cx - 30 * u, cy + 62 * u], [cx - 40 * u, cy + 34 * u]];

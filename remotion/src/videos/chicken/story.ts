@@ -158,7 +158,7 @@ const S10a = (f: number) => dolly(K(0.0, 1.5, 2.4), K(0.0, 1.05, -0.5), pushK(f,
 const S10b = (f: number) => dolly(K(0.3, 1.2, 1.25), K(0.02, 1.0, 0.0), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 });   // the eyedropper
 const S11a = (f: number) => dolly(L(0.3, 1.5, 2.2), L(0.0, 1.2, -1.5), pushK(f, 948, 0.0022, 0.006, 24), { fov: 54 });                // scientists round the bench
 const S11b = (f: number) => dolly(L(-0.1, 1.68, 0.2), L(0.0, 1.72, -2.4), pushK(f, 1030, 0.003, 0.007, 22), { fov: 40 });             // the clot, the brain stem
-const S10c = (f: number) => dolly(K(0.45, 1.35, 1.7), K(0.2, 1.05, -0.2), pushK(f, 884, 0.003, 0.008, 22), { fov: 44 });                // milk and water
+const S10c = (f: number) => dolly(K(0.55, 1.4, 1.8), K(0.32, 1.1, -0.2), pushK(f, 884, 0.003, 0.008, 22), { fov: 54 });                // milk and water
 const S11c = (f: number) => dolly(L(0.65, 1.45, 1.6), L(0.45, 1.25, -1.4), pushK(f, 1116, 0.0026, 0.007, 22), { fov: 50, roll: -0.03 }); // the shrug
 const S12a = (f: number) => dolly(SH(-3.4, 1.6, 9.5), SH(-2.4, 1.3, 4.8), pushK(f, 1141, 0.0026, 0.007, 24), { fov: 44 });            // the promoter pops in
 const S12b = (f: number) => zoom(SH(-14, 3, 46), SH(0, 1.0, 34), 34, pushK(f, 1188, 0.0016));                                          // the car on the desert road
