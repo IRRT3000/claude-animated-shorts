@@ -2,6 +2,8 @@
 Format: cartoon-3d-short (~60-68 s, ~3.7 words/s), one steady voice, English only, no captions. Our own characters and story.
 Research and trend notes: `RESEARCH.md`.
 
+_Script v1: 242 words; voice am_michael (Kokoro) ~68 s._
+
 ## Facts (checked 2026-11-06; popular/press sources, wording kept safe where sources disagree)
 - Joaquín de la Cantolla y Rico, Mexico City, born 1829 (some say 1837), died 1914. Studied at the Colegio Militar, worked on the
   first telegraph lines (telegraphist). (El Universal 2016 "El telegrafista que quiso surcar los cielos"; HMDB marker 129131)
@@ -19,7 +21,7 @@ Research and trend notes: `RESEARCH.md`.
   (Academia Mexicana de la Lengua, "Globos de cantolla")
 - Physics: warm air is less dense than the cooler air around it, so the envelope is pushed up (buoyancy), same as a ball under water.
 
-## Script (v1, 236 words ≈ 64 s)
+## Script
 In Mexico City, a man fell out of the sky, straight through a family's roof... and the family beat him up.
 His name was Joaquín de la Cantolla. By day, he tapped out telegrams. By night, he built balloons.
 In 1863, a bullring full of people watched him ride in, dressed as a charro, climb into a balloon he had made himself... and go up.
