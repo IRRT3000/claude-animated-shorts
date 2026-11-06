@@ -445,14 +445,14 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
     const [bx, by] = R([[cx, yb + 1 * u]])[0];
     p.ell(bx, by, 0.45 * W, 0.05 * HH, "#1d1b22", ow, 0, 360, (a * 180) / Math.PI);
   } else if (o.hat === "coif") { // a white linen coif: covers the crown and the ears, ties under the chin
-    const cut = crown + 0.5 * HH;
+    const cut = crown + 0.27 * HH;
     const arc = hp.filter(([, y]) => y < cut).map(([x, y]) => [cx + (x - cx) * 1.06, hc + (y - hc) * 1.05] as P2);
     if (arc.length > 3) {
       const col = o.cap ?? "#f4efe2";
       p.shadedFill(arc, col, mul(col, SH_FELT), light, H.a, 0.35); p.poly(arc, null, ow);
       for (const sd of side ? [-1] : [-1, 1]) {
-        const [tx, ty] = R([[cx + sd * 0.9 * H.a, hc + 0.25 * H.b]])[0];
-        p.ell(tx, ty, 13 * u, 28 * u, col, ow * 0.8, 0, 360, (a * 180) / Math.PI);
+        const [tx, ty] = R([[cx + sd * 0.97 * H.a, hc + 0.05 * H.b]])[0];
+        p.ell(tx, ty, 10 * u, 22 * u, col, ow * 0.8, 0, 360, (a * 180) / Math.PI);
       }
     }
   } else if (o.hat === "beret") { // a flat Renaissance cap worn tilted
@@ -1150,15 +1150,16 @@ export const pigCard = (p: Pen, ph: number, sniff = 0, light = DEF_LIGHT) => {
 };
 
 // ---------------- the dancing-plague cast, Strasbourg 1518 (our own designs) ----------------
-const WOOL = ["#c25a3a", "#4a7fb5", "#5b8f4a", "#d9a441", "#8e4a7a", "#3f7a7a", "#b5543f", "#6a7fb0"];
+const WOOL = ["#c8483a", "#4a7fb5", "#5b9a4a", "#e0a838", "#8e4a7a", "#3f8a86", "#d9707a", "#a8683a"];
 const HOSE = ["#3b3f52", "#6a4a32", "#8e2f3a", "#2f5f6a", "#4a4038"];
 /** Frau Troffea: green dress, white coif */
 export const TROFFEA: Outfit = { jacket: "#3f8a52", pants: "#3f8a52", boots: "#5a3b2a", hat: "coif", dress: "#3f8a52", skin: "#f5d2b0" };
 /** townsfolk of 1518: women in dresses and coifs, men in tunics, hose and berets (or bare heads) */
 export const folk1518 = (v = 0): Outfit => {
   const skin = SKINS[(v * 3 + 1) % 4];
-  if (v % 2) return { jacket: WOOL[(v * 5) % 8], pants: WOOL[(v * 5) % 8], dress: WOOL[(v * 5) % 8], boots: "#5a3b2a", hat: "coif", cap: v % 3 ? "#f4efe2" : "#efe0b8", skin };
-  return { jacket: WOOL[(v * 3 + 1) % 8], pants: HOSE[v % 5], boots: ["#3a2a20", "#5a3b2a"][v % 2], hat: v % 4 ? "beret" : "hair", cap: ["#2a2430", "#8e2f3a", "#3b4a6a"][v % 3], hair: ["#5a3b2a", "#2a201a", "#c99a4a"][v % 3], skin, build: v % 3 ? "adult" : "stout", moustache: v % 6 === 4 ? "#5a3b2a" : undefined };
+  const wc = WOOL[((v >> 1) * 3 + (v % 2) * 5) % 8];
+  if (v % 2) return { jacket: wc, pants: wc, dress: wc, boots: "#5a3b2a", hat: "coif", cap: v % 3 ? "#f4efe2" : "#efe0b8", skin };
+  return { jacket: wc, pants: HOSE[v % 5], boots: ["#3a2a20", "#5a3b2a"][v % 2], hat: v % 4 ? "beret" : "hair", cap: ["#2a2430", "#8e2f3a", "#3b4a6a"][v % 3], hair: ["#5a3b2a", "#2a201a", "#c99a4a"][v % 3], skin, build: v % 3 ? "adult" : "stout", moustache: v % 6 === 4 ? "#5a3b2a" : undefined };
 };
 /** the city physician: a long dark-red robe, black cap, spectacles, grey moustache */
 export const DOCTOR: Outfit = { jacket: "#8e2f3a", pants: "#8e2f3a", boots: INK, dress: "#8e2f3a", hat: "beret", cap: "#1e1a24", specs: true, moustache: "#b8b2aa", skin: "#f5d2b0", build: "stout" };
@@ -1183,6 +1184,7 @@ export const SICK: Outfit = { jacket: "#7a6a8a", pants: "#7a6a8a", dress: "#7a6a
 /** a cartoon horse on the 600 x 1000 design canvas (soles at y = 975), side view facing +x; ph = walk phase */
 export const horseCard = (p: Pen, ph: number, light = DEF_LIGHT) => {
   const COAT = "#a8743e", DARK = "#6a4428";
+  p.g.save(); p.g.translate(300, 975); p.g.scale(0.84, 0.84); p.g.translate(-310, -975);
   const by = 640 - 6 * Math.sin(ph * Math.PI * 4);
   for (const [lx, k] of [[150, 0], [205, 0.5], [400, 0.25], [455, 0.75]] as const) {
     const sw = 26 * Math.sin((ph + k) * Math.PI * 2);
@@ -1202,4 +1204,5 @@ export const horseCard = (p: Pen, ph: number, light = DEF_LIGHT) => {
   p.stroke([[440, by - 80], [470, by - 250]], 16, DARK);
   p.dot(560, by - 275, 9);
   p.dot(600, by - 222, 6);
+  p.g.restore();
 };

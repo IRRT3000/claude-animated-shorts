@@ -12,8 +12,18 @@ export type LightPreset = {
   sunCol: string; sunI: number; sky: string; ground: string; hemiI: number;         // three lights (unpatched mats only)
   bias: number; normalBias: number;
 };
-export type LightName = "day" | "golden" | "lab" | "night" | "stage" | "dusk";
+export type LightName = "day" | "golden" | "lab" | "night" | "stage" | "dusk" | "moon";
 export const LIGHTS: Record<LightName, LightPreset> = {
+  // Strasbourg by moonlight: cool blue key, deep indigo shade, a little warm lift so faces stay readable
+  moon: {
+    az: 120, el: 35,
+    lit: [0.62, 0.78, 1.18], shade: [0.1, 0.11, 0.24], lift: [0.04, 0.05, 0.12], lambert: 0.4, sideK: 0.82, term: 0.15,
+    charTint: [0.78, 0.86, 1.08], charShade: 0.84, charGrad: 0.1, bodyGrad: 0.24, sideTint: [0.85, 0.88, 1.0],
+    blob: [0.5, 0.5, 0.62], actorShadow: false,
+    top: "#101a3a", hor: "#34406e", skyCurve: [0.0, 0.5, 0.6], fog: "#2c3866", fogNear: 30, fogFar: 320, sunDisc: "#000000",
+    sunCol: "#c8d8ff", sunI: 2.2, sky: "#7088c0", ground: "#30304a", hemiI: 0.4,
+    bias: -0.00025, normalBias: 0.015,
+  },
   day: {
     az: 75, el: 48,
     lit: [1.58, 1.5, 1.33], shade: [0.3, 0.29, 0.36], lift: [0.05, 0.06, 0.11], lambert: 0.35, sideK: 0.84, term: 0.2,
@@ -84,6 +94,13 @@ export type WorldLook = {
   cloud: { lit: string; mid: string; shade: string };
 };
 export const LOOK: Record<LightName, WorldLook> = {
+  moon: {
+    sky: { c: ["#3a4676", "#2e3a68", "#232e5a", "#1a2450", "#111a3e"], e: [0, 3, 8, 16, 40] },
+    water: { near: "#22a7b6", mid: "#167fb2", far: "#1a5596", crest: "#7ddfe8", trough: "#0e4a80", glint: "#ffffff", shade: [0.5, 0.56, 0.72] },
+    cloud: { lit: "#8a96c8", mid: "#5a6698", shade: "#3a4470" },
+    bounce: [0.0, 0.0, 0.03],
+    sat: 1.04,
+  },
   day: {
     // depth.md 2.2: horizon #9fb6e6 just above the skyline, upper sky #5e93d9 at ~20 deg (grade: frame top #5997e2)
     sky: { c: ["#b8d0ec", "#9cbfea", "#6a9fe0", "#4f8cdb", "#3373cc"], e: [0, 3, 8, 16, 40] },

@@ -321,3 +321,57 @@ export const fxHandSwitch = (p: Pen, k: number) => {
 export const fxClapMarks = (p: Pen, t: number) => {
   for (let k = 0; k < 5; k++) { const u = (t * 2 + k * 0.37) % 1; if (u > 0.6) continue; const x = 40 + k * 80, y = 150 - 60 * Math.sin(k * 2.1); p.arc(x, y, 22 + 20 * u, 22 + 20 * u, 200, 340, 7, "#ffffff"); }
 };
+
+// ---------------- the dancing-plague effects (our own designs) ----------------
+/** heat squiggles rising (hot blood) on a 300 x 400 canvas; t 0..1 loops */
+export const fxHeat = (p: Pen, t: number) => {
+  for (let k = 0; k < 3; k++) {
+    const pts: P2[] = [], x0 = 70 + k * 80, u = (t + k * 0.33) % 1;
+    for (let i = 0; i <= 16; i++) pts.push([x0 + 16 * Math.sin(i * 0.9 + t * 12 + k), 360 - i * 18 - 40 * u]);
+    p.line(pts, k === 1 ? "#ff7a4a" : "#ffb04a", 12);
+  }
+};
+/** little motion arcs either side of a dancer (600 x 600 canvas); t 0..1 flips them */
+export const fxDanceMarks = (p: Pen, t: number) => {
+  const s = t < 0.5 ? 1 : -1;
+  for (const [cx, cy, r, a0] of [[110, 260, 70, 200], [490, 260, 70, -20], [150, 520, 50, 160], [450, 520, 50, 20]] as const) {
+    const pts: P2[] = [];
+    for (let i = 0; i <= 10; i++) { const a = rad(a0 + s * (i * 6)); pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]); }
+    p.line(pts, "#ffffff", 9);
+  }
+};
+/** spin swirl round a turning figure (600 x 300 canvas); t 0..1 */
+export const fxSpin = (p: Pen, t: number) => {
+  const pts: P2[] = [];
+  for (let i = 0; i <= 40; i++) { const a = rad(i * 9 + t * 360); pts.push([300 + 250 * Math.cos(a), 150 + 70 * Math.sin(a)]); }
+  p.line(pts.slice(0, 26), "#ffffff", 12);
+};
+/** a cough: three grey-green puffs drifting out to the right (400 x 300 canvas); t 0..1 */
+export const fxCough = (p: Pen, t: number) => {
+  for (let k = 0; k < 3; k++) {
+    const u = Math.min(1, t * 1.6 - k * 0.2);
+    if (u <= 0) continue;
+    p.ell(60 + 260 * u, 150 - 40 * u + k * 20, 26 + 30 * u, 22 + 24 * u, "#d8ddc8", 7);
+  }
+};
+/** a falling autumn leaf (200 x 200 canvas); kind 0..2 colour, t turns it */
+export const fxLeaf = (p: Pen, kind: number, t: number) => {
+  const col = ["#e07a2a", "#d0482a", "#e8b030"][kind % 3], a = rad(360 * t), c = Math.cos(a), s = Math.sin(a);
+  const R = (x: number, y: number): P2 => [100 + (x * c - y * s), 100 + (x * s + y * c)];
+  p.poly([R(0, -70), R(40, -20), R(30, 40), R(0, 70), R(-30, 40), R(-40, -20)], col, 7);
+  p.stroke([R(0, -60), R(0, 70)], 5);
+};
+/** a sad drooping music note (240 x 260 canvas) */
+export const fxSadNote = (p: Pen) => {
+  p.ell(90, 190, 36, 26, "#4a5a7a", 7, 0, 360, -20);
+  p.stroke([[122, 182], [128, 50], [190, 90]], 9);
+};
+/** pain stars for sore feet (300 x 200 canvas); t 0..1 pops them */
+export const fxOuch = (p: Pen, t: number) => {
+  for (const [x, y, s] of [[60, 120, 1], [150, 60, 1.3], [240, 120, 1]] as const) {
+    const r = 34 * s * Math.min(1, t * 2), pts: P2[] = [];
+    if (r < 2) continue;
+    for (let i = 0; i < 10; i++) { const a = rad(i * 36 - 90), rr = i % 2 ? r * 0.45 : r; pts.push([x + rr * Math.cos(a), y + rr * Math.sin(a)]); }
+    p.poly(pts, "#ffd35a", 6);
+  }
+};

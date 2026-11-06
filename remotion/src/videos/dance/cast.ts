@@ -1,10 +1,12 @@
 // The slow-organ cast as lit flat cards in the 3D world (same machinery as the bridge short: canvas pool, yaw-only
 // billboards shaded by cardShade(), contact blobs, unlit effect cards on the NOINK layer).
 import * as THREE from "three";
-import { fxRing, Pen, bodyFront, bodySide, CAGE, PIANIST, MAYOR, MONK, WORKER, KID, visitor, audience, pigCard, fxContact, fxShadow, fxNote, Outfit, Expr, FrontOpts, SideOpts } from "./toon";
-import { fxCalPage, fxBottle, fxAir, fxHandBag, fxZzz, fxCobweb, fxHandSwitch, fxClapMarks, fxSparkle } from "./fx";
-import { FPS, SHOTS, V3, CH, ORG, PIPES, PIPE_Y, KEY_Y, BLOWER, CA, DESK, PIANO, SEATS, VISITOR, TOWN, CHURCH_Z, WEIGHT, SWITCH, ADD_PIPE, FIRST_NOTE,
-  calendarAt, visitorAge, bellowsAt, sounding, pipeCount, smooth, clamp01, add } from "./story";
+import { Pen, bodyFront, bodySide, horseCard, fxContact, fxShadow, fxNote, fxBurst, fxPuff, fxStars, Outfit, Expr, FrontOpts, SideOpts,
+  TROFFEA, folk1518, DOCTOR, DOCTOR2, MASTER, COUNCIL, PLAYER, STRONG, PRIEST, CRIER, STATUE, HUNGRY, SICK } from "./toon";
+import { fxSparkle, fxClapMarks, fxHeat, fxDanceMarks, fxSpin, fxCough, fxLeaf, fxSadNote, fxOuch } from "./fx";
+import { FPS, SHOTS, V3, STAGE, DECK, GUILD, RAIL, STALL, COLUMN, COL_H, BENCH, DOOR, SHRINE, TROF_ST, DOC_P, STRONG_P, MASTER_P,
+  STEP_OUT, FIRST_DANCE, nightAt, joinedAt, CLEAR, BUILD0, BUILD1, TEAR, BAND_ON, BAND_OFF, bandPlays, EVERYONE, spinAt, BAN,
+  YAWN1, YAWN2, NDANCE, FEET, wagonPose, SHOES, STOPPED, T, H, smooth, clamp01, add } from "./story";
 import type { LightName } from "./lights";
 import { NOINK } from "./ink";
 import { cardShade, blobMaterial, CARD_K } from "./cardshade";
@@ -105,6 +107,8 @@ export class Fx {
 export type Place = {
   key: string; draw: (p: Pen) => void; x: number; y: number; z: number;
   scale?: number; mirror?: boolean; yaw?: number; geo?: "body" | "swing"; roll?: number; size?: [number, number, number];
+  /** horizontal squash (a spin on the spot: cos of the turn, negative = seen from behind / mirrored) */
+  sx?: number;
 };
 export type FxPlace = { key: string; cw: number; ch: number; draw: (p: Pen) => void; x: number; y: number; z: number; w: number; h: number; flat?: boolean; rot?: number; soft?: boolean };
 /** sun = world direction TOWARD the sun (optional: when absent the scene's shadow-casting light is used) */
@@ -190,7 +194,7 @@ const person = (cam: CamInfo, who: Who, x: number, y: number, z: number, view: {
 /** ground shadow under a standing / sitting card (review rounds 2-4), multiply, blue-violet: a TIGHT contact pool right under
  *  the feet (~.5 on screen at the core) so nobody floats, plus by day (cards cast no real shadow) a lighter soft tail
  *  stretched AWAY from the sun, length ~1.6 m / tan(sun elevation), capped. Golden: world.ts casts real card shadows. */
-const CONTACT: Record<LightName, [number, number, number]> = { day: [0.2, 0.21, 0.33], golden: [0.24, 0.2, 0.33], lab: [0.26, 0.2, 0.26], night: [0.18, 0.18, 0.28], stage: [0.2, 0.14, 0.22], dusk: [0.24, 0.2, 0.33] };
+const CONTACT: Record<LightName, [number, number, number]> = { day: [0.2, 0.21, 0.33], golden: [0.24, 0.2, 0.33], lab: [0.26, 0.2, 0.26], night: [0.18, 0.18, 0.28], stage: [0.2, 0.14, 0.22], dusk: [0.24, 0.2, 0.33], moon: [0.16, 0.17, 0.3] };
 const TAIL: [number, number, number] = [0.42, 0.44, 0.62];
 const toSrgb = (v: number) => { const c = clamp01(v); return c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055; };
 const hexOf = (c: [number, number, number], k: number) => "#" + c.map((v) => Math.round(255 * toSrgb(1 - (1 - v) * k)).toString(16).padStart(2, "0")).join("");
@@ -211,28 +215,41 @@ const blob = (out: Stage, x: number, y: number, z: number, sc = 1, k = 1) => {
 // ---------------- staging ----------------
 export type Stage = { places: Place[]; fx: FxPlace[] };
 const WHO = {
-  cage: { i: 1, o: CAGE, okey: "cage" } as Who,
-  pianist: { i: 2, o: PIANIST, okey: "pianist" } as Who,
-  mayor: { i: 3, o: MAYOR, okey: "mayor" } as Who,
-  monk: [0, 1].map((k) => ({ i: 4 + k, o: MONK(k), okey: `monk${k}` }) as Who),
-  worker: [0, 1].map((k) => ({ i: 6 + k, o: WORKER(k), okey: `worker${k}` }) as Who),
-  kid: { i: 8, o: KID, okey: "kid" } as Who,
-  vis: [0, 1, 2].map((k) => ({ i: 9, o: visitor(k), okey: `vis${k}` }) as Who),
-  folk: Array.from({ length: 30 }, (_, k) => ({ i: 10 + k, o: audience(k), okey: `a${k}` }) as Who),
+  trof: { i: 1, o: TROFFEA, okey: "trof" } as Who,
+  trofRed: { i: 1, o: { ...TROFFEA, boots: "#d42a2a" }, okey: "trofRed" } as Who,
+  doc: { i: 2, o: DOCTOR, okey: "doc" } as Who,
+  doc2: { i: 3, o: DOCTOR2, okey: "doc2" } as Who,
+  master: { i: 4, o: MASTER, okey: "master" } as Who,
+  council: [0, 1].map((k) => ({ i: 5 + k, o: COUNCIL(k), okey: `council${k}` }) as Who),
+  band: [0, 1, 2].map((k) => ({ i: 7 + k, o: PLAYER(k), okey: `band${k}` }) as Who),
+  strong: [0, 1].map((k) => ({ i: 10 + k, o: STRONG(k), okey: `strong${k}` }) as Who),
+  priest: [0, 1].map((k) => ({ i: 12 + k, o: PRIEST(k), okey: `priest${k}` }) as Who),
+  crier: { i: 14, o: CRIER, okey: "crier" } as Who,
+  statue: { i: 15, o: STATUE, okey: "statue" } as Who,
+  hungry: { i: 16, o: HUNGRY, okey: "hungry" } as Who,
+  sick: { i: 17, o: SICK, okey: "sick" } as Who,
+  folk: Array.from({ length: 40 }, (_, k) => ({ i: 20 + k, o: folk1518(k), okey: `f${k}` }) as Who),
+  red: Array.from({ length: 8 }, (_, k) => ({ i: 20 + k, o: { ...folk1518(k), boots: "#d42a2a" }, okey: `r${k}` }) as Who),
 };
 const FRONT = { side: false, mirror: false };
-const SEAT = Math.round(0.47 / SU); // chair seat height in design units
+const SEAT = Math.round(0.47 / SU); // bench seat height in design units
 const push = (out: Stage, key: string, cw: number, ch: number, draw: (p: Pen) => void, x: number, y: number, z: number, w: number, h: number, extra: Partial<FxPlace> = {}) =>
   out.fx.push({ key, cw, ch, draw, x, y, z, w, h, ...extra });
 const stand = (out: Stage, cam: CamInfo, who: Who, p: V3, fo: FrontOpts, t: number, scale = 1, shadow = true) => {
   out.places.push(person(cam, who, p[0], p[1], p[2], FRONT, { mode: "stand", blink: lidAt(t, who.i), ...fo }, {}, scale));
   if (shadow) blob(out, p[0], p[1], p[2], scale);
 };
-/** seated on a chair at p (card just in front of the seat so the seat does not cut the hips) */
-const sitAt = (out: Stage, cam: CamInfo, who: Who, p0: V3, fo: FrontOpts, t: number, dz = 0.14) => {
-  const p = add(p0, [0, 0, dz]);
-  out.places.push(person(cam, who, p[0], p[1], p[2], FRONT, { mode: "sit", seat: SEAT, blink: lidAt(t, who.i), ...fo }, {}, 1));
+const sitAt = (out: Stage, cam: CamInfo, who: Who, p0: V3, fo: FrontOpts, t: number, dz = 0.12, seat = SEAT) => {
+  const p = add(p0, [dz, 0, 0]);
+  out.places.push(person(cam, who, p[0], p[1], p[2], FRONT, { mode: "sit", seat, blink: lidAt(t, who.i), ...fo }, {}, 1));
   blob(out, p[0], p[1], p[2], 1);
+};
+/** a dancer: phase from the clock (one step cycle 0.72 s), energy 0 limp .. 1 wild; n = phase steps (crowds share canvases) */
+const dance = (out: Stage, cam: CamInfo, who: Who, p: V3, t: number, o: { off?: number; energy?: number; expr?: Expr; sore?: boolean; n?: number; scale?: number; blink?: boolean; fo?: FrontOpts; shadow?: boolean } = {}) => {
+  const n = o.n ?? 24, ph = q(((t / 0.72) + (o.off ?? who.i * 0.137)) % 1, n), e = q(o.energy ?? 1, 10);
+  const fo: FrontOpts = { mode: "dance", phase: ph, energy: e, expr: o.expr ?? "dazed", sore: o.sore, blink: o.blink === false ? 0 : lidAt(t, who.i), ...(o.fo ?? {}) };
+  out.places.push(person(cam, who, p[0], p[1], p[2], FRONT, fo, {}, o.scale ?? 1));
+  if (o.shadow !== false) blob(out, p[0], p[1], p[2], o.scale ?? 1);
 };
 /** someone walking from p0 to p1 between frames f0 and f1 (then standing at p1) */
 const walk = (out: Stage, cam: CamInfo, who: Who, p0: V3, p1: V3, f: number, f0: number, f1: number, expr: Expr = "neutral", fo: FrontOpts = {}) => {
@@ -244,7 +261,6 @@ const walk = (out: Stage, cam: CamInfo, who: Who, p0: V3, p1: V3, f: number, f0:
     { mode: "march", phase: ph, expr, stomp: 0.5, stride: 0.8 * view.fs, blink: lidAt(t, who.i) }));
   blob(out, x, p0[1], z);
 };
-/** someone strolling from p0 along (dx, dz) at speed v (m/s) since frame f0 */
 const stroll = (out: Stage, cam: CamInfo, who: Who, p0: V3, dx: number, dz: number, v: number, f: number, f0: number, expr: Expr = "neutral") => {
   const s = ((f - f0) / FPS) * v, x = p0[0] + dx * s, z = p0[2] + dz * s;
   const view = viewOf(cam, x, z, dx, dz), ph = q((((f - f0) / FPS) * 0.7 + who.i * 0.13) % 1, 60), t = f / FPS;
@@ -252,31 +268,58 @@ const stroll = (out: Stage, cam: CamInfo, who: Who, p0: V3, dx: number, dz: numb
     { mode: "march", phase: ph, expr, stomp: 0.5, stride: 0.8 * view.fs, blink: lidAt(t, who.i) }));
   blob(out, x, p0[1], z);
 };
-/** music notes rising from points (organ pipe tops etc.): each note drifts up 0.7 m over 1.6 s and fades by size */
-const notes = (out: Stage, f: number, from: V3[], col = "#1f2a44", size = 0.16, seed = 0) => {
+/** music notes rising from points: each note drifts up 0.7 m over 1.6 s and fades by size */
+const notes = (out: Stage, f: number, from: V3[], col = "#1f2a44", size = 0.2, seed = 0) => {
   from.forEach((p, k) => {
     for (let n = 0; n < 2; n++) {
       const u = q(((f / FPS) / 1.6 + k * 0.29 + n * 0.5 + seed) % 1, 24), s = size * (u < 0.15 ? u / 0.15 : u > 0.8 ? (1 - u) / 0.2 : 1);
       if (s < 0.02) continue;
-      push(out, `note${(k + n) % 2}${col}`, 240, 260, (pp) => fxNote(pp, (k + n) % 2, col), p[0] + 0.12 * Math.sin(u * 6 + k), p[1] + 0.08 + 0.7 * u, p[2] + 0.02, s * 0.92, s);
+      push(out, `note${(k + n) % 2}${col}`, 240, 260, (pp) => fxNote(pp, (k + n) % 2, col), p[0] + 0.15 * Math.sin(u * 6 + k), p[1] + 0.1 + 0.8 * u, p[2] + 0.02, s * 0.92, s);
     }
   });
 };
-const pipeTops = (n: number, k = 3): V3[] => PIPES.slice(0, Math.min(n, 7)).filter((_, i) => k === 1 || i % k === 1).map(([x, h]) => add(ORG, [x, PIPE_Y + 0.12 + h, -0.05]));
-const organNotes = (out: Stage, id: number, f: number) => { if (sounding(id, f)) notes(out, f, pipeTops(pipeCount(id, f), 2), "#1f2a44", 0.15); };
-/** a calendar page tearing off whenever the page index steps (8 f flight), on the church's right wall */
-const calendar = (out: Stage, id: number, f: number) => {
-  for (let k = 1; k <= 12; k++) if (calendarAt(id, f - k) < calendarAt(id, f - k + 1)) {
-    const u = q(k / 12, 12), s2 = (k * 7) % 3 - 1;
-    push(out, `cal${u}`, 300, 300, (p) => fxCalPage(p, u), CH[0] - 0.7 + 0.5 * u + 0.12 * s2, 2.4 + 0.25 * u - 0.2 * u * u, CH[2] - 13.9 + 0.5 * u, 0.75, 0.75);
+/** a deterministic crowd on the square: n dancers on a jittered grid inside the box, keeping clear of the stage,
+ *  the column and the stall. Outfits cycle over 16 and phases over 8 steps so the crowd shares a few dozen canvases. */
+const CROWD_EXPR: Expr[] = ["dazed", "nervous", "pained", "tired", "dazed", "shock", "nervous", "grin"];
+const crowdSpots = (() => {
+  const out: V3[] = [];
+  for (let gz = -38; gz <= 22; gz += 1.55) for (let gx = -20; gx <= 20; gx += 1.5) {
+    const j = hh(gx * 7 + gz, 3), jj = hh(gx + gz * 5, 4), x = gx + (j - 0.5) * 1.0, z = gz + (jj - 0.5) * 1.0;
+    if (Math.abs(x - STAGE[0]) < 4.4 && Math.abs(z - STAGE[2]) < 4.4) continue;
+    if (Math.hypot(x - COLUMN[0], z - COLUMN[2]) < 1.8 || (Math.abs(x - STALL[0]) < 2.4 && Math.abs(z - STALL[2]) < 2.0)) continue;
+    if (Math.abs(x - RAIL[0]) < 5 && Math.abs(z - RAIL[2]) < 2.6) continue;
+    out.push(T(x, 0.04, z));
+  }
+  // nearest to the square's centre first, so a small crowd gathers in the middle
+  return out.map((p, i) => ({ p, d: Math.hypot(p[0] - 0, p[2] + 2) + hh(i, 8) * 6 })).sort((a, b) => a.d - b.d).map((x) => x.p);
+})();
+const crowd = (out: Stage, cam: CamInfo, t: number, n: number, o: { energy?: number; skip?: (p: V3) => boolean; expr?: Expr; maxD?: number } = {}) => {
+  let c = 0;
+  for (let i = 0; i < crowdSpots.length && c < n; i++) {
+    const p = crowdSpots[i];
+    if (o.skip && o.skip(p)) continue;
+    if (o.maxD && cam.pos.distanceTo(tmp.set(p[0], 1, p[2])) > o.maxD) { c++; continue; }
+    c++;
+    const k = i % 16, who = WHO.folk[k];
+    dance(out, cam, who, p, t, { off: q(hh(i, 5), 8), energy: o.energy ?? 0.85 + 0.15 * hh(i, 6), expr: o.expr ?? CROWD_EXPR[i % 8], n: 8, blink: false });
   }
 };
-const pig = (out: Stage, cam: CamInfo, i: number, p: V3, dx: number, f: number, f0: number) => {
-  const s = Math.max(0, (f - f0) / FPS) * 0.25, x = p[0] + dx * s, ph = q(((f - f0) / FPS * 1.6 + i * 0.3) % 1, 12);
-  const mirror = dx * cam.right.x < 0 === false ? false : true;
-  const sn = q(0.5 + 0.5 * Math.sin(f / 5 + i), 4);
-  out.places.push({ key: `pig|${ph}|${sn}`, x, y: p[1], z: p[2], mirror, scale: 0.7, draw: (pp) => pigCard(pp, ph, sn), size: [480, 800, 0.8] });
-  blob(out, x, p[1], p[2], 0.7);
+/** horses at the hitching rail, side view, tails swishing */
+const horses = (out: Stage, cam: CamInfo, f: number) => {
+  for (let k = 0; k < 3; k++) {
+    const x = RAIL[0] - 3 + k * 3, z = RAIL[2] - 0.7, ph = q(0.02 * Math.sin(f / 20 + k), 4);
+    out.places.push({ key: `horse|${ph}|${k % 2}`, x, y: 0.04, z, mirror: k % 2 === 1, scale: 1.0, draw: (pp) => horseCard(pp, ph), size: [1080, 1800, 1.8] });
+    blob(out, x, 0.04, z, 1.6);
+  }
+};
+const band = (out: Stage, cam: CamInfo, f: number, t: number, on: boolean, expr: Expr = "grin", base: V3 = add(STAGE, [0, DECK, -0.6])) => {
+  const kinds = ["drum", "pipe", "fiddle"] as const;
+  kinds.forEach((kd, k) => {
+    const p = add(base, [(k - 1) * 1.7, 0, k === 1 ? -0.4 : 0]);
+    const beat = on ? q(0.5 + 0.5 * Math.sin(t * Math.PI * 2 * (kd === "drum" ? 1.4 : 2.2) + k), 8) : 0;
+    stand(out, cam, WHO.band[k], p, { expr: on ? expr : "sad", prop: [kd, beat], headTilt: on ? q(5 * Math.sin(t * 4.4 + k), 3) : 0, tilt: on ? q(3 * Math.sin(t * 4.4 + k * 2), 3) : 0 }, t);
+    if (on) notes(out, f, [add(p, [0.3, 1.9, 0.1])], "#1f2a44", 0.24, k * 0.3);
+  });
 };
 
 /** everything with a face in shot `id` at frame f */
@@ -284,129 +327,257 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
   const out: Stage = { places: [], fx: [] }, t = f / FPS, s = SHOTS[id - 1];
   LNAME = s.light;
   findSun(cam, SUN);
-  const T = (x: number, y: number, z: number): V3 => add(TOWN, [x, y, z]);
-  const Ch = (x: number, y: number, z: number): V3 => add(CH, [x, y, z]);
-  const O = (x: number, y: number, z: number): V3 => add(ORG, [x, y, z]);
-  const council = (react: boolean, clap: boolean) => {
-    const g: [Who, V3][] = [[WHO.folk[0], T(-1.5, 0.04, -18.6)], [WHO.folk[1], T(1.4, 0.04, -18.8)], [WHO.folk[2], T(0.7, 0.04, -19.8)], [WHO.folk[3], T(-0.6, 0.04, -20.0)]];
-    for (const [w, p] of g) stand(out, cam, w, p, { expr: react ? "grin" : "smile", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 14), 6) : undefined, look: p[0] < 0 ? 1 : -1 }, t);
-    stand(out, cam, WHO.mayor, T(0, 0.04, -18.0), { expr: react ? "laugh" : clap ? "grin" : "stern", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 13), 6) : undefined, wave: react ? q(0.7 + 0.3 * smooth((f - 431) / 6), 10) : undefined, headTilt: clap ? q(6 * Math.sin(t * 9), 3) : 0 }, t);
-    const hp = add(T(0, 0.04, -18.0), [cam.right.x * 0.62, 1.15, cam.right.z * 0.62 + 0.05]);
-    if (!clap) push(out, "scoreCard", 300, 400, (p) => { p.poly([[30, 30], [270, 40], [262, 370], [24, 360]], "#f6efdc", 9); for (let r2 = 0; r2 < 3; r2++) for (let l = 0; l < 5; l++) p.stroke([[48, 80 + r2 * 100 + l * 12], [252, 84 + r2 * 100 + l * 12]], 3, "#5a5060"); }, hp[0], hp[1], hp[2], 0.34, 0.45);
-  };
   switch (id) {
     case 1: {
-      stroll(out, cam, WHO.folk[4], T(-8, 0.04, -4), 1, 0, 1.0, f, 0);
-      stroll(out, cam, WHO.folk[5], T(5, 0.04, -12), -1, 0, 0.9, f, 0, "smile");
-      stroll(out, cam, WHO.folk[6], T(1.5, 0.04, 4), 0, -1, 0.9, f, 0);
-      stroll(out, cam, WHO.folk[7], T(-3, 0.04, -16), 0, 1, 0.8, f, 0, "smile");
+      crowd(out, cam, t, 150);
+      if (f >= 84) notes(out, f, [], "#1f2a44");
       break;
     }
     case 2: {
-      organNotes(out, id, f);
-      for (const k of [2, 9, 15]) sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: "smile_closed" }, t);
+      const more = f >= 159;
+      dance(out, cam, WHO.folk[3], add(DOC_P, [0.3, 0, 0]), t, { energy: more ? 1 : 0.55, expr: more ? "dazed" : "tired", off: 0.2 });
+      stand(out, cam, WHO.doc, add(DOC_P, [-1.0, 0, -0.1]), { expr: more ? "grin" : "smile_closed", prop: more ? null : ["flask", 0], wave: more ? q(0.6 + 0.4 * Math.sin(t * 8), 6) : undefined, headTilt: more ? q(5 * Math.sin(t * 6), 3) : 0 }, t);
+      crowd(out, cam, t, 60, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.2 });
+      if (more) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), DOC_P[0] + 0.3, 1.25, DOC_P[2] + 0.05, 1.5, 1.5); }
       break;
     }
     case 3: {
-      const big = f >= 231, shrug = f >= 284 ? q(smooth((f - 284) / 10), 10) : 0;
-      if (f < 270) sitAt(out, cam, WHO.cage, add(DESK, [0, 0, -0.42]), { expr: big ? "smile_closed" : "smile", look: f < 231 ? 0 : 1 }, t, 0.1);
-      else stand(out, cam, WHO.cage, add(DESK, [0, 0, -0.3]), { expr: f >= 284 ? "grin" : "smile_closed", shrug }, t, 1, false);
+      if (f < 238) {
+        stroll(out, cam, WHO.folk[6], T(-2.5, 0.04, -60), 0, 1, 1.0, f, 186);
+        stroll(out, cam, WHO.folk[9], T(1.8, 0.04, -52), 0, -1, 0.9, f, 186, "smile");
+        stroll(out, cam, WHO.folk[12], T(-0.5, 0.04, -70), 0, 1, 0.8, f, 186);
+      } else {
+        stroll(out, cam, WHO.folk[8], T(-1.5, 0.04, -58), 0, 1, 1.0, f, 238);
+        if (f >= STEP_OUT - 2) {
+          const pre = f < FIRST_DANCE;
+          if (pre) walk(out, cam, WHO.trof, T(4.2, 0.04, -50), TROF_ST, f, STEP_OUT, STEP_OUT + 22, "smile");
+          else dance(out, cam, WHO.trof, TROF_ST, t, { energy: q(smooth((f - FIRST_DANCE) / 8), 8), expr: "dazed" });
+        }
+      }
       break;
     }
     case 4: {
-      sitAt(out, cam, WHO.pianist, add(PIANO, [-0.68, 0, 0]), { expr: f < 352 ? "smile_closed" : "neutral", headTilt: q(4 * Math.sin(t * 2), 4), look: f >= 352 ? 1 : 0 }, t, 0.05);
-      notes(out, f, [add(PIANO, [0.9, 1.25, 0])], "#1f2a44", 0.15);
+      const nt = nightAt(id, f);
+      dance(out, cam, WHO.trof, TROF_ST, t, { energy: f < 398 ? 1 : 0.8, expr: f < 398 ? "dazed" : "tired", sore: f >= 410 });
+      if (nt < 0.5) {
+        stand(out, cam, WHO.folk[1], T(-3.9, 0.04, -47.5), { expr: f < 372 ? "nervous" : "shock", look: 1 }, t);
+        stand(out, cam, WHO.folk[4], T(-3.9, 0.04, -53.5), { expr: f < 380 ? "neutral" : "nervous", look: 1 }, t);
+      }
+      if (f < 398) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), TROF_ST[0], 1.25, TROF_ST[2] + 0.05, 1.5, 1.5); }
       break;
     }
-    case 5: council(f >= 431, false); break;
-    case 7: council(false, true); if (f >= 656) push(out, `claps${q((t * 2) % 1, 8)}`, 400, 300, (p) => fxClapMarks(p, (t * 2) % 1), TOWN[0], 2.0, TOWN[2] - 18.6, 2.4, 1.8); break;
-    case 6: {
-      for (let k = 0; k < 2; k++) {
-        const bp = add(CA, [-2.4 - k * 1.25, 0, -4.3]), top = 0.2 + 0.5 * bellowsAt(f, k);
-        out.places.push(person(cam, WHO.monk[k], bp[0], top, bp[2] + 0.1, FRONT, { mode: "stand", expr: k ? "whistle" : "neutral", blink: lidAt(t, WHO.monk[k].i), tilt: q(4 * (bellowsAt(f, k) - 0.5), 4) }, {}, 1));
+    case 5: {
+      dance(out, cam, WHO.trof, TROF_ST, t, { energy: 0.85, expr: "tired", sore: true });
+      const n = joinedAt(f);
+      for (let k = 0; k < n; k++) {
+        const x = -3.6 + ((k * 7) % 8) * 1.0 + (hh(k, 1) - 0.5) * 0.5, z = -43 - Math.floor(k / 8) * 2.0 - (k % 2) * 0.9 - hh(k, 2) * 0.6;
+        const p = T(x, 0.04, z);
+        if (Math.hypot(p[0] - TROF_ST[0], p[2] - TROF_ST[2]) < 1.0) continue;
+        dance(out, cam, WHO.folk[(k + 5) % 40], p, t, { off: hh(k, 3), energy: 0.9, expr: CROWD_EXPR[k % 8], n: 12 });
+        const f0 = 455 + Math.round((k / 30) * 46);
+        if (f - f0 < 6) { const u = q((f - f0) / 6, 6); push(out, `puff${u}`, 300, 300, (pp) => fxPuff(pp, u), p[0], 0.4, p[2] + 0.2, 0.9, 0.9, { soft: true }); }
       }
-      notes(out, f, [add(CA, [-1.8, 7.5, -5.8]), add(CA, [0, 8.4, -5.6]), add(CA, [1.9, 7.5, -5.8])], "#f0d890", 0.45);
+      break;
+    }
+    case 6: {
+      if (f < 612) crowd(out, cam, t, 280);
+      else {
+        dance(out, cam, WHO.folk[10], T(0.1, 0.04, 3.0), t, { energy: 1, expr: "pained", sore: true, n: 24 });
+        for (const [k, x, z] of [[11, -1.4, 1.2], [12, 1.5, 0.8], [13, -0.3, -0.6]] as const) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.9, sore: true });
+        if (f >= 630) { const u = q(clamp01((f - 630) / 8), 8); push(out, `ouch${u}`, 300, 200, (p) => fxOuch(p, u), 0.1, 0.42, 3.2, 0.5, 0.33); }
+      }
+      break;
+    }
+    case 7: {
+      const hot = f >= 705, pat = add(DOC_P, [0.3, 0, 0]);
+      dance(out, cam, WHO.folk[3], pat, t, { energy: f < 737 ? 0.5 : 1, expr: hot ? "pained" : "tired", off: 0.2 });
+      const flask = f < 790 ? q(hot ? 0.6 + 0.4 * ((t * 3) % 1) : 0.02 * Math.sin(t), 10) : 0;
+      stand(out, cam, WHO.doc, add(DOC_P, [-1.0, 0, -0.1]), { expr: f < 700 ? "stern" : hot ? "shock" : "stern", prop: f < 790 ? ["flask", flask] : null, wave: f >= 790 ? q(0.6 + 0.4 * Math.sin(t * 8), 6) : undefined }, t);
+      stand(out, cam, WHO.doc2, add(DOC_P, [-1.9, 0, -0.6]), { expr: f >= 795 ? "grin" : "stern", look: 1, shrug: f >= 800 ? q(smooth((f - 800) / 8), 8) : 0 }, t);
+      if (hot) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (p) => fxHeat(p, u), pat[0], 2.55, pat[2], 0.55, 0.75, { soft: true }); }
+      if (f >= 795) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), pat[0], 1.25, pat[2] + 0.05, 1.5, 1.5); }
+      crowd(out, cam, t, 40, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.4 });
       break;
     }
     case 8: {
-      if (f >= 828) for (let k = 0; k < 3; k++) pig(out, cam, k, Ch(-0.55 + k * 0.75, 0.03, -2.6 - (k % 2) * 0.8), k % 2 ? -1 : 1, f, 826 - k * 6);
-      if (f >= 828 && f < 836) { const u = q((f - 828) / 8, 8); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), CH[0] - 0.2, 1.2, CH[2] - 2.6, 0.4, 0.4); }
+      if (f < 887) {
+        const pt = f >= CLEAR - 3;
+        stand(out, cam, WHO.master, MASTER_P, { expr: pt ? "grin" : "stern", wave: pt ? 1 : undefined, look: -1 }, t);
+        stand(out, cam, WHO.council[0], add(MASTER_P, [0.9, 0, 1.1]), { expr: pt ? "smile" : "neutral", look: -1 }, t);
+        stand(out, cam, WHO.council[1], add(MASTER_P, [1.6, 0, -0.4]), { expr: pt ? "smile_closed" : "nervous", look: -1 }, t);
+        for (const [k, x, z] of [[14, -7.8, -10.5], [15, -8.6, -15.5]] as const) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.8 });
+      } else if (f < 953) {
+        for (const [k, x, z] of [[16, -4.2, -3.2], [17, 4.3, -3.0]] as const) {
+          const hit = q(0.5 + 0.5 * Math.sin(t * 14 + k), 6);
+          stand(out, cam, WHO.folk[k], T(x, 0.04, z), { expr: "grin", prop: ["hammer", hit] }, t);
+        }
+        for (let k = 0; k < 9; k++) if (f >= BUILD0 + k * 3.5 && f < BUILD0 + k * 3.5 + 6) {
+          const u = q((f - BUILD0 - k * 3.5) / 6, 6), x = STAGE[0] - 3 + (k % 7), z = STAGE[2] + ((k * 3) % 5) - 2;
+          push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), x, DECK + 0.1, z, 0.6, 0.6);
+        }
+        horses(out, cam, f);
+        crowd(out, cam, t, 70, { skip: (p) => p[2] > -12 });
+      } else if (f < 984) {
+        const k = q(clamp01((f - BAND_ON) / 6), 6);
+        if (f >= BAND_ON) band(out, cam, f, t, k >= 1);
+        crowd(out, cam, t, 50, { skip: (p) => Math.abs(p[0]) < 5.5 && p[2] > -9.5 && p[2] < 1 });
+      } else {
+        const held = f >= 1003;
+        dance(out, cam, WHO.folk[18], STRONG_P, t, { energy: held ? 0.35 : 0.15, expr: "tired", fo: { armsUp: held ? 1 : 0, tilt: held ? 0 : 9 } });
+        if (held) {
+          const r2 = cam.right;
+          stand(out, cam, WHO.strong[0], [STRONG_P[0] - r2.x * 0.78, 0.04, STRONG_P[2] - r2.z * 0.78 - 0.05], { expr: "grin", wave: 0.9, look: 1 }, t, 1.06);
+          out.places.push(person(cam, WHO.strong[1], STRONG_P[0] + r2.x * 0.78, 0.04, STRONG_P[2] + r2.z * 0.78 - 0.05, { side: false, mirror: true }, { mode: "stand", expr: "grin", wave: 0.9, look: -1, blink: lidAt(t, 11) }, {}, 1.06));
+          out.places[out.places.length - 1].mirror = true;
+          blob(out, STRONG_P[0] + r2.x * 0.78, 0.04, STRONG_P[2] + r2.z * 0.78, 1.06);
+        }
+        crowd(out, cam, t, 40, { skip: (p) => Math.hypot(p[0] - STRONG_P[0], p[2] - STRONG_P[2]) < 3.4 });
+      }
       break;
     }
     case 9: {
-      if (f < 958) {
-        stand(out, cam, WHO.worker[0], O(0.78, 0, 0.8), { expr: f >= 884 ? "grin" : "smile", look: -1 }, t);
-        stand(out, cam, WHO.worker[1], add(BLOWER, [-0.5, 0, 0.5]), { expr: f >= SWITCH ? "relief_open" : "neutral", look: 1 }, t);
-        if (f >= 910 && f < 936) { const k = q(smooth((f - 912) / 12), 8); push(out, `switch${k}`, 300, 400, (p) => fxHandSwitch(p, k), BLOWER[0] - 0.08, 0.98, BLOWER[2] + 0.4, 0.42, 0.56); }
-        if (f >= SWITCH && f < SWITCH + 6) { const u = q((f - SWITCH) / 6, 6); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), BLOWER[0] + 0.18, 0.56, BLOWER[2] + 0.3, 0.22, 0.22); }
-        if (f >= 940) notes(out, f, pipeTops(7, 3), "#1f2a44", 0.15);
+      band(out, cam, f, t, true);
+      if (f < 1112) {
+        for (let k = 0; k < 6; k++) dance(out, cam, WHO.folk[20 + k], T(-2.5 + k * 1.0, 0.04, -1.2 + (k % 2) * 1.1), t, { energy: 1, expr: k % 2 ? "grin" : "laugh" });
+        crowd(out, cam, t, 40, { skip: (p) => Math.abs(p[0]) < 5 && p[2] > -9 && p[2] < 2 });
       } else {
-        if (f < WEIGHT + 8) { const k = q(smooth((f - 966) / (WEIGHT - 966)), 12); push(out, `bag${k}|${f >= WEIGHT ? 1 : 0}`, 300, 700, (p) => fxHandBag(p, f >= WEIGHT ? 1 : k), ORG[0] + 0.22, KEY_Y + 0.27 + 0.0, ORG[2] + 0.46, 0.2, 0.47); }
-        organNotes(out, id, f);
+        const all = f >= EVERYONE - 2;
+        crowd(out, cam, t, all ? 240 : 150, { skip: (p) => Math.hypot(p[0] - 9, p[2] - 4) < 5 });
+        const edge: [Who, V3][] = [[WHO.master, T(8.0, 0.04, 2.5)], [WHO.council[0], T(9.2, 0.04, 3.4)], [WHO.council[1], T(10.2, 0.04, 2.2)],
+          [WHO.doc, T(8.4, 0.04, 5.2)], [WHO.doc2, T(9.6, 0.04, 6.0)], [WHO.strong[0], T(10.8, 0.04, 4.6)], [WHO.strong[1], T(7.4, 0.04, 4.4)]];
+        for (const [w, p] of edge) {
+          if (all) dance(out, cam, w, p, t, { energy: 1, expr: w === WHO.master ? "shock" : "laugh", n: 12 });
+          else stand(out, cam, w, p, { expr: "smile", look: -1, clap: q(0.5 + 0.5 * Math.sin(t * 13 + w.i), 6) }, t);
+        }
+        horses(out, cam, f);
       }
       break;
     }
     case 10: {
-      if (f < 1078) {
-        const kp = O(-1.9, 0, 1.6);
-        stand(out, cam, WHO.worker[1], kp, { expr: "whistle", look: 1 }, t);
-        const u = q((t * 1.4) % 1, 12), hp = add(kp, [cam.right.x * 0.04, 1.41, cam.right.z * 0.04 + 0.06]);
-        push(out, `bottle${u}`, 500, 600, (p) => fxBottle(p, u), hp[0], hp[1] - 0.12, hp[2], 0.2, 0.24);
-        if (f >= 1040) notes(out, f, [add(hp, [0.06, 0.1, 0])], "#1f2a44", 0.09);
+      if (f < 1226) {
+        const sp = spinAt(f), turn = Math.cos(sp * Math.PI * 4);
+        const expr: Expr = f < 1193 ? "laugh" : sp < 1 ? "dazed" : "stern";
+        const pl = person(cam, WHO.master, MASTER_P[0], MASTER_P[1], MASTER_P[2], FRONT, f < 1193 ? { mode: "dance", phase: q((t / 0.72) % 1, 24), energy: 1, expr, blink: 0 } : { mode: "stand", expr, blink: lidAt(t, 4), wave: sp >= 1 ? 1 : undefined, look: -1 }, {}, 1);
+        out.places.push({ ...pl, sx: q(turn, 12) });
+        blob(out, MASTER_P[0], MASTER_P[1], MASTER_P[2]);
+        if (sp > 0 && sp < 1) { const u = q(sp, 12); push(out, `spin${u}`, 600, 300, (p) => fxSpin(p, u), MASTER_P[0], 1.0, MASTER_P[2] + 0.1, 1.6, 0.8); }
+        stand(out, cam, WHO.council[0], add(MASTER_P, [0.9, 0, 1.1]), { expr: f < 1210 ? "laugh" : "nervous", look: -1 }, t);
+        stand(out, cam, WHO.council[1], add(MASTER_P, [1.6, 0, -0.4]), { expr: f < 1210 ? "grin" : "shock", look: -1 }, t);
+      } else if (f < 1263) {
+        band(out, cam, f, t, false, "shock", T(0, 0.04, -1.2));
+        crowd(out, cam, t, 60, { skip: (p) => Math.abs(p[0]) < 5 && p[2] > -9 && p[2] < 2 });
+      } else if (f < 1293) {
+        ([0, 1, 2] as const).forEach((k) => {
+          const kd = (["drum", "pipe", "fiddle"] as const)[k];
+          walk(out, cam, WHO.band[k], T(-1.0 + k * 1.2, 0.04, -1.0 + k * 0.3), T(6.5 + k * 1.2, 0.04, 6.0 + k * 0.5), f, 1265, 1340, "sad", { prop: [kd, 0] });
+        });
+        crowd(out, cam, t, 30, { skip: (p) => p[0] > -2 && p[2] > -4 });
       } else {
-        const p3 = PIPES[3], base = O(p3[0], PIPE_Y + 0.12, 0.0);
-        const u = q((t * 1.2) % 1, 16);
-        push(out, `air${u}`, 200, 700, (p) => fxAir(p, u), base[0], base[1] + 0.55, base[2] + 0.06, 0.12, 0.42, { soft: true });
-        organNotes(out, id, f);
+        const ring = q(0.5 + 0.5 * Math.sin(t * 18), 6);
+        stand(out, cam, WHO.crier, T(-6.5, 0.04, 13.5), { expr: f >= BAN - 2 ? "stern" : "neutral", prop: ["bell", ring] }, t);
+        if (f >= BAN - 2 && f < BAN + 14) { const u = q((f - BAN + 2) / 16, 16); push(out, `burst${u}`, 400, 400, (p) => fxBurst(p, u, "#fff3b0", 10, 30, 160), -6.0, 2.6, 13.6, 1.2, 1.2); }
+        for (const [k, x, z] of [[21, -4.8, 9.5], [22, -7.8, 9.0], [23, -9.6, 10.8]] as const) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.85, expr: f >= BAN + 6 ? "nervous" : "dazed" });
       }
       break;
     }
     case 11: {
-      calendar(out, id, f); organNotes(out, id, f);
-      if (f >= 1200) push(out, "web", 400, 400, fxCobweb, ORG[0] - 0.72, PIPE_Y + 0.0, ORG[2] + 0.31, 0.35 * clamp01((f - 1200) / 40) + 0.05, 0.35 * clamp01((f - 1200) / 40) + 0.05, { soft: true });
+      if (f < 1408) crowd(out, cam, t, 45, { energy: 0.6, expr: "tired" });
+      else if (f < 1447) {
+        stand(out, cam, WHO.hungry, add(STALL, [-0.5, 0.04, 1.2]), { expr: "sad", prop: "bowl" }, t);
+        const cough = f >= 1426 ? ((f - 1426) % 22) / 22 : -1;
+        stand(out, cam, WHO.sick, add(STALL, [0.9, 0.04, 1.5]), { expr: cough >= 0 && cough < 0.4 ? "pained" : "tired", tilt: cough >= 0 && cough < 0.4 ? -6 : 0 }, t);
+        if (cough >= 0 && cough < 0.7) { const u = q(cough / 0.7, 10); push(out, `cough${u}`, 400, 300, (p) => fxCough(p, u), STALL[0] + 1.25, 1.6, STALL[2] + 1.6, 0.7, 0.52, { soft: true }); }
+      } else {
+        const curse = f >= 1475;
+        out.places.push(person(cam, WHO.statue, COLUMN[0], COL_H, COLUMN[2], FRONT, { mode: "stand", expr: "stern", wave: curse ? 1 : undefined, blink: 0, look: -0.5 }, {}, 1.2));
+        if (curse) { const u = q(((f - 1475) / 30) % 1, 15); push(out, `glow${u}`, 400, 400, (p) => fxBurst(p, u, "#b8a0ff", 12, 60, 190), COLUMN[0], COL_H + 1.4, COLUMN[2] - 0.15, 3.2, 3.2, { soft: true }); }
+        for (const [k, x, z] of [[24, -7.6, 14.6], [25, -10.4, 15.2], [26, -8.8, 16.8]] as const)
+          if (curse) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.9, expr: "shock" });
+          else stand(out, cam, WHO.folk[k], T(x, 0.04, z), { expr: "nervous", look: x < -9 ? 1 : -1 }, t);
+      }
       break;
     }
     case 12: {
-      organNotes(out, id, f);
-      for (let k = 0; k < 16; k++) {
-        const f0 = 1272 + k * 3.2, seat = SEATS[(k * 7) % SEATS.length];
-        walk(out, cam, WHO.folk[k], Ch(-0.6 + (k % 3) * 0.6, 0.02, 7.6), add(seat, [0, 0, 0.55]), f, f0, f0 + 50, "smile");
+      const a = add(BENCH, [0, 0.04, -0.55]), b = add(BENCH, [0, 0.04, 0.55]);
+      if (f < 1612) {
+        const y1 = f >= YAWN1 && f < YAWN1 + 22, y2 = f >= YAWN2 && f < YAWN2 + 24;
+        sitAt(out, cam, WHO.folk[27], a, { expr: y1 ? "yawn" : f > YAWN1 ? "smile_closed" : "neutral", headTilt: y1 ? -8 : 0, look: 1 }, t, 0.12);
+        sitAt(out, cam, WHO.folk[28], b, { expr: y2 ? "yawn" : f > YAWN2 + 24 ? "nervous" : "neutral", headTilt: y2 ? 8 : 0, look: -1 }, t, 0.12);
+      } else {
+        const go = f >= NDANCE;
+        if (go) dance(out, cam, WHO.folk[27], add(BENCH, [1.5, 0.04, -0.4]), t, { energy: q(smooth((f - NDANCE) / 6), 6), expr: "dazed" });
+        else sitAt(out, cam, WHO.folk[27], a, { expr: "smile_closed", look: 1 }, t, 0.12);
+        const feet = f >= FEET;
+        if (f < 1643) stand(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.85]), { expr: go ? "shock" : "neutral", look: -1 }, t);
+        else dance(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.85]), t, { energy: feet ? q(0.15 + 0.4 * smooth((f - FEET) / 14), 10) : 0, expr: "shock", n: 24 });
       }
       break;
     }
     case 13: {
-      const clap = f >= 1454;
-      for (let k = 0; k < SEATS.length; k++) sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: clap ? (k % 2 ? "laugh" : "grin") : k % 3 ? "smile" : "smile_closed", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 16 + k), 6) : undefined }, t);
-      for (const [k, p] of [[20, Ch(-4.3, 0.02, -2)], [21, Ch(-4.3, 0.02, 0.5)], [22, Ch(4.3, 0.02, -1)], [23, Ch(4.2, 0.02, 1.8)], [24, Ch(-4.2, 0.02, 3)]] as const)
-        stand(out, cam, WHO.folk[k], p, { expr: clap ? "grin" : "smile", clap: clap ? q(0.5 + 0.5 * Math.sin(t * 15 + k), 6) : undefined }, t);
-      stand(out, cam, WHO.worker[0], O(0.95, 0, 0.6), { expr: f >= ADD_PIPE ? "grin" : "smile", look: -1, wave: f >= 1426 && f < ADD_PIPE ? 0.9 : undefined }, t);
-      if (clap) push(out, `claps${q((t * 2) % 1, 8)}`, 400, 300, (p) => fxClapMarks(p, (t * 2) % 1), CH[0] - 0.5, 1.9, CH[2] - 3.0, 2.2, 1.6);
-      organNotes(out, id, f);
+      const wp = wagonPose(id, f), fw: V3 = [Math.sin(wp.yaw), 0, Math.cos(wp.yaw)], rt: V3 = [fw[2], 0, -fw[0]];
+      const hp = add(wp.p, [fw[0] * 3.3, 0.04, fw[2] * 3.3]);
+      const ph = q(((f - 1680) / FPS / 0.6) % 1, 12);
+      const mirror = fw[0] * cam.right.x + fw[2] * cam.right.z < 0;
+      out.places.push({ key: `horse|${ph}|w`, x: hp[0], y: hp[1], z: hp[2], mirror, scale: 1.0, draw: (pp) => horseCard(pp, ph), size: [480, 800, 0.8], yaw: Math.atan2(rt[0], rt[2]) * 0 + Math.atan2(cam.pos.x - hp[0], cam.pos.z - hp[2]) });
+      blob(out, hp[0], hp[1], hp[2], 1.6);
+      for (let k = 0; k < 4; k++) {
+        const ox = (k % 2 ? 0.4 : -0.4), oz = (k < 2 ? 0.6 : -0.6);
+        const p = add(wp.p, [rt[0] * ox + fw[0] * oz, 0.86, rt[2] * ox + fw[2] * oz]);
+        dance(out, cam, WHO.folk[(k * 5 + 2) % 40], p, t, { energy: 0.55, expr: k % 2 ? "tired" : "dazed", shadow: false, n: 12 });
+      }
+      if (f >= 1745) {
+        stand(out, cam, WHO.priest[0], H(1.2, 0.12, -40.2), { expr: "smile_closed" }, t);
+        stand(out, cam, WHO.priest[1], H(-1.0, 0.12, -40.0), { expr: "smile" }, t);
+        out.places.push(person(cam, WHO.statue, SHRINE[0] - 2.4, SHRINE[1] + 0.9, SHRINE[2] + 0.1, FRONT, { mode: "stand", expr: "smile_closed", blink: 0 }, {}, 0.85));
+        for (const [k, x, z] of [[2, 2.5, -36.5], [7, -2.4, -35.6]] as const) dance(out, cam, WHO.folk[k], H(x, 0.04, z), t, { energy: 0.6, expr: "tired" });
+      }
+      break;
+    }
+    case 14: {
+      if (f < 1848) {
+        const given = f >= SHOES;
+        stand(out, cam, WHO.priest[0], H(-0.55, 0.12, -36.6), { expr: "smile_closed", prop: given ? null : "shoes" }, t);
+        dance(out, cam, given ? WHO.trofRed : WHO.trof, H(0.55, 0.12, -35.9), t, { energy: given ? 0.35 : 0.6, expr: given ? "relief" : "tired", sore: !given });
+        if (given && f < SHOES + 8) { const u = q((f - SHOES) / 8, 8); push(out, `spark${u}`, 200, 200, (p) => fxSparkle(p, u), H(0.55, 0, -35.8)[0], H(0.55, 0.2, -35.8)[1], H(0.55, 0, -35.8)[2] + 0.1, 0.5, 0.5); }
+      } else {
+        const stop = f >= STOPPED;
+        stand(out, cam, WHO.priest[0], H(1.4, 0.12, -40.3), { expr: stop ? "smile_closed" : "smile" }, t);
+        stand(out, cam, WHO.priest[1], H(-1.2, 0.12, -40.1), { expr: stop ? "relief" : "smile" }, t);
+        out.places.push(person(cam, WHO.statue, SHRINE[0] - 2.4, SHRINE[1] + 0.9, SHRINE[2] + 0.1, FRONT, { mode: "stand", expr: "smile_closed", blink: 0 }, {}, 0.85));
+        const spots: [Who, number, number][] = [[WHO.trofRed, 0.4, -35.2], [WHO.red[0], -1.8, -34.2], [WHO.red[1], 1.9, -33.6], [WHO.red[2], -0.6, -32.6], [WHO.red[3], 2.6, -36.4], [WHO.red[4], -2.9, -36.8]];
+        spots.forEach(([w, x, z], k) => {
+          const p = H(x, 0.04, z);
+          if (!stop) dance(out, cam, w, p, t, { energy: q(0.6 * (1 - clamp01((f - 1850) / (STOPPED - 1850))) + 0.05, 10), expr: "tired", off: k * 0.17 });
+          else if (f < STOPPED + 6 + k * 3) stand(out, cam, w, p, { expr: "dazed" }, t);
+          else sitAt(out, cam, w, p, { expr: k % 2 ? "relief" : "smile_closed" }, t, 0, 0);
+        });
+        for (let k = 0; k < 5; k++) {
+          const u = ((t * 0.35 + k * 0.21) % 1), x = -3 + k * 1.5 + Math.sin(u * 6 + k) * 0.5, y = 4.2 - 3.8 * u;
+          const lp = H(x, y, -34 + (k % 2));
+          push(out, `leaf${k % 3}${q((u * 3) % 1, 12)}`, 200, 200, (p) => fxLeaf(p, k, q((u * 3) % 1, 12)), lp[0], lp[1], lp[2], 0.28, 0.28);
+        }
+      }
       break;
     }
     case 15: {
-      const age = visitorAge(f);
-      sitAt(out, cam, WHO.vis[age], VISITOR, { expr: f >= 1690 ? "smile" : "smile_closed", headTilt: q(5 * Math.sin(t * 1.5), 5) }, t);
-      organNotes(out, id, f);
+      const base = T(0, 0.04, -2.4);
+      ([0, 1, 2] as const).forEach((k) => {
+        const kd = (["drum", "pipe", "fiddle"] as const)[k], p = add(base, [(k - 1) * 1.15, 0, (k % 2) * 0.35]);
+        const tap = kd === "drum" && f >= 1960 && f < 1972 ? q(Math.sin(((f - 1960) / 12) * Math.PI), 6) : 0;
+        sitAt(out, cam, WHO.band[k], p, { expr: "sad", prop: [kd, tap], look: k === 0 ? 1 : 0 }, t, 0, Math.round(0.5 / SU));
+        if (kd === "drum" && f >= 1962) { const u = clamp01((f - 1962) / 24), np = add(p, [0.35, 1.5 - 0.5 * u, 0.1]); push(out, "sadnote", 240, 260, fxSadNote, np[0], np[1], np[2], 0.26 * (1 - 0.3 * u), 0.28 * (1 - 0.3 * u)); }
+      });
       break;
     }
-    case 17: {
-      const sleep = f >= 1944 && f < FIRST_NOTE, woke = f >= FIRST_NOTE;
-      for (let k = 0; k < SEATS.length; k++) {
-        const e: Expr = woke ? "shock" : sleep ? "neutral" : f >= 1886 ? (k % 2 ? "nervous" : "neutral") : "smile";
-        sitAt(out, cam, WHO.folk[k], SEATS[k], { expr: e, blink: sleep ? 1 : undefined, headTilt: sleep ? (k % 2 ? 12 : -12) : 0, look: f >= 1886 && f < 1944 ? (k % 2 ? 1 : -1) : 0 }, t);
-      }
-      if (sleep) for (const k of [0, 8, 13]) { const sp = SEATS[k]; push(out, `zzz${q((t * 0.8 + k * 0.3) % 1, 12)}`, 300, 300, (p) => fxZzz(p, (t * 0.8 + k * 0.3) % 1), sp[0] + 0.25, 1.95, sp[2] + 0.2, 0.45, 0.45); }
-      if (f >= 1940) push(out, "web", 400, 400, fxCobweb, ORG[0] - 0.72, PIPE_Y, ORG[2] + 0.31, 0.4, 0.4, { soft: true });
-      calendar(out, id, f);
-      if (woke) {
-        notes(out, f, pipeTops(8, 1), "#1f2a44", 0.22, 0.7);
-        if (f < FIRST_NOTE + 14) { const u = q((f - FIRST_NOTE) / 14, 14); push(out, `ring${u}`, 600, 600, (p) => fxRing(p, u), ORG[0], PIPE_Y + 0.6, ORG[2] + 0.4, 2.2, 2.2, { soft: true }); }
-      }
+    case 16: {
+      const p = H(0.2, 0.12, -35.0), hop = f >= 2034 && f < 2052;
+      if (hop) dance(out, cam, WHO.trofRed, p, t, { energy: 0.5, expr: "relief", fo: { phase: q(0.25 * Math.sin(((f - 2034) / 18) * Math.PI), 12) } });
+      else stand(out, cam, WHO.trofRed, p, { expr: f >= 2034 ? "smile_closed" : "relief" }, t);
+      if (f >= 2040 && f < 2050) { const u = q((f - 2040) / 10, 10); push(out, `spark${u}`, 200, 200, (pp) => fxSparkle(pp, u), p[0] + 0.25, p[1] + 0.12, p[2] + 0.1, 0.45, 0.45); }
       break;
     }
   }
-  void bodySide; void bodyFront; void fxShadow; void stroll; void CHURCH_Z; void WEIGHT; void FIRST_NOTE; void fxAir; void KID;
+  void bodySide; void bodyFront; void fxShadow; void fxStars; void fxClapMarks; void BUILD1; void TEAR; void BAND_OFF; void bandPlays; void GUILD; void DOOR; void Outfit0;
   return out;
 };
-type Outfit0 = Outfit; const Outfit0 = 0; void Outfit0;
+type Outfit0 = Outfit; const Outfit0 = 0;

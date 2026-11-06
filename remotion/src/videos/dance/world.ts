@@ -1,30 +1,30 @@
-// "The Song That Ends in 2640" as one three.js scene: a German market town with its old stone church (hook, council,
-// the long score), the church inside (the tiny organ, its blower, weights on the keys, rows of chairs, a barn/pigsty
-// dressing), the 1361 cathedral with its great organ and bellows, and Cage's studio. update(id, f, camera) poses
-// everything for shot `id` at frame f (pure function of id + f).
+// "The Summer Everyone Danced" as one three.js scene: Strasbourg in 1518 (the horse market square with the council's
+// wooden stage, the guild hall, the hitching rail, a bread stall, the saint's column, the street to the pink cathedral
+// with Frau Troffea's door) and, 3 km away, green hills with the saint's shrine and the wagon road. update(id, f, camera)
+// poses everything for shot `id` at frame f (pure function of id + f).
 import * as THREE from "three";
 import { Batch, V, lam, boxGeo, setSight, prop, house, Ray, Kit } from "./build";
-import { ctex, cloudHD, grassHD, planksHD, stoneHD, roofHD, cobbleHD, rng } from "./paint";
+import { ctex, cloudHD, grassHD, planksHD, stoneHD, roofHD, cobbleHD, facadeHD, rng } from "./paint";
 import { LIGHTS, LOOK, LightPreset } from "./lights";
 import { TONE, CHAR, LFB, untone } from "./shade";
 import { NOINK } from "./ink";
 import { Pool, Actor, Fx, stage } from "./cast";
 import {
-  FPS, SHOTS, ShotDef, CH, ORG, KEY_Y, PIPE_Y, PIPES, BLOWER, CA, STU, DESK, PIANO, SEATS, CHURCH_Z,
-  camAt, windowLight, clockMin, pipeCount, bagsOn, blowerOn, buildAt, bellowsAt, ribbonAt, ADD_PIPE, SWITCH, V3, smooth, clamp01,
+  FPS, SHOTS, ShotDef, STAGE, DECK, GUILD, RAIL, STALL, COLUMN, COL_H, BENCH, DOOR, CATH_Z, HILL, ROAD, SHRINE,
+  camAt, hillH, roadAt, nightAt, doorsAt, stageAt, wagonPose, CLEAR, STEP_OUT, V3, smooth, clamp01,
 } from "./story";
 
 export const loadKit = async (): Promise<Kit> => ({}); // no external models: trees are drawn by build.ts
 void LFB;
 
 /** per-shot sun (camera-relative az / el overrides) */
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 13: { az: 165, el: 40 }, 17: { az: 160, el: 30 }, 1: { az: 120, el: 40 }, 14: { az: 110, el: 38 }, 8: { az: 115, el: 36 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 120, el: 42 }, 6: { az: 115, el: 40 }, 9: { az: 120, el: 42 }, 13: { az: 40, el: 10 }, 14: { az: 30, el: 9 } };
 
 /** every lens position of the film looking at its subject (houses and trees there are left out) */
-const sightLines = (): Ray[] => {
+const sightLines = (place: string): Ray[] => {
   const out: Ray[] = [];
   for (const s of SHOTS) {
-    if (s.place !== "town") continue;
+    if (s.place !== place) continue;
     for (let f = s.a - 8; f < s.b + 8; f += 3) {
       const c = camAt(s.id, Math.max(0, f)), o = V(...c.pos), look = V(...c.look);
       const fw = look.clone().sub(o), len = fw.length();
@@ -39,144 +39,71 @@ const sightLines = (): Ray[] => {
 };
 
 // ---------------- paintings ----------------
-/** a score page: five-line staves, sparse notes; the first mark of the first staff is a big rest (no words) */
-const scoreTex = (key: string, w: number, h: number, staves: number, restFirst: boolean, notes = 5) => ctex(key, w, h, (g, r) => {
-  g.fillStyle = "#f6efdc"; g.fillRect(0, 0, w, h);
-  const gap = h / (staves + 1), ls = gap / 9;
-  g.strokeStyle = "#3a3040"; g.fillStyle = "#241726";
-  for (let s = 0; s < staves; s++) {
-    const y0 = gap * (s + 0.6);
-    g.lineWidth = Math.max(2, ls * 0.18);
-    for (let l = 0; l < 5; l++) { g.beginPath(); g.moveTo(w * 0.05, y0 + l * ls); g.lineTo(w * 0.95, y0 + l * ls); g.stroke(); }
-    let x = w * 0.1;
-    if (restFirst && s === 0) { // a big quarter-rest squiggle
-      g.lineWidth = ls * 0.55; g.lineCap = "round"; g.lineJoin = "round";
-      const cx = x + ls * 1.2, t = y0 - ls * 0.2;
-      g.beginPath(); g.moveTo(cx - ls * 0.4, t); g.lineTo(cx + ls * 0.5, t + ls * 1.2); g.lineTo(cx - ls * 0.3, t + ls * 2.2); g.lineTo(cx + ls * 0.5, t + ls * 3.1);
-      g.quadraticCurveTo(cx - ls * 0.9, t + ls * 2.9, cx - ls * 0.1, t + ls * 4.4); g.stroke();
-      x += ls * 4;
-    }
-    for (let n = 0; n < notes; n++) {
-      x += (w * 0.8) / (notes + 1) * (0.7 + 0.6 * r());
-      if (x > w * 0.92) break;
-      const ny = y0 + ls * Math.floor(r() * 8) * 0.5;
-      g.beginPath(); g.ellipse(x, ny, ls * 0.62, ls * 0.45, -0.35, 0, Math.PI * 2); g.fill();
-      g.lineWidth = Math.max(2, ls * 0.16); g.beginPath(); g.moveTo(x + ls * 0.56, ny); g.lineTo(x + ls * 0.56, ny - ls * 3.2); g.stroke();
-    }
+/** the cathedral's rose window: deep blue glass, red and gold panes, stone tracery */
+const roseTex = () => ctex("dpRose", 512, 512, (g) => {
+  g.fillStyle = "#b9776c"; g.fillRect(0, 0, 512, 512);
+  g.fillStyle = "#26305e"; g.beginPath(); g.arc(256, 256, 236, 0, 7); g.fill();
+  for (let k = 0; k < 16; k++) {
+    const a = (k / 16) * Math.PI * 2;
+    g.fillStyle = k % 2 ? "#a83a4a" : "#d6a842"; g.beginPath(); g.arc(256 + 170 * Math.cos(a), 256 + 170 * Math.sin(a), 30, 0, 7); g.fill();
+    g.strokeStyle = "#c98a7c"; g.lineWidth = 12; g.beginPath(); g.moveTo(256 + 60 * Math.cos(a), 256 + 60 * Math.sin(a)); g.lineTo(256 + 236 * Math.cos(a), 256 + 236 * Math.sin(a)); g.stroke();
   }
+  g.fillStyle = "#3a6ab0"; g.beginPath(); g.arc(256, 256, 58, 0, 7); g.fill();
+  g.strokeStyle = "#c98a7c"; g.lineWidth = 16; g.beginPath(); g.arc(256, 256, 236, 0, 7); g.stroke(); g.beginPath(); g.arc(256, 256, 62, 0, 7); g.stroke();
+  g.lineWidth = 10; g.beginPath(); g.arc(256, 256, 130, 0, 7); g.stroke();
 });
-/** church front: warm grey sandstone blocks, a round-arched door, a round window (tile = whole facade) */
-const churchFrontTex = () => ctex("orChurchFront", 1024, 1024, (g, r) => {
-  g.fillStyle = "#b9a58a"; g.fillRect(0, 0, 1024, 1024);
-  for (let y = 0; y < 1024; y += 34) for (let x = -((y / 34) % 2) * 40; x < 1024; x += 80) {
-    g.fillStyle = ["#c8b497", "#bfa98c", "#d1bea2", "#b29c80"][Math.floor(r() * 4)]; g.fillRect(x + 3, y + 3, 74, 28);
-  }
-  g.fillStyle = "#3a2a24"; g.beginPath(); g.moveTo(420, 1024); g.lineTo(420, 780); g.arc(512, 780, 92, Math.PI, 0); g.lineTo(604, 1024); g.fill();
-  g.strokeStyle = "#e0d2b8"; g.lineWidth = 16; g.beginPath(); g.arc(512, 780, 104, Math.PI, 0); g.stroke();
-  g.fillStyle = "#6a4a32"; g.fillRect(432, 790, 160, 234); g.fillStyle = "#58392a"; g.fillRect(510, 790, 6, 234);
-  g.fillStyle = "#33406b"; g.beginPath(); g.arc(512, 470, 74, 0, 7); g.fill(); g.strokeStyle = "#e0d2b8"; g.lineWidth = 14; g.stroke();
-  for (let k = 0; k < 8; k++) { const a = (k / 8) * Math.PI * 2; g.lineWidth = 5; g.beginPath(); g.moveTo(512, 470); g.lineTo(512 + 70 * Math.cos(a), 470 + 70 * Math.sin(a)); g.stroke(); }
-  for (const x of [240, 784]) { g.fillStyle = "#33406b"; g.beginPath(); g.moveTo(x - 30, 700); g.lineTo(x - 30, 600); g.arc(x, 600, 30, Math.PI, 0); g.lineTo(x + 30, 700); g.fill(); }
+/** striped market awning */
+const awningTex = () => ctex("dpAwning", 256, 128, (g) => {
+  for (let i = 0; i < 8; i++) { g.fillStyle = i % 2 ? "#f3ead6" : "#c0353a"; g.fillRect(i * 32, 0, 32, 128); }
 });
-/** the church wall inside: warm whitewash over stone, worn, a darker plinth band */
-const naveTex = () => ctex("orNave", 1024, 1024, (g, r) => {
-  g.fillStyle = "#e4d6bc"; g.fillRect(0, 0, 1024, 1024);
-  for (let k = 0; k < 220; k++) { g.fillStyle = `rgba(150,120,90,${0.04 + 0.06 * r()})`; const x = r() * 1024, y = r() * 1024; g.fillRect(x, y, 30 + 80 * r(), 14 + 20 * r()); }
-  for (let y = 0; y < 1024; y += 64) { g.fillStyle = "rgba(120,96,70,0.08)"; g.fillRect(0, y, 1024, 3); }
-  g.fillStyle = "#a89070"; g.fillRect(0, 900, 1024, 124);
+/** dirt road: warm ochre with wheel ruts and pebbles */
+const roadTex = () => ctex("dpRoad", 512, 512, (g, r) => {
+  g.fillStyle = "#c9a46a"; g.fillRect(0, 0, 512, 512);
+  for (let k = 0; k < 500; k++) { g.fillStyle = ["#b8935a", "#d6b47c", "#a8844e"][Math.floor(r() * 3)]; g.beginPath(); g.arc(r() * 512, r() * 512, 2 + r() * 5, 0, 7); g.fill(); }
+  g.fillStyle = "rgba(110,80,40,0.25)"; g.fillRect(130, 0, 34, 512); g.fillRect(348, 0, 34, 512);
 });
-const dialTex = () => ctex("orDial", 256, 256, (g) => {
-  g.fillStyle = "#f6ecd2"; g.beginPath(); g.arc(128, 128, 126, 0, 7); g.fill();
-  g.strokeStyle = "#241726"; g.lineWidth = 8; g.beginPath(); g.arc(128, 128, 120, 0, 7); g.stroke();
-  for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; g.lineWidth = i % 3 ? 5 : 10; g.beginPath(); g.moveTo(128 + 92 * Math.sin(a), 128 - 92 * Math.cos(a)); g.lineTo(128 + 110 * Math.sin(a), 128 - 110 * Math.cos(a)); g.stroke(); }
-});
-/** calendar: cream page, red band, empty day grid (no numerals) */
-const calTex = () => ctex("orCal", 256, 320, (g) => {
-  g.fillStyle = "#6a4a32"; g.fillRect(0, 0, 256, 320);
-  g.fillStyle = "#f6efdc"; g.fillRect(14, 14, 228, 292);
-  g.fillStyle = "#c0353a"; g.fillRect(14, 14, 228, 64);
-  g.strokeStyle = "#b8ab90"; g.lineWidth = 4;
-  for (let i = 1; i < 7; i++) { g.beginPath(); g.moveTo(14 + (228 / 7) * i, 90); g.lineTo(14 + (228 / 7) * i, 300); g.stroke(); }
-  for (let j = 1; j < 6; j++) { g.beginPath(); g.moveTo(20, 90 + 42 * j); g.lineTo(236, 90 + 42 * j); g.stroke(); }
-});
-/** hay: golden straw strokes */
-const hayTex = () => ctex("orHay", 512, 512, (g, r) => {
-  g.fillStyle = "#d8b45a"; g.fillRect(0, 0, 512, 512);
-  for (let k = 0; k < 900; k++) { g.strokeStyle = ["#e8c870", "#c49a40", "#f0d890", "#b88a38"][Math.floor(r() * 4)]; g.lineWidth = 2 + 2 * r(); const x = r() * 512, y = r() * 512, a = (r() - 0.5) * 0.8; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 40 * Math.cos(a), y + 40 * Math.sin(a)); g.stroke(); }
-  g.fillStyle = "#8a6a30"; g.fillRect(0, 150, 512, 10); g.fillRect(0, 350, 512, 10);
-});
-/** keyboard: white keys with black ones (seen from above / front) */
-const keysTex = () => ctex("orKeys", 1024, 128, (g) => {
-  g.fillStyle = "#f4efe2"; g.fillRect(0, 0, 1024, 128);
-  const n = 28, w = 1024 / n;
-  g.strokeStyle = "#5a5060"; g.lineWidth = 3;
-  for (let i = 1; i < n; i++) { g.beginPath(); g.moveTo(i * w, 0); g.lineTo(i * w, 128); g.stroke(); }
-  g.fillStyle = "#241726";
-  for (let i = 0; i < n - 1; i++) if (![2, 6].includes(i % 7)) g.fillRect((i + 1) * w - w * 0.3, 0, w * 0.6, 76);
-});
+/** the doorway darkness */
+const DARK = () => lam("dpDark", () => ({ color: "#1c1410" }));
 
-const TIN = new THREE.MeshPhongMaterial({ color: "#d9dbe2", specular: "#ffffff", shininess: 40, emissive: "#4a4b54" });
 const MAT = {
-  wood: () => lam("orWood", () => ({ color: "#b07a48" })), woodD: () => lam("orWoodD", () => ({ color: "#6a4430" })),
-  pine: () => lam("orPine", () => ({ color: "#d8a868" })), brass: () => lam("orBrass", () => ({ color: "#c99a3a" })),
-  iron: () => lam("orIron", () => ({ color: "#5a5a64" })), cream: () => lam("orCream", () => ({ color: "#efe6d0" })),
-  stone: () => lam("orStoneTrim", () => ({ color: "#c9b89c" })), black: () => new THREE.MeshPhongMaterial({ color: "#1e1a24", specular: "#9090a0", shininess: 70 }),
-  sand: () => lam("orSandbag", () => ({ color: "#d8c08a" })), grey: () => lam("orBlower", () => ({ color: "#8c96a4" })),
+  wood: () => lam("dpWood", () => ({ color: "#b07a48" })), woodD: () => lam("dpWoodD", () => ({ color: "#6a4430" })),
+  pine: () => lam("dpPine", () => ({ map: planksHD(), color: "#e0b078" })), iron: () => lam("dpIron", () => ({ color: "#5a5a64" })),
+  stone: () => lam("dpStoneTrim", () => ({ color: "#c9b89c" })), pink: () => lam("dpPink", () => ({ map: stoneHD("dpPinkT", ["#c98a7c", "#c08072", "#d29484", "#b8786a"], "#8e5a52") })),
+  pinkTrim: () => lam("dpPinkTrim", () => ({ color: "#d79a8a" })), red: () => lam("dpRed", () => ({ color: "#c0353a" })),
+  gold: () => lam("dpGold", () => ({ color: "#e0b040" })), cream: () => lam("dpCream", () => ({ color: "#efe6d0" })),
+  grey: () => lam("dpGrey", () => ({ map: stoneHD("dpGreyT", ["#b8b0a4", "#aea698", "#c2baae", "#a69e92"], "#7e766a") })),
 };
 const shadowAll = (o: THREE.Object3D) => o.traverse((m) => { const x = m as THREE.Mesh; if (x.isMesh && !x.layers.isEnabled(NOINK)) { x.castShadow = true; x.receiveShadow = true; } });
-/** a round-arched window as a flat shape (emissive), width w, height h (arch included), centred at its foot */
-const archShape = (w: number, h: number) => {
-  const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h - w / 2); s.absarc(0, h - w / 2, w / 2, 0, Math.PI, false); s.lineTo(-w / 2, 0);
-  return new THREE.ShapeGeometry(s, 16);
-};
 const pointShape = (w: number, h: number) => {
   const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h - w); s.quadraticCurveTo(w / 2, h - w * 0.2, 0, h); s.quadraticCurveTo(-w / 2, h - w * 0.2, -w / 2, h - w); s.lineTo(-w / 2, 0);
   return new THREE.ShapeGeometry(s, 16);
 };
-
-type Organ = { root: THREE.Group; parts: THREE.Object3D[]; pipes: THREE.Mesh[]; bags: THREE.Group; led: THREE.MeshBasicMaterial; lever: THREE.Mesh };
-/** the tiny Halberstadt-style organ: a plain pine case on legs, a short keyboard on its +z side, 8 tin pipes on top,
- *  sandbags on three keys; a grey blower box beside it with a lamp and a lever. Local origin = floor under the case. */
-const tinyOrgan = (): Organ => {
-  const R = new THREE.Group(), parts: THREE.Object3D[] = [];
-  const add = (o: THREE.Object3D) => { R.add(o); parts.push(o); return o; };
-  const legs = new Batch();
-  for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) legs.add(boxGeo(V(sx * 0.62 - 0.04, 0, sz * 0.32 - 0.04), V(sx * 0.62 + 0.04, 0.62, sz * 0.32 + 0.04)), MAT.woodD());
-  const lg = new THREE.Group(); legs.build(lg); add(lg);
-  const cb = new Batch();
-  cb.add(boxGeo(V(-0.7, 0.62, -0.38), V(0.7, PIPE_Y, 0.3)), MAT.pine());
-  cb.add(boxGeo(V(-0.72, PIPE_Y - 0.03, -0.4), V(0.72, PIPE_Y, 0.32)), MAT.wood());
-  cb.add(boxGeo(V(-0.6, KEY_Y - 0.06, 0.3), V(0.6, KEY_Y - 0.01, 0.52)), MAT.wood());
-  const cg = new THREE.Group(); cb.build(cg); add(cg);
-  const keys = new THREE.Mesh(new THREE.PlaneGeometry(1.14, 0.2), lam("orKeysM", () => ({ map: keysTex() }))); keys.rotation.x = -Math.PI / 2; keys.position.set(0, KEY_Y, 0.42); add(keys);
-  const pipes: THREE.Mesh[] = [];
-  PIPES.forEach(([x, h]) => {
-    const g = new THREE.CylinderGeometry(0.045, 0.045, h, 18); g.translate(0, h / 2 + 0.12, 0);
-    const foot = new THREE.CylinderGeometry(0.045, 0.012, 0.12, 18); foot.translate(0, 0.06, 0);
-    const pm = new THREE.Mesh(g, TIN); pm.add(new THREE.Mesh(foot, TIN));
-    const mouth = new THREE.Mesh(boxGeo(V(-0.02, 0.15, 0.036), V(0.02, 0.18, 0.047)), lam("orMouth", () => ({ color: "#3a3446" }))); pm.add(mouth);
-    pm.position.set(x, PIPE_Y, -0.05); add(pm); pipes.push(pm);
-  });
-  const GOLD = new THREE.MeshPhongMaterial({ color: "#e2b04a", specular: "#fff4c0", shininess: 50, emissive: "#3a2a08" });
-  pipes[7].material = GOLD; (pipes[7].children[0] as THREE.Mesh).material = GOLD;
-  const bags = new THREE.Group();
-  for (const x of [-0.3, -0.06, 0.22]) {
-    const bg = new THREE.Mesh(new THREE.SphereGeometry(0.06, 14, 10), MAT.sand()); bg.scale.set(1.15, 0.6, 1); bg.position.set(x, KEY_Y + 0.03, 0.44); bags.add(bg);
-    const tie = new THREE.Mesh(new THREE.TorusGeometry(0.018, 0.006, 6, 12), lam("orTie", () => ({ color: "#8a6a30" }))); tie.position.set(x, KEY_Y + 0.07, 0.44); tie.rotation.x = Math.PI / 2; bags.add(tie);
-  }
-  R.add(bags);
-  // the blower
-  const bx = BLOWER[0] - ORG[0], bz = BLOWER[2] - ORG[2];
-  const bl = new THREE.Mesh(boxGeo(V(bx - 0.3, 0, bz - 0.25), V(bx + 0.3, 0.62, bz + 0.25)), MAT.grey()); add(bl);
-  const grill = new THREE.Mesh(boxGeo(V(bx - 0.2, 0.2, bz + 0.25), V(bx + 0.2, 0.45, bz + 0.27)), MAT.iron()); add(grill);
-  const led = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.2, 0.05, 0.05) });
-  const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.03, 10, 8), led); lamp.position.set(bx + 0.18, 0.55, bz + 0.26); lamp.layers.set(NOINK); add(lamp);
-  const lever = new THREE.Mesh(boxGeo(V(-0.015, 0, -0.015), V(0.015, 0.14, 0.015)), lam("orLever", () => ({ color: "#c0353a" }))); lever.position.set(bx - 0.12, 0.62, bz + 0.1); add(lever);
-  const duct = new THREE.CylinderGeometry(0.06, 0.06, 1, 12); duct.rotateZ(Math.PI / 2);
-  const dm = new THREE.Mesh(duct, MAT.iron()); dm.scale.set(Math.abs(bx) - 1.0, 1, 1); dm.position.set((bx + 0.3 - 0.7) / 2, 0.4, bz); add(dm);
-  shadowAll(R);
-  return { root: R, parts, pipes, bags, led, lever };
+const archShape = (w: number, h: number) => {
+  const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h - w / 2); s.absarc(0, h - w / 2, w / 2, 0, Math.PI, false); s.lineTo(-w / 2, 0);
+  return new THREE.ShapeGeometry(s, 16);
 };
+/** a gable roof over a box (ridge along z) */
+const gable = (b: Batch, x0: number, x1: number, y: number, z0: number, z1: number, rise: number, mat: THREE.Material, wall: THREE.Material) => {
+  const cx = (x0 + x1) / 2, w = x1 - x0, o = 0.4;
+  const g = new THREE.BufferGeometry();
+  const P = [[x0 - o, y - 0.2, z0 - o], [cx, y + rise, z0 - o], [cx, y + rise, z1 + o], [x0 - o, y - 0.2, z1 + o], [x1 + o, y - 0.2, z1 + o], [cx, y + rise, z1 + o], [cx, y + rise, z0 - o], [x1 + o, y - 0.2, z0 - o]];
+  const idx = [0, 2, 1, 0, 3, 2, 4, 6, 5, 4, 7, 6];
+  g.setAttribute("position", new THREE.Float32BufferAttribute(idx.flatMap((i) => P[i]), 3));
+  const uvs = [[0, 0], [1, 1], [0, 1], [0, 0], [1, 0], [1, 1], [0, 0], [1, 1], [0, 1], [0, 0], [1, 0], [1, 1]].map(([u, v]) => [u * (z1 - z0) / 4, v * (w / 2) / 4]);
+  g.setAttribute("uv", new THREE.Float32BufferAttribute(uvs.flat(), 2));
+  g.computeVertexNormals();
+  b.add(g, mat);
+  for (const z of [z0, z1]) {
+    const t = new THREE.BufferGeometry();
+    t.setAttribute("position", new THREE.Float32BufferAttribute([x0, y, z, x1, y, z, cx, y + rise, z].concat(z === z0 ? [] : []), 3));
+    if (z === z1) t.setIndex([0, 1, 2]); else t.setIndex([0, 2, 1]);
+    t.setAttribute("uv", new THREE.Float32BufferAttribute([0, 0, 1, 0, 0.5, 1], 2));
+    t.computeVertexNormals();
+    b.add(t, wall);
+  }
+};
+
+type StagePart = { o: THREE.Object3D; base: THREE.Vector3; seed: number };
 
 export class World {
   root = new THREE.Group();
@@ -188,13 +115,11 @@ export class World {
   private fog = new THREE.Fog("#bccbec", 25, 420);
   private sunCache = new Map<number, THREE.Vector3>();
   private clouds: THREE.Mesh[] = [];
-  private organ: Organ;
-  private windows: THREE.MeshBasicMaterial; private cWindows: THREE.MeshBasicMaterial; private sWindow: THREE.MeshBasicMaterial; private flames: THREE.MeshBasicMaterial;
-  private clockMin = new THREE.Group(); private clockHr = new THREE.Group();
-  private only: Record<string, THREE.Object3D> = {};
-  private bellows: THREE.Mesh[] = [];
-  private ribbon: THREE.Mesh; private ribbonTex: THREE.Texture;
-  private doorL: THREE.Mesh; private doorR: THREE.Mesh;
+  private moon: THREE.Mesh;
+  private stageParts: StagePart[] = [];
+  private guildL: THREE.Object3D; private guildR: THREE.Object3D; private clutter: THREE.Object3D[] = [];
+  private trofDoor: THREE.Object3D;
+  private wagon: THREE.Group; private wheels: THREE.Mesh[] = [];
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
 
@@ -228,186 +153,213 @@ export class World {
       m.layers.set(NOINK); m.userData.k = i;
       this.clouds.push(m); R.add(m);
     }
+    this.moon = new THREE.Mesh(new THREE.CircleGeometry(1, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 2.4, 2.1), fog: false, depthWrite: false }));
+    this.moon.layers.set(NOINK); this.moon.renderOrder = -0.5; R.add(this.moon);
 
-    // ---- the town ----
-    setSight(sightLines());
-    const r = rng(11);
+    // ---- Strasbourg ----
+    setSight(sightLines("town"));
+    const r = rng(23);
     const b = new Batch();
     const ground = new THREE.PlaneGeometry(1600, 1600); ground.rotateX(-Math.PI / 2);
     const uv = ground.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 240, uv.getY(i) * 240);
-    b.add(ground, lam("orField", () => ({ map: grassHD() })));
-    const cob = lam("orCobble", () => ({ map: cobbleHD() }));
-    b.add(boxGeo(V(-22, 0, -60), V(22, 0.04, 22), 8), cob);    // the square and the street past the church
-    b.add(boxGeo(V(-3.2, 0, 22), V(3.2, 0.04, 900), 8), cob);  // the road south out of town
-    // houses round the square (a gap for the south road)
-    const styles = [3, 0, 3, 1, 4, 3, 6, 3, 0, 5];
+    b.add(ground, lam("dpField", () => ({ map: grassHD() })));
+    const cob = lam("dpCobble", () => ({ map: cobbleHD() }));
+    b.add(boxGeo(V(-24, 0, -44), V(24, 0.04, 26), 8), cob);     // the horse market square
+    b.add(boxGeo(V(-5, 0, -84), V(5, 0.04, -44), 8), cob);      // the street north to the cathedral
+    b.add(boxGeo(V(-17, 0, -88), V(17, 0.04, -78), 8), cob);    // the cathedral plaza
+    b.add(boxGeo(V(-3.2, 0, 26), V(3.2, 0.04, 900), 8), cob);   // the road south
+    // houses round the square (gaps: the street north, the road south, the guild hall on the west side)
     let k = 0;
-    for (const z of [-14, -5, 4, 13]) { house(b, -19, z, Math.PI / 2, 8, 8, 6.5 + r() * 2.5, styles[k++ % 10]); house(b, 19, z, -Math.PI / 2, 8, 8, 6.5 + r() * 2.5, styles[k++ % 10]); }
-    for (const x of [-15, -8]) house(b, x, 19, Math.PI, 6.5, 8, 6.5 + r() * 2, styles[k++ % 10]);
-    for (const x of [8, 15]) house(b, x, 19, Math.PI, 6.5, 8, 6.5 + r() * 2, styles[k++ % 10]);
-    for (const x of [-16, -9, 9, 16]) house(b, x, -30, 0, 6.5, 8, 7 + r() * 2, styles[k++ % 10]);
-    for (const z of [30, 42, 56]) { house(b, -9, z, Math.PI / 2, 8, 7, 6 + r() * 2, styles[k++ % 10]); house(b, 9, z, -Math.PI / 2, 8, 7, 6 + r() * 2, styles[k++ % 10]); }
-    // the church: a long Romanesque nave, a squat west tower with a pyramid roof
-    const stoneM = lam("orChurchStone", () => ({ map: stoneHD("orChurchStoneT", ["#c8b497", "#bfa98c", "#d1bea2", "#b29c80"], "#8e7c66") }));
-    const Z0 = CHURCH_Z;
-    b.add(boxGeo(V(-6, 0, Z0 - 30), V(6, 10, Z0 - 6), 4), stoneM);
-    const nr = new THREE.CylinderGeometry(0.01, 8.6, 5, 4, 1); nr.rotateY(Math.PI / 4); nr.scale(13 / 12.16, 1, 25 / 12.16); nr.translate(0, 12.4, Z0 - 18);
-    b.add(nr, lam("orChRoof", () => ({ map: roofHD("#8f6a5a") })));
-    b.add(boxGeo(V(-4, 0, Z0 - 6.5), V(4, 17, Z0), 4), stoneM);
-    const fq = new THREE.PlaneGeometry(8, 8); fq.translate(0, 4, Z0 + 0.01); b.add(fq, lam("orChFront", () => ({ map: churchFrontTex() })));
-    const tr = new THREE.ConeGeometry(6.0, 6, 4, 1); tr.rotateY(Math.PI / 4); tr.translate(0, 20, Z0 - 3.25); b.add(tr, lam("orTwRoof", () => ({ map: roofHD("#6f7a86", true) })));
-    b.add(boxGeo(V(-4.25, 16.6, Z0 - 6.75), V(4.25, 17.2, Z0 + 0.25)), MAT.stone());
-    for (const sx of [-1, 1]) for (const y of [9, 13.5]) { const w = new THREE.Mesh(archShape(0.9, 1.8), lam("orSlit", () => ({ color: "#2a2638" }))); w.position.set(sx * 1.7, y, Z0 + 0.02); b.add(w.geometry.clone().translate(sx * 1.7, y, Z0 + 0.02), lam("orSlit", () => ({ color: "#2a2638" }))); }
-    for (const z of [-11, -17, -23, -29]) for (const sx of [-1, 1]) { const g = archShape(1.1, 2.4); g.rotateY(sx * Math.PI / 2); g.translate(sx * 6.02, 5.5, Z0 + z + 3); b.add(g, lam("orSlit", () => ({ color: "#2a2638" }))); }
-    // trees on the square and in the fields
-    for (const [x, z, h] of [[-12, -18, 8], [12, -19, 8.5], [-13, 8, 7.5], [13, 9, 8]] as const) prop(b, kit, "tree_oak", x + r(), 0, z + r(), h, r() * 6);
-    for (let i = 0; i < 40; i++) { const x = (r() < 0.5 ? -1 : 1) * (12 + r() * 120), z = 60 + r() * 600; prop(b, kit, r() < 0.4 ? "tree_cone" : "tree_oak", x, 0, z, 7 + r() * 5, r() * 6); }
+    const H = (x: number, z: number, yaw: number, w: number, d: number, h: number) => house(b, x, z, yaw, w, d, h, k++ % 8);
+    for (const z of [-34, 3, 14]) H(-20, z, Math.PI / 2, 8, 8, 7 + r() * 2.5);
+    for (const z of [-32, -20, -8, 3, 15]) H(20, z, -Math.PI / 2, 8, 8, 7 + r() * 2.5);
+    for (const x of [-17, -9]) H(x, 30, Math.PI, 7, 8, 7 + r() * 2);
+    for (const x of [9, 17]) H(x, 30, Math.PI, 7, 8, 7 + r() * 2);
+    for (const x of [-18.5, -10]) H(x, -48, 0, 8, 8, 7.5 + r() * 2);
+    for (const x of [10, 18.5]) H(x, -48, 0, 8, 8, 7.5 + r() * 2);
+    for (const z of [-58, -66, -74]) H(-9, z, Math.PI / 2, 7.5, 8, 7 + r() * 2.5);
+    for (const z of [-58, -66, -74]) H(9, z, -Math.PI / 2, 7.5, 8, 7 + r() * 2.5);
+    // Frau Troffea's house: east side of the street, front at x = 4.5 (her door at DOOR)
+    {
+      const w = 7, h = 8.4, st = { wall: "#e8b9a0", shutter: "#2f6a43", timber: true };
+      const front = lam("dpTrofFront", () => ({ map: facadeHD("dpTrofF", w, h, { ...st, door: false }) }));
+      const fq = new THREE.PlaneGeometry(w, h); fq.rotateY(-Math.PI / 2); fq.translate(4.5, h / 2, -50.5); b.add(fq, front);
+      b.add(boxGeo(V(4.52, 0, -54), V(12.5, h, -47)), lam("dpTrofWall", () => ({ color: "#e8b9a0" })));
+      gable(b, 4.5, 12.5, h, -54, -47, 3.4, lam("roof#b8644f", () => ({ map: roofHD("#b8644f"), side: THREE.DoubleSide })), lam("dpTrofWall", () => ({ color: "#e8b9a0" })));
+      b.add(boxGeo(V(4.3, 0, -50.85), V(4.55, 2.45, -50.7)), MAT.woodD()); b.add(boxGeo(V(4.3, 0, -49.3), V(4.55, 2.45, -49.15)), MAT.woodD());
+      b.add(boxGeo(V(4.3, 2.35, -50.85), V(4.55, 2.55, -49.15)), MAT.woodD());
+      b.add(boxGeo(V(4.46, 0, -50.7), V(4.5, 2.35, -49.3)), DARK());
+      b.add(boxGeo(V(3.9, 0, -51.0), V(4.5, 0.16, -49.0)), MAT.stone()); // door step
+    }
+    // the guild hall: a big timber-framed hall on the west side, double doors facing the square
+    {
+      const x0 = -27, x1 = -14.5, z0 = -21, z1 = -7, h = 9.5;
+      const st = { wall: "#efdcb8", shutter: "#8c3b4a", timber: true };
+      const fr = new THREE.PlaneGeometry(z1 - z0, h); fr.rotateY(Math.PI / 2); fr.translate(x1, h / 2, (z0 + z1) / 2);
+      b.add(fr, lam("dpGuildF", () => ({ map: facadeHD("dpGuildFT", z1 - z0, h, { ...st, door: false }) })));
+      b.add(boxGeo(V(x0, 0, z0), V(x1 - 0.02, h, z1)), lam("dpGuildW", () => ({ color: "#efdcb8" })));
+      gable(b, x0, x1, h, z0, z1, 5, lam("roof#c9775a", () => ({ map: roofHD("#c9775a"), side: THREE.DoubleSide })), lam("dpGuildW", () => ({ color: "#efdcb8" })));
+      b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] - 1.7), V(x1 + 0.25, 3.7, GUILD[2] - 1.45)), MAT.woodD());
+      b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] + 1.45), V(x1 + 0.25, 3.7, GUILD[2] + 1.7)), MAT.woodD());
+      b.add(boxGeo(V(x1 - 0.02, 3.45, GUILD[2] - 1.7), V(x1 + 0.25, 3.8, GUILD[2] + 1.7)), MAT.woodD());
+      b.add(boxGeo(V(x1 - 3, 0, GUILD[2] - 1.45), V(x1 - 0.05, 3.45, GUILD[2] + 1.45)), DARK());
+      // a guild sign: a gold pretzel-less emblem board on an iron arm (no lettering)
+      b.add(boxGeo(V(x1, 4.6, GUILD[2] - 0.05), V(x1 + 1.4, 4.68, GUILD[2] + 0.05)), MAT.iron());
+      b.add(boxGeo(V(x1 + 0.5, 3.9, GUILD[2] - 0.04), V(x1 + 1.3, 4.6, GUILD[2] + 0.04)), MAT.gold());
+    }
+    // the pink sandstone cathedral: west front with a rose window, one tall north spire
+    {
+      const Z = CATH_Z, P = MAT.pink();
+      b.add(boxGeo(V(-15, 0, Z - 40), V(15, 30, Z), 6), P);
+      b.add(boxGeo(V(-15, 30, Z - 10), V(-5, 50, Z), 6), P);                         // north tower
+      const oct = new THREE.CylinderGeometry(3.6, 4.2, 12, 8); oct.translate(-10, 56, Z - 5); b.add(oct, P);
+      const sp = new THREE.ConeGeometry(3.6, 30, 8); sp.translate(-10, 77, Z - 5); b.add(sp, P);
+      b.add(boxGeo(V(5, 30, Z - 10), V(15, 42, Z), 6), P);                           // the unfinished south tower
+      for (let x = 5.5; x < 15; x += 1.6) b.add(boxGeo(V(x, 42, Z - 0.6), V(x + 0.8, 43.2, Z)), MAT.pinkTrim());
+      gable(b, -5, 5, 30, Z - 40, Z - 0.5, 9, P, P);
+      for (const x of [-15, -9.5, -4.6, 4.6, 9.5, 15]) b.add(boxGeo(V(x - 0.7, 0, Z), V(x + 0.7, x === -15 || x === 15 ? 44 : 40, Z + 1.0)), MAT.pinkTrim()); // buttresses
+      const rose = new THREE.Mesh(new THREE.CircleGeometry(5.2, 48), lam("dpRoseM", () => ({ map: roseTex() }))); rose.position.set(0, 21, Z + 0.05);
+      b.add(rose.geometry.clone().translate(0, 21, Z + 0.05), lam("dpRoseM", () => ({ map: roseTex() })));
+      for (const [x, w, h] of [[0, 4.2, 9], [-7, 3, 7], [7, 3, 7]] as const) {
+        b.add(pointShape(w + 1.2, h + 1.0).translate(x, 0, Z + 0.03), MAT.pinkTrim());
+        b.add(pointShape(w, h).translate(x, 0, Z + 0.06), DARK());
+      }
+      for (const x of [-12, -7, 7, 12]) b.add(pointShape(1.6, 6).translate(x, 12, Z + 0.05), lam("dpGlass", () => ({ color: "#2e3a6a" })));
+      for (const x of [-12.5, -7.5]) b.add(pointShape(1.4, 7).translate(x + 2.5, 36, Z + 0.05), lam("dpGlass", () => ({ color: "#2e3a6a" })));
+    }
+    // the hitching rail of the horse market
+    for (let x = RAIL[0] - 4; x <= RAIL[0] + 4; x += 2) b.add(boxGeo(V(x - 0.07, 0, RAIL[2] - 0.07), V(x + 0.07, 1.1, RAIL[2] + 0.07)), MAT.woodD());
+    b.add(boxGeo(V(RAIL[0] - 4.2, 0.95, RAIL[2] - 0.06), V(RAIL[0] + 4.2, 1.07, RAIL[2] + 0.06)), MAT.wood());
+    b.add(boxGeo(V(RAIL[0] - 2.5, 0, RAIL[2] - 1.2), V(RAIL[0] + 0.5, 0.55, RAIL[2] - 0.6)), MAT.woodD()); // water trough
+    // the bread stall: a trestle table, an empty bread rack, a striped awning
+    {
+      const [sx, , sz] = STALL;
+      b.add(boxGeo(V(sx - 1.4, 0.82, sz - 0.6), V(sx + 1.4, 0.9, sz + 0.6)), MAT.wood());
+      for (const [ax, az] of [[-1.3, -0.5], [1.3, -0.5], [-1.3, 0.5], [1.3, 0.5]]) b.add(boxGeo(V(sx + ax - 0.05, 0, sz + az - 0.05), V(sx + ax + 0.05, 0.82, sz + az + 0.05)), MAT.woodD());
+      for (const ax of [-1.45, 1.45]) b.add(boxGeo(V(sx + ax - 0.05, 0, sz - 0.75), V(sx + ax + 0.05, 2.4, sz - 0.65)), MAT.woodD());
+      for (const y of [1.2, 1.65]) b.add(boxGeo(V(sx - 1.4, y, sz - 0.75), V(sx + 1.4, y + 0.05, sz - 0.4)), MAT.wood()); // empty shelves
+      const aw = new THREE.PlaneGeometry(3.2, 1.6); aw.rotateX(-Math.PI / 2 + 0.45); aw.translate(sx, 2.35, sz - 0.1);
+      b.add(aw, lam("dpAwningM", () => ({ map: awningTex(), side: THREE.DoubleSide })));
+      b.add(boxGeo(V(sx - 0.9, 0.9, sz - 0.2), V(sx - 0.3, 1.02, sz + 0.25)), lam("dpBasket", () => ({ color: "#c49a5a" }))); // an empty basket
+    }
+    // the saint's column on the square
+    {
+      const [cx, , cz] = COLUMN;
+      b.add(boxGeo(V(cx - 0.9, 0, cz - 0.9), V(cx + 0.9, 0.7, cz + 0.9)), MAT.grey());
+      const col = new THREE.CylinderGeometry(0.32, 0.38, COL_H - 0.9, 16); col.translate(cx, 0.7 + (COL_H - 0.9) / 2, cz); b.add(col, MAT.grey());
+      b.add(boxGeo(V(cx - 0.6, COL_H - 0.2, cz - 0.6), V(cx + 0.6, COL_H, cz + 0.6)), MAT.grey());
+    }
+    // the neighbours' bench against a house front
+    b.add(boxGeo(V(BENCH[0] - 0.25, 0.42, BENCH[2] - 1.2), V(BENCH[0] + 0.25, 0.48, BENCH[2] + 1.2)), MAT.wood());
+    for (const dz of [-1.0, 1.0]) b.add(boxGeo(V(BENCH[0] - 0.2, 0, BENCH[2] + dz - 0.05), V(BENCH[0] + 0.2, 0.42, BENCH[2] + dz + 0.05)), MAT.woodD());
+    // a few trees and barrels
+    for (const [x, z, h] of [[-13, 22, 8], [14, -38, 8.5], [21.5, 23, 7.5]] as const) prop(b, kit, "tree_oak", x + r(), 0, z + r(), h, r() * 6);
+    for (let i = 0; i < 40; i++) { const x = (r() < 0.5 ? -1 : 1) * (14 + r() * 120), z = 60 + r() * 600; prop(b, kit, r() < 0.4 ? "tree_cone" : "tree_oak", x, 0, z, 7 + r() * 5, r() * 6); }
+    for (const [x, z] of [[17, -16], [17.6, -15.2], [-15.6, -2]] as const) { const br = new THREE.CylinderGeometry(0.36, 0.36, 0.9, 14); br.translate(x, 0.45, z); b.add(br, MAT.wood()); }
     b.build(R);
     setSight([]);
-    // the long score (shot 14): a paper strip from the church door down the road; a little red flag at 4 %
-    this.ribbonTex = scoreTex("orRibbon", 512, 256, 1, false, 4).clone(); this.ribbonTex.needsUpdate = true;
-    this.ribbon = new THREE.Mesh(new THREE.PlaneGeometry(5.0, 1), lam("orRibbonM", () => ({ map: this.ribbonTex, side: THREE.DoubleSide })));
-    this.ribbon.rotation.x = -Math.PI / 2; this.ribbon.receiveShadow = true; R.add(this.ribbon);
-    const flag = new THREE.Group(); flag.position.set(0.95, 0, Z0 + 38); R.add(flag);
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.6, 8), MAT.woodD()); pole.position.y = 1.3; flag.add(pole);
-    const cloth = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.8), new THREE.MeshBasicMaterial({ color: "#e0302a", side: THREE.DoubleSide })); cloth.position.set(0.62, 2.2, 0); flag.add(cloth);
-    shadowAll(flag);
-    this.only.ribbon = this.ribbon; this.only.flag = flag;
 
-    // ---- the church inside ----
-    const C = (x: number, y: number, z: number) => V(CH[0] + x, CH[1] + y, CH[2] + z);
-    const cb = new Batch();
-    cb.add(boxGeo(C(-5, -0.1, -14), C(5, 0.02, 8), 3), lam("orChFloor", () => ({ map: stoneHD("orFloorT", ["#b8a688", "#ae9c80", "#c2b092", "#a69478"], "#7e6e58") })));
-    const nave = lam("orNaveM", () => ({ map: naveTex() }));
-    cb.add(boxGeo(C(-5.3, 0, -14), C(-5, 9, 8), 9), nave); cb.add(boxGeo(C(5, 0, -14), C(5.3, 9, 8), 9), nave);
-    cb.add(boxGeo(C(-5, 0, -14.3), C(5, 9, -14), 9), nave); cb.add(boxGeo(C(-5, 0, 8), C(5, 9, 8.3), 9), nave);
-    cb.add(boxGeo(C(-5.3, 9, -14.3), C(5.3, 9.3, 8.3)), lam("orCeil", () => ({ map: planksHD(), color: "#9a6a44" })));
-    for (let z = -13; z <= 7; z += 2.5) cb.add(boxGeo(C(-5, 8.6, z - 0.15), C(5, 9, z + 0.15)), MAT.woodD());
-    for (const sx of [-1, 1]) for (let z = -12; z <= 6; z += 6) cb.add(boxGeo(C(sx * 5 - (sx > 0 ? 0.35 : 0), 0, z - 0.4), C(sx * 5 + (sx < 0 ? 0.35 : 0), 8.6, z + 0.4)), MAT.stone()); // pilasters
-    // the apse arch on the front wall
-    cb.add(boxGeo(C(-3.2, 0, -14.02), C(-2.6, 6, -13.9)), MAT.stone()); cb.add(boxGeo(C(2.6, 0, -14.02), C(3.2, 6, -13.9)), MAT.stone());
-    const apse = archShape(5.2, 7.6); apse.translate(CH[0], CH[1], CH[2] - 13.98); cb.add(apse, lam("orApse", () => ({ color: "#cdb894" })));
-    // the west door (back wall)
-    cb.add(boxGeo(C(-1.5, 0, 7.85), C(-1.25, 3.6, 8.0)), MAT.stone()); cb.add(boxGeo(C(1.25, 0, 7.85), C(1.5, 3.6, 8.0)), MAT.stone());
-    cb.add(boxGeo(C(-1.5, 3.6, 7.85), C(1.5, 3.9, 8.0)), MAT.stone());
-    cb.add(boxGeo(C(-1.25, 0, 7.98), C(1.25, 3.6, 8.0)), lam("orOutside", () => ({ color: "#f4e8c8" })));
-    cb.build(R, false);
-    this.doorL = new THREE.Mesh(boxGeo(V(0, 0, 0), V(1.25, 3.55, 0.08)), lam("orDoor", () => ({ color: "#7a4a2a" }))); this.doorL.position.copy(C(-1.25, 0, 7.9)); R.add(this.doorL);
-    this.doorR = new THREE.Mesh(boxGeo(V(-1.25, 0, 0), V(0, 3.55, 0.08)), lam("orDoor", () => ({ color: "#7a4a2a" }))); this.doorR.position.copy(C(1.25, 0, 7.9)); R.add(this.doorR);
-    // high round-arched windows (emissive, driven by the time-lapses)
-    this.windows = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.2, 2.0, 1.6), side: THREE.DoubleSide });
-    for (const sx of [-1, 1]) for (const z of [-9, -3, 3]) { const w = new THREE.Mesh(archShape(1.1, 2.6), this.windows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(C(sx * 4.97, 5.3, z)); R.add(w); }
-    const aw = new THREE.Mesh(archShape(1.0, 2.2), this.windows); aw.position.copy(C(0, 5.0, -13.96)); R.add(aw);
-    // calendar on the right wall near the organ
-    const cal = new THREE.Mesh(new THREE.PlaneGeometry(0.66, 0.82), lam("orCalM", () => ({ map: calTex() }))); cal.position.copy(C(-0.7, 2.4, -13.95)); R.add(cal);
-    // the organ
-    this.organ = tinyOrgan(); this.organ.root.position.set(...ORG); R.add(this.organ.root);
-    // chairs: rows facing the organ (-z)
-    const chairs = new Batch();
-    for (const s of SEATS) {
-      const x = s[0], z = s[2];
-      chairs.add(boxGeo(V(x - 0.22, 0.44, z - 0.2), V(x + 0.22, 0.48, z + 0.2)), MAT.wood());
-      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) chairs.add(boxGeo(V(x + sx * 0.18 - 0.02, 0, z + sz * 0.16 - 0.02), V(x + sx * 0.18 + 0.02, 0.44, z + sz * 0.16 + 0.02)), MAT.woodD());
+    // ---- the wooden stage (built in shot 8, torn down in shot 10) ----
+    {
+      const [x, , z] = STAGE, add = (o: THREE.Object3D) => { shadowAll(o); R.add(o); this.stageParts.push({ o, base: o.position.clone(), seed: this.stageParts.length }); };
+      const mk = (min: THREE.Vector3, max: THREE.Vector3, m: THREE.Material) => {
+        const c = min.clone().add(max).multiplyScalar(0.5), g = boxGeo(min.clone().sub(c), max.clone().sub(c));
+        const o = new THREE.Mesh(g, m); o.position.copy(c); return o;
+      };
+      for (const [sx, sz] of [[-3.3, -2.0], [3.3, -2.0], [-3.3, 2.0], [3.3, 2.0], [0, -2.0], [0, 2.0]]) add(mk(V(x + sx - 0.14, 0, z + sz - 0.14), V(x + sx + 0.14, DECK, z + sz + 0.14), MAT.woodD()));
+      for (let i = 0; i < 7; i++) add(mk(V(x - 3.5 + i, DECK - 0.1, z - 2.25), V(x - 3.5 + i + 0.98, DECK, z + 2.25), MAT.pine()));
+      add(mk(V(x - 3.5, 0.2, z + 2.2), V(x + 3.5, DECK - 0.1, z + 2.26), MAT.red()));      // front skirt
+      for (let s = 0; s < 3; s++) add(mk(V(x - 1.0, 0, z + 2.26 + (2 - s) * 0.4), V(x + 1.0, (s + 1) * DECK / 4, z + 2.26 + (3 - s) * 0.4), MAT.wood())); // steps
+      for (const sx of [-3.4, 3.4]) add(mk(V(x + sx - 0.07, DECK, z - 2.2), V(x + sx + 0.07, DECK + 2.6, z - 2.06), MAT.woodD())); // bunting poles
+      // bunting: a string of little flags between the back poles
+      const bun = new THREE.Group(); bun.position.set(x, DECK + 2.3, z - 2.13);
+      const cols = ["#c0353a", "#e0b040", "#3f7ab5", "#3f8a52"];
+      for (let i = 0; i < 11; i++) {
+        const t = i / 10, fx = -3.3 + 6.6 * t, fy = -0.45 * (1 - (2 * t - 1) ** 2);
+        const tri = new THREE.BufferGeometry(); tri.setAttribute("position", new THREE.Float32BufferAttribute([fx - 0.24, fy, 0, fx + 0.24, fy, 0, fx, fy - 0.5, 0], 3)); tri.computeVertexNormals();
+        bun.add(new THREE.Mesh(tri, lam("dpBun" + (i % 4), () => ({ color: cols[i % 4], side: THREE.DoubleSide }))));
+      }
+      add(bun);
     }
-    const chg = new THREE.Group(); chairs.build(chg); shadowAll(chg); R.add(chg); this.only.chairs = chg;
-    // the barn / pigsty dressing (shot 8): hay bales, a plank pen, straw on the floor
-    const barn = new Batch(), hay = lam("orHayM", () => ({ map: hayTex() }));
-    for (const [x, z, y] of [[-3.8, -9, 0], [-3.8, -7.9, 0], [-3.8, -8.4, 0.5], [3.6, -11, 0], [2.5, -11.4, 0], [3.0, -11.2, 0.5], [-3.6, -3, 0]] as const)
-      barn.add(boxGeo(C(x - 0.55, y, z - 0.4), C(x + 0.55, y + 0.5, z + 0.4)), hay);
-    for (let x = -2.4; x <= 2.4; x += 0.6) barn.add(boxGeo(C(x - 0.04, 0, -5.2), C(x + 0.04, 0.9, -5.12)), MAT.woodD());
-    for (const y of [0.35, 0.75]) barn.add(boxGeo(C(-2.45, y, -5.22), C(2.45, y + 0.1, -5.1)), MAT.wood());
-    const straw = new THREE.PlaneGeometry(9, 12); straw.rotateX(-Math.PI / 2); straw.translate(CH[0], 0.03, CH[2] - 6); barn.add(straw, lam("orStraw", () => ({ map: hayTex(), color: "#c9a860" })));
-    const bg = new THREE.Group(); barn.build(bg); shadowAll(bg); R.add(bg); this.only.barn = bg;
+    // ---- the guild hall doors + the clutter pushed out on "cleared" ----
+    {
+      const x1 = -14.5, hinge = (dz: number) => { const g = new THREE.Group(); g.position.set(x1 + 0.04, 0, GUILD[2] + dz); R.add(g); return g; };
+      this.guildL = hinge(-1.45); this.guildR = hinge(1.45);
+      const leaf = (g: THREE.Object3D, s: number) => { const m = new THREE.Mesh(boxGeo(V(0, 0, s > 0 ? -1.45 : 0), V(0.1, 3.45, s > 0 ? 0 : 1.45)), lam("dpDoor", () => ({ color: "#7a4a2a" }))); g.add(m); shadowAll(g); };
+      leaf(this.guildL, -1); leaf(this.guildR, 1);
+      const tab = new THREE.Group();
+      tab.add(new THREE.Mesh(boxGeo(V(-0.4, 0.7, -0.9), V(0.4, 0.78, 0.9)), MAT.wood()));
+      for (const [a, c] of [[-0.32, -0.8], [0.32, -0.8], [-0.32, 0.8], [0.32, 0.8]]) tab.add(new THREE.Mesh(boxGeo(V(a - 0.04, 0, c - 0.04), V(a + 0.04, 0.7, c + 0.04)), MAT.woodD()));
+      const barrel = () => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.85, 14), MAT.wood()); m.rotation.x = Math.PI / 2; const g = new THREE.Group(); m.position.y = 0.34; g.add(m); return g; };
+      const bench = new THREE.Group(); bench.add(new THREE.Mesh(boxGeo(V(-0.2, 0.42, -0.9), V(0.2, 0.48, 0.9)), MAT.wood()));
+      for (const c of [-0.75, 0.75]) bench.add(new THREE.Mesh(boxGeo(V(-0.16, 0, c - 0.05), V(0.16, 0.42, c + 0.05)), MAT.woodD()));
+      for (const o of [tab, barrel(), bench, barrel()]) { shadowAll(o); R.add(o); this.clutter.push(o); }
+    }
+    // ---- Troffea's door ----
+    { const g = new THREE.Group(); g.position.set(4.47, 0, -50.7); g.add(new THREE.Mesh(boxGeo(V(-0.06, 0, 0), V(0.0, 2.33, 1.4)), lam("dpDoorT", () => ({ color: "#3f6a8a" })))); shadowAll(g); R.add(g); this.trofDoor = g; }
 
-    // ---- the 1361 cathedral ----
-    const K = (x: number, y: number, z: number) => V(CA[0] + x, CA[1] + y, CA[2] + z);
-    const kb = new Batch();
-    kb.add(boxGeo(K(-8, -0.1, -7), K(8, 0.02, 12), 3), lam("orCaFloor", () => ({ map: stoneHD("orCaFloorT", ["#8e8070", "#867868", "#968878", "#7e7060"], "#5e5246") })));
-    const cw = lam("orCaWall", () => ({ map: stoneHD("orCaWallT", ["#a89880", "#9e8e76", "#b0a088", "#968670"], "#6e604e") }));
-    kb.add(boxGeo(K(-8.3, 0, -7), K(-8, 15, 12), 4), cw); kb.add(boxGeo(K(8, 0, -7), K(8.3, 15, 12), 4), cw); kb.add(boxGeo(K(-8, 0, -7.3), K(8, 15, -7), 4), cw);
-    kb.add(boxGeo(K(-8, 0, 12), K(8, 15, 12.3), 4), cw);
-    for (const sx of [-1, 1]) for (const z of [-3, 3, 9]) kb.add(boxGeo(K(sx * 5.6 - 0.45, 0, z - 0.45), K(sx * 5.6 + 0.45, 15, z + 0.45), 3), cw);
-    // the great organ: a dark oak case with three towers of pipes
-    kb.add(boxGeo(K(-3.4, 0, -6.9), K(3.4, 2.6, -5.6)), MAT.woodD());
-    kb.add(boxGeo(K(-3.6, 2.6, -6.9), K(3.6, 2.9, -5.4)), MAT.wood());
-    kb.add(boxGeo(K(-3.4, 8.6, -6.9), K(3.4, 9.2, -5.6)), MAT.wood());
-    for (const sx of [-3.45, 3.45]) kb.add(boxGeo(K(sx - 0.18, 2.9, -6.9), K(sx + 0.18, 8.6, -5.6)), MAT.woodD());
-    kb.add(boxGeo(K(-1.3, 1.0, -5.62), K(1.3, 1.12, -5.3)), lam("orCaKeys", () => ({ map: keysTex() })));
-    const caPipes = new Batch();
-    for (let i = 0; i < 25; i++) {
-      const x = -3.0 + i * 0.25, tower = Math.abs(x) < 0.5 ? 1.6 : Math.abs(Math.abs(x) - 2.2) < 0.55 ? 1.0 : 0;
-      const h = 2.6 + 2.2 * (1 - Math.abs(x) / 3.2) + tower;
-      const g = new THREE.CylinderGeometry(0.1, 0.1, h, 14); g.translate(CA[0] + x, 2.95 + h / 2, CA[2] - 6.1 + (tower ? 0.25 : 0));
-      caPipes.add(g, TIN);
-      const ft = new THREE.ConeGeometry(0.1, 0.25, 14); ft.rotateX(Math.PI); ft.translate(CA[0] + x, 2.95 - 0.02, CA[2] - 6.1 + (tower ? 0.25 : 0)); caPipes.add(ft, TIN);
+    // ---- the hills and the shrine ----
+    setSight(sightLines("hill"));
+    const hb = new Batch();
+    const hg = new THREE.PlaneGeometry(1000, 1000, 200, 200); hg.rotateX(-Math.PI / 2);
+    const pos = hg.attributes.position as THREE.BufferAttribute, huv = hg.attributes.uv as THREE.BufferAttribute;
+    for (let i = 0; i < pos.count; i++) { pos.setY(i, hillH(pos.getX(i), pos.getZ(i))); huv.setXY(i, huv.getX(i) * 160, huv.getY(i) * 160); }
+    hg.computeVertexNormals(); hg.translate(HILL[0], 0, HILL[2]);
+    hb.add(hg, lam("dpHillGrass", () => ({ map: grassHD(), color: "#e4f0c8" })));
+    // the road: a ribbon over the terrain
+    {
+      const N = 120, P: number[] = [], U: number[] = [], I: number[] = [];
+      for (let i = 0; i <= N; i++) {
+        const u = i / N, a = roadAt(u), c = roadAt(Math.min(1, u + 0.004)), d = roadAt(Math.max(0, u - 0.004));
+        const tx = c[0] - d[0], tz = c[2] - d[2], tl = Math.hypot(tx, tz) || 1, nx = -tz / tl, nz = tx / tl;
+        for (const s of [-1.6, 1.6]) { const x = a[0] + nx * s, z = a[2] + nz * s; P.push(x, hillH(x - HILL[0], z - HILL[2]) + 0.06, z); U.push(s < 0 ? 0 : 1, u * 30); }
+        if (i < N) I.push(2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 1, 2 * i + 3, 2 * i + 2);
+      }
+      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(U, 2)); g.setIndex(I); g.computeVertexNormals();
+      hb.add(g, lam("dpRoadM", () => ({ map: roadTex() })));
     }
-    kb.build(R, false);
-    caPipes.build(R, false);
-    // pointed windows (deep blue night) and candles
-    this.cWindows = new THREE.MeshBasicMaterial({ color: new THREE.Color(0.25, 0.3, 0.7), side: THREE.DoubleSide });
-    for (const sx of [-1, 1]) for (const z of [0, 6]) { const w = new THREE.Mesh(pointShape(1.4, 4.2), this.cWindows); w.rotation.y = -sx * Math.PI / 2; w.position.copy(K(sx * 7.97, 5.5, z)); R.add(w); }
-    for (const x of [-4.4, 4.4]) { const w = new THREE.Mesh(pointShape(1.1, 4.6), this.cWindows); w.position.copy(K(x, 4.0, -6.97)); R.add(w); }
-    const hiW = new THREE.Mesh(pointShape(1.8, 4.2), this.cWindows); hiW.position.copy(K(0, 9.5, -6.97)); R.add(hiW);
-    this.flames = new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.0, 0.7) });
-    const cand = new Batch();
-    for (const [x, z] of [[-4.6, -4.2], [4.6, -4.2], [-4.6, 1.5], [4.6, 1.5], [-1.9, -4.8], [1.9, -4.8]] as const) {
-      cand.add(new THREE.CylinderGeometry(0.04, 0.08, 1.4, 10).translate(CA[0] + x, 0.7, CA[2] + z), MAT.iron());
-      cand.add(new THREE.CylinderGeometry(0.045, 0.045, 0.28, 10).translate(CA[0] + x, 1.54, CA[2] + z), MAT.cream());
-      const fl = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 8), this.flames); fl.scale.set(0.7, 1.6, 0.7); fl.position.copy(K(x, 1.76, z)); fl.layers.set(NOINK); R.add(fl);
+    // the shrine chapel: a small stone nave on the rise, bell gable over the door, the saint on a plinth by the door
+    {
+      const [x, y, z] = SHRINE, G = MAT.grey();
+      hb.add(boxGeo(V(x - 3.2, y - 1.5, z - 10), V(x + 3.2, y + 5.5, z - 0.6), 4), G);
+      gable(hb, x - 3.2, x + 3.2, y + 5.5, z - 10, z - 0.6, 3.2, lam("roof#a8584a", () => ({ map: roofHD("#a8584a"), side: THREE.DoubleSide })), G);
+      hb.add(boxGeo(V(x - 0.9, y + 8.4, z - 1.0), V(x + 0.9, y + 10.6, z - 0.4)), G); // bell gable
+      hb.add(archShape(0.9, 1.4).translate(x, y + 8.8, z - 0.38), DARK());
+      const bell = new THREE.CylinderGeometry(0.18, 0.32, 0.5, 14); bell.translate(x, y + 9.2, z - 0.7); hb.add(bell, MAT.gold());
+      hb.add(archShape(2.0, 3.0).translate(x, y, z - 0.57), MAT.stone());
+      hb.add(archShape(1.6, 2.7).translate(x, y, z - 0.54), lam("dpShrineDoor", () => ({ color: "#8c3b2a" })));
+      hb.add(boxGeo(V(x - 1.6, y - 0.6, z - 0.6), V(x + 1.6, y + 0.12, z + 0.4)), MAT.stone());   // the step
+      hb.add(boxGeo(V(x - 2.9, y - 0.6, z - 0.4), V(x - 1.9, y + 0.9, z + 0.6)), G);              // the saint's plinth
+      for (const sx of [-1, 1]) hb.add(archShape(0.6, 1.4).rotateY(sx * Math.PI / 2).translate(x + sx * 3.22, y + 2.6, z - 5), lam("dpGlass", () => ({ color: "#2e3a6a" })));
+      // a low stone wall round the yard
+      for (const [x0, z0, x1, z1] of [[-7, 2.5, -2, 2.5], [2, 2.5, 7, 2.5], [-7, 2.5, -7, -11], [7, 2.5, 7, -11]] as const) {
+        const L = Math.hypot(x1 - x0, z1 - z0), n = Math.ceil(L / 1.2);
+        for (let i = 0; i < n; i++) { const u = (i + 0.5) / n, wx = x0 + (x1 - x0) * u, wz = z0 + (z1 - z0) * u, wy = hillH(wx, wz - 40);
+          hb.add(boxGeo(V(x + wx - 0.62, wy - 0.4, z + wz - 0.62 + 40 - 40), V(x + wx + 0.62, wy + 0.75, z + wz + 0.62)), G); }
+      }
     }
-    cand.build(R);
-    // the bellows the monks tread: three wedge boxes beside the organ
-    for (let i = 0; i < 2; i++) {
-      const bm = new THREE.Mesh(boxGeo(V(-0.55, 0, -0.4), V(0.55, 1, 0.4)), lam("orBellows", () => ({ map: ctex("orPleats", 128, 256, (g) => { g.fillStyle = "#8a5a34"; g.fillRect(0, 0, 128, 256); g.fillStyle = "#5a3820"; for (let y = 0; y < 256; y += 32) g.fillRect(0, y, 128, 10); g.fillStyle = "#6a4430"; g.fillRect(0, 226, 128, 30); }) })));
-      bm.position.copy(K(-2.4 - i * 1.25 + 0.0, 0, -4.4)); shadowAll(bm); R.add(bm); this.bellows.push(bm);
+    // September trees on the hills
+    const hr = rng(7);
+    for (let i = 0; i < 70; i++) {
+      const a = hr() * Math.PI * 2, d = 16 + hr() * 160, lx = Math.cos(a) * d, lz = -40 + Math.sin(a) * d;
+      if (Math.min(...ROAD.map(([rx, rz]) => Math.hypot(rx - lx, rz - lz))) < 6) continue;
+      prop(hb, kit, hr() < 0.3 ? "tree_cone" : "tree_oak", HILL[0] + lx, hillH(lx, lz) - 0.2, HILL[2] + lz, 6 + hr() * 5, hr() * 6);
     }
-
-    // ---- Cage's studio ----
-    const S = (x: number, y: number, z: number) => V(STU[0] + x, STU[1] + y, STU[2] + z);
-    const sb = new Batch();
-    sb.add(boxGeo(S(-5, -0.1, -3), S(5, 0.02, 6)), lam("orStuFloor", () => ({ map: planksHD(), color: "#c09060" })));
-    const sw = lam("orStuWall", () => ({ color: "#ece4d2" }));
-    sb.add(boxGeo(S(-5, 0, -3.2), S(5, 3.6, -3)), sw); sb.add(boxGeo(S(-5.2, 0, -3), S(-5, 3.6, 6)), sw); sb.add(boxGeo(S(5, 0, -3), S(5.2, 3.6, 6)), sw);
-    sb.add(boxGeo(S(-5, 0, -2.98), S(5, 0.12, -2.94)), MAT.woodD());
-    // desk + chair
-    const dx = DESK[0], dz = DESK[2];
-    sb.add(boxGeo(V(dx - 0.75, 0.72, dz - 0.05), V(dx + 0.75, 0.78, dz + 0.7)), MAT.wood());
-    for (const [sx, sz] of [[-1, 0], [1, 0], [-1, 1], [1, 1]]) sb.add(boxGeo(V(dx + sx * 0.7 - 0.03, 0, dz + sz * 0.65 - 0.03 + 0.02), V(dx + sx * 0.7 + 0.03, 0.72, dz + sz * 0.65 + 0.03)), MAT.woodD());
-    sb.add(boxGeo(V(dx - 0.22, 0.44, dz - 0.62), V(dx + 0.22, 0.48, dz - 0.2)), MAT.wood());
-    sb.add(boxGeo(V(dx - 0.22, 0.48, dz - 0.66), V(dx + 0.22, 1.0, dz - 0.62)), MAT.wood());
-    // bookshelf + plants
-    sb.add(boxGeo(S(-4.6, 0, -2.95), S(-3.0, 2.2, -2.55)), MAT.woodD());
-    const bookC = ["#8e2f3a", "#2f5f6a", "#c99a3a", "#3f6fb5", "#5d7a3a", "#6a4a32"];
-    for (let k2 = 0; k2 < 3; k2++) for (let x = -4.5; x < -3.1;) { const w = 0.05 + r() * 0.05, h = 0.3 + r() * 0.15; sb.add(boxGeo(S(x, 0.25 + 0.65 * k2, -2.9), S(x + w, 0.25 + 0.65 * k2 + h, -2.6)), lam("orBook" + (k2 * 5 + Math.floor(-x * 10)) % 6, () => ({ color: bookC[(k2 * 5 + Math.floor(-x * 10)) % 6] }))); x += w + 0.012; }
-    sb.build(R);
-    const desk = new THREE.Mesh(new THREE.PlaneGeometry(0.62, 0.44), lam("orScoreM", () => ({ map: scoreTex("orScoreT", 1024, 726, 4, true, 3) })));
-    desk.rotation.x = -Math.PI / 2; desk.position.set(dx, 0.785, dz + 0.35); desk.receiveShadow = true; R.add(desk);
-    const pencil = new THREE.Mesh(new THREE.CylinderGeometry(0.006, 0.006, 0.17, 6), lam("orPencil", () => ({ color: "#f0c64a" }))); pencil.rotation.set(Math.PI / 2, 0, 0.6); pencil.position.set(dx + 0.38, 0.79, dz + 0.4); R.add(pencil);
-    // the grand piano: keyboard at its left end (x), the curved body running to +x
-    const pg = new THREE.Group(); pg.position.set(...PIANO); R.add(pg);
-    const shp = new THREE.Shape(); shp.moveTo(0, -0.75); shp.lineTo(0.4, -0.75); shp.bezierCurveTo(1.2, -0.75, 1.0, -0.1, 1.9, -0.05); shp.bezierCurveTo(2.3, 0.0, 2.2, 0.75, 1.6, 0.75); shp.lineTo(0, 0.75); shp.lineTo(0, -0.75);
-    const body = new THREE.ExtrudeGeometry(shp, { depth: 0.3, bevelEnabled: false, curveSegments: 24 }); body.rotateX(-Math.PI / 2); body.translate(0, 0.62, 0);
-    const pm = new THREE.Mesh(body, MAT.black()); pg.add(pm);
-    const lid = new THREE.Mesh(new THREE.ShapeGeometry(shp, 24), MAT.black()); lid.rotation.x = -Math.PI / 2; lid.position.set(0, 0, -0.75);
-    const lidG = new THREE.Group(); lidG.position.set(0, 0.93, 0.75); lidG.rotation.x = 0.7; lidG.add(lid); pg.add(lidG);
-    const stick = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.9, 6), MAT.black()); stick.position.set(1.2, 1.2, -0.1); stick.rotation.x = 0.35; pg.add(stick);
-    for (const [x, z] of [[0.15, -0.6], [0.15, 0.6], [1.7, 0.1]] as const) { const lgm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, 0.62, 10), MAT.black()); lgm.position.set(x, 0.31, z); pg.add(lgm); }
-    const kb2 = new THREE.Mesh(boxGeo(V(-0.25, 0.7, -0.62), V(0, 0.76, 0.62)), MAT.black()); pg.add(kb2);
-    const pk = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.18), lam("orKeysM", () => ({ map: keysTex() }))); pk.rotation.set(-Math.PI / 2, 0, Math.PI / 2); pk.position.set(-0.13, 0.765, 0); pg.add(pk);
-    const bench = new THREE.Mesh(boxGeo(V(-0.85, 0.4, -0.3), V(-0.5, 0.48, 0.3)), MAT.black()); pg.add(bench);
-    shadowAll(pg);
-    // window + wall clock
-    this.sWindow = new THREE.MeshBasicMaterial({ color: new THREE.Color(2.0, 1.9, 1.6) });
-    const swm = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.6), this.sWindow); swm.position.copy(S(-1.2, 1.9, -2.93)); R.add(swm);
-    const wfr = new Batch();
-    wfr.add(boxGeo(S(-2.0, 1.05, -2.98), S(-0.4, 1.12, -2.85)), MAT.cream()); wfr.add(boxGeo(S(-2.0, 2.7, -2.98), S(-0.4, 2.76, -2.88)), MAT.cream());
-    wfr.add(boxGeo(S(-1.23, 1.1, -2.95), S(-1.17, 2.7, -2.9)), MAT.cream()); wfr.add(boxGeo(S(-1.98, 1.9, -2.95), S(-0.42, 1.94, -2.9)), MAT.cream());
-    wfr.build(R, false);
-    const clock = new THREE.Group(); clock.position.copy(S(1.4, 2.5, -2.93)); R.add(clock);
-    const ck = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.05, 32), MAT.woodD()); ck.rotation.x = Math.PI / 2; clock.add(ck);
-    const cf = new THREE.Mesh(new THREE.CircleGeometry(0.26, 32), lam("orDialM", () => ({ map: dialTex() }))); cf.position.z = 0.03; clock.add(cf);
-    const hand = (g: THREE.Group, len: number, w: number) => { const m = new THREE.Mesh(boxGeo(V(-w / 2, -0.02, 0), V(w / 2, len, 0.006)), lam("orHand", () => ({ color: "#241726" }))); g.add(m); g.position.z = 0.035; clock.add(g); };
-    hand(this.clockMin, 0.21, 0.02); hand(this.clockHr, 0.14, 0.03);
+    hb.build(R);
+    setSight([]);
+    // the wagon (moves along the road)
+    {
+      const w = new THREE.Group();
+      w.add(new THREE.Mesh(boxGeo(V(-0.8, 0.75, -1.4), V(0.8, 0.85, 1.4)), MAT.wood()));
+      for (const s of [-1, 1]) w.add(new THREE.Mesh(boxGeo(V(s * 0.8 - 0.05, 0.85, -1.4), V(s * 0.8 + 0.05, 1.3, 1.4)), MAT.woodD()));
+      w.add(new THREE.Mesh(boxGeo(V(-0.8, 0.85, -1.45), V(0.8, 1.3, -1.35)), MAT.woodD()));
+      for (const s of [-0.35, 0.35]) w.add(new THREE.Mesh(boxGeo(V(s - 0.04, 0.6, 1.4), V(s + 0.04, 0.68, 3.4)), MAT.woodD())); // shafts
+      for (const [sx, sz] of [[-0.9, -0.9], [0.9, -0.9], [-0.9, 0.9], [0.9, 0.9]]) {
+        const wh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.1, 18), MAT.woodD()); wh.rotation.z = Math.PI / 2; wh.position.set(sx, 0.5, sz);
+        w.add(wh); this.wheels.push(wh);
+      }
+      shadowAll(w); R.add(w); this.wagon = w;
+    }
   }
 
   /** camera-relative sun, frozen per shot */
@@ -430,104 +382,102 @@ export class World {
   private fx(i: number) { while (this.fxs.length <= i) this.fxs.push(new Fx(this.root)); return this.fxs[i]; }
 
   update(id: number, f: number, cam: THREE.PerspectiveCamera, scene: THREE.Scene) {
-    const t = f / FPS, s = SHOTS[id - 1], L = LIGHTS[s.light];
+    const t = f / FPS, s = SHOTS[id - 1];
     const c = camAt(id, f);
     cam.position.set(...c.pos); cam.up.set(0, 1, 0); cam.lookAt(...c.look); cam.rotateZ(c.roll);
-    cam.fov = c.fov; cam.near = s.place === "town" ? 0.1 : 0.05; cam.far = 1500; cam.updateProjectionMatrix(); cam.updateMatrixWorld();
+    cam.fov = c.fov; cam.near = 0.1; cam.far = 1500; cam.updateProjectionMatrix(); cam.updateMatrixWorld();
     const focus = V(...c.look), dist = cam.position.distanceTo(focus);
     cam.layers.enable(NOINK);
-    // ---- light rig ----
-    const K = LOOK[s.light], sunDir = this.shotSun(id, s, L);
+    // ---- light rig (shot 4 time-lapses day -> moonlit night three times) ----
+    const nt = nightAt(id, f), L = LIGHTS[s.light], N = LIGHTS.moon;
+    const K = LOOK[s.light], KN = LOOK.moon, sunDir = this.shotSun(id, s, L);
+    const mixN = (a: number[], b2: number[]) => a.map((v, i) => v + (b2[i] - v) * nt) as [number, number, number];
     this.hemi.color.set(L.sky); this.hemi.groundColor.set(L.ground); this.hemi.intensity = L.hemiI;
-    this.sun.color.set(L.sunCol); this.sun.intensity = L.sunI;
-    const town = s.place === "town";
-    const Rr = THREE.MathUtils.clamp(dist * 1.15 + (town ? 9 : 4), town ? 12 : 4, 95);
+    this.sun.color.set(L.sunCol).lerp(new THREE.Color(N.sunCol), nt); this.sun.intensity = L.sunI + (N.sunI - L.sunI) * nt;
+    const Rr = THREE.MathUtils.clamp(dist * 1.15 + 9, 12, 95);
     this.sun.position.copy(focus).addScaledVector(sunDir, 220); this.sun.target.position.copy(focus);
     const sc = this.sun.shadow.camera;
     sc.left = -Rr; sc.right = Rr; sc.top = Rr; sc.bottom = -Rr; sc.near = 20; sc.far = 480; sc.updateProjectionMatrix();
     this.sun.shadow.bias = L.bias; this.sun.shadow.normalBias = L.normalBias * (Rr / 12);
-    let lit: [number, number, number] = [...L.lit];
-    const shade: [number, number, number] = [...L.shade], tint: [number, number, number] = [...L.charTint];
-    const wl = windowLight(id, f);
-    if (!town) { // time-lapse: the room dims with the window light
-      const k = 0.35 + 0.65 * wl; lit = lit.map((v, i) => v * k + (1 - k) * [0.22, 0.26, 0.5][i]) as typeof lit; this.sun.intensity = L.sunI * (0.3 + 0.7 * wl);
-    }
-    if (s.place === "cathedral") { const fl = 1 + 0.04 * Math.sin(t * 23) + 0.03 * Math.sin(t * 37); lit = lit.map((v) => v * fl) as typeof lit; }
-    TONE.uLitCol.value.set(...lit); TONE.uShadeCol.value.set(...shade); TONE.uShadeLift.value.set(...L.lift);
+    TONE.uLitCol.value.set(...mixN(L.lit, N.lit)); TONE.uShadeCol.value.set(...mixN(L.shade, N.shade)); TONE.uShadeLift.value.set(...mixN(L.lift, N.lift));
     TONE.uLambert.value = L.lambert; TONE.uSideK.value = L.sideK; TONE.uTerm.value = L.term; TONE.uBounce.value.set(...K.bounce); TONE.uSat.value = K.sat;
-    CHAR.uCharTint.value.set(...tint); CHAR.uCharShade.value = L.charShade; CHAR.uGrad.value = L.charGrad;
+    CHAR.uCharTint.value.set(...mixN(L.charTint, N.charTint)); CHAR.uCharShade.value = L.charShade; CHAR.uGrad.value = L.charGrad;
     CHAR.uBodyGrad.value = L.bodyGrad; CHAR.uSideTint.value.set(...L.sideTint);
-    // ---- sky, fog, clouds ----
-    const su = this.skyMat.uniforms;
-    K.sky.c.forEach((h, i) => untone(h, su["c" + i].value));
+    // ---- sky, fog, clouds, moon ----
+    const su = this.skyMat.uniforms, tmpC = new THREE.Color();
+    K.sky.c.forEach((h, i) => { untone(h, su["c" + i].value); if (nt > 0) su["c" + i].value.lerp(untone(KN.sky.c[i], tmpC), nt); });
     const e = K.sky.e.map((deg) => THREE.MathUtils.degToRad(deg));
     su.e.value.set(e[1], e[2], e[3], e[4]);
     this.sky.position.copy(cam.position);
-    untone(L.fog, this.fog.color); this.fog.near = L.fogNear; this.fog.far = L.fogFar;
+    untone(L.fog, this.fog.color); if (nt > 0) this.fog.color.lerp(untone(N.fog, tmpC), nt);
+    this.fog.near = L.fogNear; this.fog.far = L.fogFar;
     scene.fog = this.fog; scene.background = null;
     for (const m of this.clouds) {
       const i = m.userData.k as number, near = i >= 7, a = ((i % 7) / 7) * Math.PI * 2 + (near ? 0.65 : 0.3), d = near ? 300 + (i % 3) * 40 : 600 + (i % 3) * 60, w = (near ? 80 : 130) + (i % 4) * 30;
       m.position.set(cam.position.x + Math.cos(a) * d + t * 4, (near ? 95 : 120) + (i % 4) * 34, cam.position.z + Math.sin(a) * d); m.scale.set(w, w / 2, 1);
-      m.lookAt(cam.position.x, m.position.y, cam.position.z); m.visible = town;
+      m.lookAt(cam.position.x, m.position.y, cam.position.z); m.visible = s.light !== "moon" && nt < 0.5;
     }
-    // ---- windows, candles, clock ----
-    const dusk = s.light === "dusk";
-    if (dusk) this.windows.color.setRGB(0.6 + 1.8 * wl, 0.4 + 1.1 * wl, 0.35 + 0.45 * wl);
-    else this.windows.color.setRGB(0.25 + 1.95 * wl, 0.3 + 1.7 * wl, 0.5 + 1.1 * wl);
-    const dk = id === 6 && f >= 560 ? wl : 0.1;
-    this.cWindows.color.setRGB(0.22 + 2.0 * dk, 0.26 + 1.75 * dk, 0.7 + 0.9 * dk);
-    const fk = 1 + 0.15 * Math.sin(t * 19) + 0.1 * Math.sin(t * 31);
-    this.flames.color.setRGB(3.2 * fk, 2.0 * fk, 0.7 * fk);
-    const mins = clockMin(id, f);
-    this.clockMin.rotation.z = -(mins / 60) * Math.PI * 2; this.clockHr.rotation.z = -((mins / 60 + 2) / 12) * Math.PI * 2;
-    // ---- the tiny organ ----
-    const O = this.organ, n = pipeCount(id, f);
-    if (id === 13) { const u = smooth(clamp01((f - 1430) / (ADD_PIPE - 1430))); O.pipes[7].position.y = PIPE_Y + 0.7 * (1 - u); }
-    else O.pipes[7].position.y = PIPE_Y;
-    O.bags.visible = bagsOn(id, f);
-    const on = blowerOn(id, f) && !(id === 17 && f < 1960);
-    O.led.color.setRGB(on ? 0.3 : 0.2, on ? 3.0 : 0.05, on ? 0.4 : 0.05);
-    O.lever.rotation.z = id === 9 && f < SWITCH ? 0.6 : -0.6;
-    const bu = id === 9 ? buildAt(f) : 1;
-    O.parts.forEach((p, i) => { const k = clamp01(bu * O.parts.length - i * 0.6); p.visible = k > 0.02; p.scale.setScalar(id === 9 ? 0.6 + 0.4 * smooth(k) : 1); });
-    O.pipes.forEach((p, i) => { p.visible = p.visible && (i < 7 || n >= 8 || (id === 13 && f >= 1424)); });
-    // ---- props by shot ----
-    this.only.barn.visible = id === 8;
-    this.only.chairs.visible = s.place === "church" && id !== 8 && id !== 9 && id !== 10;
-    O.root.visible = s.place === "church" && id !== 8;
-    const open = id === 12 ? smooth((f - 1266) / 14) : id === 17 ? 0 : 0;
-    this.doorL.rotation.y = 1.7 * open; this.doorR.rotation.y = -1.7 * open;
-    this.ribbon.visible = this.only.flag.visible = id === 14;
-    if (id === 14) {
-      const len = ribbonAt(f);
-      this.ribbon.scale.set(1, len, 1); this.ribbon.position.set(0, 0.06, CHURCH_Z + 0.2 + len / 2);
-      this.ribbonTex.repeat.set(1, len / 10);
-      this.ribbon.rotation.set(-Math.PI / 2, 0, 0);
+    const moonUp = s.light === "moon" || nt > 0.5;
+    this.moon.visible = moonUp;
+    if (moonUp) {
+      const fw = V(c.look[0] - c.pos[0], 0, c.look[2] - c.pos[2]).normalize();
+      const rt = V(-fw.z, 0, fw.x);
+      this.moon.position.copy(cam.position).addScaledVector(fw, 600).addScaledVector(rt, -90).add(V(0, 230, 0));
+      this.moon.scale.setScalar(16); this.moon.lookAt(cam.position);
     }
-    this.bellows.forEach((bm, i) => { bm.scale.y = id === 6 ? 0.2 + 0.5 * bellowsAt(f, i) : 0.4; });
+    // ---- the set pieces by shot ----
+    const st = stageAt(id, f);
+    this.stageParts.forEach((p, i) => {
+      const n = this.stageParts.length;
+      let k = 0, fly = 0;
+      if (id === 10 && f >= 1231) { fly = clamp01((f - 1231 - (i % 6) * 1.5) / 14); k = fly < 1 ? 1 : 0; }
+      else k = clamp01(st * n * 1.0 - i * 0.85);
+      p.o.visible = k > 0.02 && s.place === "town";
+      p.o.position.copy(p.base);
+      p.o.rotation.set(0, 0, 0);
+      if (fly > 0) {
+        const sd = Math.sin(p.seed * 12.9898) * 43758.5453, rr = sd - Math.floor(sd);
+        p.o.position.x += (rr - 0.5) * 7 * fly; p.o.position.y += 4.5 * Math.sin(Math.PI * Math.min(1, fly * 1.2)) * (0.6 + rr); p.o.position.z += 3 * fly * (0.4 + rr);
+        p.o.rotation.set(fly * (rr * 5 - 2.5), fly * rr * 3, fly * (2 - rr * 4));
+      } else if (k < 1) p.o.position.y += 2.2 * (1 - smooth(k)); // planks drop in from above
+    });
+    const dr = doorsAt(id, f);
+    this.guildL.rotation.y = 1.9 * dr; this.guildR.rotation.y = -1.9 * dr;
+    this.clutter.forEach((o, i) => {
+      const u = id === 8 ? smooth((f - CLEAR - i * 3) / 14) : id >= 9 ? 1 : 0;
+      o.visible = id >= 8 && id <= 10 && u > 0;
+      o.position.set(-15.6 + 5.2 * u + (i % 2) * 0.6, 0, GUILD[2] - 1.0 + i * 0.7);
+      o.rotation.set(0, (1 - u) * 0.6 + i * 0.4, 0);
+      if (i === 1 || i === 3) o.rotation.z = u * 4 * (i === 1 ? 1 : -1) * 0; // barrels slide
+    });
+    this.trofDoor.rotation.y = id === 3 ? -1.6 * smooth((f - (STEP_OUT - 10)) / 10) : id === 4 || id === 5 ? -1.6 : 0;
+    const wp = wagonPose(id, f);
+    this.wagon.visible = s.place === "hill";
+    this.wagon.position.set(...wp.p); this.wagon.rotation.set(0, wp.yaw, 0);
+    this.wheels.forEach((w) => { w.rotation.x = -wp.u * 120; });
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
-    const st = stage(id, f, { pos: cam.position, right, sun: sunDir });
+    const stg = stage(id, f, { pos: cam.position, right, sun: sunDir });
     this.frustum.setFromProjectionMatrix(this.m4.multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse));
     let ai = 0;
     const used: Actor[] = [];
-    for (const p of st.places) {
+    for (const p of stg.places) {
       const sc2 = p.scale ?? 1;
-      if (!this.frustum.intersectsSphere(this.sph.set(this.v.set(p.x, p.y + 1.1 * sc2, p.z), 3.5))) continue;
+      if (!this.frustum.intersectsSphere(this.sph.set(this.v.set(p.x, p.y + 1.1 * sc2, p.z), 3.5 * sc2))) continue;
       const a = this.actor(ai++);
       const [w, h, k] = p.size ?? [300, 500, 0.5];
       a.r = this.pool.req(p.key, w, h, k, p.draw);
       a.mesh.visible = true;
       a.mesh.position.set(p.x, p.y, p.z);
       a.mesh.rotation.set(0, p.yaw ?? Math.atan2(cam.position.x - p.x, cam.position.z - p.z), p.roll ?? 0);
-      a.mesh.scale.set(p.mirror ? -sc2 : sc2, sc2, sc2);
+      a.mesh.scale.set((p.mirror ? -sc2 : sc2) * (p.sx ?? 1), sc2, sc2);
       a.mesh.castShadow = L.actorShadow;
       used.push(a);
     }
     for (let i = ai; i < this.actors.length; i++) this.actors[i].mesh.visible = false;
     let fi = 0;
     const fused: Fx[] = [];
-    for (const p of st.fx) {
+    for (const p of stg.fx) {
       if (!this.frustum.intersectsSphere(this.sph.set(this.v.set(p.x, p.y, p.z), Math.max(p.w, p.h)))) continue;
       const e2 = this.fx(fi++);
       e2.r = this.pool.req(p.key, p.cw, p.ch, 1, p.draw);
