@@ -308,7 +308,7 @@ const crowd = (out: Stage, cam: CamInfo, t: number, n: number, o: { energy?: num
 const horses = (out: Stage, cam: CamInfo, f: number) => {
   for (let k = 0; k < 3; k++) {
     const x = RAIL[0] - 3 + k * 3, z = RAIL[2] - 0.7, ph = q(0.02 * Math.sin(f / 20 + k), 4);
-    out.places.push({ key: `horse|${ph}|${k % 2}`, x, y: 0.04, z, mirror: k % 2 === 1, scale: 1.0, draw: (pp) => horseCard(pp, ph), size: [1080, 1800, 1.8] });
+    out.places.push({ key: `horse|${ph}|${k % 2}`, x, y: 0.04, z, mirror: k % 2 === 1, scale: 1.5, draw: (pp) => horseCard(pp, ph), size: [1080, 1800, 1.8] });
     blob(out, x, 0.04, z, 1.6);
   }
 };
@@ -337,7 +337,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const more = f >= 159;
       dance(out, cam, WHO.folk[3], add(DOC_P, [0.3, 0, 0]), t, { energy: more ? 1 : 0.55, expr: more ? "dazed" : "tired", off: 0.2 });
       stand(out, cam, WHO.doc, add(DOC_P, [-1.0, 0, -0.1]), { expr: more ? "grin" : "smile_closed", prop: more ? null : ["flask", 0], wave: more ? q(0.6 + 0.4 * Math.sin(t * 8), 6) : undefined, headTilt: more ? q(5 * Math.sin(t * 6), 3) : 0 }, t);
-      crowd(out, cam, t, 60, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.2 });
+      crowd(out, cam, t, 60, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.2 || (p[2] > DOC_P[2] - 1 && Math.abs(p[0] - DOC_P[0]) < 4) });
       if (more) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), DOC_P[0] + 0.3, 1.25, DOC_P[2] + 0.05, 1.5, 1.5); }
       break;
     }
@@ -396,7 +396,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       stand(out, cam, WHO.doc2, add(DOC_P, [-1.9, 0, -0.6]), { expr: f >= 795 ? "grin" : "stern", look: 1, shrug: f >= 800 ? q(smooth((f - 800) / 8), 8) : 0 }, t);
       if (hot) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (p) => fxHeat(p, u), pat[0], 2.55, pat[2], 0.55, 0.75, { soft: true }); }
       if (f >= 795) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), pat[0], 1.25, pat[2] + 0.05, 1.5, 1.5); }
-      crowd(out, cam, t, 40, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.4 });
+      crowd(out, cam, t, 40, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.4 || (p[2] > DOC_P[2] - 1 && Math.abs(p[0] - DOC_P[0]) < 4) });
       break;
     }
     case 8: {
@@ -420,7 +420,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       } else if (f < 984) {
         const k = q(clamp01((f - BAND_ON) / 6), 6);
         if (f >= BAND_ON) band(out, cam, f, t, k >= 1);
-        crowd(out, cam, t, 50, { skip: (p) => Math.abs(p[0]) < 5.5 && p[2] > -9.5 && p[2] < 1 });
+        crowd(out, cam, t, 50, { skip: (p) => (Math.abs(p[0]) < 5.5 && p[2] > -9.5) || p[2] > 0 });
       } else {
         const held = f >= 1003;
         dance(out, cam, WHO.folk[18], STRONG_P, t, { energy: held ? 0.35 : 0.15, expr: "tired", fo: { armsUp: held ? 1 : 0, tilt: held ? 0 : 9 } });
@@ -485,8 +485,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       else if (f < 1447) {
         stand(out, cam, WHO.hungry, add(STALL, [-0.5, 0.04, 1.2]), { expr: "sad", prop: "bowl" }, t);
         const cough = f >= 1426 ? ((f - 1426) % 22) / 22 : -1;
-        stand(out, cam, WHO.sick, add(STALL, [0.9, 0.04, 1.5]), { expr: cough >= 0 && cough < 0.4 ? "pained" : "tired", tilt: cough >= 0 && cough < 0.4 ? -6 : 0 }, t);
-        if (cough >= 0 && cough < 0.7) { const u = q(cough / 0.7, 10); push(out, `cough${u}`, 400, 300, (p) => fxCough(p, u), STALL[0] + 1.25, 1.6, STALL[2] + 1.6, 0.7, 0.52, { soft: true }); }
+        stand(out, cam, WHO.sick, add(STALL, [0.5, 0.04, 2.0]), { expr: cough >= 0 && cough < 0.4 ? "pained" : "tired", tilt: cough >= 0 && cough < 0.4 ? -6 : 0 }, t);
+        if (cough >= 0 && cough < 0.7) { const u = q(cough / 0.7, 10); push(out, `cough${u}`, 400, 300, (p) => fxCough(p, u), STALL[0] + 0.85, 1.6, STALL[2] + 2.1, 0.7, 0.52, { soft: true }); }
       } else {
         const curse = f >= 1475;
         out.places.push(person(cam, WHO.statue, COLUMN[0], COL_H, COLUMN[2], FRONT, { mode: "stand", expr: "stern", wave: curse ? 1 : undefined, blink: 0, look: -0.5 }, {}, 1.2));
@@ -518,7 +518,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const hp = add(wp.p, [fw[0] * 3.3, 0.04, fw[2] * 3.3]);
       const ph = q(((f - 1680) / FPS / 0.6) % 1, 12);
       const mirror = fw[0] * cam.right.x + fw[2] * cam.right.z < 0;
-      out.places.push({ key: `horse|${ph}|w`, x: hp[0], y: hp[1], z: hp[2], mirror, scale: 1.0, draw: (pp) => horseCard(pp, ph), size: [480, 800, 0.8], yaw: Math.atan2(rt[0], rt[2]) * 0 + Math.atan2(cam.pos.x - hp[0], cam.pos.z - hp[2]) });
+      out.places.push({ key: `horse|${ph}|w`, x: hp[0], y: hp[1], z: hp[2], mirror, scale: 1.5, draw: (pp) => horseCard(pp, ph), size: [480, 800, 0.8], yaw: Math.atan2(rt[0], rt[2]) * 0 + Math.atan2(cam.pos.x - hp[0], cam.pos.z - hp[2]) });
       blob(out, hp[0], hp[1], hp[2], 1.6);
       for (let k = 0; k < 4; k++) {
         const ox = (k % 2 ? 0.4 : -0.4), oz = (k < 2 ? 0.6 : -0.6);

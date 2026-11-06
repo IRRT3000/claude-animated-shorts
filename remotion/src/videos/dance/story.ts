@@ -168,7 +168,7 @@ export const eye = (p: V3, h = 1.45): V3 => [p[0], p[1] + h, p[2]];
 // framings; each pushes in from the frame its key starts
 const S1a = (f: number) => zoom(T(18, 24, 40), T(-3, 9, -34), 54, pushK(f, 0, 0.0016, 0.004, 30), { roll: -0.03 });               // the city and its dancing square
 const S1b = (f: number) => dolly(T(-1.5, 3.2, 12), T(0.5, 1.4, 2), pushK(f, 84, 0.003, 0.007, 24), { fov: 42, roll: 0.03 });     // "made people dance"
-const S2a = (f: number) => dolly(add(DOC_P, [-0.1, 1.6, 5.0]), add(DOC_P, [-0.35, 1.3, 0]), pushK(f, 120, 0.0024, 0.007, 24), { fov: 40 }); // doctor + patient
+const S2a = (f: number) => dolly(add(DOC_P, [0.0, 1.6, 5.6]), add(DOC_P, [-0.25, 1.3, 0]), pushK(f, 120, 0.0024, 0.007, 24), { fov: 40 }); // doctor + patient
 const S3a = (f: number) => zoom(T(-2.0, 1.6, -28), T(0, 30, -80), 68, pushK(f, 186, 0.0018));                                      // Strasbourg: the street + the cathedral
 const S3b = (f: number) => dolly(T(-3.2, 1.6, -45.5), T(2.8, 1.3, -50.2), pushK(f, 238, 0.0022, 0.006, 24), { fov: 42 });         // her door: she steps out
 const S4a = (f: number) => dolly(add(TROF_ST, [-1.4, 1.45, 3.0]), eye(TROF_ST, 1.1), pushK(f, 345, 0.0026, 0.006, 24), { fov: 40, roll: -0.03 }); // alone, no music
@@ -176,9 +176,9 @@ const S4b = (f: number) => zoom(T(-6.5, 3.4, -40), T(1.5, 1.6, -51), 46, pushK(f
 const S5a = (f: number) => zoom(T(-7.5, 5.0, -36), T(1.0, 1.0, -50), 50, pushK(f, 445, 0.0018, 0.004, 24));                       // thirty neighbours
 const S6a = (f: number) => zoom(T(-20, 20, 30), T(1, 0, -10), 52, pushK(f, 515, 0.0016, 0.005, 30));                              // four hundred on the square
 const S6b = (f: number) => dolly(T(0.7, 0.35, 4.6), T(0.1, 0.22, 3.0), pushK(f, 612, 0.003, 0.008, 20), { fov: 40, roll: 0.035 }); // bleeding feet
-const S7a = (f: number) => dolly(add(DOC_P, [0.2, 1.7, 5.6]), add(DOC_P, [-0.75, 1.35, 0]), pushK(f, 650, 0.0022), { fov: 42 });     // the diagnosis
+const S7a = (f: number) => dolly(add(DOC_P, [0.1, 1.8, 7.5]), add(DOC_P, [-0.8, 1.35, 0]), pushK(f, 650, 0.0022), { fov: 42 });     // the diagnosis
 const S7b = (f: number) => dolly(add(DOC_P, [-0.5, 1.85, 2.3]), add(DOC_P, [-0.58, 1.85, 0]), pushK(f, 700, 0.003, 0.008, 20), { fov: 38, roll: 0.03 }); // hot blood: the flask
-const S7c = (f: number) => dolly(add(DOC_P, [-0.4, 1.6, 5.8]), add(DOC_P, [-0.75, 1.25, 0]), pushK(f, 737, 0.0022, 0.006, 24), { fov: 44 }); // dance it out
+const S7c = (f: number) => dolly(add(DOC_P, [-0.5, 1.7, 7.5]), add(DOC_P, [-0.8, 1.25, 0]), pushK(f, 737, 0.0022, 0.006, 24), { fov: 42 }); // dance it out
 const S8a = (f: number) => dolly(T(-4.0, 2.2, -5.0), T(-13.0, 1.8, -13.0), pushK(f, 828, 0.0024, 0.006, 24), { fov: 46 });       // the guild hall doors
 const S8b = (f: number) => zoom(T(9, 3.2, 9), T(0, 1.1, -6), 46, pushK(f, 887, 0.0018, 0.005, 24));                               // the stage goes up
 const S8c = (f: number) => dolly(T(1.0, 2.4, 4.5), T(0, 2.3, -6.5), pushK(f, 953, 0.003, 0.007, 24), { fov: 42, roll: -0.03 });   // a band
@@ -195,7 +195,7 @@ const S11c = (f: number) => dolly(add(COLUMN, [0.6, 2.2, 4.4]), add(COLUMN, [0, 
 const S12a = (f: number) => dolly(add(BENCH, [5.0, 1.25, 0.0]), add(BENCH, [0.3, 1.0, 0.0]), pushK(f, 1526, 0.0024, 0.006, 24), { fov: 46 }); // the yawns
 const S12b = (f: number) => dolly(add(BENCH, [5.2, 1.4, 1.6]), add(BENCH, [1.0, 1.0, 0.3]), pushK(f, 1612, 0.0022), { fov: 44 }); // the neighbour dances
 const S12c = (f: number) => dolly(add(BENCH, [2.7, 0.4, 1.5]), add(BENCH, [0.6, 0.3, 0.85]), pushK(f, 1643, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // his feet
-const S13a = (f: number) => zoom(H(-6, 4, 38), H(11, 1.5, 17), 40, pushK(f, 1680, 0.0016));                                        // the wagon on the road
+const S13a = (f: number) => { const w = wagonPose(13, f); return zoom(H(-12, 5, 12), [w.p[0] + Math.sin(w.yaw) * 1.6, w.p[1] + 1.2, w.p[2] + Math.cos(w.yaw) * 1.6], 40, pushK(f, 1680, 0.0016)); }; // the wagon, tracked
 const S13b = (f: number) => dolly(H(5.5, 2.3, -26), H(0, 2.4, -41), pushK(f, 1745, 0.0022, 0.006, 24), { fov: 46 });             // the shrine
 const S14a = (f: number) => dolly(H(0.9, 1.5, -32.4), H(0.0, 1.2, -36.2), pushK(f, 1794, 0.0026, 0.007, 24), { fov: 42 });    // red shoes
 const S14b = (f: number) => dolly(H(-4.5, 2.4, -23), H(0, 1.0, -36), pushK(f, 1848, 0.0018, 0.006, 24), { fov: 46, roll: 0.03 }); // the dancing stopped
