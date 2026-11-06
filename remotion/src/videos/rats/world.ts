@@ -315,7 +315,7 @@ export class World {
     setSight([]);
     {
       const sb = new Batch(), [X, , Z0] = SEW, br = MAT.brick();
-      const L = 40, gapAt = (z: number) => (Math.abs(z - 0) < 0.6 ? -1.2 : Math.abs(z - CAT_Z) < 0.6 ? 0 : null);
+      const L = 40, gapAt = (z: number) => (Math.abs(z - 0) < 0.4 ? -1.2 : Math.abs(z - CAT_Z) < 0.4 ? 0 : null);
       sb.add(boxGeo(V(X - SEW_W, -0.25, Z0 - L), V(X - 0.8, 0, Z0 + L), 2), lam("rtWalk", () => ({ map: stoneHD("rtWalkT", ["#8a7a6a", "#7e6e60", "#94846e", "#76685a"], "#4a4038") })));
       sb.add(boxGeo(V(X + 0.8, -0.25, Z0 - L), V(X + SEW_W, 0, Z0 + L), 2), lam("rtWalk", () => ({})));
       sb.add(boxGeo(V(X - 0.8, -0.7, Z0 - L), V(X + 0.8, -0.6, Z0 + L), 2), br);
@@ -329,7 +329,7 @@ export class World {
         sb.add(boxGeo(V(X + s * 0.8 - 0.001, -0.7, Z0 - L), V(X + s * 0.8 + 0.001, 0, Z0 + L)), br);
       }
       // the vault in 1 m rings (a hole in the ring under each shaft)
-      for (let z = -L; z < L; z += 1) {
+      for (let z = -L - 0.5; z < L + 0.5; z += 1) {
         const zc = z + 0.5, gx = gapAt(zc);
         const piece = (t0: number, t1: number) => {
           if (t1 <= t0) return;
@@ -342,7 +342,7 @@ export class World {
       }
       for (const s of [-1, 1]) { const cap = new THREE.PlaneGeometry(2 * SEW_W, SEW_H + SEW_R + 1); cap.rotateY(s > 0 ? Math.PI : 0); cap.translate(X, (SEW_H + SEW_R - 1) / 2, Z0 + s * L); sb.add(cap, DARKM()); }
       // the ladder shaft (over the west walkway) and the grate shaft (over the channel)
-      for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.7]] as const) {
+      for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.25]] as const) {
         const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - (Math.abs(sx) + 0.55) ** 2) - 0.05;
         for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const)
           sb.add(boxGeo(V(X + sx + a, y0, Z0 + sz + c), V(X + sx + d, top, Z0 + sz + e), 2), br);
@@ -351,7 +351,7 @@ export class World {
       for (const s of [-1, 1]) sb.add(boxGeo(V(X - 1.2 + s * 0.24 - 0.025, 0, Z0 - 0.48), V(X - 1.2 + s * 0.24 + 0.025, 6.4, Z0 - 0.43)), MAT.iron());
       for (let y = 0.3; y < 6.3; y += 0.3) sb.add(boxGeo(V(X - 1.45, y, Z0 - 0.47), V(X - 0.95, y + 0.03, Z0 - 0.42)), MAT.iron());
       // the grate bars at the top of the cat's shaft
-      for (let i = 0; i < 6; i++) sb.add(boxGeo(V(X - 0.5 + i * 0.2 - 0.025, 4.6, Z0 + CAT_Z - 0.5), V(X - 0.5 + i * 0.2 + 0.025, 4.65, Z0 + CAT_Z + 0.5)), MAT.iron());
+      for (let i = 0; i < 6; i++) sb.add(boxGeo(V(X - 0.5 + i * 0.2 - 0.025, 4.2, Z0 + CAT_Z - 0.55), V(X - 0.5 + i * 0.2 + 0.025, 4.25, Z0 + CAT_Z + 0.55)), MAT.iron());
       // lamp brackets on the walls
       for (let z = -36; z <= 36; z += 9) for (const s of [-1, 1]) if (Math.abs(z) > 2) sb.add(boxGeo(V(X + s * (SEW_W - 0.12) - 0.06, 1.9, Z0 + z - 0.06), V(X + s * (SEW_W - 0.12) + 0.06, 2.0, Z0 + z + 0.06)), MAT.iron());
       sb.build(R, false);
@@ -361,7 +361,7 @@ export class World {
         if (flat) m.rotation.x = Math.PI / 2; m.position.set(x, y, z); m.layers.set(NOINK); R.add(m);
       };
       glow(1.0, 1.0, new THREE.Color(2.6, 2.5, 2.2), X - 1.2, 6.45, Z0, true);
-      glow(1.0, 1.0, new THREE.Color(2.2, 2.3, 2.4), X, 5.6, Z0 + CAT_Z, true);
+      glow(2.0, 2.0, new THREE.Color(2.2, 2.3, 2.4), X, 5.2, Z0 + CAT_Z, true);
       for (let z = -36; z <= 36; z += 9) for (const s of [-1, 1]) if (Math.abs(z) > 2) {
         const m = new THREE.Mesh(new THREE.SphereGeometry(0.11, 12, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.2, 0.9), fog: false }));
         m.position.set(X + s * (SEW_W - 0.15), 2.1, Z0 + z); m.layers.set(NOINK); R.add(m);

@@ -408,8 +408,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         if (f >= WARM) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (pp) => fxHeat(pp, u), S(-1.3, 0, 0.6)[0], 0.5, S(0, 0, 0.6)[2], 0.4, 0.53, { soft: true }); }
       } else {
         const sad = f >= PRED + 6, paw = f >= PRED - 2 && f < PRED + 14;
-        push(out, `cat${sad ? 1 : 0}`, 400, 500, (pp) => fxCat(pp, sad ? 1 : 0, 0), S(0, 0, 0)[0], 4.78, CAT_Z - 0.05, 0.9, 1.12, { down: true, rot: Math.PI });
-        if (paw) { const u = Math.sin(clamp01((f - PRED + 2) / 16) * Math.PI); push(out, "paw", 200, 200, (pp) => { pp.ell(100, 100, 50, 60, "#e89a4a", 10); for (const k of [-1, 0, 1]) pp.stroke([[100 + k * 22, 70], [100 + k * 22, 110]], 6); }, S(0.08, 0, 0)[0], 4.62 - 0.08 * u, CAT_Z + 0.05, 0.16, 0.16, { down: true }); }
+        push(out, `cat${sad ? 1 : 0}`, 400, 500, (pp) => fxCat(pp, sad ? 1 : 0, 0), S(0, 0, 0)[0], 4.32, CAT_Z - 0.05, 0.9, 1.12, { down: true, rot: Math.PI });
+        if (paw) { const u = Math.sin(clamp01((f - PRED + 2) / 16) * Math.PI); push(out, "paw", 200, 200, (pp) => { pp.ell(100, 100, 50, 60, "#e89a4a", 10); for (const k of [-1, 0, 1]) pp.stroke([[100 + k * 22, 70], [100 + k * 22, 110]], 6); }, S(0.08, 0, 0)[0], 4.22 - 0.1 * u, CAT_Z + 0.05, 0.16, 0.16, { down: true }); }
         rat(out, cam, S(0.95, 0, CAT_Z + 0.9), { mode: "beg", expr: f >= PRED + 4 ? "smug" : "happy", v: 1 }, 0.42, [-1, 0], true, 5);
       }
       break;
@@ -426,7 +426,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 6: {
       const k = fogAt(id, f);
-      plague(out, C(-10, 14, -120), C(0, 9, -40), k, 14, 16, f);
+      plague(out, C(-10, 16, -90), C(0, 12, -27), k, 16, 16, f);
       for (const [w, x] of [[WHO.off[0], -2.6], [WHO.off[1], 2.2], [WHO.off[2], 0.2]] as const) stand(out, cam, w, C(x, 0.62, -18.6 + (x > 1 ? 0.3 : 0)), { expr: k > 0.4 ? "nervous" : "neutral", look: -1 }, t);
       break;
     }
