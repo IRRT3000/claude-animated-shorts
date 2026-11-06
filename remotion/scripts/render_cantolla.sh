@@ -12,7 +12,7 @@ for c in $(seq "$1" "$2"); do
   o=out/cantolla/chunks/c$(printf %02d $c).mp4
   [ -s "$o" ] && { echo "skip $o"; continue; }
   t0=$(date +%s)
-  npx remotion render src/index.ts CantollaShort "$o.part.mp4" --frames=$a-$b --scale 1.3333333333333333 --codec h264 --crf 16 \
+  npx remotion render src/index.ts CantollaShort "$o.part.mp4" --frames=$a-$b ${SCALE_ARG---scale 1.3333333333333333} --codec h264 --crf 16 \
     --gl=swangle --browser-executable="$CHROME" --concurrency=${CONC:-2} --timeout=240000 --log=error
   mv "$o.part.mp4" "$o"
   echo "chunk $c ($a-$b) $(( $(date +%s) - t0 ))s"
