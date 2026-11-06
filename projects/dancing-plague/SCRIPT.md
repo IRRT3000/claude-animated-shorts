@@ -25,15 +25,15 @@ Format: cartoon-3d-short (~65-70 s), one steady voice, English only, no captions
 In fifteen eighteen, a whole city caught a disease that made people dance. The doctors' cure? More dancing.
 Strasbourg, July. A woman named Frau Troffea stepped into the street and started dancing.
 No music. No reason. And she didn't stop for days.
-Within a week, more than thirty neighbors had joined her.
-By August, by some counts, four hundred people were dancing day and night, on bleeding feet.
+Within a week, thirty neighbors had joined her.
+By August, by some counts, four hundred people were dancing on bleeding feet.
 The doctors had a diagnosis: hot blood. And the cure for hot blood, they said, was to dance it out.
-So the council cleared the guild halls, built a wooden stage in the horse market, hired musicians, and even paid strong men to hold the dancers up.
+So the council cleared the guild halls, built a wooden stage in the horse market, hired a band, and even paid strong men to hold the dancers up.
 Luckily, the music worked. Unluckily, it worked on everyone.
 So the council spun around. They tore down the stage, sent the band home, and banned dancing in public.
 Historians think it was mass panic, in a hungry, sick city that feared a saint who cursed people with dancing.
 It spread like a yawn. See someone yawn, you yawn. See your neighbor dance, your feet start moving.
-In the end, the dancers were loaded onto wagons and taken to that saint's shrine in the hills.
+In the end, the dancers were carted off to that saint's shrine in the hills.
 Priests gave them red shoes, and by September, the dancing stopped.
 The cure for the dancing plague wasn't a band. It was new shoes.
 
