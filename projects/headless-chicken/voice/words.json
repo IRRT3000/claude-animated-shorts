@@ -1,0 +1,1127 @@
+[
+ {
+  "word": "In",
+  "start": 0.32,
+  "end": 0.42
+ },
+ {
+  "word": "nineteen",
+  "start": 0.42,
+  "end": 0.81
+ },
+ {
+  "word": "forty-",
+  "start": 0.81,
+  "end": 1.15
+ },
+ {
+  "word": "five,",
+  "start": 1.15,
+  "end": 1.61
+ },
+ {
+  "word": "a",
+  "start": 1.81,
+  "end": 1.86
+ },
+ {
+  "word": "farmer",
+  "start": 1.86,
+  "end": 2.3
+ },
+ {
+  "word": "went",
+  "start": 2.3,
+  "end": 2.49
+ },
+ {
+  "word": "out",
+  "start": 2.49,
+  "end": 2.67
+ },
+ {
+  "word": "to",
+  "start": 2.67,
+  "end": 2.78
+ },
+ {
+  "word": "get",
+  "start": 2.78,
+  "end": 2.98
+ },
+ {
+  "word": "dinner.",
+  "start": 2.98,
+  "end": 3.37
+ },
+ {
+  "word": "Dinner",
+  "start": 3.67,
+  "end": 3.91
+ },
+ {
+  "word": "did",
+  "start": 3.91,
+  "end": 4.07
+ },
+ {
+  "word": "not",
+  "start": 4.07,
+  "end": 4.27
+ },
+ {
+  "word": "cooperate.",
+  "start": 4.27,
+  "end": 5.0
+ },
+ {
+  "word": "Fruita,",
+  "start": 5.359,
+  "end": 5.759
+ },
+ {
+  "word": "Colorado.",
+  "start": 5.759,
+  "end": 6.549
+ },
+ {
+  "word": "Lloyd",
+  "start": 6.919,
+  "end": 7.139
+ },
+ {
+  "word": "Olsen",
+  "start": 7.139,
+  "end": 7.509
+ },
+ {
+  "word": "picked",
+  "start": 7.509,
+  "end": 7.759
+ },
+ {
+  "word": "a",
+  "start": 7.759,
+  "end": 7.789
+ },
+ {
+  "word": "young",
+  "start": 7.789,
+  "end": 8.089
+ },
+ {
+  "word": "rooster",
+  "start": 8.089,
+  "end": 8.379
+ },
+ {
+  "word": "named",
+  "start": 8.379,
+  "end": 8.719
+ },
+ {
+  "word": "Mike,",
+  "start": 8.719,
+  "end": 9.069
+ },
+ {
+  "word": "and",
+  "start": 9.069,
+  "end": 9.289
+ },
+ {
+  "word": "raised",
+  "start": 9.289,
+  "end": 9.669
+ },
+ {
+  "word": "the",
+  "start": 9.669,
+  "end": 9.829
+ },
+ {
+  "word": "axe.",
+  "start": 9.829,
+  "end": 10.219
+ },
+ {
+  "word": "His",
+  "start": 10.587,
+  "end": 10.737
+ },
+ {
+  "word": "mother-",
+  "start": 10.737,
+  "end": 10.997
+ },
+ {
+  "word": "in-",
+  "start": 10.997,
+  "end": 11.097
+ },
+ {
+  "word": "law",
+  "start": 11.097,
+  "end": 11.277
+ },
+ {
+  "word": "loved",
+  "start": 11.277,
+  "end": 11.537
+ },
+ {
+  "word": "the",
+  "start": 11.537,
+  "end": 11.627
+ },
+ {
+  "word": "neck.",
+  "start": 11.627,
+  "end": 11.977
+ },
+ {
+  "word": "So",
+  "start": 12.197,
+  "end": 12.347
+ },
+ {
+  "word": "Lloyd",
+  "start": 12.347,
+  "end": 12.737
+ },
+ {
+  "word": "aimed",
+  "start": 12.737,
+  "end": 12.967
+ },
+ {
+  "word": "high.",
+  "start": 12.967,
+  "end": 13.307
+ },
+ {
+  "word": "A",
+  "start": 13.307,
+  "end": 13.407
+ },
+ {
+  "word": "little",
+  "start": 13.617,
+  "end": 13.837
+ },
+ {
+  "word": "too",
+  "start": 13.837,
+  "end": 14.097
+ },
+ {
+  "word": "high.",
+  "start": 14.097,
+  "end": 14.467
+ },
+ {
+  "word": "The",
+  "start": 14.786,
+  "end": 14.966
+ },
+ {
+  "word": "axe",
+  "start": 14.966,
+  "end": 15.246
+ },
+ {
+  "word": "took",
+  "start": 15.246,
+  "end": 15.446
+ },
+ {
+  "word": "the",
+  "start": 15.446,
+  "end": 15.536
+ },
+ {
+  "word": "head.",
+  "start": 15.536,
+  "end": 15.846
+ },
+ {
+  "word": "But",
+  "start": 16.166,
+  "end": 16.306
+ },
+ {
+  "word": "it",
+  "start": 16.306,
+  "end": 16.366
+ },
+ {
+  "word": "missed",
+  "start": 16.366,
+  "end": 16.606
+ },
+ {
+  "word": "the",
+  "start": 16.606,
+  "end": 16.666
+ },
+ {
+  "word": "main",
+  "start": 16.666,
+  "end": 16.956
+ },
+ {
+  "word": "vein,",
+  "start": 16.956,
+  "end": 17.476
+ },
+ {
+  "word": "one",
+  "start": 17.476,
+  "end": 17.696
+ },
+ {
+  "word": "ear,",
+  "start": 17.696,
+  "end": 18.096
+ },
+ {
+  "word": "and",
+  "start": 18.096,
+  "end": 18.226
+ },
+ {
+  "word": "most",
+  "start": 18.226,
+  "end": 18.526
+ },
+ {
+  "word": "of",
+  "start": 18.526,
+  "end": 18.596
+ },
+ {
+  "word": "the",
+  "start": 18.596,
+  "end": 18.666
+ },
+ {
+  "word": "brain",
+  "start": 18.666,
+  "end": 19.006
+ },
+ {
+  "word": "stem.",
+  "start": 19.006,
+  "end": 19.376
+ },
+ {
+  "word": "Mike",
+  "start": 19.755,
+  "end": 19.975
+ },
+ {
+  "word": "shook",
+  "start": 19.975,
+  "end": 20.185
+ },
+ {
+  "word": "it",
+  "start": 20.185,
+  "end": 20.255
+ },
+ {
+  "word": "off,",
+  "start": 20.255,
+  "end": 20.725
+ },
+ {
+  "word": "and",
+  "start": 20.725,
+  "end": 20.875
+ },
+ {
+  "word": "went",
+  "start": 20.875,
+  "end": 21.025
+ },
+ {
+  "word": "back",
+  "start": 21.025,
+  "end": 21.255
+ },
+ {
+  "word": "to",
+  "start": 21.255,
+  "end": 21.385
+ },
+ {
+  "word": "pecking",
+  "start": 21.385,
+  "end": 21.725
+ },
+ {
+  "word": "for",
+  "start": 21.725,
+  "end": 21.865
+ },
+ {
+  "word": "corn.",
+  "start": 21.865,
+  "end": 22.315
+ },
+ {
+  "word": "That",
+  "start": 22.77,
+  "end": 22.97
+ },
+ {
+  "word": "night,",
+  "start": 22.97,
+  "end": 23.24
+ },
+ {
+  "word": "he",
+  "start": 23.24,
+  "end": 23.36
+ },
+ {
+  "word": "tried",
+  "start": 23.36,
+  "end": 23.6
+ },
+ {
+  "word": "to",
+  "start": 23.6,
+  "end": 23.68
+ },
+ {
+  "word": "tuck",
+  "start": 23.68,
+  "end": 23.92
+ },
+ {
+  "word": "his",
+  "start": 23.92,
+  "end": 24.06
+ },
+ {
+  "word": "head",
+  "start": 24.06,
+  "end": 24.26
+ },
+ {
+  "word": "under",
+  "start": 24.26,
+  "end": 24.45
+ },
+ {
+  "word": "his",
+  "start": 24.45,
+  "end": 24.58
+ },
+ {
+  "word": "wing.",
+  "start": 24.58,
+  "end": 24.95
+ },
+ {
+  "word": "Out",
+  "start": 25.15,
+  "end": 25.22
+ },
+ {
+  "word": "of",
+  "start": 25.22,
+  "end": 25.42
+ },
+ {
+  "word": "habit.",
+  "start": 25.42,
+  "end": 25.8
+ },
+ {
+  "word": "Lloyd",
+  "start": 26.351,
+  "end": 26.591
+ },
+ {
+  "word": "decided",
+  "start": 26.591,
+  "end": 26.991
+ },
+ {
+  "word": "to",
+  "start": 26.991,
+  "end": 27.051
+ },
+ {
+  "word": "keep",
+  "start": 27.051,
+  "end": 27.341
+ },
+ {
+  "word": "him.",
+  "start": 27.341,
+  "end": 27.511
+ },
+ {
+  "word": "He",
+  "start": 27.821,
+  "end": 27.901
+ },
+ {
+  "word": "fed",
+  "start": 27.901,
+  "end": 28.171
+ },
+ {
+  "word": "him",
+  "start": 28.171,
+  "end": 28.341
+ },
+ {
+  "word": "with",
+  "start": 28.341,
+  "end": 28.471
+ },
+ {
+  "word": "an",
+  "start": 28.471,
+  "end": 28.571
+ },
+ {
+  "word": "eyedropper.",
+  "start": 28.571,
+  "end": 29.231
+ },
+ {
+  "word": "Milk",
+  "start": 29.531,
+  "end": 29.841
+ },
+ {
+  "word": "and",
+  "start": 29.841,
+  "end": 30.021
+ },
+ {
+  "word": "water,",
+  "start": 30.021,
+  "end": 30.421
+ },
+ {
+  "word": "straight",
+  "start": 30.421,
+  "end": 30.851
+ },
+ {
+  "word": "down",
+  "start": 30.851,
+  "end": 31.091
+ },
+ {
+  "word": "the",
+  "start": 31.091,
+  "end": 31.151
+ },
+ {
+  "word": "throat.",
+  "start": 31.151,
+  "end": 31.531
+ },
+ {
+  "word": "Scientists",
+  "start": 31.912,
+  "end": 32.482
+ },
+ {
+  "word": "in",
+  "start": 32.482,
+  "end": 32.602
+ },
+ {
+  "word": "Salt",
+  "start": 32.602,
+  "end": 32.922
+ },
+ {
+  "word": "Lake",
+  "start": 32.922,
+  "end": 33.142
+ },
+ {
+  "word": "City",
+  "start": 33.142,
+  "end": 33.392
+ },
+ {
+  "word": "examined",
+  "start": 33.392,
+  "end": 33.922
+ },
+ {
+  "word": "him.",
+  "start": 33.922,
+  "end": 34.142
+ },
+ {
+  "word": "A",
+  "start": 34.492,
+  "end": 34.542
+ },
+ {
+  "word": "blood",
+  "start": 34.542,
+  "end": 34.842
+ },
+ {
+  "word": "clot",
+  "start": 34.842,
+  "end": 35.162
+ },
+ {
+  "word": "had",
+  "start": 35.162,
+  "end": 35.302
+ },
+ {
+  "word": "saved",
+  "start": 35.302,
+  "end": 35.662
+ },
+ {
+  "word": "his",
+  "start": 35.662,
+  "end": 35.802
+ },
+ {
+  "word": "life.",
+  "start": 35.802,
+  "end": 36.232
+ },
+ {
+  "word": "The",
+  "start": 36.522,
+  "end": 36.602
+ },
+ {
+  "word": "brain",
+  "start": 36.602,
+  "end": 36.962
+ },
+ {
+  "word": "stem",
+  "start": 36.962,
+  "end": 37.362
+ },
+ {
+  "word": "did",
+  "start": 37.362,
+  "end": 37.502
+ },
+ {
+  "word": "the",
+  "start": 37.502,
+  "end": 37.562
+ },
+ {
+  "word": "rest.",
+  "start": 37.562,
+  "end": 38.032
+ },
+ {
+  "word": "Then",
+  "start": 38.309,
+  "end": 38.479
+ },
+ {
+  "word": "a",
+  "start": 38.479,
+  "end": 38.529
+ },
+ {
+  "word": "promoter",
+  "start": 38.529,
+  "end": 38.929
+ },
+ {
+  "word": "showed",
+  "start": 38.929,
+  "end": 39.239
+ },
+ {
+  "word": "up.",
+  "start": 39.239,
+  "end": 39.679
+ },
+ {
+  "word": "Mike",
+  "start": 39.679,
+  "end": 39.949
+ },
+ {
+  "word": "went",
+  "start": 39.949,
+  "end": 40.109
+ },
+ {
+  "word": "on",
+  "start": 40.109,
+  "end": 40.269
+ },
+ {
+  "word": "tour.",
+  "start": 40.269,
+  "end": 40.689
+ },
+ {
+  "word": "Twenty-",
+  "start": 40.829,
+  "end": 41.089
+ },
+ {
+  "word": "five",
+  "start": 41.089,
+  "end": 41.429
+ },
+ {
+  "word": "cents",
+  "start": 41.429,
+  "end": 41.699
+ },
+ {
+  "word": "a",
+  "start": 41.699,
+  "end": 41.729
+ },
+ {
+  "word": "look.",
+  "start": 41.729,
+  "end": 42.129
+ },
+ {
+  "word": "Life",
+  "start": 42.594,
+  "end": 42.854
+ },
+ {
+  "word": "magazine",
+  "start": 42.854,
+  "end": 43.384
+ },
+ {
+  "word": "took",
+  "start": 43.384,
+  "end": 43.564
+ },
+ {
+  "word": "his",
+  "start": 43.564,
+  "end": 43.704
+ },
+ {
+  "word": "picture.",
+  "start": 43.704,
+  "end": 44.204
+ },
+ {
+  "word": "Other",
+  "start": 44.514,
+  "end": 44.674
+ },
+ {
+  "word": "farmers",
+  "start": 44.674,
+  "end": 45.204
+ },
+ {
+  "word": "tried",
+  "start": 45.204,
+  "end": 45.484
+ },
+ {
+  "word": "to",
+  "start": 45.484,
+  "end": 45.544
+ },
+ {
+  "word": "make",
+  "start": 45.544,
+  "end": 45.714
+ },
+ {
+  "word": "their",
+  "start": 45.714,
+  "end": 45.914
+ },
+ {
+  "word": "own",
+  "start": 45.914,
+  "end": 46.124
+ },
+ {
+  "word": "Mike.",
+  "start": 46.124,
+  "end": 46.474
+ },
+ {
+  "word": "None",
+  "start": 46.714,
+  "end": 46.924
+ },
+ {
+  "word": "of",
+  "start": 46.924,
+  "end": 47.014
+ },
+ {
+  "word": "them",
+  "start": 47.014,
+  "end": 47.184
+ },
+ {
+  "word": "made",
+  "start": 47.184,
+  "end": 47.434
+ },
+ {
+  "word": "it.",
+  "start": 47.434,
+  "end": 47.574
+ },
+ {
+  "word": "And",
+  "start": 47.981,
+  "end": 48.091
+ },
+ {
+  "word": "Mike",
+  "start": 48.091,
+  "end": 48.341
+ },
+ {
+  "word": "kept",
+  "start": 48.341,
+  "end": 48.591
+ },
+ {
+  "word": "growing.",
+  "start": 48.591,
+  "end": 49.051
+ },
+ {
+  "word": "From",
+  "start": 49.311,
+  "end": 49.471
+ },
+ {
+  "word": "two",
+  "start": 49.471,
+  "end": 49.661
+ },
+ {
+  "word": "and",
+  "start": 49.661,
+  "end": 49.751
+ },
+ {
+  "word": "a",
+  "start": 49.751,
+  "end": 49.781
+ },
+ {
+  "word": "half",
+  "start": 49.781,
+  "end": 50.031
+ },
+ {
+  "word": "pounds",
+  "start": 50.031,
+  "end": 50.441
+ },
+ {
+  "word": "to",
+  "start": 50.441,
+  "end": 50.601
+ },
+ {
+  "word": "almost",
+  "start": 50.601,
+  "end": 51.001
+ },
+ {
+  "word": "eight.",
+  "start": 51.001,
+  "end": 51.301
+ },
+ {
+  "word": "With",
+  "start": 51.481,
+  "end": 51.651
+ },
+ {
+  "word": "no",
+  "start": 51.651,
+  "end": 51.891
+ },
+ {
+  "word": "head.",
+  "start": 51.891,
+  "end": 52.231
+ },
+ {
+  "word": "Then,",
+  "start": 52.61,
+  "end": 52.85
+ },
+ {
+  "word": "one",
+  "start": 52.85,
+  "end": 53.13
+ },
+ {
+  "word": "night",
+  "start": 53.13,
+  "end": 53.37
+ },
+ {
+  "word": "in",
+  "start": 53.37,
+  "end": 53.45
+ },
+ {
+  "word": "a",
+  "start": 53.45,
+  "end": 53.48
+ },
+ {
+  "word": "motel",
+  "start": 53.48,
+  "end": 53.99
+ },
+ {
+  "word": "in",
+  "start": 53.99,
+  "end": 54.08
+ },
+ {
+  "word": "Phoenix,",
+  "start": 54.08,
+  "end": 54.6
+ },
+ {
+  "word": "Mike",
+  "start": 54.82,
+  "end": 55.05
+ },
+ {
+  "word": "started",
+  "start": 55.05,
+  "end": 55.5
+ },
+ {
+  "word": "choking.",
+  "start": 55.5,
+  "end": 55.84
+ },
+ {
+  "word": "The",
+  "start": 56.154,
+  "end": 56.274
+ },
+ {
+  "word": "syringe",
+  "start": 56.274,
+  "end": 56.764
+ },
+ {
+  "word": "they",
+  "start": 56.764,
+  "end": 56.854
+ },
+ {
+  "word": "used",
+  "start": 56.854,
+  "end": 57.064
+ },
+ {
+  "word": "to",
+  "start": 57.064,
+  "end": 57.124
+ },
+ {
+  "word": "clear",
+  "start": 57.124,
+  "end": 57.404
+ },
+ {
+  "word": "his",
+  "start": 57.404,
+  "end": 57.564
+ },
+ {
+  "word": "throat?",
+  "start": 57.564,
+  "end": 58.214
+ },
+ {
+  "word": "Left",
+  "start": 58.214,
+  "end": 58.504
+ },
+ {
+  "word": "behind",
+  "start": 58.504,
+  "end": 58.934
+ },
+ {
+  "word": "at",
+  "start": 58.934,
+  "end": 59.014
+ },
+ {
+  "word": "the",
+  "start": 59.014,
+  "end": 59.074
+ },
+ {
+  "word": "show.",
+  "start": 59.074,
+  "end": 59.524
+ },
+ {
+  "word": "Mike",
+  "start": 59.885,
+  "end": 60.105
+ },
+ {
+  "word": "survived",
+  "start": 60.105,
+  "end": 60.595
+ },
+ {
+  "word": "an",
+  "start": 60.595,
+  "end": 60.685
+ },
+ {
+  "word": "axe",
+  "start": 60.685,
+  "end": 60.995
+ },
+ {
+  "word": "for",
+  "start": 60.995,
+  "end": 61.195
+ },
+ {
+  "word": "eighteen",
+  "start": 61.195,
+  "end": 61.515
+ },
+ {
+  "word": "months.",
+  "start": 61.515,
+  "end": 61.915
+ },
+ {
+  "word": "He",
+  "start": 62.205,
+  "end": 62.295
+ },
+ {
+  "word": "could",
+  "start": 62.295,
+  "end": 62.415
+ },
+ {
+  "word": "not",
+  "start": 62.415,
+  "end": 62.625
+ },
+ {
+  "word": "survive",
+  "start": 62.625,
+  "end": 63.065
+ },
+ {
+  "word": "a",
+  "start": 63.065,
+  "end": 63.105
+ },
+ {
+  "word": "forgotten",
+  "start": 63.105,
+  "end": 63.565
+ },
+ {
+  "word": "syringe.",
+  "start": 63.565,
+  "end": 64.185
+ },
+ {
+  "word": "His",
+  "start": 64.571,
+  "end": 64.711
+ },
+ {
+  "word": "town",
+  "start": 64.711,
+  "end": 65.021
+ },
+ {
+  "word": "still",
+  "start": 65.021,
+  "end": 65.291
+ },
+ {
+  "word": "throws",
+  "start": 65.291,
+  "end": 65.641
+ },
+ {
+  "word": "him",
+  "start": 65.641,
+  "end": 65.741
+ },
+ {
+  "word": "a",
+  "start": 65.741,
+  "end": 65.781
+ },
+ {
+  "word": "party",
+  "start": 65.781,
+  "end": 66.251
+ },
+ {
+  "word": "every",
+  "start": 66.251,
+  "end": 66.501
+ },
+ {
+  "word": "year.",
+  "start": 66.501,
+  "end": 66.871
+ },
+ {
+  "word": "Lloyd",
+  "start": 67.231,
+  "end": 67.501
+ },
+ {
+  "word": "only",
+  "start": 67.501,
+  "end": 67.871
+ },
+ {
+  "word": "wanted",
+  "start": 67.871,
+  "end": 68.251
+ },
+ {
+  "word": "dinner.",
+  "start": 68.251,
+  "end": 68.591
+ }
+]

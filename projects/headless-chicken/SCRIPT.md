@@ -29,15 +29,15 @@ Fruita, Colorado. Lloyd Olsen picked a young rooster named Mike, and raised the 
 His mother-in-law loved the neck. So Lloyd aimed high. A little too high.
 The axe took the head. But it missed the main vein, one ear, and most of the brain stem.
 Mike shook it off, and went back to pecking for corn.
-That night, Mike tried to sleep with his head tucked under his wing.
-So Lloyd fed him with an eyedropper. Milk and water, straight down the throat.
+That night, he tried to tuck his head under his wing. Out of habit.
+Lloyd decided to keep him. He fed him with an eyedropper. Milk and water, straight down the throat.
 Scientists in Salt Lake City examined him. A blood clot had saved his life. The brain stem did the rest.
 Then a promoter showed up. Mike went on tour. Twenty-five cents a look.
 Life magazine took his picture. Other farmers tried to make their own Mike. None of them made it.
 And Mike kept growing. From two and a half pounds to almost eight. With no head.
 Then, one night in a motel in Phoenix, Mike started choking.
 The syringe they used to clear his throat? Left behind at the show.
-Mike survived an axe for eighteen months. He didn't survive a forgotten syringe.
+Mike survived an axe for eighteen months. He could not survive a forgotten syringe.
 His town still throws him a party every year. Lloyd only wanted dinner.
 
 ## Notes
