@@ -343,7 +343,7 @@ export class World {
       for (const s of [-1, 1]) { const cap = new THREE.PlaneGeometry(2 * SEW_W, SEW_H + SEW_R + 1); cap.rotateY(s > 0 ? Math.PI : 0); cap.translate(X, (SEW_H + SEW_R - 1) / 2, Z0 + s * L); sb.add(cap, DARKM()); }
       // the ladder shaft (over the west walkway) and the grate shaft (over the channel)
       for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.25]] as const) {
-        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - (Math.abs(sx) + 0.55) ** 2) - 0.05;
+        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - (Math.abs(sx) - 0.55) ** 2) - 0.02;
         for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const)
           sb.add(boxGeo(V(X + sx + a, y0, Z0 + sz + c), V(X + sx + d, top, Z0 + sz + e), 2), br);
       }

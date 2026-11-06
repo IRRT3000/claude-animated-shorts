@@ -408,7 +408,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         if (f >= WARM) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (pp) => fxHeat(pp, u), S(-1.3, 0, 0.6)[0], 0.5, S(0, 0, 0.6)[2], 0.4, 0.53, { soft: true }); }
       } else {
         const sad = f >= PRED + 6, paw = f >= PRED - 2 && f < PRED + 14;
-        push(out, `cat${sad ? 1 : 0}`, 400, 500, (pp) => fxCat(pp, sad ? 1 : 0, 0), S(0, 0, 0)[0], 4.32, CAT_Z - 0.05, 0.9, 1.12, { down: true, rot: Math.PI });
+        push(out, `cat${sad ? 1 : 0}`, 400, 500, (pp) => fxCat(pp, sad ? 1 : 0, 0), S(0, 0, 0)[0], 4.32, CAT_Z - 0.05, 0.9, 1.12, { down: true });
         if (paw) { const u = Math.sin(clamp01((f - PRED + 2) / 16) * Math.PI); push(out, "paw", 200, 200, (pp) => { pp.ell(100, 100, 50, 60, "#e89a4a", 10); for (const k of [-1, 0, 1]) pp.stroke([[100 + k * 22, 70], [100 + k * 22, 110]], 6); }, S(0.08, 0, 0)[0], 4.22 - 0.1 * u, CAT_Z + 0.05, 0.16, 0.16, { down: true }); }
         rat(out, cam, S(0.95, 0, CAT_Z + 0.9), { mode: "beg", expr: f >= PRED + 4 ? "smug" : "happy", v: 1 }, 0.42, [-1, 0], true, 5);
       }
