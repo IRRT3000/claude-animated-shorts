@@ -550,7 +550,9 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
       footStroke(p, [fx - side * 3 * u, fy], [fx + side * 13 * u, fy + toe], footW, footCol);
       if (sore) { // a bandage round the ankle and a red stain on the toe
         p.stroke([[fx - 7 * u, fy - 9 * u], [fx + 7 * u, fy - 7 * u]], 4.2 * u, "#f4efe2"); p.stroke([[fx - 7 * u, fy - 13 * u], [fx + 7 * u, fy - 11 * u]], 3.6 * u, "#f4efe2");
-        p.ell(fx + side * 9 * u, fy - 1 * u, 5 * u, 3.4 * u, "#d0343a", 1.2 * u); }
+        p.stroke([[fx - side * 2 * u, fy - 4 * u], [fx + side * 12 * u, fy - 1 * u]], 3.2 * u, "#c8283a");
+        p.stroke([[fx + side * 3 * u, fy - 3 * u], [fx + side * 2 * u, fy + 5 * u]], 2 * u, "#c8283a"); p.dot(fx + side * 2 * u, fy + 6 * u, 1.8 * u, "#c8283a");
+        p.stroke([[fx + side * 9 * u, fy - 2 * u], [fx + side * 10 * u, fy + 3 * u]], 1.6 * u, "#c8283a"); }
     }
   } else if (o.dress) {
     for (const side of [-1, 1]) {

@@ -181,7 +181,7 @@ const S7b = (f: number) => dolly(add(DOC_P, [-0.75, 1.8, 2.6]), add(DOC_P, [-0.7
 const S7c = (f: number) => dolly(add(DOC_P, [-0.4, 1.7, 7.8]), add(DOC_P, [-0.7, 1.25, 0]), pushK(f, 737, 0.0022, 0.006, 24), { fov: 42 }); // dance it out
 const S8a = (f: number) => dolly(T(-4.0, 2.2, -5.0), T(-13.0, 1.8, -13.0), pushK(f, 828, 0.0024, 0.006, 24), { fov: 46 });       // the guild hall doors
 const S8b = (f: number) => zoom(T(9, 3.2, 9), T(0, 1.1, -6), 46, pushK(f, 887, 0.0018, 0.005, 24));                               // the stage goes up
-const S8c = (f: number) => dolly(T(0.8, 2.6, 2.5), T(0, 2.5, -6.5), pushK(f, 953, 0.003, 0.007, 24), { fov: 40, roll: -0.03 });     // a band
+const S8c = (f: number) => dolly(T(0.8, 2.9, 4.2), T(0, 2.6, -6.5), pushK(f, 953, 0.003, 0.007, 24), { fov: 46, roll: -0.03 });     // a band
 const S8d = (f: number) => dolly(add(STRONG_P, [0.3, 1.6, 5.6]), add(STRONG_P, [0, 1.4, 0]), pushK(f, 984, 0.0024, 0.006, 24), { fov: 46 }); // strong men
 const S9a = (f: number) => dolly(T(2.5, 2.2, 9.5), T(0, 1.8, -5.5), pushK(f, 1072, 0.0024, 0.006, 24), { fov: 44 });                  // the music worked
 const S9b = (f: number) => zoom(T(14, 9, 22), T(-1, 0.5, -6), 52, pushK(f, 1112, 0.0018, 0.006, 30));                             // on everyone
@@ -198,8 +198,8 @@ const S12c = (f: number) => dolly(add(BENCH, [2.7, 0.4, 1.5]), add(BENCH, [0.6, 
 const S13a = (f: number) => { const w = wagonPose(13, f); return zoom(H(-12, 5, 12), [w.p[0] + Math.sin(w.yaw) * 1.6, w.p[1] + 1.2, w.p[2] + Math.cos(w.yaw) * 1.6], 32, pushK(f, 1680, 0.0016)); }; // the wagon, tracked
 const S13b = (f: number) => dolly(H(5.5, 2.3, -26), H(0, 2.4, -41), pushK(f, 1745, 0.0022, 0.006, 24), { fov: 46 });             // the shrine
 const S14a = (f: number) => dolly(H(0.9, 1.5, -32.4), H(0.0, 1.2, -36.2), pushK(f, 1794, 0.0026, 0.007, 24), { fov: 42 });    // red shoes
-const S14b = (f: number) => dolly(H(-2.8, 1.6, -29.5), H(0, 0.9, -35.5), pushK(f, 1848, 0.0018, 0.006, 24), { fov: 44, roll: 0.03 }); // the dancing stopped
-const S15a = (f: number) => dolly(T(4.2, 1.3, 2.6), T(0, 0.75, -2.4), pushK(f, 1906, 0.0022, 0.006, 24), { fov: 42 });          // the band, idle
+const S14b = (f: number) => dolly(H(-3.4, 1.6, -29.0), H(0.3, 0.9, -35.5), pushK(f, 1848, 0.0018, 0.006, 24), { fov: 46, roll: 0.03 }); // the dancing stopped
+const S15a = (f: number) => dolly(T(4.6, 1.3, 3.6), T(0, 0.75, -2.4), pushK(f, 1906, 0.0022, 0.006, 24), { fov: 46 });          // the band, idle
 const S16a = (f: number) => dolly(H(0.85, 0.22, -33.5), H(0.2, 0.2, -35.0), pushK(f, 1976, 0.0026, 0.007, 24), { fov: 38, roll: -0.03 }); // new shoes, at ground level
 
 const CAMS: Record<number, Key[]> = {

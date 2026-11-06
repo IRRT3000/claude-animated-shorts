@@ -460,7 +460,6 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const pl = person(cam, WHO.master, MASTER_P[0], MASTER_P[1], MASTER_P[2], FRONT, f < 1193 ? { mode: "dance", phase: q((t / 0.72) % 1, 24), energy: 1, expr, blink: 0 } : { mode: "stand", expr, blink: lidAt(t, 4), wave: sp >= 1 ? 1 : undefined, look: -1 }, {}, 1);
         out.places.push({ ...pl, sx: q(turn, 12) });
         blob(out, MASTER_P[0], MASTER_P[1], MASTER_P[2]);
-        if (sp > 0 && sp < 1) { const u = q(sp, 12); push(out, `spin${u}`, 600, 300, (p) => fxSpin(p, u), MASTER_P[0], 0.3, MASTER_P[2] + 0.1, 1.5, 0.6); }
         stand(out, cam, WHO.council[0], add(MASTER_P, [-1.1, 0, -0.9]), { expr: f < 1210 ? "laugh" : "nervous", look: 1 }, t);
         stand(out, cam, WHO.council[1], add(MASTER_P, [0.9, 0, -1.6]), { expr: f < 1210 ? "grin" : "shock", look: -1 }, t);
       } else if (f < 1263) {
@@ -481,7 +480,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 11: {
-      if (f < 1408) crowd(out, cam, t, 90, { energy: 0.95, expr: "pained" });
+      if (f < 1408) crowd(out, cam, t, 170, { energy: 1, expr: "pained" });
       else if (f < 1447) {
         stand(out, cam, WHO.hungry, add(STALL, [-1.15, 0.04, 1.6]), { expr: "sad", prop: "bowl" }, t);
         const cough = f >= 1426 ? ((f - 1426) % 22) / 22 : -1;

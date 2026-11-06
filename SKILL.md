@@ -162,6 +162,7 @@ lighting 5-6, ink 6, textures 5-6, characters 7, depth 6-7, composition 6-7 (fro
 - To see a hand prop AND the water below it in one insert, put the lens low (~0.9 m) at ~2.5 m with fov ~46.
 - A camera parked just behind a foreground prop must use `zoom()`, not `dolly()`: the dolly push walks the lens through the prop (the 2001 crowd shot went through the organ pipes).
 - Cards always face the camera, so a seated audience shot from behind looks like it faces away from the stage: shoot crowds from the stage side (past soft foreground props) and give chairs no backrests.
+- In 9:16 the frame is only ~0.43 x distance wide at fov 42: a two-person shot needs ~5.5-6 m, three people ~7.5 m. A dancing card's arms add ~0.3 m each side (dancing plague: 9 of 38 frames had someone cut by the edge).
 - Render a 16-30 still contact sheet (`remotion/scripts/sheet.py`) after every camera change; most early mistakes were framing, not look.
 
 ## Cloud container (Linux, no GPU) notes

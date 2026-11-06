@@ -17,7 +17,7 @@ export const LIGHTS: Record<LightName, LightPreset> = {
   // Strasbourg by moonlight: cool blue key, deep indigo shade, a little warm lift so faces stay readable
   moon: {
     az: 120, el: 35,
-    lit: [0.38, 0.48, 0.82], shade: [0.07, 0.08, 0.19], lift: [0.03, 0.04, 0.1], lambert: 0.4, sideK: 0.82, term: 0.15,
+    lit: [0.28, 0.36, 0.66], shade: [0.06, 0.07, 0.17], lift: [0.03, 0.035, 0.09], lambert: 0.4, sideK: 0.82, term: 0.15,
     charTint: [0.78, 0.86, 1.08], charShade: 0.84, charGrad: 0.1, bodyGrad: 0.24, sideTint: [0.85, 0.88, 1.0],
     blob: [0.5, 0.5, 0.62], actorShadow: false,
     top: "#101a3a", hor: "#34406e", skyCurve: [0.0, 0.5, 0.6], fog: "#2c3866", fogNear: 30, fogFar: 320, sunDisc: "#000000",
@@ -99,7 +99,7 @@ export const LOOK: Record<LightName, WorldLook> = {
     water: { near: "#22a7b6", mid: "#167fb2", far: "#1a5596", crest: "#7ddfe8", trough: "#0e4a80", glint: "#ffffff", shade: [0.5, 0.56, 0.72] },
     cloud: { lit: "#8a96c8", mid: "#5a6698", shade: "#3a4470" },
     bounce: [0.0, 0.0, 0.03],
-    sat: 1.04,
+    sat: 0.8,
   },
   day: {
     // depth.md 2.2: horizon #9fb6e6 just above the skyline, upper sky #5e93d9 at ~20 deg (grade: frame top #5997e2)
