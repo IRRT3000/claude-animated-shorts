@@ -62,7 +62,7 @@ export const SHOTS: ShotDef[] = [
   { id: 15, a: 1433, b: 1575, light: "day", place: "show" },   // kept growing; two and a half to almost eight
   { id: 16, a: 1575, b: 1640, light: "night", place: "motel" },// one night in a motel in Phoenix
   { id: 17, a: 1640, b: 1742, light: "lab", place: "room" },   // Mike started choking; the syringe?
-  { id: 18, a: 1742, b: 1792, light: "night", place: "show" }, // left behind at the show
+  { id: 18, a: 1742, b: 1792, light: "moon", place: "show" }, // left behind at the show
   { id: 19, a: 1792, b: 1866, light: "dusk", place: "farm" },  // survived an axe for eighteen months
   { id: 20, a: 1866, b: 1932, light: "night", place: "show" }, // could not survive a forgotten syringe
   { id: 21, a: 1932, b: 2010, light: "day", place: "town" },   // his town still throws him a party
@@ -141,7 +141,7 @@ export const MIKE_K: V3 = K(0.0, TABLE_TOP, 0.05);     // Mike's crate on the ki
 export const eye = (p: V3, h = 1.45): V3 => [p[0], p[1] + h, p[2]];
 
 // framings; each pushes in from the frame its key starts
-const S1a = (f: number) => dolly(FA(5.4, 1.7, 1.2), FA(1.4, 1.25, -9.0), pushK(f, 0, 0.0024, 0.006, 24), { fov: 46 });        // Lloyd off the porch with the axe
+const S1a = (f: number) => dolly(FA(4.0, 1.5, -1.5), FA(1.4, 1.25, -9.0), pushK(f, 0, 0.0024, 0.006, 24), { fov: 46 });        // Lloyd off the porch with the axe
 const S2a = (f: number) => dolly(FA(3.6, 0.32, 0.9), FA(2.0, 0.85, -3.4), pushK(f, 106, 0.003, 0.008, 22), { fov: 50, roll: 0.03 }); // low: headless Mike struts past
 const S3a = (f: number) => zoom(FA(14, 34, 80), FA(0, 6, -40), 50, pushK(f, 154, 0.0016));                                         // over the farm to the mesas
 const S3b = (f: number) => dolly(FA(7.7, 1.45, -1.7), FA(7.0, 1.25, -4.3), pushK(f, 222, 0.003, 0.008, 22), { fov: 42 });           // Lloyd lifts Mike
@@ -158,11 +158,12 @@ const S10a = (f: number) => dolly(K(0.0, 1.5, 2.4), K(0.0, 1.05, -0.5), pushK(f,
 const S10b = (f: number) => dolly(K(0.3, 1.2, 1.25), K(0.02, 1.0, 0.0), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 });   // the eyedropper
 const S11a = (f: number) => dolly(L(0.3, 1.5, 2.2), L(0.0, 1.2, -1.5), pushK(f, 948, 0.0022, 0.006, 24), { fov: 54 });                // scientists round the bench
 const S11b = (f: number) => dolly(L(-0.1, 1.68, 0.2), L(0.0, 1.72, -2.4), pushK(f, 1030, 0.003, 0.007, 22), { fov: 40 });             // the clot, the brain stem
-const S11c = (f: number) => dolly(L(0.25, 1.45, 1.6), L(0.15, 1.25, -1.4), pushK(f, 1116, 0.0026, 0.007, 22), { fov: 50, roll: -0.03 }); // the shrug
+const S10c = (f: number) => dolly(K(0.45, 1.35, 1.7), K(0.2, 1.05, -0.2), pushK(f, 884, 0.003, 0.008, 22), { fov: 44 });                // milk and water
+const S11c = (f: number) => dolly(L(0.65, 1.45, 1.6), L(0.45, 1.25, -1.4), pushK(f, 1116, 0.0026, 0.007, 22), { fov: 50, roll: -0.03 }); // the shrug
 const S12a = (f: number) => dolly(SH(-3.4, 1.6, 9.5), SH(-2.4, 1.3, 4.8), pushK(f, 1141, 0.0026, 0.007, 24), { fov: 44 });            // the promoter pops in
 const S12b = (f: number) => zoom(SH(-14, 3, 46), SH(0, 1.0, 34), 34, pushK(f, 1188, 0.0016));                                          // the car on the desert road
 const S12c = (f: number) => dolly(SH(3.0, 1.5, 9.0), SH(1.6, 1.2, 5.6), pushK(f, 1220, 0.0026, 0.007, 22), { fov: 44, roll: 0.03 });   // coins in the jar
-const S13a = (f: number) => dolly(SH(0.2, 1.4, 3.6), SH(-0.5, 1.1, -0.6), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 44 });            // the photographer, flash
+const S13a = (f: number) => dolly(SH(0.2, 1.4, 3.6), SH(-0.5, 1.1, -0.6), pushK(f, 1268, 0.0026, 0.007, 22), { fov: 50 });            // the photographer, flash
 const S14a = (f: number) => dolly(FA(-8.6, 1.5, 4.2), FA(-9.0, 1.0, -2.0), pushK(f, 1331, 0.0022, 0.006, 24), { fov: 46 });           // other farmers
 const S15a = (f: number) => dolly(SH(1.6, 1.25, 2.4), SH(0.9, 1.0, -1.2), pushK(f, 1429, 0.0024, 0.007, 24), { fov: 42 });            // Mike on the scale
 const S15b = (f: number) => dolly(SH(1.15, 0.95, 1.0), SH(0.9, 0.85, -1.2), pushK(f, 1540, 0.003, 0.009, 20), { fov: 40, roll: 0.03 }); // with no head
@@ -185,7 +186,7 @@ const CAMS: Record<number, Key[]> = {
   7: [{ f: 484, s: S7a }],
   8: [{ f: 586, s: S8a }, { f: 632, cut: true, s: S8b }],
   9: [{ f: 676, s: S9a }],
-  10: [{ f: 784, s: S10a }, { f: 846, cut: true, s: S10b }],
+  10: [{ f: 784, s: S10a }, { f: 846, cut: true, s: S10b }, { f: 884, cut: true, s: S10c }],
   11: [{ f: 948, s: S11a }, { f: 1030, cut: true, s: S11b }, { f: 1116, cut: true, s: S11c }],
   12: [{ f: 1141, s: S12a }, { f: 1188, cut: true, s: S12b }, { f: 1220, cut: true, s: S12c }],
   13: [{ f: 1268, s: S13a }],
@@ -229,7 +230,7 @@ export const DOF: Dof[] = [
   { f: 312, cInf: 12 }, { f: 364, cInf: 11 }, { f: 404, cInf: 15 }, { f: 440, cInf: 8, focus: () => FA(2.2, 0.9, 5.0) },
   { f: 484, cInf: 10 }, { f: 586, cInf: 9 }, { f: 632, cInf: 15 }, { f: 676, cInf: 10 }, { f: 784, cInf: 9 }, { f: 846, cInf: 14 },
   { f: 948, cInf: 9 }, { f: 1030, cInf: 10 }, { f: 1116, cInf: 10 }, { f: 1141, cInf: 9 }, { f: 1188, cInf: 2 }, { f: 1220, cInf: 10 },
-  { f: 1268, cInf: 10 }, { f: 1331, cInf: 6 }, { f: 1429, cInf: 11 }, { f: 1540, cInf: 15 }, { f: 1571, cInf: 3 }, { f: 1636, cInf: 10 },
+  { f: 1268, cInf: 10 }, { f: 1331, cInf: 6 }, { f: 1429, cInf: 11 }, { f: 1540, cInf: 15 }, { f: 1571, cInf: 3 }, { f: 1636, cInf: 10, focus: () => R(0.35, 0.7, 0.2) },
   { f: 1684, cInf: 12 }, { f: 1738, cInf: 12 }, { f: 1788, cInf: 9 }, { f: 1862, cInf: 16 }, { f: 1928, cInf: 3 }, { f: 2006, cInf: 10 },
 ];
 export const dofAt = (f: number) => {

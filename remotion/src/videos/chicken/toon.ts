@@ -551,7 +551,9 @@ const footStroke = (p: Pen, a: P2, b: P2, w: number, col: string) => {
   p.stroke([a, b], w, col);
 };
 
-export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
+export const bodyFront = (p: Pen, o0: Outfit, opts: FrontOpts) => {
+  // a hat taken off the head and held: draw the person bare-headed
+  const o: Outfit = opts.prop === "hatoff" || opts.prop === "hatHeart" ? { ...o0, hat: undefined } : o0;
   const { phase = 0, expr = "neutral", mode = "march", look = 0, blink = false, lift = 60, prop = null, tilt = 0, headTilt = 0, wave, shrug = 0, clap,
     light = DEF_LIGHT, facing = 0, seed = 1, seat = 0, energy = 1, sore = false, armsUp = 0 } = opts;
   const Bd = BUILD[o.build ?? "adult"], skin = o.skin ?? SKIN, two = Math.PI * 2, lid = lidOf(blink);
@@ -638,7 +640,11 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
   const rifle = !!o.rifle && (mode === "march" || mode === "stand" || mode === "stroll");
   type Arm = { pts: [P2, P2, P2]; front: boolean };
   const arms: Arm[] = [];
-  if (mode === "sit") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.1 * T.a + 6 * u), sh(side)[1] + 0.4 * HH], [tcx + side * (1.2 * T.a + 10 * u), torsoBot + 0.04 * HH]], front: false });
+  if (mode === "sit") {
+    for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.1 * T.a + 6 * u), sh(side)[1] + 0.4 * HH], [tcx + side * (1.2 * T.a + 10 * u), torsoBot + 0.04 * HH]], front: false });
+    if (prop !== null && !Array.isArray(prop) && UPHAND.has(prop)) { const S = sh(1); // seated, but the right hand still holds the prop up (a fork at dinner)
+      arms[1] = { pts: [S, [tcx + 1.15 * T.a + 12 * u, S[1] + 0.05 * HH], [tcx + 1.2 * T.a + 18 * u, S[1] - 0.42 * HH]], front: true }; }
+  }
   else if (mode === "fall") for (const side of [-1, 1]) arms.push({ pts: [sh(side), [tcx + side * (1.15 * T.a + 12 * u), sh(side)[1] - 0.25 * HH], [tcx + side * (1.3 * T.a + 24 * u), sh(side)[1] - 0.68 * HH]], front: false });
   else if (mode === "dance" || armsUp > 0) {
     // both arms up and waving (energy), or held straight up by the wrists (armsUp, the strong men's grip)
@@ -696,6 +702,12 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
         arms.push({ pts: [S, [tcx + 1.1 * T.a + 8 * u, S[1] + 0.32 * HH], [tcx + (0.1 + 0.6 * k) * T.a, S[1] + 0.1 * HH]], front: true });
       } else if (kind === "flask" || kind === "bell" || UPHAND.has(kind)) { // right hand up holding a flask to the light / ringing a bell
         arms.push({ pts: [S, [tcx + 1.15 * T.a + 12 * u, S[1] + 0.05 * HH], [tcx + 1.2 * T.a + 18 * u + 4 * u * k, S[1] - 0.42 * HH]], front: true });
+      } else if (kind === "suitcase") { // hands on the two sides of a wide case
+        arms[0] = { pts: [SL, [tcx - 1.15 * T.a - 8 * u, SL[1] + 0.4 * HH], [tcx - 0.9 * T.a - 4 * u, SL[1] + 0.55 * HH]], front: true };
+        arms.push({ pts: [S, [tcx + 1.15 * T.a + 8 * u, S[1] + 0.4 * HH], [tcx + 0.9 * T.a + 4 * u, S[1] + 0.55 * HH]], front: true });
+      } else if (kind === "hatHeart") { // hat pressed to the chest, hands at the two ends of the brim
+        arms[0] = { pts: [SL, [tcx - 1.05 * T.a - 4 * u, SL[1] + 0.42 * HH], [tcx - 0.45 * T.a, SL[1] + 0.3 * HH]], front: true };
+        arms.push({ pts: [S, [tcx + 1.05 * T.a + 4 * u, S[1] + 0.42 * HH], [tcx + 0.75 * T.a, S[1] + 0.2 * HH]], front: true });
       } else { // shoes / bowl: both hands held out in front
         arms[0] = { pts: [SL, [tcx - 1.05 * T.a - 4 * u, SL[1] + 0.4 * HH], [tcx - 0.35 * T.a, SL[1] + 0.42 * HH]], front: true };
         arms.push({ pts: [S, [tcx + 1.05 * T.a + 4 * u, S[1] + 0.4 * HH], [tcx + 0.35 * T.a, S[1] + 0.42 * HH]], front: true });
@@ -1503,15 +1515,22 @@ const hanoiProp = (p: Pen, kind: string, k: number, first: P2, last: P2, u: numb
       p.ell(cx, cy - 12 * u, 13 * u, 13 * u, "#5a6a7a", 2.4 * u); p.ell(cx, cy - 12 * u, 7 * u, 7 * u, "#9fb8d0", 1.4 * u);
       p.stroke([[cx + 20 * u, cy - 30 * u], [cx + 26 * u, cy - 56 * u]], 3 * u);
       p.ell(cx + 28 * u, cy - 66 * u, 18 * u, 12 * u, k > 0 ? "#fffbe0" : "#c9ccd2", 2.4 * u);
-    } else if (kind === "suitcase") { // an open suitcase, clothes flying out
-      p.poly([[cx - 40 * u, cy - 4 * u], [cx + 40 * u, cy - 4 * u], [cx + 40 * u, cy + 40 * u], [cx - 40 * u, cy + 40 * u]], "#8a5a34", 2.4 * u);
-      p.poly([[cx - 40 * u, cy - 4 * u], [cx + 40 * u, cy - 4 * u], [cx + 34 * u, cy - 40 * u], [cx - 34 * u, cy - 40 * u]], "#a8703e", 2.4 * u);
-      p.stroke([[cx - 10 * u, cy + 18 * u], [cx + 10 * u, cy + 18 * u]], 4 * u, "#e8c45a");
+    } else if (kind === "suitcase") { // an open suitcase held by its sides, lid swung up, clothes spilling out
+      const hw = Math.max(30 * u, (last[0] - first[0]) / 2 - 2 * u), y0 = cy - 16 * u;
+      p.poly([[cx - hw, y0], [cx + hw, y0], [cx + hw - 4 * u, y0 + 40 * u], [cx - hw + 4 * u, y0 + 40 * u]], "#8a5a34", 2.4 * u);
+      p.poly([[cx - hw, y0], [cx + hw, y0], [cx + hw + 10 * u, y0 - 38 * u], [cx - hw + 12 * u, y0 - 44 * u]], "#a8703e", 2.4 * u);
+      p.poly([[cx - hw + 6 * u, y0 - 6 * u], [cx + hw - 4 * u, y0 - 6 * u], [cx + hw + 3 * u, y0 - 32 * u], [cx - hw + 16 * u, y0 - 38 * u]], "#d9c7a8", 1.4 * u);
+      p.poly([[cx - hw + 10 * u, y0 + 4 * u], [cx - 8 * u, y0 - 10 * u], [cx + 4 * u, y0 + 6 * u], [cx - 16 * u, y0 + 14 * u]], "#5a8fc2", 1.8 * u); // a shirt
+      p.poly([[cx + 6 * u, y0], [cx + hw - 8 * u, y0 - 12 * u], [cx + hw - 4 * u, y0 + 8 * u]], "#e86a9a", 1.8 * u); // a scarf
+      p.ell(cx + 2 * u, y0 - 6 * u, 9 * u, 6 * u, "#f4f1ea", 1.6 * u); // a rolled sock
     } else if (kind === "plate") { // an empty dinner plate held in both hands
       p.ell(cx, cy, 34 * u, 10 * u, "#f7f4ec", 2.4 * u); p.ell(cx, cy - 1 * u, 22 * u, 6 * u, null, 1.4 * u);
-    } else if (kind === "hatHeart") { // a straw hat held over the heart
-      p.ell(cx, cy - 6 * u, 36 * u, 22 * u, "#e8c97a", 2.4 * u); p.ell(cx, cy - 8 * u, 20 * u, 13 * u, "#d6b46a", 2 * u);
-      p.arc(cx, cy - 8 * u, 20 * u, 13 * u, 20, 160, 3 * u, "#b84a3a");
+    } else if (kind === "hatHeart") { // a straw hat held over the heart: side-on and tilted, brim from hand to hand
+      const dx = last[0] - first[0], dy = last[1] - first[1], L = Math.hypot(dx, dy) || 1, nx = dy / L, ny = -dx / L; // normal pointing up
+      const at = (t: number, h: number): P2 => [first[0] + dx * t + nx * h * u, first[1] + dy * t + ny * h * u];
+      p.poly([at(0.2, 0), at(0.24, 30), at(0.76, 30), at(0.8, 0)], "#e8c97a", 2.4 * u);
+      p.band([at(0.22, 8), at(0.78, 8)], "#b84a3a", 6 * u, 1.2 * u);
+      p.band([at(-0.08, 0), at(1.08, 0)], "#d6b46a", 8 * u, 2.2 * u, "round");
     }
     if (kind === "sack") {
       const sp: P2[] = [[cx - 30 * u, cy - 6 * u], [cx + 30 * u, cy - 6 * u], [cx + 40 * u, cy + 34 * u], [cx + 30 * u, cy + 62 * u], [cx - 30 * u, cy + 62 * u], [cx - 40 * u, cy + 34 * u]];

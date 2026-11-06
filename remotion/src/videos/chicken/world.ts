@@ -165,7 +165,9 @@ const car = (col: string, trailer: boolean) => {
   add(boxGeo(V(-2.2, 0.45, -0.85), V(2.2, 1.1, 0.85)), body);
   const cab = new THREE.CylinderGeometry(0.85, 0.85, 1.7, 16, 1, false, 0, Math.PI); cab.rotateX(Math.PI / 2); cab.scale(1.3, 0.75, 1); cab.translate(-0.2, 1.08, 0); add(cab, body);
   for (const s of [-1, 1]) add(at(new THREE.SphereGeometry(0.62, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2).scale(1.1, 0.6, 0.55), 1.4, 1.08, s * 0.68), body);
+  add(boxGeo(V(-1.2, 1.08, -0.82), V(0.8, 1.27, 0.82)), body); // the cabin waist, so the glass sits on the body
   add(boxGeo(V(-1.15, 1.25, -0.86), V(0.75, 1.6, 0.86)), lam("ckGlass", () => ({ color: "#9fc4dc" })));
+  add(boxGeo(V(-1.22, 1.58, -0.88), V(0.8, 1.66, 0.88)), body); // the roof
   add(boxGeo(V(2.18, 0.5, -0.7), V(2.26, 0.85, 0.7)), MAT.steel());
   for (const [x, z] of [[1.4, -0.86], [1.4, 0.86], [-1.4, -0.86], [-1.4, 0.86]]) add(at(new THREE.CylinderGeometry(0.42, 0.42, 0.26, 16).rotateX(Math.PI / 2), x, 0.42, z), lam("ckTyre", () => ({ color: "#26232a" })));
   for (const s of [-1, 1]) add(at(new THREE.SphereGeometry(0.13, 10, 8), 2.2, 0.95, s * 0.6), lam("ckLamp", () => ({ color: "#fff4c8" })));

@@ -324,12 +324,23 @@ const beam = (pp: Pen) => {
   const g = pp.g, gr = g.createLinearGradient(0, 0, 0, 600); gr.addColorStop(0, "rgba(190,210,255,0.0)"); gr.addColorStop(0.3, "rgba(190,210,255,0.12)"); gr.addColorStop(1, "rgba(190,210,255,0.22)");
   g.fillStyle = gr; g.beginPath(); g.moveTo(130, 0); g.lineTo(170, 0); g.lineTo(290, 600); g.lineTo(10, 600); g.closePath(); g.fill();
 };
+const moonPool = (pp: Pen) => {
+  const g = pp.g, gr = g.createRadialGradient(128, 128, 0, 128, 128, 128);
+  gr.addColorStop(0, "rgba(200,215,255,0.32)"); gr.addColorStop(0.6, "rgba(190,210,255,0.14)"); gr.addColorStop(1, "rgba(190,210,255,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
+};
+void beam;
 const dropperFx = (pp: Pen) => {
   pp.poly([[88, 120], [112, 120], [104, 420], [96, 420]], "#dff2f7", 6); pp.ell(100, 300, 6, 60, "#f4efe6", 0);
   pp.ell(100, 80, 34, 54, "#c0353a", 7);
 };
 const hand = (pp: Pen, col: string) => { pp.ell(100, 100, 46, 34, col, 8); pp.stroke([[70, 120], [40, 200]], 46, INK); pp.stroke([[70, 120], [40, 200]], 32, "#5a8ac0"); };
 void hand;
+/** Clara's hand pinching the dropper bulb, her sleeve coming in from the top right (card 200 x 200, fingers at 60,140) */
+const dropHand = (pp: Pen) => {
+  pp.stroke([[78, 118], [200, -10]], 50, INK); pp.stroke([[78, 118], [200, -10]], 36, "#c25a7a");
+  pp.ell(60, 136, 30, 24, "#f0d2ae", 7); pp.ell(36, 150, 12, 9, "#f0d2ae", 5);
+};
 
 /** everything with a face in shot `id` at frame f */
 export const stage = (id: number, f: number, cam: CamInfo): Stage => {
@@ -394,14 +405,14 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 6: {
       stand(out, cam, W.lloyd, LLOYD_STUMP, { expr: f >= HEAD - 2 ? "shock" : "stern", prop: f >= WHOOSH ? "axeDown" : ["axe", 1], look: 1 }, t);
       if (f < WHOOSH) chick(out, cam, onStump, { mode: "stand", expr: "shock" }, 0.55, [1, 0], false, 7);
-      feathers(out, add(onStump, [0, 0.7, 0.05]), f, WHOOSH, 1.5, 18);
-      puff(out, add(onStump, [0, 0.3, 0.1]), f, WHOOSH, 0.8, 8);
+      feathers(out, add(onStump, [0.35, 1.25, 0.05]), f, WHOOSH, 1.8, 18);
+      puff(out, add(onStump, [0.4, 1.05, 0.1]), f, WHOOSH, 1.2, 8);
       break;
     }
     case 7: {
       const k = (f0: number) => (f < f0 - 2 ? 0 : f < f0 + 10 ? q(smooth((f - f0 + 2) / 6), 8) : 0.75);
       const v = k(VEIN), e = k(EAR), st = k(STEM);
-      push(out, `xray${v}${e}${st}`, 640, 500, (pp) => fxXray(pp, v, e, st, 0), LIGHTBOX[0], LIGHTBOX[1], LIGHTBOX[2] + 0.02, 1.3, 1.0);
+      push(out, `xray${v}${e}${st}`, 640, 500, (pp) => fxXray(pp, v, e, st, 0), LIGHTBOX[0], LIGHTBOX[1], LIGHTBOX[2] + 0.07, 1.3, 1.0);
       break;
     }
     case 8: {
@@ -419,7 +430,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       chick(out, cam, [COOP[0] - 0.25, py, pz], { mode: "tuck", v: 2 }, 0.5, [1, 0], false, 10);
       chick(out, cam, [COOP[0] + 0.6, py, pz], { mode: "tuck", v: 3 }, 0.5, [-1, 0], false, 11);
       chick(out, cam, [COOP[0] + 0.17, py, pz + 0.02], f >= TUCK ? { mode: "tuck", head: false } : { mode: "stand", head: false }, 0.52, [1, 0], false, 12);
-      if (f >= HABIT) zzz(out, [COOP[0] + 0.5, py + 0.5, pz + 0.05], f, 0.3);
+      if (f >= HABIT) zzz(out, [COOP[0] + 0.27, py + 0.5, pz + 0.05], f, 0.3);
       zzz(out, [COOP[0] - 0.8, py + 0.45, pz + 0.05], f + 20, 0.25);
       break;
     }
@@ -432,9 +443,11 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const neck: V3 = add(MIKE_K, [0.146, 0.31, 0.03]);
         const dy = f < DROP - 6 ? 0.18 : 0.05;
         push(out, "dropper", 200, 480, dropperFx, neck[0], neck[1] + dy + 0.09, neck[2], 0.075, 0.18);
+        const bulbY = neck[1] + dy + 0.09 + 0.06;
+        push(out, "dropHand", 200, 200, dropHand, neck[0] + 0.028, bulbY + 0.03, neck[2] + 0.01, 0.12, 0.12);
         for (const f0 of [DROP, 875, 905, THROAT]) if (f >= f0 && f < f0 + 8) push(out, "drop", 120, 160, (pp) => fxDrop(pp), neck[0], neck[1] + dy - 0.005 * (f - f0), neck[2], 0.025, 0.033);
-        if (f >= MILK - 2 && f < WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.5, -TABLE_TOP + 0.04, -0.4]), { expr: "smile", prop: "milk", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.65, -0.3]), f, MILK, 0.15, 8); }
-        if (f >= WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.5, -TABLE_TOP + 0.04, -0.4]), { expr: "smile", prop: "glass", look: -1 }, t); sparkle(out, add(MIKE_K, [0.62, 0.62, -0.3]), f, WATER, 0.15, 8); }
+        if (f >= MILK - 2 && f < WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "milk", look: -1 }, t); sparkle(out, add(MIKE_K, [0.44, 0.65, -0.35]), f, MILK, 0.15, 8); }
+        if (f >= WATER - 2) { stand(out, cam, W.clara, add(MIKE_K, [0.32, -TABLE_TOP + 0.04, -0.45]), { expr: "smile", prop: "glass", look: -1 }, t); sparkle(out, add(MIKE_K, [0.44, 0.62, -0.35]), f, WATER, 0.15, 8); }
       }
       break;
     }
@@ -442,13 +455,14 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const mike: V3 = L(0.0, 0.92, -1.6);
       if (f < 1030 || f >= 1116) {
         chick(out, cam, mike, { mode: "stand", head: false }, 0.5, [1, 0], false, 14);
-        stand(out, cam, W.sci[0], L(-0.85, 0.04, -1.1), { expr: f >= REST ? "grin" : "neutral", prop: f >= EXAM - 6 && f < 1030 ? "stetho" : null, look: 1 }, t);
-        stand(out, cam, W.sci[1], L(0.85, 0.04, -1.1), { expr: f >= REST - 2 ? "relief" : "shock", shrug: f >= REST - 2 ? q(smooth((f - REST + 2) / 6), 6) : 0, look: -1 }, t);
-        stand(out, cam, W.sci[2], L(-0.45, 0.04, -2.25), { expr: "nervous", look: -1 }, t);
+        stand(out, cam, W.sci[0], L(-0.85, 0.04, -0.75), { expr: f >= REST ? "grin" : "neutral", look: 1 }, t);
+        stand(out, cam, W.sci[1], L(0.85, 0.04, -0.75), { expr: f >= REST - 2 ? "relief" : "shock", shrug: f >= REST - 2 ? q(smooth((f - REST + 2) / 6), 6) : 0, look: -1 }, t);
+        push(out, `xray2${f >= 1116 ? 0.6 : 0}${f >= 1116 ? 1 : 0.25}`, 640, 500, (pp) => fxXray(pp, 0.35, 0.25, f >= 1116 ? 1 : 0.25, f >= 1116 ? 0.6 : 0), LIGHTBOX[0], LIGHTBOX[1], LIGHTBOX[2] + 0.07, 1.3, 1.0);
+        stand(out, cam, W.sci[2], L(-0.45, 0.04, -2.25), { expr: "nervous", prop: f >= EXAM - 6 && f < 1030 ? "stetho" : null, look: 1 }, t);
       } else {
         const c = f < CLOT - 2 ? 0 : q(0.6 + 0.4 * Math.abs(Math.sin(((f - CLOT) / FPS) * 5)), 8);
         const st = f < STEM2 - 2 ? 0.25 : q(smooth((f - STEM2 + 2) / 6), 8);
-        push(out, `xray2${c}${st}`, 640, 500, (pp) => fxXray(pp, 0.35, 0.25, st, c), LIGHTBOX[0], LIGHTBOX[1], LIGHTBOX[2] + 0.02, 1.3, 1.0);
+        push(out, `xray2${c}${st}`, 640, 500, (pp) => fxXray(pp, 0.35, 0.25, st, c), LIGHTBOX[0], LIGHTBOX[1], LIGHTBOX[2] + 0.07, 1.3, 1.0);
       }
       break;
     }
@@ -487,7 +501,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         if (!fled) chick(out, cam, p0, { mode: "stand", v: k + 1, expr: f >= 1380 ? "shock" : "neutral" }, 0.55, [k === 2 ? -1 : 1, 0], true, 20 + k);
         else if (f < NONE + 20) walkChick(out, cam, p0, add(p0, [k === 0 ? -3 : 3, 0, 0.6]), f, NONE - 6, NONE + 14, { mode: "flee", v: k + 1, expr: "shock" }, 0.55, 20 + k, 3.4);
       }
-      drift(out, FA(-9.0, 2.4, -2.4), FA(-9.1, 0.05, -2.2), f, 1402, 1432);
+      drift(out, FA(-9.65, 2.4, -2.4), FA(-9.7, 0.05, -2.2), f, 1402, 1432);
       break;
     }
     case 15: {
@@ -495,7 +509,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const on: V3 = [SCALE[0], 0.15, SCALE[2]];
       chick(out, cam, on, { mode: f >= NOHEAD - 4 ? "flex" : "stand", head: false, puff: pf }, 0.5, [-1, 0], false, 17);
       const lq = q(lb, 20);
-      push(out, `dial${lq}`, 400, 400, (pp) => fxDial(pp, lq), SCALE[0], 1.4, SCALE[2] - 0.2, 0.55, 0.55);
+      push(out, `dial${lq}`, 400, 400, (pp) => fxDial(pp, lq), SCALE[0], 1.4, SCALE[2] - 0.12, 0.55, 0.55);
       stand(out, cam, W.lloyd, SH(-0.4, 0.04, -1.6), { expr: f >= 1530 ? "grin" : "smile", look: 1 }, t);
       stand(out, cam, W.promo, SH(2.1, 0.04, -1.4), { expr: "grin", prop: "cane2", look: -1 }, t);
       sparkle(out, [SCALE[0] - 0.2, 0.75, SCALE[2] + 0.1], f, NOHEAD, 0.3, 9);
@@ -513,9 +527,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         chick(out, cam, crate, { mode: f >= CHOKE - 4 ? "cough" : "crate", head: false }, 0.5, [-1, 0], false, 18);
         if (f >= CHOKE - 2) { const u = q(((f - CHOKE) / FPS) % 0.7 / 0.7, 10); push(out, `cough${u}`, 400, 300, (pp) => fxCough(pp, u), crate[0] - 0.2, crate[1] + 0.45, crate[2], 0.4, 0.3, { soft: true }); }
       } else {
+        chick(out, cam, crate, { mode: "cough", head: false }, 0.5, [-1, 0], false, 18);
         stand(out, cam, W.clara, R(0.95, 0.04, -0.3), { expr: "shock", prop: "suitcase", look: -1 }, t);
         stand(out, cam, W.lloyd, R(0.15, 0.04, -0.5), { expr: "nervous", look: 1 }, t);
-        for (const f0 of [1692, 1702, 1714, 1726]) puff(out, R(1.2, 1.3, -0.5), f, f0, 0.5, 8);
+        for (const f0 of [1692, 1702, 1714, 1726]) puff(out, R(0.75, 1.45, -0.05), f, f0, 0.5, 8);
       }
       break;
     }
@@ -523,16 +538,16 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const tab: V3 = SH(-0.45, 0.885, -0.45);
       push(out, "syringe", 260, 100, syringeCard, tab[0], tab[1] + 0.003, tab[2], 0.3, 0.115, { flat: true, rot: 0.4 });
       if (id === 18) sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, LEFT - 2, 0.16, 10);
-      else { sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, FORGOT + 8, 0.12, 10); push(out, "beam", 300, 600, beam, tab[0] - 0.1, 1.6, tab[2] - 0.35, 0.7, 1.6, { soft: true }); }
+      else { sparkle(out, add(tab, [0.04, 0.06, 0.05]), f, FORGOT + 8, 0.12, 10); push(out, "moonpool", 256, 256, moonPool, tab[0], tab[1] + 0.004, tab[2], 0.5, 0.36, { flat: true, soft: true }); }
       break;
     }
     case 19: {
-      push(out, "axeLean", 200, 500, axeCard, STUMP[0] - 0.45, 0.42, STUMP[2] + 0.1, 0.34, 0.85);
-      drift(out, add(STUMP, [0.2, 2.4, 0.1]), add(STUMP, [0.05, STUMP_TOP + 0.02, 0.05]), f, 1798, AXE2 + 22);
+      push(out, "axeLean", 200, 500, axeCard, STUMP[0] - 0.4, 0.42, STUMP[2] + 0.1, 0.34, 0.85, { rot: -0.3 });
+      drift(out, add(STUMP, [0.2, 2.4, 0.1]), add(STUMP, [0.05, STUMP_TOP + 0.09, 0.05]), f, 1798, AXE2 + 22);
       break;
     }
     case 21: {
-      chick(out, cam, T(2.9, 1.2, -5.9), { mode: "flex", head: false, v: 3 }, 2.0, [-1, 0], false, 30);
+      chick(out, cam, T(2.9, 1.2, -5.9), { mode: "flex", head: false, v: 3 }, 3.0, [-1, 0], false, 30);
       const ppl: [number, number][] = [[-2.5, 3], [-1.2, 4.5], [0.4, 2.2], [1.6, 5.0], [-3.4, 6.5], [3.4, 1.0], [-0.4, 7.5], [2.6, 8.0], [-2.0, -1.0], [1.0, -2.5]];
       ppl.forEach(([x, z], k) => stand(out, cam, W.folk[k], T(x, 0.04, z), { expr: k % 3 ? "laugh" : "grin", look: x > 0 ? -1 : 1, shrug: f >= PARTY - 2 && k % 2 ? 1 : 0 }, t));
       for (const z of [-12, -2, 9]) push(out, "bunt", 1000, 160, fxBunting, T(0, 5.2, z)[0], 5.2, T(0, 0, z)[2], 10, 1.6);
