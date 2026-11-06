@@ -513,16 +513,16 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         sparkle(out, C(0.42, 1.85, -13.6), f, TAIL1 + 6, 0.35, 9);
       } else if (f < 1100) { // the tails poured in
         stand(out, cam, WHO.clerk, CLERK_P, { expr: "grin", prop: ["coin", q((t * 2) % 1, 8)] }, t);
-        basket(out, cam, deskTop(0.5, -0.05), basketAt(f), 0.72);
+        basket(out, cam, deskTop(0.85, 0.05), basketAt(f), 0.6);
         for (let j = 0; j < 5; j++) {
-          const p = C(1.0 + j * 0.55, 0.04, -12.0 + j * 0.95);
+          const p = C(1.9 + j * 0.6, 0.04, -11.4 + j * 1.0);
           stand(out, cam, [WHO.folk[1], WHO.hunter[3], WHO.folk[8], WHO.folk[11], WHO.folk[14]][j], p, { expr: j % 2 ? "grin" : "smile", prop: "tail", look: -1 }, t);
         }
         for (let j = 0; j < 3; j++) coin(out, deskTop(0.6, 0.4), f, POURED + j * 8, 0.12);
       } else { // the rats didn't go anywhere
         const shock = f >= ANYWHERE - 2;
         stand(out, cam, WHO.clerk, CLERK_P, { expr: shock ? "shock" : "grin", prop: shock ? null : "tail" }, t);
-        basket(out, cam, deskTop(0.5, -0.05), 1, 0.72);
+        basket(out, cam, deskTop(0.85, 0.05), 1, 0.6);
         ratSpots(-2.6, 2.6, -12.2, -7.0, 16, 7).forEach(([x, z], k) => {
           const f0 = 1118 + (k % 8) * 2;
           if (f < f0) return;
@@ -539,10 +539,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         stand(out, cam, WHO.off[0], C(1.9, 0.04, 35.0), { expr: f >= NOTAIL + 2 ? "shock" : "neutral", look: look ? -1 : 0 }, t);
         stand(out, cam, WHO.off[1], C(0.4, 0.04, 34.6), { expr: f >= NOTAIL + 4 ? "shock" : "smile", look: 1 }, t);
         if (f >= 1196) {
-          if (f < NOTAIL - 4) ratRun(out, cam, C(4.5, 0.04, 37.6), C(0.7, 0.04, 37.3), f, 1198, NOTAIL - 6, { expr: "happy", tail: false, v: 1 }, 0.42, "run", 1);
-          else rat(out, cam, C(0.7, 0.04, 37.3), { mode: "back", tail: false, v: 1 }, 0.42, [1, 0], true, 1);
+          if (f < NOTAIL - 4) ratRun(out, cam, C(4.5, 0.04, 38.2), C(0.2, 0.04, 37.9), f, 1198, NOTAIL - 6, { expr: "happy", tail: false, v: 1 }, 0.42, "run", 1);
+          else rat(out, cam, C(0.2, 0.04, 37.9), { mode: "back", tail: false, v: 1 }, 0.42, [1, 0], true, 1);
         }
-        sparkle(out, C(0.7, 0.3, 37.45), f, NOTAIL + 2, 0.25, 8);
+        sparkle(out, C(0.2, 0.3, 38.05), f, NOTAIL + 2, 0.25, 8);
       } else if (f < 1318) { // a hunter grabs a rat by the gutter
         const got = f >= GRAB;
         stand(out, cam, WHO.hunter[2], C(-23.5, 0.04, 50.3), { expr: got ? "grin" : "stern", prop: got ? ["ratHeld", q((t * 2) % 1, 6)] : null, look: -1 }, t);
@@ -561,7 +561,6 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         if (f < LETGO + 4) ratRun(out, cam, C(-23.4, 0.06, 50.2), g, f, 1350, LETGO + 2, { expr: "happy", tail: false, v: 2 }, 0.4, "run", 2);
         else if (f < 1372) rat(out, cam, g, { mode: "beg", expr: "happy", tail: false, v: 2 }, 0.4, [-1, 0], true, 2);
         else { const sink = smooth((f - 1372) / 8) * 0.5; if (sink < 0.45) rat(out, cam, add(g, [0, -sink, 0]), { mode: "beg", expr: "happy", tail: false, v: 2 }, 0.4, [-1, 0], false, 2); }
-        out.places.push(person(cam, WHO.hunter[2], -23.0, 0.04, 49.2, FRONT, { mode: "stand", expr: "grin", wave: 1, blink: lidAt(t, 7) }, {}, 1));
       }
       break;
     }
@@ -606,7 +605,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       } else { // the bounty is scrapped
         stand(out, cam, WHO.clerk, CLERK_P, { expr: f >= SCRAP ? "stern" : "neutral", look: 1 }, t);
         stand(out, cam, WHO.off[0], C(-1.25, 0.04, -14.3), { expr: "stern", shrug: 0, look: 1 }, t);
-        basket(out, cam, deskTop(0.5, -0.05), 1, 0.72);
+        basket(out, cam, deskTop(0.9, 0.05), 1, 0.6);
         burst(out, deskTop(-0.7, -0.15), f, SCRAP, 0.7, "#ffffff");
       }
       break;
@@ -621,8 +620,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const p = add(CLERK_P, [0, 0, 0.1]);
         out.places.push(person(cam, WHO.clerk, p[0], p[1], p[2], FRONT, { mode: "sit", seat: Math.round(0.47 / SU), expr: f >= TAILS ? "sad" : "tired", blink: lidAt(t, 1), headTilt: -6 }, {}, 1));
         blob(out, p[0], p[1], p[2]);
-        basket(out, cam, deskTop(0.4, -0.05), 1, 0.9);
-        sparkle(out, deskTop(0.4, 0.4), f, TAILS, 0.3, 8);
+        basket(out, cam, deskTop(0.85, 0.05), 1, 0.8);
+        sparkle(out, deskTop(0.85, 0.4), f, TAILS, 0.3, 8);
       } else { // a rat can live without one
         const wink = f >= ONE - 2 && f < ONE + 20, off = f >= 1966;
         if (!off) rat(out, cam, add(MAN, [0, 0.07, 0]), { mode: "beg", expr: wink ? "wink" : "smug", tail: false, v: 1, ph: t }, 0.42, [-1, 0], true, 1);
