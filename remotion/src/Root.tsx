@@ -7,6 +7,7 @@ import { CoxShort, COX_FRAMES } from "./videos/cox/Cox";
 import { PitchShort, PITCH_FRAMES } from "./videos/pitch/Pitch";
 import { OrganShort, ORGAN_FRAMES } from "./videos/organ/Organ";
 import { DanceShort, DANCE_FRAMES } from "./videos/dance/Dance";
+import { RatShort, RATS_FRAMES } from "./videos/rats/Rats";
 
 export const Root: React.FC = () => (
   <>
@@ -16,6 +17,7 @@ export const Root: React.FC = () => (
     <Composition id="PitchShort" component={PitchShort} durationInFrames={PITCH_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="OrganShort" component={OrganShort} durationInFrames={ORGAN_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="DanceShort" component={DanceShort} durationInFrames={DANCE_FRAMES} fps={30} width={1080} height={1920} />
+    <Composition id="RatShort" component={RatShort} durationInFrames={RATS_FRAMES} fps={30} width={1080} height={1920} />
     <Composition id="TeaspoonShort" component={TeaspoonShort} durationInFrames={TEASPOON_FRAMES} fps={30} width={1080} height={1920} />
   </>
 );

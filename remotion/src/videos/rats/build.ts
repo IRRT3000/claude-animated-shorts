@@ -477,15 +477,15 @@ type Style = { wall: string; shutter: string; roof: string; timber?: boolean; br
 // lavender: the two-tone shade multiplies by a blue-violet, so a near-neutral albedo turns lilac on every shaded face)
 // round 3: saturation -35 % on every wall (neutral warm grey / beige; the salmon became a warm greige)
 // round 4: the pale greiges still read lavender-grey in shade -> a muted brick / cream / ochre / terracotta spread
-const STYLES: Style[] = [ // Alsace 1518: mostly half-timbered plaster in warm and cool washes
-  { wall: "#efdcb8", shutter: "#2f5f6a", roof: "#c9775a", timber: true },  // cream timber frame
-  { wall: "#e8b9a0", shutter: "#2f6a43", roof: "#b8644f", timber: true },  // rose timber frame
-  { wall: "#d8a95f", shutter: "#5a3b2a", roof: "#c9775a", timber: true },  // ochre timber frame
-  { wall: "#b9cbd8", shutter: "#8c3b4a", roof: "#b8644f", timber: true },  // blue-grey timber frame
-  { wall: "#ecdab2", shutter: "#3f6fb5", roof: "#d27a62" },                // cream plaster
-  { wall: "#e6c6a0", shutter: "#2f5f6a", roof: "#a8584a", timber: true },  // sand timber frame
-  { wall: "#cfd8b8", shutter: "#8c3b4a", roof: "#c9775a", timber: true },  // sage timber frame
-  { wall: "#e2c49a", shutter: "#8c3b4a", roof: "#c9775a" },                // warm sandstone
+const STYLES: Style[] = [ // Hanoi 1902: French villas in yellow ochre and cream with green shutters; tube houses in faded washes
+  { wall: "#e9c66a", shutter: "#2f6a43", roof: "#c9775a" },  // colonial yellow
+  { wall: "#efe0b8", shutter: "#2f6a43", roof: "#b8644f" },  // cream
+  { wall: "#e2b26a", shutter: "#3f6a5a", roof: "#c9775a" },  // ochre
+  { wall: "#f0d48a", shutter: "#2f5f6a", roof: "#a8584a" },  // butter yellow
+  { wall: "#e8d2a8", shutter: "#4a7a4a", roof: "#c9775a" },  // sand
+  { wall: "#d9a87a", shutter: "#5a3b2a", roof: "#a8584a" },  // tube house: terracotta wash
+  { wall: "#b9cbc0", shutter: "#3a5a8a", roof: "#9a5a48" },  // tube house: faded green-blue
+  { wall: "#e6c89a", shutter: "#8c3b4a", roof: "#b8644f" },  // tube house: warm plaster
 ];
 const roofMat = (col: string) => lam("roof" + col, () => ({ map: roofHD(col, col === "#8f97a8"), side: THREE.DoubleSide }));
 

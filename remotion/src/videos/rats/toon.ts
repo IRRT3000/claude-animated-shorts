@@ -487,14 +487,14 @@ const hatOn = (p: Pen, o: Outfit, hp: P2[], H: Blob, cx: number, hc: number, lig
 
 // ---------------- bodies ----------------
 /** Hanoi props held up in the right hand, and those carried in both hands */
-const UPHAND = new Set(["lantern", "net", "scissors", "ratHeld", "tail", "coin", "weed", "club"]);
+const UPHAND = new Set(["lantern", "net", "scissors", "ratHeld", "ratHeldNo", "tail", "coin", "weed", "club"]);
 const TWOHAND = new Set(["sack", "basket", "can", "cage"]);
 export type Arms = [P2[], P2[]];
 /** held prop; for the hammer the number is the strike 0 (raised) .. 1 (struck) */
 export type Prop = null | "icecream" | "shako" | "cane" | ["hammer", number] | ["spoon", number] | ["caneOil", number] | ["bucket", number]
   | ["drum", number] | ["pipe", number] | ["fiddle", number] | ["flask", number] | "shoes" | "bowl" | ["bell", number]
   // Hanoi 1902: held up in the right hand / both hands in front
-  | "lantern" | ["net", number] | ["scissors", number] | ["ratHeld", number] | "tail" | ["coin", number] | "weed" | "club"
+  | "lantern" | ["net", number] | ["scissors", number] | ["ratHeld", number] | ["ratHeldNo", number] | "tail" | ["coin", number] | "weed" | "club"
   | "sack" | ["basket", number] | ["can", number] | "cage";
 
 const BUILD: Record<Build, { a: number; torso: number; legs: number; tw: number }> = {
@@ -1401,7 +1401,7 @@ const hanoiProp = (p: Pen, kind: string, k: number, first: P2, last: P2, u: numb
   } else if (kind === "ratHeld" || kind === "ratHeldNo") { // a rat held up by the scruff
     const [X, Y] = p.P(hx, hy), rot = p.rot; p.rot = null;
     p.g.save(); p.g.translate(X, Y + 2 * u); const s = (95 * u) / 600; p.g.scale(s, s); p.g.translate(-300, -300);
-    ratCard(p, { mode: "hang", ph: k, expr: "shock", tail: true });
+    ratCard(p, { mode: "hang", ph: k, expr: kind === "ratHeld" ? "shock" : "happy", tail: kind === "ratHeld" });
     p.g.restore(); p.rot = rot;
     p.dot(hx, hy, 5.5 * u);
   } else if (kind === "tail") { // a single pink tail pinched between finger and thumb

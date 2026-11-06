@@ -1,4 +1,4 @@
-// "The Song That Ends in 2640": our original 68 s short in the flat-characters-in-a-3D-toon-world style (bridge pipeline).
+// "The Rats That Kept Their Lives": our original 67 s short in the flat-characters-in-a-3D-toon-world style (bridge pipeline).
 // One three.js world (world.ts) posed per frame from the story timeline (story.ts). Post chain (look-match pass):
 //   InkPass (world ink lines, own pass) -> lens blur pre + main (thin-lens DOF per shot from dofAt) ->
 //   [bloom (emissive only) + NEUTRAL tone mapping + colour grade] (one merged EffectPass), MSAA 4.
@@ -21,7 +21,7 @@ import { Kit } from "./build";
 
 import { TOTAL, FLASH_AT, SHOTS, layersAt, dofAt } from "./story";
 
-export const DANCE_FRAMES = TOTAL;
+export const RATS_FRAMES = TOTAL;
 
 /** A/B switches for test stills only (Remotion inputProps `{ post: { ink: false, ... } }`); everything is on by default. */
 type PostToggles = { ink: boolean; lens: boolean; pre: boolean; bloom: boolean; grade: boolean; grain: boolean };
@@ -42,7 +42,7 @@ const fwd = new THREE.Vector3(), fpt = new THREE.Vector3();
 
 const useKit = () => {
   const [kit, setKit] = useState<Kit | null>(null);
-  const [handle] = useState(() => delayRender("dance kit"));
+  const [handle] = useState(() => delayRender("rats kit"));
   useEffect(() => { loadKit().then((k) => { setKit(k); continueRender(handle); }); }, [handle]);
   return kit;
 };
@@ -104,7 +104,7 @@ const ShotView: React.FC<{ id: number; kit: Kit; alpha: number }> = ({ id, kit, 
   </AbsoluteFill>
 );
 
-export const DanceShort: React.FC = () => {
+export const RatShort: React.FC = () => {
   const f = useCurrentFrame();
   const kit = useKit();
   if (!kit) return null;

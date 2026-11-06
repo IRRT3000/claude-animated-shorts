@@ -1,24 +1,24 @@
-// "The Summer Everyone Danced" as one three.js scene: Strasbourg in 1518 (the horse market square with the council's
-// wooden stage, the guild hall, the hitching rail, a bread stall, the saint's column, the street to the pink cathedral
-// with Frau Troffea's door) and, 3 km away, green hills with the saint's shrine and the wagon road. update(id, f, camera)
-// poses everything for shot `id` at frame f (pure function of id + f).
+// "The Rats That Kept Their Lives" as one three.js scene: Hanoi in 1902 (the city hall square with the bounty desk, a
+// boulevard of French villas with a shiny new manhole, a lake with a little tower, a street of tube houses, a villa
+// garden), the brick sewer under it, a French bathroom and a rat farm in the countryside. update(id, f, camera) poses
+// everything for shot `id` at frame f (pure function of id + f).
 import * as THREE from "three";
 import { Batch, V, lam, boxGeo, setSight, prop, house, Ray, Kit } from "./build";
-import { ctex, cloudHD, grassHD, planksHD, stoneHD, roofHD, cobbleHD, facadeHD, rng } from "./paint";
+import { ctex, cloudHD, grassHD, stoneHD, roofHD, cobbleHD, facadeHD, rng } from "./paint";
 import { LIGHTS, LOOK, LightPreset } from "./lights";
 import { TONE, CHAR, LFB, untone } from "./shade";
 import { NOINK } from "./ink";
 import { Pool, Actor, Fx, stage } from "./cast";
 import {
-  FPS, SHOTS, ShotDef, STAGE, DECK, GUILD, RAIL, STALL, COLUMN, COL_H, BENCH, DOOR, CATH_Z, HILL, ROAD, SHRINE,
-  camAt, hillH, roadAt, nightAt, doorsAt, stageAt, wagonPose, CLEAR, STEP_OUT, V3, smooth, clamp01,
+  FPS, SHOTS, ShotDef, HALL_Z, DESK, DESK_TOP, MAN, LAKE_Z, TOWER, ALLEY_Z, GRATE, GARDEN, SEW, SEW_W, SEW_H, SEW_R, CAT_Z,
+  BATH, LOO, FARM, CAGES, camAt, POP, SCRAP, DARK, PRED, V3, smooth, clamp01,
 } from "./story";
 
 export const loadKit = async (): Promise<Kit> => ({}); // no external models: trees are drawn by build.ts
 void LFB;
 
 /** per-shot sun (camera-relative az / el overrides) */
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 120, el: 42 }, 6: { az: 115, el: 40 }, 9: { az: 120, el: 42 }, 13: { az: 140, el: 12 }, 14: { az: 145, el: 12 }, 16: { az: 140, el: 10 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 2: { az: 130, el: 14 }, 14: { az: 140, el: 12 }, 6: { az: 150, el: 12 }, 16: { az: 145, el: 12 } };
 
 /** every lens position of the film looking at its subject (houses and trees there are left out) */
 const sightLines = (place: string): Ray[] => {
@@ -39,45 +39,90 @@ const sightLines = (place: string): Ray[] => {
 };
 
 // ---------------- paintings ----------------
-/** the cathedral's rose window: deep blue glass, red and gold panes, stone tracery */
-const roseTex = () => ctex("dpRose", 512, 512, (g) => {
-  g.fillStyle = "#b9776c"; g.fillRect(0, 0, 512, 512);
-  g.fillStyle = "#26305e"; g.beginPath(); g.arc(256, 256, 236, 0, 7); g.fill();
-  for (let k = 0; k < 16; k++) {
-    const a = (k / 16) * Math.PI * 2;
-    g.fillStyle = k % 2 ? "#a83a4a" : "#d6a842"; g.beginPath(); g.arc(256 + 170 * Math.cos(a), 256 + 170 * Math.sin(a), 30, 0, 7); g.fill();
-    g.strokeStyle = "#c98a7c"; g.lineWidth = 12; g.beginPath(); g.moveTo(256 + 60 * Math.cos(a), 256 + 60 * Math.sin(a)); g.lineTo(256 + 236 * Math.cos(a), 256 + 236 * Math.sin(a)); g.stroke();
+const roadTex = () => ctex("rtRoad", 512, 512, (g, r) => {
+  g.fillStyle = "#d2b07a"; g.fillRect(0, 0, 512, 512);
+  for (let k = 0; k < 520; k++) { g.fillStyle = ["#c29e68", "#dcbc88", "#b8925c"][Math.floor(r() * 3)]; g.beginPath(); g.arc(r() * 512, r() * 512, 2 + r() * 5, 0, 7); g.fill(); }
+});
+const clockTex = () => ctex("rtClock", 256, 256, (g) => {
+  g.fillStyle = "#f7f1e1"; g.strokeStyle = "#221f2e"; g.lineWidth = 12;
+  g.beginPath(); g.arc(128, 128, 112, 0, 7); g.fill(); g.stroke();
+  g.lineCap = "round";
+  for (let i = 0; i < 12; i++) { const a = (i * Math.PI) / 6; g.lineWidth = 8; g.beginPath(); g.moveTo(128 + 80 * Math.cos(a), 128 + 80 * Math.sin(a)); g.lineTo(128 + 96 * Math.cos(a), 128 + 96 * Math.sin(a)); g.stroke(); }
+  g.lineWidth = 12; g.beginPath(); g.moveTo(128, 128); g.lineTo(128, 60); g.stroke();
+  g.lineWidth = 9; g.beginPath(); g.moveTo(128, 128); g.lineTo(186, 128); g.stroke();
+});
+/** the manhole cover: concentric rings and a cross-hatch, cast iron */
+const coverTex = () => ctex("rtCover", 256, 256, (g) => {
+  g.fillStyle = "#8f96a2"; g.fillRect(0, 0, 256, 256);
+  g.strokeStyle = "#5a606c"; g.lineWidth = 7;
+  for (const r of [120, 92, 40]) { g.beginPath(); g.arc(128, 128, r, 0, 7); g.stroke(); }
+  g.lineWidth = 5; for (let i = -3; i <= 3; i++) { g.beginPath(); g.moveTo(128 + i * 22, 50); g.lineTo(128 + i * 22, 206); g.stroke(); g.beginPath(); g.moveTo(50, 128 + i * 22); g.lineTo(206, 128 + i * 22); g.stroke(); }
+  g.fillStyle = "rgba(255,255,255,0.35)"; g.beginPath(); g.ellipse(96, 86, 40, 16, -0.6, 0, 7); g.fill(); // the shine
+});
+/** sewer bricks: dark red-brown, mortar lines, a few damp moss patches */
+const sewerBrick = () => ctex("rtSewBrick", 512, 512, (g, r) => {
+  g.fillStyle = "#6a4a3a"; g.fillRect(0, 0, 512, 512);
+  for (let row = 0; row < 16; row++) for (let i = -1; i < 8; i++) {
+    const x = i * 64 + (row % 2) * 32, y = row * 32;
+    g.fillStyle = ["#a85e44", "#9a5640", "#b26a4c", "#8e5038"][Math.floor(r() * 4)];
+    g.fillRect(x + 3, y + 3, 58, 26);
   }
-  g.fillStyle = "#3a6ab0"; g.beginPath(); g.arc(256, 256, 58, 0, 7); g.fill();
-  g.strokeStyle = "#c98a7c"; g.lineWidth = 16; g.beginPath(); g.arc(256, 256, 236, 0, 7); g.stroke(); g.beginPath(); g.arc(256, 256, 62, 0, 7); g.stroke();
-  g.lineWidth = 10; g.beginPath(); g.arc(256, 256, 130, 0, 7); g.stroke();
+  for (let k = 0; k < 10; k++) { g.fillStyle = "rgba(90,120,60,0.35)"; g.beginPath(); g.ellipse(r() * 512, 400 + r() * 112, 30 + r() * 40, 10 + r() * 10, 0, 0, 7); g.fill(); }
 });
-/** striped market awning */
-const awningTex = () => ctex("dpAwning", 256, 128, (g) => {
-  for (let i = 0; i < 8; i++) { g.fillStyle = i % 2 ? "#f3ead6" : "#c0353a"; g.fillRect(i * 32, 0, 32, 128); }
+const waterTex = (key: string, base: string, line: string) => ctex(key, 512, 512, (g, r) => {
+  g.fillStyle = base; g.fillRect(0, 0, 512, 512);
+  g.strokeStyle = line; g.lineWidth = 5; g.lineCap = "round";
+  for (let k = 0; k < 40; k++) { const x = r() * 512, y = r() * 512, w = 20 + r() * 50; g.beginPath(); g.moveTo(x, y); g.quadraticCurveTo(x + w / 2, y - 6, x + w, y); g.stroke(); }
 });
-/** dirt road: warm ochre with wheel ruts and pebbles */
-const roadTex = () => ctex("dpRoad", 512, 512, (g, r) => {
-  g.fillStyle = "#c9a46a"; g.fillRect(0, 0, 512, 512);
-  for (let k = 0; k < 500; k++) { g.fillStyle = ["#b8935a", "#d6b47c", "#a8844e"][Math.floor(r() * 3)]; g.beginPath(); g.arc(r() * 512, r() * 512, 2 + r() * 5, 0, 7); g.fill(); }
-  g.fillStyle = "rgba(110,80,40,0.25)"; g.fillRect(130, 0, 34, 512); g.fillRect(348, 0, 34, 512);
+/** bathroom: white tiles below, green-striped wallpaper above (a 4.4 x 3.2 m wall); window = a sunny window with a palm */
+const bathWall = (window: boolean) => ctex("rtBathWall" + (window ? "W" : ""), 1024, 744, (g) => {
+  const S = 1024 / 4.4, wy = 744 - 1.3 * S;
+  for (let x = 0; x < 1024; x += 26) { g.fillStyle = (x / 26) % 2 ? "#dfeadf" : "#cfe0cf"; g.fillRect(x, 0, 26, wy); }
+  g.fillStyle = "#f4f4ee"; g.fillRect(0, wy, 1024, 744 - wy);
+  g.strokeStyle = "#c8ccc6"; g.lineWidth = 3;
+  for (let y = wy; y < 744; y += 34) { g.beginPath(); g.moveTo(0, y); g.lineTo(1024, y); g.stroke(); }
+  for (let x = 0; x < 1024; x += 34) { g.beginPath(); g.moveTo(x, wy); g.lineTo(x, 744); g.stroke(); }
+  g.fillStyle = "#3f6a8a"; g.fillRect(0, wy - 10, 1024, 14); // a blue border tile row
+  if (window) {
+    const x0 = 560, y0 = 120, w = 260, h = 300;
+    g.fillStyle = "#8cc4ec"; g.fillRect(x0, y0, w, h);
+    g.fillStyle = "#5a9a4a"; g.beginPath(); g.ellipse(x0 + 180, y0 + 120, 90, 40, -0.4, 0, 7); g.fill();
+    g.strokeStyle = "#7a5a3a"; g.lineWidth = 14; g.beginPath(); g.moveTo(x0 + 190, y0 + 300); g.lineTo(x0 + 170, y0 + 130); g.stroke();
+    g.strokeStyle = "#f4efe2"; g.lineWidth = 18; g.strokeRect(x0, y0, w, h); g.beginPath(); g.moveTo(x0 + w / 2, y0); g.lineTo(x0 + w / 2, y0 + h); g.moveTo(x0, y0 + h / 2); g.lineTo(x0 + w, y0 + h / 2); g.stroke();
+  }
 });
-/** the doorway darkness */
-const DARK = () => lam("dpDark", () => ({ color: "#1c1410" }));
+const checkerTex = () => ctex("rtChecker", 256, 256, (g) => { for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) { g.fillStyle = (i + j) % 2 ? "#2f3a4a" : "#efe8d8"; g.fillRect(i * 32, j * 32, 32, 32); } });
+/** bamboo bars for the farm cages (transparent between the bars) */
+const barsTex = () => ctex("rtBars", 256, 256, (g) => {
+  g.clearRect(0, 0, 256, 256);
+  for (let i = 0; i < 8; i++) { g.fillStyle = "#d6b46a"; g.fillRect(i * 32 + 11, 0, 10, 256); g.fillStyle = "#a8843e"; g.fillRect(i * 32 + 11, 120, 10, 6); }
+  g.fillStyle = "#c9a25a"; g.fillRect(0, 0, 256, 14); g.fillRect(0, 242, 256, 14);
+});
+const riceTex = () => ctex("rtRice", 512, 512, (g, r) => {
+  g.fillStyle = "#7fa86a"; g.fillRect(0, 0, 512, 512);
+  for (let y = 8; y < 512; y += 24) for (let x = 6 + (y % 48 ? 0 : 10); x < 512; x += 20) {
+    g.fillStyle = ["#8ec46a", "#9ad070", "#7ab85c"][Math.floor(r() * 3)];
+    g.beginPath(); g.ellipse(x, y, 5, 9, 0, 0, 7); g.fill();
+  }
+});
+const frondTex = () => ctex("rtFrond", 256, 64, (g) => {
+  g.clearRect(0, 0, 256, 64);
+  g.fillStyle = "#4f9a3e"; g.beginPath(); g.moveTo(0, 32); g.quadraticCurveTo(128, -6, 256, 30); g.quadraticCurveTo(128, 70, 0, 32); g.fill();
+  g.strokeStyle = "#7ab85c"; g.lineWidth = 3; g.beginPath(); g.moveTo(0, 32); g.quadraticCurveTo(128, 26, 256, 30); g.stroke();
+  g.strokeStyle = "#3a7a2e"; g.lineWidth = 2; for (let x = 20; x < 240; x += 14) { g.beginPath(); g.moveTo(x, 30); g.lineTo(x + 10, 8 + x / 30); g.moveTo(x, 32); g.lineTo(x + 10, 56 - x / 30); g.stroke(); }
+});
+const DARKM = () => lam("rtDark", () => ({ color: "#1a1210" }));
 
 const MAT = {
-  wood: () => lam("dpWood", () => ({ color: "#b07a48" })), woodD: () => lam("dpWoodD", () => ({ color: "#6a4430" })),
-  pine: () => lam("dpPine", () => ({ map: planksHD(), color: "#e0b078" })), iron: () => lam("dpIron", () => ({ color: "#5a5a64" })),
-  stone: () => lam("dpStoneTrim", () => ({ color: "#c9b89c" })), pink: () => lam("dpPink", () => ({ map: stoneHD("dpPinkT", ["#c98a7c", "#c08072", "#d29484", "#b8786a"], "#8e5a52") })),
-  pinkTrim: () => lam("dpPinkTrim", () => ({ color: "#d79a8a" })), red: () => lam("dpRed", () => ({ color: "#c0353a" })),
-  gold: () => lam("dpGold", () => ({ color: "#e0b040" })), cream: () => lam("dpCream", () => ({ color: "#efe6d0" })),
-  grey: () => lam("dpGrey", () => ({ map: stoneHD("dpGreyT", ["#b8b0a4", "#aea698", "#c2baae", "#a69e92"], "#7e766a") })),
+  wood: () => lam("rtWood", () => ({ color: "#b07a48" })), woodD: () => lam("rtWoodD", () => ({ color: "#6a4430" })),
+  iron: () => lam("rtIron", () => ({ color: "#4a4e58" })), cream: () => lam("rtCream", () => ({ color: "#efe0b8" })),
+  trim: () => lam("rtTrim", () => ({ color: "#f6ecd2" })), white: () => lam("rtPorc", () => ({ color: "#f6f6f2" })),
+  green: () => lam("rtHedge", () => ({ color: "#4f9a3e" })), terra: () => lam("rtTerra", () => ({ color: "#b8644f" })),
+  stone: () => lam("rtStone", () => ({ map: stoneHD("rtStoneT", ["#cfc6b4", "#c4baa6", "#d8cfbe", "#bcb19c"], "#8e8676") })),
+  bamboo: () => lam("rtBamboo", () => ({ color: "#d6b46a" })), thatch: () => lam("roof#c9a25a", () => ({ map: roofHD("#c9a25a"), side: THREE.DoubleSide })),
+  brick: () => lam("rtSewBrickM", () => ({ map: sewerBrick(), side: THREE.DoubleSide })),
 };
-const shadowAll = (o: THREE.Object3D) => o.traverse((m) => { const x = m as THREE.Mesh; if (x.isMesh && !x.layers.isEnabled(NOINK)) { x.castShadow = true; x.receiveShadow = true; } });
-const pointShape = (w: number, h: number) => {
-  const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h - w); s.quadraticCurveTo(w / 2, h - w * 0.2, 0, h); s.quadraticCurveTo(-w / 2, h - w * 0.2, -w / 2, h - w); s.lineTo(-w / 2, 0);
-  return new THREE.ShapeGeometry(s, 16);
-};
+const shadowAll = (o: THREE.Object3D, cast = true) => o.traverse((m) => { const x = m as THREE.Mesh; if (x.isMesh && !x.layers.isEnabled(NOINK)) { x.castShadow = cast; x.receiveShadow = true; } });
 const archShape = (w: number, h: number) => {
   const s = new THREE.Shape(); s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h - w / 2); s.absarc(0, h - w / 2, w / 2, 0, Math.PI, false); s.lineTo(-w / 2, 0);
   return new THREE.ShapeGeometry(s, 16);
@@ -95,15 +140,31 @@ const gable = (b: Batch, x0: number, x1: number, y: number, z0: number, z1: numb
   b.add(g, mat);
   for (const z of [z0, z1]) {
     const t = new THREE.BufferGeometry();
-    t.setAttribute("position", new THREE.Float32BufferAttribute([x0, y, z, x1, y, z, cx, y + rise, z].concat(z === z0 ? [] : []), 3));
+    t.setAttribute("position", new THREE.Float32BufferAttribute([x0, y, z, x1, y, z, cx, y + rise, z], 3));
     if (z === z1) t.setIndex([0, 1, 2]); else t.setIndex([0, 2, 1]);
     t.setAttribute("uv", new THREE.Float32BufferAttribute([0, 0, 1, 0, 0.5, 1], 2));
     t.computeVertexNormals();
     b.add(t, wall);
   }
 };
-
-type StagePart = { o: THREE.Object3D; base: THREE.Vector3; seed: number };
+const at = (g: THREE.BufferGeometry, x: number, y: number, z: number) => g.translate(x, y, z);
+/** a palm: a gently curved trunk and a crown of drooping fronds */
+const palm = (b: Batch, x: number, z: number, h: number, seed: number) => {
+  const r = rng(seed), lean = (r() - 0.5) * 0.5, n = 6, tm = lam("rtPalmTrunk", () => ({ color: "#9a7a5a" }));
+  let px = x, pz = z, py = 0;
+  for (let i = 0; i < n; i++) {
+    const seg = new THREE.CylinderGeometry(0.16 - i * 0.012, 0.19 - i * 0.012, h / n + 0.05, 8);
+    const nx = x + lean * h * ((i + 1) / n) ** 2;
+    at(seg, (px + nx) / 2, py + h / n / 2, pz); b.add(seg, tm);
+    px = nx; py += h / n;
+  }
+  const fm = lam("rtFrondM", () => ({ map: frondTex(), alphaTest: 0.5, side: THREE.DoubleSide }));
+  for (let k = 0; k < 8; k++) {
+    const a = (k / 8) * Math.PI * 2 + r(), fg = new THREE.PlaneGeometry(2.6, 0.7);
+    fg.translate(1.3, 0, 0); fg.rotateX(Math.PI / 2); fg.rotateZ(-0.35 - r() * 0.3); fg.rotateY(a);
+    at(fg, px, py, pz); b.add(fg, fm);
+  }
+};
 
 export class World {
   root = new THREE.Group();
@@ -115,11 +176,7 @@ export class World {
   private fog = new THREE.Fog("#bccbec", 25, 420);
   private sunCache = new Map<number, THREE.Vector3>();
   private clouds: THREE.Mesh[] = [];
-  private moon: THREE.Mesh;
-  private stageParts: StagePart[] = [];
-  private guildL: THREE.Object3D; private guildR: THREE.Object3D; private clutter: THREE.Object3D[] = [];
-  private trofDoor: THREE.Object3D;
-  private wagon: THREE.Group; private wheels: THREE.Mesh[] = [];
+  private cover: THREE.Object3D; private lid: THREE.Object3D; private boxLid: THREE.Object3D;
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
 
@@ -153,212 +210,229 @@ export class World {
       m.layers.set(NOINK); m.userData.k = i;
       this.clouds.push(m); R.add(m);
     }
-    this.moon = new THREE.Mesh(new THREE.CircleGeometry(1, 40), new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 2.4, 2.1), fog: false, depthWrite: false }));
-    this.moon.layers.set(NOINK); this.moon.renderOrder = -0.5; R.add(this.moon);
 
-    // ---- Strasbourg ----
-    setSight(sightLines("town"));
-    const r = rng(23);
+    // ---- Hanoi ----
+    setSight(sightLines("city"));
+    const r = rng(29);
     const b = new Batch();
     const ground = new THREE.PlaneGeometry(1600, 1600); ground.rotateX(-Math.PI / 2);
     const uv = ground.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 240, uv.getY(i) * 240);
-    b.add(ground, lam("dpField", () => ({ map: grassHD() })));
-    const cob = lam("dpCobble", () => ({ map: cobbleHD() }));
-    b.add(boxGeo(V(-24, 0, -44), V(24, 0.04, 26), 8), cob);     // the horse market square
-    b.add(boxGeo(V(-5, 0, -84), V(5, 0.04, -44), 8), cob);      // the street north to the cathedral
-    b.add(boxGeo(V(-17, 0, -88), V(17, 0.04, -78), 8), cob);    // the cathedral plaza
-    b.add(boxGeo(V(-3.2, 0, 26), V(3.2, 0.04, 900), 8), cob);   // the road south
-    // houses round the square (gaps: the street north, the road south, the guild hall on the west side)
+    ground.translate(0, 0, -700); // the lake replaces the ground south of z = 96
+    b.add(ground, lam("rtField", () => ({ map: grassHD() })));
+    const cob = lam("rtCobble", () => ({ map: cobbleHD() })), road = lam("rtRoadM", () => ({ map: roadTex() }));
+    b.add(boxGeo(V(-24, 0, -24), V(24, 0.04, 2), 8), cob);                    // the city hall square
+    b.add(boxGeo(V(-7, 0, 2), V(7, 0.04, LAKE_Z), 6), road);                  // the boulevard
+    for (const s of [-1, 1]) b.add(boxGeo(V(s > 0 ? 7 : -10.5, 0, 2), V(s > 0 ? 10.5 : -7, 0.1, LAKE_Z), 8), cob); // pavements
+    b.add(boxGeo(V(-80, 0, ALLEY_Z - 4), V(-7, 0.04, ALLEY_Z + 4), 6), road);   // the tube-house street
+    b.add(boxGeo(V(-80, 0, ALLEY_Z + 3.4), V(-10.5, 0.12, ALLEY_Z + 4.6), 4), MAT.stone()); // north kerb
+    b.add(boxGeo(V(-80, 0, ALLEY_Z - 4.6), V(-10.5, 0.12, ALLEY_Z - 3.4), 4), MAT.stone()); // south kerb
+    // the city hall: a long cream block, an arcade, a clock tower over the middle
+    {
+      const Z = HALL_Z, h = 11, st = { wall: "#efe0b8", shutter: "#2f6a43" };
+      const fq = new THREE.PlaneGeometry(36, h); fq.translate(0, h / 2, Z + 0.01); b.add(fq, lam("rtHallF", () => ({ map: facadeHD("rtHallF", 36, h, { ...st, door: false }) })));
+      b.add(boxGeo(V(-18, 0, Z - 12), V(18, h, Z)), MAT.cream());
+      b.add(boxGeo(V(-18.3, h, Z - 12.3), V(18.3, h + 0.5, Z + 0.3)), MAT.trim());          // cornice
+      for (let x = -17.5; x <= 17.5; x += 1.0) b.add(boxGeo(V(x - 0.12, h + 0.5, Z + 0.05), V(x + 0.12, h + 1.3, Z + 0.25)), MAT.trim()); // balustrade
+      b.add(boxGeo(V(-18.3, h + 1.3, Z + 0.0), V(18.3, h + 1.5, Z + 0.3)), MAT.trim());
+      for (let i = 0; i < 9; i++) { const x = -16 + i * 4; b.add(archShape(2.6, 3.3).translate(x, 0, Z + 0.04), DARKM()); b.add(boxGeo(V(x + 1.4, 0, Z), V(x + 2.6, 3.8, Z + 0.35)), MAT.trim()); }
+      b.add(boxGeo(V(-18, 3.8, Z), V(18, 4.2, Z + 0.4)), MAT.trim());
+      b.add(boxGeo(V(-4, 0, Z - 9), V(4, 21, Z + 1.2)), MAT.cream());                           // tower
+      b.add(boxGeo(V(-4.3, 21, Z - 9.3), V(4.3, 21.6, Z + 1.5)), MAT.trim());
+      const clock = new THREE.CircleGeometry(2.0, 40); clock.translate(0, 17.5, Z + 1.22); b.add(clock, lam("rtClockM", () => ({ map: clockTex() })));
+      const ring = new THREE.RingGeometry(2.0, 2.35, 40); ring.translate(0, 17.5, Z + 1.21); b.add(ring, MAT.trim());
+      const cap = new THREE.ConeGeometry(5.6, 5, 4); cap.rotateY(Math.PI / 4); cap.translate(0, 24.1, Z - 3.9); b.add(cap, lam("roof#8f97a8", () => ({ map: roofHD("#8f97a8", true), side: THREE.DoubleSide })));
+      b.add(boxGeo(V(-0.06, 26.4, Z - 3.96), V(0.06, 28.5, Z - 3.84)), MAT.iron());
+      for (let s = 0; s < 4; s++) b.add(boxGeo(V(-6 + s * 0.15, 0, Z + 1.2 + s * 0.6), V(6 - s * 0.15, 0.6 - s * 0.15, Z + 1.8 + s * 0.6)), MAT.stone()); // steps
+      b.add(archShape(2.6, 4.2).translate(0, 0, Z + 1.23), DARKM());
+    }
+    // the bounty desk (top at DESK_TOP), a chest of coins on it, stacks of coins
+    {
+      const [x, , z] = DESK;
+      b.add(boxGeo(V(x - 1.3, DESK_TOP - 0.06, z - 0.5), V(x + 1.3, DESK_TOP, z + 0.5)), MAT.wood());
+      b.add(boxGeo(V(x - 1.25, 0.2, z + 0.42), V(x + 1.25, DESK_TOP - 0.06, z + 0.48)), lam("rtDeskCloth", () => ({ color: "#2f5f6a" })));
+      for (const [a, c] of [[-1.2, -0.42], [1.2, -0.42]]) b.add(boxGeo(V(x + a - 0.05, 0, z + c - 0.05), V(x + a + 0.05, DESK_TOP - 0.06, z + c + 0.05)), MAT.woodD());
+      b.add(boxGeo(V(x - 0.95, DESK_TOP, z - 0.32), V(x - 0.45, DESK_TOP + 0.24, z + 0.02)), MAT.woodD()); // the coin chest
+      for (const [cx, cz, n] of [[-0.3, 0.2, 5], [-0.18, 0.28, 3], [-0.36, 0.32, 2]] as const) { const c = new THREE.CylinderGeometry(0.035, 0.035, 0.012 * n, 12); c.translate(x + cx, DESK_TOP + 0.006 * n, z + cz); b.add(c, lam("rtGold", () => ({ color: "#e8bc4a" }))); }
+      const st = new THREE.CylinderGeometry(0.22, 0.25, 0.46, 12); st.translate(x, 0.23, z - 1.0); b.add(st, MAT.woodD()); // the clerk's stool
+    }
+    // the shiny manhole: a dark hole (under the cover) + an iron rim
+    { const h = new THREE.CircleGeometry(0.42, 32); h.rotateX(-Math.PI / 2); h.translate(MAN[0], 0.045, MAN[2]); b.add(h, DARKM());
+      const rim = new THREE.RingGeometry(0.42, 0.5, 32); rim.rotateX(-Math.PI / 2); rim.translate(MAN[0], 0.046, MAN[2]); b.add(rim, MAT.iron()); }
+    // the gutter grate on the tube-house street's north kerb
+    { const [gx, , gz] = GRATE; b.add(boxGeo(V(gx - 0.45, 0.0, gz - 0.25), V(gx + 0.45, 0.045, gz + 0.25)), DARKM());
+      for (let i = 0; i < 7; i++) b.add(boxGeo(V(gx - 0.42 + i * 0.14, 0.04, gz - 0.24), V(gx - 0.38 + i * 0.14, 0.07, gz + 0.24)), MAT.iron());
+      b.add(boxGeo(V(gx - 0.46, 0.04, gz - 0.26), V(gx + 0.46, 0.07, gz - 0.22)), MAT.iron()); b.add(boxGeo(V(gx - 0.46, 0.04, gz + 0.22), V(gx + 0.46, 0.07, gz + 0.26)), MAT.iron()); }
+    // villas along the boulevard (gaps: the tube-house street west at z 48, the garden east at z 56-70)
     let k = 0;
-    const H = (x: number, z: number, yaw: number, w: number, d: number, h: number) => house(b, x, z, yaw, w, d, h, k++ % 8);
-    for (const z of [-34, 3, 14]) H(-20, z, Math.PI / 2, 8, 8, 7 + r() * 2.5);
-    for (const z of [-32, -20, -8, 3, 15]) H(20, z, -Math.PI / 2, 8, 8, 7 + r() * 2.5);
-    for (const x of [-17, -9]) H(x, 30, Math.PI, 7, 8, 7 + r() * 2);
-    for (const x of [9, 17]) H(x, 30, Math.PI, 7, 8, 7 + r() * 2);
-    for (const x of [-18.5, -10]) H(x, -48, 0, 8, 8, 7.5 + r() * 2);
-    for (const x of [10, 18.5]) H(x, -48, 0, 8, 8, 7.5 + r() * 2);
-    for (const z of [-58, -66, -74]) H(-9, z, Math.PI / 2, 7.5, 8, 7 + r() * 2.5);
-    for (const z of [-58, -66, -74]) H(9, z, -Math.PI / 2, 7.5, 8, 7 + r() * 2.5);
-    // Frau Troffea's house: east side of the street, front at x = 4.5 (her door at DOOR)
-    {
-      const w = 7, h = 8.4, st = { wall: "#e8b9a0", shutter: "#2f6a43", timber: true };
-      const front = lam("dpTrofFront", () => ({ map: facadeHD("dpTrofF", w, h, { ...st, door: false }) }));
-      const fq = new THREE.PlaneGeometry(w, h); fq.rotateY(-Math.PI / 2); fq.translate(4.5, h / 2, -50.5); b.add(fq, front);
-      b.add(boxGeo(V(4.52, 0, -54), V(12.5, h, -47)), lam("dpTrofWall", () => ({ color: "#e8b9a0" })));
-      gable(b, 4.5, 12.5, h, -54, -47, 3.4, lam("roof#b8644f", () => ({ map: roofHD("#b8644f"), side: THREE.DoubleSide })), lam("dpTrofWall", () => ({ color: "#e8b9a0" })));
-      b.add(boxGeo(V(4.3, 0, -50.85), V(4.55, 2.45, -50.7)), MAT.woodD()); b.add(boxGeo(V(4.3, 0, -49.3), V(4.55, 2.45, -49.15)), MAT.woodD());
-      b.add(boxGeo(V(4.3, 2.35, -50.85), V(4.55, 2.55, -49.15)), MAT.woodD());
-      b.add(boxGeo(V(4.46, 0, -50.7), V(4.5, 2.35, -49.3)), DARK());
-      b.add(boxGeo(V(3.9, 0, -51.0), V(4.5, 0.16, -49.0)), MAT.stone()); // door step
+    const HS = (x: number, z: number, yaw: number, w: number, d: number, h: number, si: number) => house(b, x, z, yaw, w, d, h, si);
+    for (let z = 8; z < 92; z += 11) {
+      if (Math.abs(z - ALLEY_Z) > 8) HS(-16.5, z, Math.PI / 2, 9, 10, 7.5 + r() * 2, k++ % 5);
+      if (z < 52 || z > 74) HS(16.5, z, -Math.PI / 2, 9, 10, 7.5 + r() * 2, k++ % 5);
     }
-    // the guild hall: a big timber-framed hall on the west side, double doors facing the square
+    for (const z of [-16, -5]) { HS(-29, z, Math.PI / 2, 9, 10, 8 + r() * 2, k++ % 5); HS(29, z, -Math.PI / 2, 9, 10, 8 + r() * 2, k++ % 5); }
+    HS(36, GARDEN[2], -Math.PI / 2, 10, 9, 8, 1);                                               // the garden villa
+    for (let x = -13; x > -78; x -= 4.3) { HS(x, ALLEY_Z - 8.6, 0, 4.1, 9, 6 + r() * 3.5, 5 + (k++ % 3)); HS(x - 1.2, ALLEY_Z + 8.6, Math.PI, 4.1, 9, 6 + r() * 3.5, 5 + (k++ % 3)); }
+    // trees: a double row of tamarinds down the boulevard, palms by the lake and in the garden
+    for (let z = 5; z < 92; z += 9) for (const x of [-8.8, 8.8]) prop(b, kit, "tree_oak", x + (r() - 0.5) * 0.4, 0.1, z + r(), 8 + r() * 2, r() * 6);
+    for (const [x, z] of [[-12, 99], [13, 100], [27, 58], [21, 67.5]] as const) palm(b, x, z, 6 + r() * 2, x * 7 + z);
+    // the villa garden: lawn, a low hedge, a flower bed
     {
-      const x0 = -27, x1 = -14.5, z0 = -21, z1 = -7, h = 9.5;
-      const st = { wall: "#efdcb8", shutter: "#8c3b4a", timber: true };
-      const fr = new THREE.PlaneGeometry(z1 - z0, h); fr.rotateY(Math.PI / 2); fr.translate(x1, h / 2, (z0 + z1) / 2);
-      b.add(fr, lam("dpGuildF", () => ({ map: facadeHD("dpGuildFT", z1 - z0, h, { ...st, door: false }) })));
-      b.add(boxGeo(V(x0, 0, z0), V(x1 - 0.02, h, z1)), lam("dpGuildW", () => ({ color: "#efdcb8" })));
-      gable(b, x0, x1, h, z0, z1, 5, lam("roof#c9775a", () => ({ map: roofHD("#c9775a"), side: THREE.DoubleSide })), lam("dpGuildW", () => ({ color: "#efdcb8" })));
-      b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] - 1.7), V(x1 + 0.25, 3.7, GUILD[2] - 1.45)), MAT.woodD());
-      b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] + 1.45), V(x1 + 0.25, 3.7, GUILD[2] + 1.7)), MAT.woodD());
-      b.add(boxGeo(V(x1 - 0.02, 3.45, GUILD[2] - 1.7), V(x1 + 0.25, 3.8, GUILD[2] + 1.7)), MAT.woodD());
-      b.add(boxGeo(V(x1 - 3, 0, GUILD[2] - 1.45), V(x1 + 0.02, 3.45, GUILD[2] + 1.45)), DARK()); // the open doorway (covers the painted facade)
-      // a guild sign: a gold pretzel-less emblem board on an iron arm (no lettering)
-      b.add(boxGeo(V(x1, 4.6, GUILD[2] - 0.05), V(x1 + 1.4, 4.68, GUILD[2] + 0.05)), MAT.iron());
-      b.add(boxGeo(V(x1 + 0.5, 3.9, GUILD[2] - 0.04), V(x1 + 1.3, 4.6, GUILD[2] + 0.04)), MAT.gold());
+      const [gx, , gz] = GARDEN;
+      b.add(boxGeo(V(gx - 5, 0, gz - 4), V(gx + 5, 0.06, gz + 4)), lam("rtLawn", () => ({ map: grassHD(), color: "#e8f4d0" })));
+      for (const [x0, z0, x1, z1] of [[-5, -4.4, 5, -4], [-5.4, -4.4, -5, 1.2], [-5.4, 2.8, -5, 4.4], [-5, 4, 5, 4.4], [5, -4.4, 5.4, 4.4]] as const)
+        b.add(boxGeo(V(gx + x0, 0, gz + z0), V(gx + x1, 0.7, gz + z1)), MAT.green());
+      b.add(boxGeo(V(gx - 4.6, 0, gz - 3.9), V(gx + 4.6, 0.18, gz - 3.2)), lam("rtSoil", () => ({ color: "#7a5a3a" })));
+      for (let i = 0; i < 18; i++) { const fl = new THREE.SphereGeometry(0.13, 8, 6); fl.translate(gx - 4.3 + i * 0.5, 0.32, gz - 3.55 + (i % 2) * 0.2); b.add(fl, lam("rtFlower" + (i % 3), () => ({ color: ["#e0503a", "#f0c040", "#e86a9a"][i % 3] }))); }
     }
-    // the pink sandstone cathedral: west front with a rose window, one tall north spire
+    // the lake: water, a stone embankment, the islet with its little tower
     {
-      const Z = CATH_Z, P = MAT.pink();
-      b.add(boxGeo(V(-15, 0, Z - 40), V(15, 30, Z), 6), P);
-      b.add(boxGeo(V(-15, 30, Z - 10), V(-5, 50, Z), 6), P);                         // north tower
-      const oct = new THREE.CylinderGeometry(3.6, 4.2, 12, 8); oct.translate(-10, 56, Z - 5); b.add(oct, P);
-      const sp = new THREE.ConeGeometry(3.6, 30, 8); sp.translate(-10, 77, Z - 5); b.add(sp, P);
-      b.add(boxGeo(V(5, 30, Z - 10), V(15, 42, Z), 6), P);                           // the unfinished south tower
-      for (let x = 5.5; x < 15; x += 1.6) b.add(boxGeo(V(x, 42, Z - 0.6), V(x + 0.8, 43.2, Z)), MAT.pinkTrim());
-      gable(b, -5, 5, 30, Z - 40, Z - 0.5, 9, P, P);
-      for (const x of [-15, -9.5, -4.6, 4.6, 9.5, 15]) b.add(boxGeo(V(x - 0.7, 0, Z), V(x + 0.7, x === -15 || x === 15 ? 44 : 40, Z + 1.0)), MAT.pinkTrim()); // buttresses
-      const rose = new THREE.Mesh(new THREE.CircleGeometry(5.2, 48), lam("dpRoseM", () => ({ map: roseTex() }))); rose.position.set(0, 21, Z + 0.05);
-      b.add(rose.geometry.clone().translate(0, 21, Z + 0.05), lam("dpRoseM", () => ({ map: roseTex() })));
-      for (const [x, w, h] of [[0, 4.2, 9], [-7, 3, 7], [7, 3, 7]] as const) {
-        b.add(pointShape(w + 1.2, h + 1.0).translate(x, 0, Z + 0.03), MAT.pinkTrim());
-        b.add(pointShape(w, h).translate(x, 0, Z + 0.06), DARK());
-      }
-      for (const x of [-12, -7, 7, 12]) b.add(pointShape(1.6, 6).translate(x, 12, Z + 0.05), lam("dpGlass", () => ({ color: "#2e3a6a" })));
-      for (const x of [-12.5, -7.5]) b.add(pointShape(1.4, 7).translate(x + 2.5, 36, Z + 0.05), lam("dpGlass", () => ({ color: "#2e3a6a" })));
+      const w = new THREE.PlaneGeometry(400, 300); w.rotateX(-Math.PI / 2); w.translate(0, -0.35, LAKE_Z + 150);
+      const wuv = w.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < wuv.count; i++) wuv.setXY(i, wuv.getX(i) * 30, wuv.getY(i) * 22);
+      b.add(w, lam("rtLake", () => ({ map: waterTex("rtLakeT", "#4f9aa0", "#8fd0cc") })));
+      b.add(boxGeo(V(-200, -0.6, LAKE_Z - 1), V(200, 0.1, LAKE_Z)), MAT.stone());
+      const [tx, , tz] = TOWER;
+      const isl = new THREE.CylinderGeometry(6, 7, 0.8, 24); isl.translate(tx, -0.2, tz); b.add(isl, lam("rtIslet", () => ({ map: grassHD() })));
+      const T = lam("rtTowerM", () => ({ color: "#e2cfa0" }));
+      b.add(boxGeo(V(tx - 2, 0, tz - 2), V(tx + 2, 4, tz + 2)), T);
+      b.add(boxGeo(V(tx - 1.5, 4.4, tz - 1.5), V(tx + 1.5, 7, tz + 1.5)), T);
+      b.add(boxGeo(V(tx - 1, 7.4, tz - 1), V(tx + 1, 9, tz + 1)), T);
+      for (const [y, s] of [[4, 2.6], [7, 2.0], [9, 1.4]] as const) { const c = new THREE.ConeGeometry(s * 1.42, 0.8 + s * 0.2, 4); c.rotateY(Math.PI / 4); c.translate(tx, y + 0.3, tz); b.add(c, MAT.terra()); }
+      for (const s of [-1, 1]) { b.add(archShape(1.2, 2.2).translate(tx, 0.3, tz + s * 2.02).rotateY(0), DARKM()); }
+      for (let i = 0; i < 26; i++) { const a = r() * Math.PI * 2, d = 120 + r() * 60; prop(b, kit, "tree_oak", Math.cos(a) * d * 0.9, 0, LAKE_Z + 150 + Math.sin(a) * d * 0.6 + 60, 8 + r() * 4, r() * 6); }
+      prop(b, kit, "tree_oak", tx - 4, 0.2, tz + 2.5, 6, 1);
     }
-    // the hitching rail of the horse market
-    for (let x = RAIL[0] - 4; x <= RAIL[0] + 4; x += 2) b.add(boxGeo(V(x - 0.07, 0, RAIL[2] - 0.07), V(x + 0.07, 1.1, RAIL[2] + 0.07)), MAT.woodD());
-    b.add(boxGeo(V(RAIL[0] - 4.2, 0.95, RAIL[2] - 0.06), V(RAIL[0] + 4.2, 1.07, RAIL[2] + 0.06)), MAT.wood());
-    b.add(boxGeo(V(RAIL[0] - 2.5, 0, RAIL[2] - 1.2), V(RAIL[0] + 0.5, 0.55, RAIL[2] - 0.6)), MAT.woodD()); // water trough
-    // the bread stall: a trestle table, an empty bread rack, a striped awning
-    {
-      const [sx, , sz] = STALL;
-      b.add(boxGeo(V(sx - 1.4, 0.82, sz - 0.6), V(sx + 1.4, 0.9, sz + 0.6)), MAT.wood());
-      for (const [ax, az] of [[-1.3, -0.5], [1.3, -0.5], [-1.3, 0.5], [1.3, 0.5]]) b.add(boxGeo(V(sx + ax - 0.05, 0, sz + az - 0.05), V(sx + ax + 0.05, 0.82, sz + az + 0.05)), MAT.woodD());
-      for (const ax of [-1.45, 1.45]) b.add(boxGeo(V(sx + ax - 0.05, 0, sz - 0.75), V(sx + ax + 0.05, 2.4, sz - 0.65)), MAT.woodD());
-      for (const y of [1.2, 1.65]) b.add(boxGeo(V(sx - 1.4, y, sz - 0.75), V(sx + 1.4, y + 0.05, sz - 0.4)), MAT.wood()); // empty shelves
-      const aw = new THREE.PlaneGeometry(3.2, 1.6); aw.rotateX(-Math.PI / 2 + 0.45); aw.translate(sx, 2.35, sz - 0.1);
-      b.add(aw, lam("dpAwningM", () => ({ map: awningTex(), side: THREE.DoubleSide })));
-      b.add(boxGeo(V(sx - 0.9, 0.9, sz - 0.2), V(sx - 0.3, 1.02, sz + 0.25)), lam("dpBasket", () => ({ color: "#c49a5a" }))); // an empty basket
-    }
-    // the saint's column on the square
-    {
-      const [cx, , cz] = COLUMN;
-      b.add(boxGeo(V(cx - 0.9, 0, cz - 0.9), V(cx + 0.9, 0.7, cz + 0.9)), MAT.grey());
-      const col = new THREE.CylinderGeometry(0.32, 0.38, COL_H - 0.9, 16); col.translate(cx, 0.7 + (COL_H - 0.9) / 2, cz); b.add(col, MAT.grey());
-      b.add(boxGeo(V(cx - 0.6, COL_H - 0.2, cz - 0.6), V(cx + 0.6, COL_H, cz + 0.6)), MAT.grey());
-    }
-    // the neighbours' bench against a house front
-    b.add(boxGeo(V(BENCH[0] - 0.25, 0.42, BENCH[2] - 1.2), V(BENCH[0] + 0.25, 0.48, BENCH[2] + 1.2)), MAT.wood());
-    for (const dz of [-1.0, 1.0]) b.add(boxGeo(V(BENCH[0] - 0.2, 0, BENCH[2] + dz - 0.05), V(BENCH[0] + 0.2, 0.42, BENCH[2] + dz + 0.05)), MAT.woodD());
-    // a few trees and barrels
-    for (const [x, z, h] of [[-13, 22, 8], [14, -38, 8.5], [21.5, 23, 7.5]] as const) prop(b, kit, "tree_oak", x + r(), 0, z + r(), h, r() * 6);
-    for (let i = 0; i < 40; i++) { const x = (r() < 0.5 ? -1 : 1) * (14 + r() * 120), z = 60 + r() * 600; prop(b, kit, r() < 0.4 ? "tree_cone" : "tree_oak", x, 0, z, 7 + r() * 5, r() * 6); }
-    for (const [x, z] of [[17, -16], [17.6, -15.2], [-15.6, -2]] as const) { const br = new THREE.CylinderGeometry(0.36, 0.36, 0.9, 14); br.translate(x, 0.45, z); b.add(br, MAT.wood()); }
+    for (let i = 0; i < 40; i++) { const x = (r() < 0.5 ? -1 : 1) * (40 + r() * 140), z = -60 + r() * 150; prop(b, kit, "tree_oak", x, 0, z, 8 + r() * 5, r() * 6); }
     b.build(R);
     setSight([]);
+    // the manhole cover (slides off in shot 7)
+    { const g = new THREE.Group(); const c = new THREE.Mesh(new THREE.CylinderGeometry(0.44, 0.44, 0.04, 32), [lam("rtIronSide", () => ({ color: "#6a707a" })), lam("rtCoverM", () => ({ map: coverTex() })), lam("rtIronSide", () => ({ color: "#6a707a" }))]);
+      c.rotation.y = 0.3; g.add(c); shadowAll(g); R.add(g); this.cover = g; }
+    // the coin chest lid (slammed shut when the bounty is scrapped)
+    { const g = new THREE.Group(); g.position.set(DESK[0] - 0.7, DESK_TOP + 0.24, DESK[2] - 0.32);
+      g.add(new THREE.Mesh(boxGeo(V(-0.26, 0, 0), V(0.26, 0.06, 0.36)), MAT.woodD())); shadowAll(g); R.add(g); this.boxLid = g; }
 
-    // ---- the wooden stage (built in shot 8, torn down in shot 10) ----
-    {
-      const [x, , z] = STAGE, add = (o: THREE.Object3D) => { shadowAll(o); R.add(o); this.stageParts.push({ o, base: o.position.clone(), seed: this.stageParts.length }); };
-      const mk = (min: THREE.Vector3, max: THREE.Vector3, m: THREE.Material) => {
-        const c = min.clone().add(max).multiplyScalar(0.5), g = boxGeo(min.clone().sub(c), max.clone().sub(c));
-        const o = new THREE.Mesh(g, m); o.position.copy(c); return o;
-      };
-      for (const [sx, sz] of [[-3.3, -2.0], [3.3, -2.0], [-3.3, 2.0], [3.3, 2.0], [0, -2.0], [0, 2.0]]) add(mk(V(x + sx - 0.14, 0, z + sz - 0.14), V(x + sx + 0.14, DECK, z + sz + 0.14), MAT.woodD()));
-      for (let i = 0; i < 7; i++) add(mk(V(x - 3.5 + i, DECK - 0.1, z - 2.25), V(x - 3.5 + i + 0.98, DECK, z + 2.25), MAT.pine()));
-      add(mk(V(x - 3.5, 0.2, z + 2.2), V(x + 3.5, DECK - 0.1, z + 2.26), MAT.red()));      // front skirt
-      for (let s = 0; s < 3; s++) add(mk(V(x - 1.0, 0, z + 2.26 + (2 - s) * 0.4), V(x + 1.0, (s + 1) * DECK / 4, z + 2.26 + (3 - s) * 0.4), MAT.wood())); // steps
-      for (const sx of [-3.4, 3.4]) add(mk(V(x + sx - 0.07, DECK, z - 2.2), V(x + sx + 0.07, DECK + 2.6, z - 2.06), MAT.woodD())); // bunting poles
-      // bunting: a string of little flags between the back poles
-      const bun = new THREE.Group(); bun.position.set(x, DECK + 2.3, z - 2.13);
-      const cols = ["#c0353a", "#e0b040", "#3f7ab5", "#3f8a52"];
-      for (let i = 0; i < 11; i++) {
-        const t = i / 10, fx = -3.3 + 6.6 * t, fy = -0.45 * (1 - (2 * t - 1) ** 2);
-        const tri = new THREE.BufferGeometry(); tri.setAttribute("position", new THREE.Float32BufferAttribute([fx - 0.24, fy, 0, fx + 0.24, fy, 0, fx, fy - 0.5, 0], 3)); tri.computeVertexNormals();
-        bun.add(new THREE.Mesh(tri, lam("dpBun" + (i % 4), () => ({ color: cols[i % 4], side: THREE.DoubleSide }))));
-      }
-      add(bun);
-    }
-    // ---- the guild hall doors + the clutter pushed out on "cleared" ----
-    {
-      const x1 = -14.5, hinge = (dz: number) => { const g = new THREE.Group(); g.position.set(x1 + 0.04, 0, GUILD[2] + dz); R.add(g); return g; };
-      this.guildL = hinge(-1.45); this.guildR = hinge(1.45);
-      const leaf = (g: THREE.Object3D, s: number) => { const m = new THREE.Mesh(boxGeo(V(0, 0, s > 0 ? -1.45 : 0), V(0.1, 3.45, s > 0 ? 0 : 1.45)), lam("dpDoor", () => ({ color: "#7a4a2a" }))); g.add(m); shadowAll(g); };
-      leaf(this.guildL, -1); leaf(this.guildR, 1);
-      const tab = new THREE.Group();
-      tab.add(new THREE.Mesh(boxGeo(V(-0.4, 0.7, -0.9), V(0.4, 0.78, 0.9)), MAT.wood()));
-      for (const [a, c] of [[-0.32, -0.8], [0.32, -0.8], [-0.32, 0.8], [0.32, 0.8]]) tab.add(new THREE.Mesh(boxGeo(V(a - 0.04, 0, c - 0.04), V(a + 0.04, 0.7, c + 0.04)), MAT.woodD()));
-      const barrel = () => { const m = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.34, 0.85, 14), MAT.wood()); m.rotation.x = Math.PI / 2; const g = new THREE.Group(); m.position.y = 0.34; g.add(m); return g; };
-      const bench = new THREE.Group(); bench.add(new THREE.Mesh(boxGeo(V(-0.2, 0.42, -0.9), V(0.2, 0.48, 0.9)), MAT.wood()));
-      for (const c of [-0.75, 0.75]) bench.add(new THREE.Mesh(boxGeo(V(-0.16, 0, c - 0.05), V(0.16, 0.42, c + 0.05)), MAT.woodD()));
-      for (const o of [tab, barrel(), bench, barrel()]) { shadowAll(o); R.add(o); this.clutter.push(o); }
-    }
-    // ---- Troffea's door ----
-    { const g = new THREE.Group(); g.position.set(4.47, 0, -50.7); g.add(new THREE.Mesh(boxGeo(V(-0.06, 0, 0), V(0.0, 2.33, 1.4)), lam("dpDoorT", () => ({ color: "#3f6a8a" })))); shadowAll(g); R.add(g); this.trofDoor = g; }
-
-    // ---- the hills and the shrine ----
-    setSight(sightLines("hill"));
-    const hb = new Batch();
-    const hg = new THREE.PlaneGeometry(1000, 1000, 200, 200); hg.rotateX(-Math.PI / 2);
-    const pos = hg.attributes.position as THREE.BufferAttribute, huv = hg.attributes.uv as THREE.BufferAttribute;
-    for (let i = 0; i < pos.count; i++) { pos.setY(i, hillH(pos.getX(i), pos.getZ(i))); huv.setXY(i, huv.getX(i) * 160, huv.getY(i) * 160); }
-    hg.computeVertexNormals(); hg.translate(HILL[0], 0, HILL[2]);
-    hb.add(hg, lam("dpHillGrass", () => ({ map: grassHD(), color: "#e4f0c8" })));
-    // the road: a ribbon over the terrain
-    {
-      const N = 120, P: number[] = [], U: number[] = [], I: number[] = [];
-      for (let i = 0; i <= N; i++) {
-        const u = i / N, a = roadAt(u), c = roadAt(Math.min(1, u + 0.004)), d = roadAt(Math.max(0, u - 0.004));
-        const tx = c[0] - d[0], tz = c[2] - d[2], tl = Math.hypot(tx, tz) || 1, nx = -tz / tl, nz = tx / tl;
-        for (const s of [-1.6, 1.6]) { const x = a[0] + nx * s, z = a[2] + nz * s; P.push(x, hillH(x - HILL[0], z - HILL[2]) + 0.06, z); U.push(s < 0 ? 0 : 1, u * 30); }
-        if (i < N) I.push(2 * i, 2 * i + 1, 2 * i + 2, 2 * i + 1, 2 * i + 3, 2 * i + 2);
-      }
-      const g = new THREE.BufferGeometry(); g.setAttribute("position", new THREE.Float32BufferAttribute(P, 3)); g.setAttribute("uv", new THREE.Float32BufferAttribute(U, 2)); g.setIndex(I); g.computeVertexNormals();
-      hb.add(g, lam("dpRoadM", () => ({ map: roadTex() })));
-    }
-    // the shrine chapel: a small stone nave on the rise, bell gable over the door, the saint on a plinth by the door
-    {
-      const [x, y, z] = SHRINE, G = MAT.grey();
-      hb.add(boxGeo(V(x - 3.2, y - 1.5, z - 10), V(x + 3.2, y + 5.5, z - 0.6), 4), G);
-      gable(hb, x - 3.2, x + 3.2, y + 5.5, z - 10, z - 0.6, 3.2, lam("roof#a8584a", () => ({ map: roofHD("#a8584a"), side: THREE.DoubleSide })), G);
-      hb.add(boxGeo(V(x - 0.9, y + 8.4, z - 1.0), V(x + 0.9, y + 10.6, z - 0.4)), G); // bell gable
-      hb.add(archShape(0.9, 1.4).translate(x, y + 8.8, z - 0.38), DARK());
-      const bell = new THREE.CylinderGeometry(0.18, 0.32, 0.5, 14); bell.translate(x, y + 9.2, z - 0.7); hb.add(bell, MAT.gold());
-      hb.add(archShape(2.0, 3.0).translate(x, y, z - 0.57), MAT.stone());
-      hb.add(archShape(1.6, 2.7).translate(x, y, z - 0.54), lam("dpShrineDoor", () => ({ color: "#8c3b2a" })));
-      hb.add(boxGeo(V(x - 1.6, y - 0.6, z - 0.6), V(x + 1.6, y + 0.12, z + 0.4)), MAT.stone());   // the step
-      hb.add(boxGeo(V(x - 2.9, y - 0.6, z - 0.4), V(x - 1.9, y + 0.9, z + 0.6)), G);              // the saint's plinth
-      for (const sx of [-1, 1]) hb.add(archShape(0.6, 1.4).rotateY(sx * Math.PI / 2).translate(x + sx * 3.22, y + 2.6, z - 5), lam("dpGlass", () => ({ color: "#2e3a6a" })));
-      // a low stone wall round the yard
-      for (const [x0, z0, x1, z1] of [[-7, 2.5, -2, 2.5], [2, 2.5, 7, 2.5], [-7, 2.5, -7, -11], [7, 2.5, 7, -11]] as const) {
-        const L = Math.hypot(x1 - x0, z1 - z0), n = Math.ceil(L / 1.2);
-        for (let i = 0; i < n; i++) { const u = (i + 0.5) / n, wx = x0 + (x1 - x0) * u, wz = z0 + (z1 - z0) * u, wy = hillH(wx, wz - 40);
-          hb.add(boxGeo(V(x + wx - 0.62, wy - 0.4, z + wz - 0.62 + 40 - 40), V(x + wx + 0.62, wy + 0.75, z + wz + 0.62)), G); }
-      }
-    }
-    // September trees on the hills
-    const hr = rng(7);
-    for (let i = 0; i < 70; i++) {
-      const a = hr() * Math.PI * 2, d = 16 + hr() * 160, lx = Math.cos(a) * d, lz = -40 + Math.sin(a) * d;
-      if (Math.min(...ROAD.map(([rx, rz]) => Math.hypot(rx - lx, rz - lz))) < 6) continue;
-      prop(hb, kit, hr() < 0.3 ? "tree_cone" : "tree_oak", HILL[0] + lx, hillH(lx, lz) - 0.2, HILL[2] + lz, 6 + hr() * 5, hr() * 6);
-    }
-    hb.build(R);
+    // ---- the sewer: a brick tunnel along z, walkways either side of a channel, a ladder shaft, a grate shaft ----
     setSight([]);
-    // the wagon (moves along the road)
     {
-      const w = new THREE.Group();
-      w.add(new THREE.Mesh(boxGeo(V(-0.8, 0.75, -1.4), V(0.8, 0.85, 1.4)), MAT.wood()));
-      for (const s of [-1, 1]) w.add(new THREE.Mesh(boxGeo(V(s * 0.8 - 0.05, 0.85, -1.4), V(s * 0.8 + 0.05, 1.3, 1.4)), MAT.woodD()));
-      w.add(new THREE.Mesh(boxGeo(V(-0.8, 0.85, -1.45), V(0.8, 1.3, -1.35)), MAT.woodD()));
-      for (const s of [-0.35, 0.35]) w.add(new THREE.Mesh(boxGeo(V(s - 0.04, 0.6, 1.4), V(s + 0.04, 0.68, 3.4)), MAT.woodD())); // shafts
-      for (const [sx, sz] of [[-0.9, -0.9], [0.9, -0.9], [-0.9, 0.9], [0.9, 0.9]]) {
-        const wh = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.1, 18), MAT.woodD()); wh.rotation.z = Math.PI / 2; wh.position.set(sx, 0.5, sz);
-        w.add(wh); this.wheels.push(wh);
+      const sb = new Batch(), [X, , Z0] = SEW, br = MAT.brick();
+      const L = 40, gapAt = (z: number) => (Math.abs(z - 0) < 0.6 ? -1.2 : Math.abs(z - CAT_Z) < 0.6 ? 0 : null);
+      sb.add(boxGeo(V(X - SEW_W, -0.25, Z0 - L), V(X - 0.8, 0, Z0 + L), 2), lam("rtWalk", () => ({ map: stoneHD("rtWalkT", ["#8a7a6a", "#7e6e60", "#94846e", "#76685a"], "#4a4038") })));
+      sb.add(boxGeo(V(X + 0.8, -0.25, Z0 - L), V(X + SEW_W, 0, Z0 + L), 2), lam("rtWalk", () => ({})));
+      sb.add(boxGeo(V(X - 0.8, -0.7, Z0 - L), V(X + 0.8, -0.6, Z0 + L), 2), br);
+      const wg = new THREE.PlaneGeometry(1.6, 2 * L); wg.rotateX(-Math.PI / 2); wg.translate(X, -0.32, Z0);
+      const wuv = wg.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < wuv.count; i++) wuv.setXY(i, wuv.getX(i) * 0.6, wuv.getY(i) * 30);
+      sb.add(wg, lam("rtSewWater", () => ({ map: waterTex("rtSewWaterT", "#4a5a3e", "#6a7a52") })));
+      for (const s of [-1, 1]) {
+        const wall = new THREE.PlaneGeometry(2 * L, SEW_H + 0.7); wall.rotateY(-s * Math.PI / 2); wall.translate(X + s * SEW_W, (SEW_H - 0.7) / 2, Z0);
+        const u2 = wall.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < u2.count; i++) u2.setXY(i, u2.getX(i) * 40, u2.getY(i) * 1.1);
+        sb.add(wall, br);
+        sb.add(boxGeo(V(X + s * 0.8 - 0.001, -0.7, Z0 - L), V(X + s * 0.8 + 0.001, 0, Z0 + L)), br);
       }
-      shadowAll(w); R.add(w); this.wagon = w;
+      // the vault in 1 m rings (a hole in the ring under each shaft)
+      for (let z = -L; z < L; z += 1) {
+        const zc = z + 0.5, gx = gapAt(zc);
+        const piece = (t0: number, t1: number) => {
+          if (t1 <= t0) return;
+          const g = new THREE.CylinderGeometry(SEW_R, SEW_R, 1.0, 20, 1, true, t0, t1 - t0); g.rotateX(Math.PI / 2);
+          const u3 = g.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < u3.count; i++) u3.setXY(i, u3.getX(i) * 3.4, u3.getY(i) * 0.5);
+          g.translate(X, SEW_H, Z0 + zc); sb.add(g, br);
+        };
+        if (gx === null) piece(Math.PI / 2, (3 * Math.PI) / 2);
+        else { const tc = Math.PI - Math.asin(gx / SEW_R), d = 0.56 / SEW_R; piece(Math.PI / 2, tc - d); piece(tc + d, (3 * Math.PI) / 2); }
+      }
+      for (const s of [-1, 1]) { const cap = new THREE.PlaneGeometry(2 * SEW_W, SEW_H + SEW_R + 1); cap.rotateY(s > 0 ? Math.PI : 0); cap.translate(X, (SEW_H + SEW_R - 1) / 2, Z0 + s * L); sb.add(cap, DARKM()); }
+      // the ladder shaft (over the west walkway) and the grate shaft (over the channel)
+      for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.7]] as const) {
+        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - sx * sx) - 0.4;
+        for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const)
+          sb.add(boxGeo(V(X + sx + a, y0, Z0 + sz + c), V(X + sx + d, top, Z0 + sz + e), 2), br);
+      }
+      // ladder: rails and rungs from the walkway up the shaft
+      for (const s of [-1, 1]) sb.add(boxGeo(V(X - 1.2 + s * 0.24 - 0.025, 0, Z0 - 0.48), V(X - 1.2 + s * 0.24 + 0.025, 6.4, Z0 - 0.43)), MAT.iron());
+      for (let y = 0.3; y < 6.3; y += 0.3) sb.add(boxGeo(V(X - 1.45, y, Z0 - 0.47), V(X - 0.95, y + 0.03, Z0 - 0.42)), MAT.iron());
+      // the grate bars at the top of the cat's shaft
+      for (let i = 0; i < 6; i++) sb.add(boxGeo(V(X - 0.5 + i * 0.2 - 0.025, 4.6, Z0 + CAT_Z - 0.5), V(X - 0.5 + i * 0.2 + 0.025, 4.65, Z0 + CAT_Z + 0.5)), MAT.iron());
+      // lamp brackets on the walls
+      for (let z = -36; z <= 36; z += 9) for (const s of [-1, 1]) if (Math.abs(z) > 2) sb.add(boxGeo(V(X + s * (SEW_W - 0.12) - 0.06, 1.9, Z0 + z - 0.06), V(X + s * (SEW_W - 0.12) + 0.06, 2.0, Z0 + z + 0.06)), MAT.iron());
+      sb.build(R, false);
+      // daylight at the top of each shaft, lamp glows (emissive: they bloom)
+      const glow = (w: number, h: number, c: THREE.Color, x: number, y: number, z: number, flat: boolean) => {
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, fog: false }));
+        if (flat) m.rotation.x = Math.PI / 2; m.position.set(x, y, z); m.layers.set(NOINK); R.add(m);
+      };
+      glow(1.0, 1.0, new THREE.Color(2.6, 2.5, 2.2), X - 1.2, 6.45, Z0, true);
+      glow(1.0, 1.0, new THREE.Color(2.2, 2.3, 2.4), X, 5.6, Z0 + CAT_Z, true);
+      for (let z = -36; z <= 36; z += 9) for (const s of [-1, 1]) if (Math.abs(z) > 2) {
+        const m = new THREE.Mesh(new THREE.SphereGeometry(0.11, 12, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(3.2, 2.2, 0.9), fog: false }));
+        m.position.set(X + s * (SEW_W - 0.15), 2.1, Z0 + z); m.layers.set(NOINK); R.add(m);
+      }
+    }
+
+    // ---- the bathroom ----
+    {
+      const bb = new Batch(), [X, , Z] = BATH, W = 2.2, H = 3.2;
+      const fl = new THREE.PlaneGeometry(2 * W, 2 * W); fl.rotateX(-Math.PI / 2); fl.translate(X, 0.001, Z);
+      const fu = fl.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < fu.count; i++) fu.setXY(i, fu.getX(i) * 4, fu.getY(i) * 4);
+      bb.add(fl, lam("rtCheckerM", () => ({ map: checkerTex() })));
+      const wallM = lam("rtBathW", () => ({ map: bathWall(false) })), winM = lam("rtBathWin", () => ({ map: bathWall(true) }));
+      for (const [ry, dx, dz, m] of [[0, 0, -W, wallM], [Math.PI, 0, W, wallM], [Math.PI / 2, -W, 0, wallM], [-Math.PI / 2, W, 0, winM]] as const) {
+        const g = new THREE.PlaneGeometry(2 * W, H); g.rotateY(ry); g.translate(X + dx, H / 2, Z + dz); bb.add(g, m);
+      }
+      const ce = new THREE.PlaneGeometry(2 * W, 2 * W); ce.rotateX(Math.PI / 2); ce.translate(X, H, Z); bb.add(ce, MAT.trim());
+      // the toilet: bowl, water, seat; a high cistern with a pull chain
+      const [lx, , lz] = LOO;
+      const bowl = new THREE.CylinderGeometry(0.22, 0.16, 0.42, 24); bowl.translate(lx, 0.21, lz); bb.add(bowl, MAT.white());
+      const wat = new THREE.CircleGeometry(0.19, 24); wat.rotateX(-Math.PI / 2); wat.translate(lx, 0.405, lz); bb.add(wat, lam("rtLooWater", () => ({ color: "#8cc0d4" })));
+      const seat = new THREE.TorusGeometry(0.2, 0.035, 8, 24); seat.rotateX(Math.PI / 2); seat.translate(lx, 0.44, lz); bb.add(seat, MAT.wood());
+      bb.add(boxGeo(V(lx - 0.28, 1.85, Z - W + 0.02), V(lx + 0.28, 2.2, Z - W + 0.26)), MAT.white());
+      bb.add(boxGeo(V(lx - 0.03, 0.4, Z - W + 0.06), V(lx + 0.03, 1.85, Z - W + 0.12)), MAT.iron());
+      bb.add(boxGeo(V(lx + 0.24, 1.25, Z - W + 0.2), V(lx + 0.26, 1.85, Z - W + 0.22)), MAT.iron());
+      const hd = new THREE.SphereGeometry(0.04, 10, 8); hd.translate(lx + 0.25, 1.22, Z - W + 0.21); bb.add(hd, MAT.wood());
+      // a washstand and a mirror, a rug
+      bb.add(boxGeo(V(X - 1.75, 0, Z - W + 0.02), V(X - 1.15, 0.85, Z - W + 0.5)), MAT.white());
+      bb.add(boxGeo(V(X - 1.82, 1.25, Z - W + 0.02), V(X - 1.08, 1.95, Z - W + 0.05)), lam("rtMirror", () => ({ color: "#bcd8e4" })));
+      bb.add(boxGeo(V(X - 0.9, 0.002, Z - 0.9), V(X + 0.2, 0.012, Z + 0.1)), lam("rtRug", () => ({ color: "#b8484a" })));
+      bb.build(R, false);
+      const g = new THREE.Group(); g.position.set(lx, 0.46, lz - 0.22);
+      const lidM = new THREE.Mesh(new THREE.CylinderGeometry(0.21, 0.21, 0.03, 24), MAT.wood()); lidM.position.set(0, 0.015, 0.22); g.add(lidM);
+      shadowAll(g); R.add(g); this.lid = g;
+    }
+
+    // ---- the rat farm ----
+    {
+      const fb = new Batch(), [X, , Z] = FARM, fr = rng(5);
+      const gr = new THREE.PlaneGeometry(600, 600); gr.rotateX(-Math.PI / 2); gr.translate(X, 0, Z);
+      const gu = gr.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < gu.count; i++) gu.setXY(i, gu.getX(i) * 90, gu.getY(i) * 90);
+      fb.add(gr, lam("rtFarmGrass", () => ({ map: grassHD(), color: "#f2f0c8" })));
+      for (let i = -4; i <= 4; i++) for (let j = 0; j < 5; j++) {
+        const x0 = X + i * 13 - 6, z0 = Z - 16 - j * 12;
+        const p = new THREE.PlaneGeometry(12, 11); p.rotateX(-Math.PI / 2); p.translate(x0 + 6, 0.02, z0 - 5.5);
+        const pu = p.attributes.uv as THREE.BufferAttribute; for (let q = 0; q < pu.count; q++) pu.setXY(q, pu.getX(q) * 2, pu.getY(q) * 2);
+        fb.add(p, lam("rtRiceM", () => ({ map: riceTex() })));
+      }
+      // huts: bamboo walls, steep thatch
+      for (const [hx, hz, w, d] of [[-8, -9, 5, 4], [8.5, -11, 6, 4.5], [-15, -2, 4.5, 4]] as const) {
+        fb.add(boxGeo(V(X + hx - w / 2, 0, Z + hz - d / 2), V(X + hx + w / 2, 2.3, Z + hz + d / 2)), lam("rtHutWall", () => ({ color: "#c9a25a" })));
+        fb.add(archShape(1.0, 1.8).translate(X + hx, 0, Z + hz + d / 2 + 0.01), DARKM());
+        gable(fb, X + hx - w / 2, X + hx + w / 2, 2.3, Z + hz - d / 2, Z + hz + d / 2, 2.2, MAT.thatch(), lam("rtHutWall", () => ({})));
+      }
+      for (const [px, pz] of [[-12, -14], [13, -6], [-4, -20], [16, -18], [-19, -9], [5, -26]] as const) palm(fb, X + px + fr(), Z + pz, 6 + fr() * 3, px * 13 + pz);
+      for (let i = 0; i < 30; i++) { const a = fr() * Math.PI * 2, d = 60 + fr() * 120; prop(fb, kit, "tree_oak", X + Math.cos(a) * d, 0, Z + Math.sin(a) * d - 40, 7 + fr() * 4, fr() * 6); }
+      // the cage tables and cages
+      const bars = lam("rtBarsM", () => ({ map: barsTex(), alphaTest: 0.5, side: THREE.DoubleSide }));
+      const rows = new Set(CAGES.map((c) => c[2]));
+      for (const rz of rows) {
+        fb.add(boxGeo(V(X - 3.9, 0.64, rz - 0.42), V(X + 3.9, 0.7, rz + 0.42)), MAT.bamboo());
+        for (const lx2 of [-3.8, 0, 3.8]) for (const s of [-1, 1]) fb.add(boxGeo(V(X + lx2 - 0.04, 0, rz + s * 0.36 - 0.04), V(X + lx2 + 0.04, 0.64, rz + s * 0.36 + 0.04)), MAT.woodD());
+      }
+      for (const [cx, cy, cz] of CAGES) {
+        const w = 0.5, d = 0.32, h = 0.5;
+        for (const [ry, dx, dz, ww] of [[0, 0, d, 2 * w], [Math.PI, 0, -d, 2 * w], [Math.PI / 2, w, 0, 2 * d], [-Math.PI / 2, -w, 0, 2 * d]] as const) {
+          const g = new THREE.PlaneGeometry(ww, h); g.rotateY(ry); g.translate(cx + dx, cy + h / 2 - 0.27, cz + dz); fb.add(g, bars);
+        }
+        fb.add(boxGeo(V(cx - w - 0.03, cy + h - 0.27, cz - d - 0.03), V(cx + w + 0.03, cy + h - 0.22, cz + d + 0.03)), MAT.bamboo());
+      }
+      fb.build(R);
     }
   }
 
@@ -385,76 +459,48 @@ export class World {
     const t = f / FPS, s = SHOTS[id - 1];
     const c = camAt(id, f);
     cam.position.set(...c.pos); cam.up.set(0, 1, 0); cam.lookAt(...c.look); cam.rotateZ(c.roll);
-    cam.fov = c.fov; cam.near = 0.1; cam.far = 1500; cam.updateProjectionMatrix(); cam.updateMatrixWorld();
+    cam.fov = c.fov; cam.near = 0.05; cam.far = 1500; cam.updateProjectionMatrix(); cam.updateMatrixWorld();
     const focus = V(...c.look), dist = cam.position.distanceTo(focus);
     cam.layers.enable(NOINK);
-    // ---- light rig (shot 4 time-lapses day -> moonlit night three times) ----
-    const nt = nightAt(id, f), L = LIGHTS[s.light], N = LIGHTS.moon;
-    const K = LOOK[s.light], KN = LOOK.moon, sunDir = this.shotSun(id, s, L);
-    const mixN = (a: number[], b2: number[]) => a.map((v, i) => v + (b2[i] - v) * nt) as [number, number, number];
+    // ---- light rig ("dark" in the sewer: the lamps dim for a beat) ----
+    const L = LIGHTS[s.light], K = LOOK[s.light], sunDir = this.shotSun(id, s, L);
+    const dim = id === 4 && f >= DARK - 2 && f < PRED - 4 ? 0.55 : 1;
     this.hemi.color.set(L.sky); this.hemi.groundColor.set(L.ground); this.hemi.intensity = L.hemiI;
-    this.sun.color.set(L.sunCol).lerp(new THREE.Color(N.sunCol), nt); this.sun.intensity = L.sunI + (N.sunI - L.sunI) * nt;
+    this.sun.color.set(L.sunCol); this.sun.intensity = L.sunI * dim;
     const Rr = THREE.MathUtils.clamp(dist * 1.15 + 9, 12, 95);
     this.sun.position.copy(focus).addScaledVector(sunDir, 220); this.sun.target.position.copy(focus);
     const sc = this.sun.shadow.camera;
     sc.left = -Rr; sc.right = Rr; sc.top = Rr; sc.bottom = -Rr; sc.near = 20; sc.far = 480; sc.updateProjectionMatrix();
     this.sun.shadow.bias = L.bias; this.sun.shadow.normalBias = L.normalBias * (Rr / 12);
-    TONE.uLitCol.value.set(...mixN(L.lit, N.lit)); TONE.uShadeCol.value.set(...mixN(L.shade, N.shade)); TONE.uShadeLift.value.set(...mixN(L.lift, N.lift));
+    TONE.uLitCol.value.set(L.lit[0] * dim, L.lit[1] * dim, L.lit[2] * dim); TONE.uShadeCol.value.set(...L.shade); TONE.uShadeLift.value.set(...L.lift);
     TONE.uLambert.value = L.lambert; TONE.uSideK.value = L.sideK; TONE.uTerm.value = L.term; TONE.uBounce.value.set(...K.bounce); TONE.uSat.value = K.sat;
-    CHAR.uCharTint.value.set(...mixN(L.charTint, N.charTint)); CHAR.uCharShade.value = L.charShade; CHAR.uGrad.value = L.charGrad;
+    CHAR.uCharTint.value.set(L.charTint[0] * (0.6 + 0.4 * dim), L.charTint[1] * (0.6 + 0.4 * dim), L.charTint[2] * (0.6 + 0.4 * dim)); CHAR.uCharShade.value = L.charShade; CHAR.uGrad.value = L.charGrad;
     CHAR.uBodyGrad.value = L.bodyGrad; CHAR.uSideTint.value.set(...L.sideTint);
-    // ---- sky, fog, clouds, moon ----
-    const su = this.skyMat.uniforms, tmpC = new THREE.Color();
-    K.sky.c.forEach((h, i) => { untone(h, su["c" + i].value); if (nt > 0) su["c" + i].value.lerp(untone(KN.sky.c[i], tmpC), nt); });
+    // ---- sky, fog, clouds ----
+    const su = this.skyMat.uniforms;
+    K.sky.c.forEach((h, i) => { untone(h, su["c" + i].value); });
     const e = K.sky.e.map((deg) => THREE.MathUtils.degToRad(deg));
     su.e.value.set(e[1], e[2], e[3], e[4]);
     this.sky.position.copy(cam.position);
-    untone(L.fog, this.fog.color); if (nt > 0) this.fog.color.lerp(untone(N.fog, tmpC), nt);
-    this.fog.near = L.fogNear; this.fog.far = L.fogFar;
+    if (s.place === "sewer") { untone("#1c1418", this.fog.color); this.fog.near = 5; this.fog.far = 40; }
+    else if (s.place === "bath") { untone(L.fog, this.fog.color); this.fog.near = 50; this.fog.far = 400; }
+    else { untone(L.fog, this.fog.color); this.fog.near = L.fogNear; this.fog.far = L.fogFar; }
     scene.fog = this.fog; scene.background = null;
     for (const m of this.clouds) {
       const i = m.userData.k as number, near = i >= 7, a = ((i % 7) / 7) * Math.PI * 2 + (near ? 0.65 : 0.3), d = near ? 300 + (i % 3) * 40 : 600 + (i % 3) * 60, w = (near ? 80 : 130) + (i % 4) * 30;
       m.position.set(cam.position.x + Math.cos(a) * d + t * 4, (near ? 95 : 120) + (i % 4) * 34, cam.position.z + Math.sin(a) * d); m.scale.set(w, w / 2, 1);
-      m.lookAt(cam.position.x, m.position.y, cam.position.z); m.visible = s.light !== "moon" && nt < 0.5;
-    }
-    const moonUp = s.light === "moon" || nt > 0.5;
-    this.moon.visible = moonUp;
-    if (moonUp) {
-      const fw = V(c.look[0] - c.pos[0], 0, c.look[2] - c.pos[2]).normalize();
-      const rt = V(-fw.z, 0, fw.x);
-      this.moon.position.copy(cam.position).addScaledVector(fw, 600).addScaledVector(rt, -90).add(V(0, 230, 0));
-      this.moon.scale.setScalar(16); this.moon.lookAt(cam.position);
+      m.lookAt(cam.position.x, m.position.y, cam.position.z); m.visible = s.place === "city" || s.place === "farm";
     }
     // ---- the set pieces by shot ----
-    const st = stageAt(id, f);
-    this.stageParts.forEach((p, i) => {
-      const n = this.stageParts.length;
-      let k = 0, fly = 0;
-      if (id === 10 && f >= 1231) { fly = clamp01((f - 1231 - (i % 6) * 1.5) / 14); k = fly < 1 ? 1 : 0; }
-      else k = clamp01(st * n * 1.0 - i * 0.85);
-      p.o.visible = k > 0.02 && s.place === "town";
-      p.o.position.copy(p.base);
-      p.o.rotation.set(0, 0, 0);
-      if (fly > 0) {
-        const sd = Math.sin(p.seed * 12.9898) * 43758.5453, rr = sd - Math.floor(sd);
-        p.o.position.x += (rr - 0.5) * 7 * fly; p.o.position.y += 4.5 * Math.sin(Math.PI * Math.min(1, fly * 1.2)) * (0.6 + rr); p.o.position.z += 3 * fly * (0.4 + rr);
-        p.o.rotation.set(fly * (rr * 5 - 2.5), fly * rr * 3, fly * (2 - rr * 4));
-      } else if (k < 1) p.o.position.y += 2.2 * (1 - smooth(k)); // planks drop in from above
-    });
-    const dr = doorsAt(id, f);
-    this.guildL.rotation.y = 1.9 * dr; this.guildR.rotation.y = -1.9 * dr;
-    this.clutter.forEach((o, i) => {
-      const u = id === 8 ? smooth((f - CLEAR - i * 3) / 14) : id >= 9 ? 1 : 0;
-      o.visible = id >= 8 && id <= 10 && u > 0;
-      o.position.set(-15.6 + 5.2 * u + (i % 2) * 0.6, 0, GUILD[2] - 1.0 + i * 0.7);
-      o.rotation.set(0, (1 - u) * 0.6 + i * 0.4, 0);
-      if (i === 1 || i === 3) o.rotation.z = u * 4 * (i === 1 ? 1 : -1) * 0; // barrels slide
-    });
-    this.trofDoor.rotation.y = id === 3 ? -1.6 * smooth((f - (STEP_OUT - 10)) / 10) : id === 4 || id === 5 ? -1.6 : 0;
-    const wp = wagonPose(id, f);
-    this.wagon.visible = s.place === "hill";
-    this.wagon.position.set(...wp.p); this.wagon.rotation.set(0, wp.yaw, 0);
-    this.wheels.forEach((w) => { w.rotation.x = -wp.u * 120; });
+    const open = id === 7 || id === 9 ? 1 : 0;
+    this.cover.position.set(MAN[0] + 0.95 * open, 0.065 + 0.0 * open, MAN[2] + 0.35 * open);
+    this.cover.rotation.set(0, 0.3 + open * 0.8, 0);
+    const lidUp = id === 5 ? (f < POP ? 0 : Math.min(1.75, 1.75 * smooth((f - POP) / 4)) - 0.12 * Math.sin(clamp01((f - POP - 4) / 10) * Math.PI)) : 0;
+    this.lid.rotation.set(-lidUp, 0, 0);
+    const lidOpen = id < 15 || (id === 15 && f < SCRAP - 6) ? 1 : 0;
+    let rx = -1.9 * lidOpen;
+    if (id === 15 && f >= SCRAP - 6 && f < SCRAP) rx = -1.9 * (1 - smooth((f - SCRAP + 6) / 6));
+    this.boxLid.rotation.set(rx, 0, 0);
     // ---- cast + effects ----
     const right = V(0, 0, 0).setFromMatrixColumn(cam.matrixWorld, 0);
     const stg = stage(id, f, { pos: cam.position, right, sun: sunDir });
@@ -485,6 +531,7 @@ export class World {
       e2.mesh.visible = true;
       e2.mesh.position.set(p.x, p.y, p.z);
       if (p.flat) e2.mesh.rotation.set(-Math.PI / 2, 0, p.rot ?? 0);
+      else if (p.down) e2.mesh.rotation.set(Math.PI / 2, 0, p.rot ?? 0);
       else { e2.mesh.quaternion.copy(cam.quaternion); e2.mesh.rotateZ(p.rot ?? 0); }
       e2.mesh.scale.set(p.w, p.h, 1);
       fused.push(e2);

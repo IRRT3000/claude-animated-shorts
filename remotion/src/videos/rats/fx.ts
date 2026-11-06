@@ -375,3 +375,68 @@ export const fxOuch = (p: Pen, t: number) => {
     p.poly(pts, "#ffd35a", 6);
   }
 };
+
+// ---------------- the rat-bounty effects (our own designs) ----------------
+const PINKT = "#f4a6b2";
+const tailLine = (p: Pen, x: number, y: number, dx: number, dy: number, w: number) => {
+  const pts: P2[] = [];
+  for (let i = 0; i <= 10; i++) { const t = i / 10; pts.push([x + dx * t + 10 * Math.sin(t * 5), y + dy * t - 18 * Math.sin(Math.PI * t)]); }
+  p.line(pts, PINKT, w);
+};
+/** a heap of burlap sacks with rat tails poking out of their necks, on an 800 x 600 canvas; n 0..1 = how many */
+export const fxSacks = (p: Pen, n: number) => {
+  const spots: [number, number, number][] = [];
+  for (let row = 0; row < 5; row++) for (let i = 0; i < 6 - row; i++) spots.push([150 + i * 110 + row * 55, 520 - row * 90, row]);
+  const k = Math.max(1, Math.round(spots.length * Math.min(1, n)));
+  for (let s = 0; s < k; s++) {
+    const [x, y, row] = spots[s];
+    tailLine(p, x - 10, y - 70, -40 + (s % 3) * 40, -60, 10);
+    tailLine(p, x + 12, y - 70, 30, -50 - (s % 2) * 20, 9);
+    p.poly([[x - 46, y - 64], [x + 46, y - 64], [x + 62, y - 10], [x + 52, y + 40], [x - 52, y + 40], [x - 62, y - 10]], ["#c4a274", "#b8966a", "#ceac7e"][(s + row) % 3], 9);
+    p.stroke([[x - 40, y - 52], [x + 40, y - 52]], 7, "#8a6a42");
+  }
+};
+/** stink lines: three green wavy ribbons rising (300 x 400); t loops */
+export const fxStink = (p: Pen, t: number) => {
+  for (let k = 0; k < 3; k++) {
+    const pts: P2[] = [], x0 = 70 + k * 80, u = (t + k * 0.33) % 1;
+    for (let i = 0; i <= 14; i++) pts.push([x0 + 18 * Math.sin(i * 0.8 + t * 10 + k), 380 - i * 20 - 30 * u]);
+    p.line(pts, k === 1 ? "#9ac85a" : "#b8d870", 11);
+  }
+};
+/** a soft sickly-green cloud bank of the plague (512 x 256, soft); seed varies the lumps */
+export const fxPlague = (p: Pen, seed: number) => {
+  const g = p.g;
+  for (let k = 0; k < 9; k++) {
+    const x = 60 + ((k * 53 + seed * 37) % 400), y = 150 + ((k * 29 + seed * 11) % 60) - 20, r = 60 + ((k * 17 + seed) % 50);
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, "rgba(150,190,90,0.55)"); gr.addColorStop(0.6, "rgba(130,170,80,0.35)"); gr.addColorStop(1, "rgba(120,160,80,0)");
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+  }
+};
+/** little hearts floating up (300 x 300); t loops */
+export const fxHearts = (p: Pen, t: number) => {
+  for (let k = 0; k < 3; k++) {
+    const u = (t + k * 0.33) % 1, x = 80 + k * 70 + 14 * Math.sin(u * 7 + k), y = 260 - 200 * u, s = 26 * (u < 0.2 ? u / 0.2 : u > 0.8 ? (1 - u) / 0.2 : 1);
+    if (s < 3) continue;
+    p.poly([[x, y + s], [x - s * 1.1, y - s * 0.1], [x - s * 0.6, y - s * 0.8], [x, y - s * 0.35], [x + s * 0.6, y - s * 0.8], [x + s * 1.1, y - s * 0.1]], "#ff7a8a", 6);
+  }
+};
+/** a weed on the lawn (200 x 300): spiky leaves and a dandelion head; k 0..1 grows it */
+export const fxWeed = (p: Pen, k: number, v = 0) => {
+  const s = Math.max(0.05, k);
+  for (const [a, l] of [[-120, 120], [-95, 160], [-70, 130], [-150, 80], [-30, 90]] as const) {
+    const ex = 100 + Math.cos((a * Math.PI) / 180) * l * s, ey = 290 + Math.sin((a * Math.PI) / 180) * l * s;
+    p.poly([[100, 290], [ex - 12 * s, ey + 10], [ex, ey], [ex + 12 * s, ey + 10]], v % 2 ? "#6ab04a" : "#5a9e3e", 5);
+  }
+  if (k > 0.6 && v % 3 !== 2) { p.stroke([[100, 290], [104, 290 - 190 * s]], 5, "#4a8a3a"); p.ell(104, 290 - 190 * s, 22, 22, v % 3 ? "#f0c840" : "#f7f4ea", 5); }
+};
+/** one rat tail lying loose (300 x 120) */
+export const fxTail = (p: Pen) => { tailLine(p, 30, 80, 240, -10, 14); };
+/** bubbles + drops of a toilet splash (300 x 300); t 0..1 */
+export const fxSplashT = (p: Pen, t: number) => {
+  for (let k = 0; k < 7; k++) {
+    const a = ((k / 7) * 160 + 10) * (Math.PI / 180), r = 40 + 130 * t, x = 150 + Math.cos(a) * r * 0.9, y = 230 - Math.sin(a) * r + 120 * t * t;
+    p.ell(x, y, 14 * (1 - t) + 4, 18 * (1 - t) + 5, "#bfe6f4", 5);
+  }
+};
