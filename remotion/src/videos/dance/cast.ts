@@ -460,7 +460,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const pl = person(cam, WHO.master, MASTER_P[0], MASTER_P[1], MASTER_P[2], FRONT, f < 1193 ? { mode: "dance", phase: q((t / 0.72) % 1, 24), energy: 1, expr, blink: 0 } : { mode: "stand", expr, blink: lidAt(t, 4), wave: sp >= 1 ? 1 : undefined, look: -1 }, {}, 1);
         out.places.push({ ...pl, sx: q(turn, 12) });
         blob(out, MASTER_P[0], MASTER_P[1], MASTER_P[2]);
-        if (sp > 0 && sp < 1) { const u = q(sp, 12); push(out, `spin${u}`, 600, 300, (p) => fxSpin(p, u), MASTER_P[0], 1.0, MASTER_P[2] + 0.1, 1.6, 0.8); }
+        if (sp > 0 && sp < 1) { const u = q(sp, 12); push(out, `spin${u}`, 600, 300, (p) => fxSpin(p, u), MASTER_P[0], 0.3, MASTER_P[2] + 0.1, 1.5, 0.6); }
         stand(out, cam, WHO.council[0], add(MASTER_P, [0.9, 0, 1.1]), { expr: f < 1210 ? "laugh" : "nervous", look: -1 }, t);
         stand(out, cam, WHO.council[1], add(MASTER_P, [1.6, 0, -0.4]), { expr: f < 1210 ? "grin" : "shock", look: -1 }, t);
       } else if (f < 1263) {
@@ -469,14 +469,14 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       } else if (f < 1293) {
         ([0, 1, 2] as const).forEach((k) => {
           const kd = (["drum", "pipe", "fiddle"] as const)[k];
-          walk(out, cam, WHO.band[k], T(-1.0 + k * 1.2, 0.04, -1.0 + k * 0.3), T(6.5 + k * 1.2, 0.04, 6.0 + k * 0.5), f, 1265, 1340, "sad", { prop: [kd, 0] });
+          walk(out, cam, WHO.band[k], T(-1.0 + k * 1.2, 0.04, -1.0 + k * 0.3), T(4.0 + k * 1.1, 0.04, 6.5 + k * 0.3), f, 1265, 1345, "sad", { prop: [kd, 0] });
         });
         crowd(out, cam, t, 30, { skip: (p) => p[0] > -2 && p[2] > -4 });
       } else {
         const ring = q(0.5 + 0.5 * Math.sin(t * 18), 6);
         stand(out, cam, WHO.crier, T(-6.5, 0.04, 13.5), { expr: f >= BAN - 2 ? "stern" : "neutral", prop: ["bell", ring] }, t);
         if (f >= BAN - 2 && f < BAN + 14) { const u = q((f - BAN + 2) / 16, 16); push(out, `burst${u}`, 400, 400, (p) => fxBurst(p, u, "#fff3b0", 10, 30, 160), -6.0, 2.6, 13.6, 1.2, 1.2); }
-        for (const [k, x, z] of [[21, -4.8, 9.5], [22, -7.8, 9.0], [23, -9.6, 10.8]] as const) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.85, expr: f >= BAN + 6 ? "nervous" : "dazed" });
+        for (const [k, x, z] of [[21, -8.2, 16], [22, -5.4, 16.8], [23, -7.0, 18.2]] as const) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.85, expr: f >= BAN + 6 ? "nervous" : "dazed" });
       }
       break;
     }
@@ -491,7 +491,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const curse = f >= 1475;
         out.places.push(person(cam, WHO.statue, COLUMN[0], COL_H, COLUMN[2], FRONT, { mode: "stand", expr: "stern", wave: curse ? 1 : undefined, blink: 0, look: -0.5 }, {}, 1.2));
         if (curse) { const u = q(((f - 1475) / 30) % 1, 15); push(out, `glow${u}`, 400, 400, (p) => fxBurst(p, u, "#b8a0ff", 12, 60, 190), COLUMN[0], COL_H + 1.4, COLUMN[2] - 0.15, 3.2, 3.2, { soft: true }); }
-        for (const [k, x, z] of [[24, -7.6, 14.6], [25, -10.4, 15.2], [26, -8.8, 16.8]] as const)
+        for (const [k, x, z] of [[24, -7.6, 9.6], [25, -10.6, 9.8], [26, -9.2, 8.2]] as const)
           if (curse) dance(out, cam, WHO.folk[k], T(x, 0.04, z), t, { energy: 0.9, expr: "shock" });
           else stand(out, cam, WHO.folk[k], T(x, 0.04, z), { expr: "nervous", look: x < -9 ? 1 : -1 }, t);
       }
@@ -564,7 +564,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       ([0, 1, 2] as const).forEach((k) => {
         const kd = (["drum", "pipe", "fiddle"] as const)[k], p = add(base, [(k - 1) * 1.15, 0, (k % 2) * 0.35]);
         const tap = kd === "drum" && f >= 1960 && f < 1972 ? q(Math.sin(((f - 1960) / 12) * Math.PI), 6) : 0;
-        sitAt(out, cam, WHO.band[k], p, { expr: "sad", prop: [kd, tap], look: k === 0 ? 1 : 0 }, t, 0, Math.round(0.5 / SU));
+        sitAt(out, cam, WHO.band[k], p, { expr: "sad", prop: [kd, tap], look: k === 0 ? 1 : 0 }, t, 0, 0);
         if (kd === "drum" && f >= 1962) { const u = clamp01((f - 1962) / 24), np = add(p, [0.35, 1.5 - 0.5 * u, 0.1]); push(out, "sadnote", 240, 260, fxSadNote, np[0], np[1], np[2], 0.26 * (1 - 0.3 * u), 0.28 * (1 - 0.3 * u)); }
       });
       break;

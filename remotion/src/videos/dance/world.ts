@@ -18,7 +18,7 @@ export const loadKit = async (): Promise<Kit> => ({}); // no external models: tr
 void LFB;
 
 /** per-shot sun (camera-relative az / el overrides) */
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 120, el: 42 }, 6: { az: 115, el: 40 }, 9: { az: 120, el: 42 }, 13: { az: 40, el: 10 }, 14: { az: 30, el: 9 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 1: { az: 120, el: 42 }, 6: { az: 115, el: 40 }, 9: { az: 120, el: 42 }, 13: { az: 140, el: 12 }, 14: { az: 145, el: 12 }, 16: { az: 140, el: 10 } };
 
 /** every lens position of the film looking at its subject (houses and trees there are left out) */
 const sightLines = (place: string): Ray[] => {
