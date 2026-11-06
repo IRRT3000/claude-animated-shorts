@@ -26,7 +26,34 @@ const glowTex = () => ctex("glow", 256, 256, (g) => {
   g.fillStyle = gr; g.fillRect(0, 0, 256, 256);
 });
 /** per-shot sun (camera-relative az / el overrides) */
-const SUN_SHOT: Record<number, { az?: number; el?: number }> = { 20: { az: 10, el: 6 }, 26: { az: -70, el: 10 }, 27: { az: 15, el: 4 } };
+const SUN_SHOT: Record<number, { az?: number; el?: number }> = {
+  1: { az: 115, el: 38 }, 9: { az: 110, el: 40 }, 10: { az: 120, el: 40 }, 11: { az: 120, el: 42 }, 12: { az: 100, el: 36 }, 13: { az: 105, el: 34 }, 14: { az: 130, el: 40 },
+  2: { az: 30, el: 72 }, 15: { az: 25, el: 72 }, 16: { az: 160, el: 68 }, 3: { az: 60, el: 38 }, 4: { az: -110, el: 22 },
+  5: { az: 70, el: 55 }, 6: { az: 85, el: 50 }, 7: { az: 70, el: 50 }, 8: { az: 140, el: 50 },
+  17: { az: 110, el: 40 }, 18: { az: 70, el: 50 }, 19: { az: 120, el: 45 },
+  20: { az: 10, el: 6 }, 21: { az: 60, el: 40 }, 22: { az: 95, el: 38 }, 23: { az: 80, el: 45 }, 24: { az: 150, el: 40 }, 25: { az: 75, el: 35 },
+  26: { az: -60, el: 12 }, 27: { az: 15, el: 3 },
+};
+type C3 = [number, number, number];
+/** per-scene light grading on top of the day / golden presets (lighting pass): warmer, cleaner skies over the city,
+ *  warm interiors lit from the skylight / window / lamp, crisp highland air in Chalco, a deep dusk for the lanterns */
+type Over = { lit?: C3; shade?: C3; lift?: C3; fogNear?: number; fogFar?: number; sky?: string[]; charTint?: C3; charShade?: number; sat?: number; beam?: number };
+const SKY_CITY = { lit: [1.66, 1.5, 1.26] as C3, shade: [0.34, 0.31, 0.4] as C3, fogNear: 70, fogFar: 700 };
+const ROOM_DAY: Over = { lit: [1.7, 1.48, 1.18], shade: [0.46, 0.38, 0.36], lift: [0.1, 0.07, 0.05], charTint: [1.02, 0.95, 0.88], beam: 1 };
+const OVER: Record<number, Over> = {
+  1: SKY_CITY, 9: SKY_CITY, 10: SKY_CITY, 11: SKY_CITY, 12: SKY_CITY, 13: { ...SKY_CITY, lit: [1.5, 1.42, 1.32], shade: [0.3, 0.31, 0.42] }, 17: SKY_CITY,
+  14: { lit: [1.64, 1.5, 1.28], shade: [0.36, 0.32, 0.4], fogNear: 40, fogFar: 420 },
+  18: { lit: [1.66, 1.52, 1.3], shade: [0.36, 0.33, 0.42], fogNear: 40, fogFar: 420 }, 19: { ...SKY_CITY, fogNear: 40 },
+  2: ROOM_DAY, 15: ROOM_DAY, 16: ROOM_DAY, 3: { ...ROOM_DAY, beam: 0.8 },
+  4: { lit: [1.55, 0.95, 0.5], shade: [0.3, 0.22, 0.32], lift: [0.08, 0.05, 0.08], charTint: [1.0, 0.82, 0.62], charShade: 0.9, beam: 0 },
+  26: { lit: [1.6, 0.9, 0.42], shade: [0.26, 0.2, 0.32], lift: [0.06, 0.04, 0.08], beam: 0.9 },
+  5: { lit: [1.68, 1.54, 1.3], fogNear: 60, fogFar: 520 }, 6: { lit: [1.68, 1.54, 1.3], fogNear: 60, fogFar: 520 }, 7: { lit: [1.68, 1.54, 1.3], fogNear: 60, fogFar: 520 }, 8: { lit: [1.68, 1.54, 1.3], fogNear: 60, fogFar: 520 },
+  21: { lit: [1.62, 1.54, 1.36], shade: [0.32, 0.32, 0.42], fogNear: 120, fogFar: 1100, sat: 1.12 }, 22: { lit: [1.62, 1.54, 1.36], fogNear: 120, fogFar: 1100 },
+  23: { lit: [1.62, 1.54, 1.36], fogNear: 120, fogFar: 900 }, 24: { lit: [1.6, 1.5, 1.34], fogNear: 120, fogFar: 1100 }, 25: { lit: [1.66, 1.54, 1.32], fogNear: 120, fogFar: 1100 },
+  20: { fogNear: 80, fogFar: 600 },
+  27: { lit: [1.25, 0.66, 0.32], shade: [0.12, 0.13, 0.3], lift: [0.03, 0.04, 0.14], fogNear: 60, fogFar: 520,
+    sky: ["#ffa25e", "#ef8a68", "#b9678a", "#6a4f8e", "#34356a"], charTint: [0.95, 0.74, 0.6], charShade: 0.84 },
+};
 
 /** every lens position of the film (houses in the way of a city shot are left out) */
 const sightLines = (): Ray[] => {
@@ -268,7 +295,7 @@ const buildBalloon = (kind: BKind): BalloonObj => {
 
 /** a 3D sombrero (the last shot of the room: on its peg) */
 const sombreroMesh = () => {
-  const g = new THREE.Group(), felt = lam("sombFelt", () => ({ color: "#3b3138" })), trim = lam("sombTrim", () => ({ color: "#e3e6ea" }));
+  const g = new THREE.Group(), felt = lam("sombFelt", () => ({ color: "#5b4650" })), trim = lam("sombTrim", () => ({ color: "#e3e6ea" }));
   const brim = new THREE.Mesh(lathe([[0.001, 0.0], [0.62, 0.0], [0.7, 0.06], [0.68, 0.09], [0.6, 0.03], [0.001, 0.03]]), felt); g.add(brim);
   const crown = new THREE.Mesh(lathe([[0.2, 0.0], [0.19, 0.2], [0.15, 0.36], [0.06, 0.42], [0.001, 0.43]]), felt); g.add(crown);
   const band = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.205, 0.07, 24, 1, true), trim); band.position.y = 0.06; g.add(band);
@@ -294,6 +321,7 @@ export class World {
   private lanterns: THREE.InstancedMesh; private lanternGlow: THREE.InstancedMesh;
   private sets: Record<string, THREE.Group> = {};
   private volcanoes = new THREE.Group();
+  private beamSky: THREE.Mesh; private beamWin: THREE.Mesh; private lamp: THREE.Group; private lampGlow: THREE.Sprite;
   private frustum = new THREE.Frustum();
   private m4 = new THREE.Matrix4(); private v = new THREE.Vector3(); private sph = new THREE.Sphere();
 
@@ -449,10 +477,32 @@ export class World {
       const half = hotEnvelope(); half.scale(0.22, 0.22, 0.22); half.translate(cx - 0.4, 0.9, cz - 1.6); bb.add(half, gm);
     });
     {
-      const s = sombreroMesh(); s.position.set(rx - 1.2, 1.75, rz - hd + 0.45); s.rotation.set(1.25, 0.2, 0.15);
+      const s = sombreroMesh(); s.position.set(rx - 1.2, 1.72, rz - hd + 0.55); s.rotation.set(0.45, 0.25, 0.12); s.scale.setScalar(1.3);
       const peg = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.4, 8), lam("peg", () => ({ color: "#6b4a30" }))); peg.rotation.x = Math.PI / 2; peg.position.set(rx - 1.2, 2.05, rz - hd + 0.2);
       const grp = new THREE.Group(); grp.add(s, peg); grp.visible = false; R.add(grp); this.sets.sombrero = grp;
     }
+
+    // light shafts: one down through the broken skylight, one slanting in through the window (additive, soft edges)
+    const beamMat = () => new THREE.ShaderMaterial({
+      uniforms: { uCol: { value: new THREE.Color(1.0, 0.86, 0.6) }, uK: { value: 0.35 } },
+      vertexShader: "varying vec2 vU; void main(){ vU = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+      fragmentShader: "uniform vec3 uCol; uniform float uK; varying vec2 vU; void main(){ float e = sin(3.14159 * vU.x); float a = uK * e * e * mix(0.35, 1.0, vU.y); gl_FragColor = vec4(uCol * a, 1.0); }",
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, fog: false,
+    });
+    const bs = new THREE.CylinderGeometry(0.9, 1.6, ROOM_H, 24, 1, true); bs.translate(0, ROOM_H / 2, 0);
+    this.beamSky = new THREE.Mesh(bs, beamMat()); this.beamSky.position.set(TABLE[0], 0, TABLE[2]); this.beamSky.rotation.z = 0.12;
+    const bw = new THREE.CylinderGeometry(0.9, 1.5, 4.2, 4, 1, true); bw.rotateY(Math.PI / 4); bw.translate(0, -2.1, 0);
+    this.beamWin = new THREE.Mesh(bw, beamMat()); this.beamWin.position.set(rx + 1.5, 2.2, rz - hd + 0.1); this.beamWin.rotation.set(-0.95, 0, 0.15);
+    for (const m of [this.beamSky, this.beamWin]) { m.layers.set(NOINK); m.visible = false; m.renderOrder = 6; R.add(m); }
+    // the oil lamp on the sewing table (night)
+    this.lamp = new THREE.Group();
+    const brassL = lam("lampBrass", () => ({ color: "#c9952a" }));
+    this.lamp.add(new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.15, 0.12, 16), brassL));
+    const chim = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.09, 0.28, 16, 1, true), new THREE.MeshBasicMaterial({ color: new THREE.Color(2.4, 1.5, 0.7), side: THREE.DoubleSide }));
+    chim.position.y = 0.2; this.lamp.add(chim);
+    this.lampGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex(), color: new THREE.Color(2.2, 1.2, 0.45), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }));
+    this.lampGlow.position.y = 0.22; this.lampGlow.scale.setScalar(1.1); this.lampGlow.layers.set(NOINK); this.lamp.add(this.lampGlow);
+    this.lamp.position.set(SEW_AT[0] + 1.0, 0.84, SEW_AT[2] - 0.8); this.lamp.visible = false; R.add(this.lamp);
 
     // ================= the bullring, 1863 =================
     const bb2 = new Batch(), [bx, , bz] = BULL;
@@ -549,13 +599,20 @@ export class World {
     TONE.uLambert.value = L.lambert; TONE.uSideK.value = L.sideK; TONE.uTerm.value = L.term; TONE.uBounce.value.set(...K.bounce); TONE.uSat.value = K.sat;
     CHAR.uCharTint.value.set(...L.charTint); CHAR.uCharShade.value = L.charShade; CHAR.uGrad.value = L.charGrad;
     CHAR.uBodyGrad.value = L.bodyGrad; CHAR.uSideTint.value.set(...L.sideTint);
+    const O = OVER[id] ?? {};
+    if (O.lit) TONE.uLitCol.value.set(...O.lit);
+    if (O.shade) TONE.uShadeCol.value.set(...O.shade);
+    if (O.lift) TONE.uShadeLift.value.set(...O.lift);
+    if (O.sat) TONE.uSat.value = O.sat;
+    if (O.charTint) CHAR.uCharTint.value.set(...O.charTint);
+    if (O.charShade) CHAR.uCharShade.value = O.charShade;
     // ---- sky, fog, sun, clouds ----
     const su = this.skyMat.uniforms;
-    K.sky.c.forEach((h, i) => untone(h, su["c" + i].value));
+    (O.sky ?? K.sky.c).forEach((h, i) => untone(h, su["c" + i].value));
     const e = K.sky.e.map((deg) => THREE.MathUtils.degToRad(deg));
     su.e.value.set(e[1], e[2], e[3], e[4]);
     this.sky.position.copy(cam.position);
-    untone(L.fog, this.fog.color); this.fog.near = L.fogNear; this.fog.far = s.place === "chalco" ? 600 : L.fogFar;
+    untone(O.sky ? O.sky[0] : L.fog, this.fog.color); this.fog.near = O.fogNear ?? L.fogNear; this.fog.far = O.fogFar ?? L.fogFar;
     scene.fog = this.fog; scene.background = null;
     const showSun = s.light === "golden" && s.place !== "room";
     this.sunDisc.visible = showSun;
@@ -575,6 +632,12 @@ export class World {
     this.sets.ceilHole.visible = dining; this.sets.ceilWhole.visible = s.place === "room" && !dining;
     this.sets.dining.visible = dining; this.sets.office.visible = id === 3; this.sets.sewing.visible = id === 4; this.sets.sombrero.visible = id === 26;
     this.volcanoes.visible = s.place === "chalco";
+    const beam = O.beam ?? 0;
+    this.beamSky.visible = dining && beam > 0; this.beamWin.visible = (id === 3 || id === 26) && beam > 0;
+    (this.beamSky.material as THREE.ShaderMaterial).uniforms.uK.value = 0.28 * beam * (id === 2 ? 0.6 + 0.4 * Math.min(1, (f - 99) / 10) : 1);
+    (this.beamWin.material as THREE.ShaderMaterial).uniforms.uK.value = 0.24 * beam;
+    (this.beamWin.material as THREE.ShaderMaterial).uniforms.uCol.value.set(...(id === 26 ? [1.0, 0.62, 0.32] : [1.0, 0.86, 0.6]) as C3);
+    this.lamp.visible = id === 4; this.lampGlow.scale.setScalar(1.1 * (1 + 0.04 * Math.sin(f * 0.9) + 0.03 * Math.sin(f * 2.3)));
     // ---- balloons ----
     for (const k of Object.keys(this.balloons) as BKind[]) this.balloons[k].g.visible = false;
     for (const p of balloonsAt(id, f)) {

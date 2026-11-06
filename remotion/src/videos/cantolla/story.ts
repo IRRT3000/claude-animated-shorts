@@ -267,7 +267,7 @@ const S27b = (f: number) => zoom([0, 3.5, 34], [0, 16, -10], 50, pushK(f, 1862, 
 const S27c = (f: number) => zoom([-6, 2.0, 16], [0, 12, -6], 52, pushK(f, 1947, 0.002), { roll: -0.03 });
 
 const CAMS: Record<number, Key[]> = {
-  1: [{ f: 0, s: S1a }, { f: 72, dur: 20, s: S1b }],
+  1: [{ f: 0, s: S1a }, { f: 66, dur: 30, s: S1b }],
   2: [{ f: 99, s: S2a }, { f: 120, cut: true, s: S2b }],
   3: [{ f: 161, s: S3a }, { f: 232, cut: true, s: S3b }],
   4: [{ f: 264, s: S4a }],

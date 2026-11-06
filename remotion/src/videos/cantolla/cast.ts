@@ -237,7 +237,7 @@ const riders = (out: Stage, cam: CamInfo, id: number, f: number, t: number, fo: 
     const n = b.riders.length;
     b.riders.forEach((r, k) => {
       const who = r === "young" ? WHO.joaquin : r === "old" ? WHO.old : WHO.braniff;
-      const p = off(cam, b.pos, n === 1 ? 0 : (k - 0.5) * 0.75, 0.04);
+      const p = off(cam, b.pos, n === 1 ? 0 : (k - 0.5) * 0.75, 0.04 + 0.015 * Math.sin(t * 5 + k * 1.7));
       out.places.push(person(cam, who, p[0], p[1], p[2], FRONT, { mode: "stand", blink: lidAt(t, who.i), ...fo(r) }, {}));
     });
   }
@@ -261,7 +261,7 @@ const crowd = (out: Stage, cam: CamInfo, t: number, cheer: number) => {
     const tier = k % 6, a = (k / CROWD_SEATS) * Math.PI * 2 * 1.0 + tier * 0.17, r0 = ARENA_R + 1.85 + tier * 1.3, y = 1.5 + (tier + 1) * 0.85;
     const x = BULL[0] + Math.cos(a) * r0, z = BULL[2] + Math.sin(a) * r0;
     const who = WHO.folk[k % WHO.folk.length];
-    const wv = cheer > 0 ? q(0.5 + 0.5 * Math.sin(t * 9 + k), 2) : undefined;
+    const wv = cheer > 0 ? q(0.5 + 0.5 * Math.sin(t * 9 + k), 4) : undefined;
     const pl = person(cam, { ...who, i: 100 + k }, x, y, z, FRONT, { mode: "stand", expr: cheer > 0 ? "grin" : "smile_closed", blink: 0, wave: wv }, {}, 0.95);
     pl.key = pl.key.replace(/"seed":\d+/, `"seed":${(k % 3) + 1}`);
     out.places.push(pl);
@@ -287,7 +287,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
   const R = (x: number, y: number, z: number): V3 => [ROOM[0] + x, ROOM[1] + y, ROOM[2] + z];
   switch (id) {
     case 1: {
-      riders(out, cam, id, f, t, () => ({ expr: f < 50 ? "grin" : f < 70 ? "nervous" : "shock", wave: f < 46 ? q(0.5 + 0.5 * Math.sin(t * 10), 4) : undefined, shrug: f >= 70 ? 1 : 0 }));
+      riders(out, cam, id, f, t, () => ({ expr: f < 50 ? "grin" : f < 70 ? "nervous" : "shock", wave: f < 46 ? q(0.5 + 0.5 * Math.sin(t * 10), 16) : undefined, shrug: f >= 70 ? 1 : 0 }));
       // pigeons burst out of the east belfry and cross the lens
       // pigeons burst across the lens (camera-relative flock, right to left, a few metres in front)
       if (f >= 16 && f < 70) {
@@ -297,7 +297,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
           if (u < 0 || u > 1.6) continue;
           const d = 4.5 + 5 * hh(k, 62), lat = 4.5 - 7.5 * u * (0.8 + 0.4 * hh(k, 63)), up = (hh(k, 64) - 0.5) * 3 + 0.8 * u;
           const x = cc.pos[0] + fw.x * d + cam.right.x * lat, y = cc.pos[1] + fw.y * d + up, z = cc.pos[2] + fw.z * d + cam.right.z * lat;
-          const w = q(((f + k * 3) % 6) / 6, 6);
+          const w = q(((f + k * 3) % 8) / 8, 8);
           push(out, `pigL${w}`, 300, 200, (p) => { p.g.translate(300, 0); p.g.scale(-1, 1); fxPigeon(p, w); }, x, y, z, 0.75, 0.5);
         }
       }
@@ -321,7 +321,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const fam: Expr[] = f < 118 ? ["shock", "shock", "shock", "shock"] : ["stern", "stern", "laugh", "stern"];
       FAMILY.forEach((p, k) => {
         const fo: FrontOpts = { expr: fam[k] };
-        if (k === 3) fo.prop = ["broom", f < 128 ? 0 : q(0.5 + 0.5 * Math.sin((f - 128) * 0.55), 6)];
+        if (k === 3) fo.prop = ["broom", f < 128 ? 0 : q(0.5 + 0.5 * Math.sin((f - 128) * 0.55), 16)];
         if (k === 0 && f >= 132) fo.shrug = 0.6;
         stand(out, cam, WHO.family[k], p, fo, t);
       });
@@ -347,39 +347,39 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       }
       if (id === 6) {
         const h = HORSE_PATH(f), ph = q(((f - 404) / FPS) * 1.1 % 1, 24), d = cam.pos.distanceTo(tmp.set(h[0], 1.5, h[2])) / 2;
-        const [w, hgt, k] = tier(d), fo: FrontOpts = { expr: "grin", blink: lidAt(t, 1), wave: q(0.5 + 0.5 * Math.sin(t * 7), 4), light: light2D(cam, false), seed: seedOf(1) };
+        const [w, hgt, k] = tier(d), fo: FrontOpts = { expr: "grin", blink: lidAt(t, 1), wave: q(0.5 + 0.5 * Math.sin(t * 7), 16), light: light2D(cam, false), seed: seedOf(1) };
         out.places.push({ key: `horse|${ph}|${fkey(fo)}`, draw: (p) => fxHorseRider(p, JOAQUIN, ph, fo), x: h[0], y: 0, z: h[2], scale: 2.0, size: [w, hgt, k] });
         blob(out, h[0], 0, h[2], 2.4);
       }
       if (id === 7) {
         if (f < 500) stand(out, cam, WHO.joaquin, [BULL[0] + 1.0, 0, BULL[2] + 0.5], { expr: "grin", facing: -1, look: -1, wave: q(smooth((f - 480) / 10), 4) }, t);
-        else riders(out, cam, id, f, t, () => ({ expr: f < 538 ? "grin" : "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 8), 4) }));
+        else riders(out, cam, id, f, t, () => ({ expr: f < 538 ? "grin" : "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 8), 16) }));
         flyingHats(out, f, 540, BULL, 18);
       }
       if (id === 8) {
-        riders(out, cam, id, f, t, () => ({ expr: "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 8), 4) }));
-        for (let k = 0; k < 5; k++) stand(out, cam, WHO.folk[k + 2], [BULL[0] - 4.5 + k * 1.6, 0, BULL[2] + 8.2 + (k % 2) * 0.8], { expr: k % 2 ? "laugh" : "grin", wave: q(0.5 + 0.5 * Math.sin(t * 9 + k), 4) }, t);
+        riders(out, cam, id, f, t, () => ({ expr: "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 8), 16) }));
+        for (let k = 0; k < 5; k++) stand(out, cam, WHO.folk[k + 2], [BULL[0] - 4.5 + k * 1.6, 0, BULL[2] + 8.2 + (k % 2) * 0.8], { expr: k % 2 ? "laugh" : "grin", wave: q(0.5 + 0.5 * Math.sin(t * 9 + k), 16) }, t);
         flyingHats(out, f, 556, BULL, 14);
       }
       break;
     }
     case 9: case 10: case 11: case 12: case 17: case 19: case 20: {
-      riders(out, cam, id, f, t, () => ({ expr: id === 17 ? "smile_closed" : "grin", wave: id === 17 ? undefined : q(0.5 + 0.5 * Math.sin(t * 7), 4) }));
+      riders(out, cam, id, f, t, () => ({ expr: id === 17 ? "smile_closed" : "grin", wave: id === 17 ? undefined : q(0.5 + 0.5 * Math.sin(t * 7), 16) }));
       if (id === 17) { // warm air rising inside, cold air sinking around
         const b = basketAt(17, f);
         for (let k = 0; k < 5; k++) {
-          const u = ((t * 0.5 + hh(k, 91)) % 1), wv = q(u, 12);
+          const u = ((t * 0.5 + hh(k, 91)) % 1), wv = q(u, 30);
           const p = off(cam, b, (hh(k, 92) - 0.5) * 3.4, 3 + u * 9, 5.4);
           if (f >= 1085) push(out, `air1${wv}`, 260, 260, (pp) => fxAir(pp, true, wv), p[0], p[1], p[2], 1.0, 1.0);
         }
         for (let k = 0; k < 6; k++) {
-          const u = ((t * 0.3 + hh(k, 93)) % 1), wv = q(u, 12), side = k % 2 ? 1 : -1;
+          const u = ((t * 0.3 + hh(k, 93)) % 1), wv = q(u, 30), side = k % 2 ? 1 : -1;
           const p = off(cam, b, side * (6.5 + 1.5 * hh(k, 94)), 13 - u * 12, 1);
           if (f >= 1110) push(out, `air0${wv}`, 260, 260, (pp) => fxAir(pp, false, wv), p[0], p[1], p[2], 1.6, 1.6);
         }
       }
       if (id === 19) {
-        stand(out, cam, WHO.family[2], [3.0, 0, 6], { expr: "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 9), 4) }, t);
+        stand(out, cam, WHO.family[2], [3.0, 0, 6], { expr: "laugh", wave: q(0.5 + 0.5 * Math.sin(t * 9), 16) }, t);
         stand(out, cam, WHO.folk[1], [-2.6, 0, 4.6], { expr: "grin", look: 1 }, t);
       }
       break;
@@ -412,7 +412,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 15: {
-      const k = q(smooth((f - 914) / 10), 10);
+      const k = q(smooth((f - 914) / 10), 20);
       stand(out, cam, WHO.joaquin, ON_TABLE, { expr: f < 923 ? "dazed" : "relief", shrug: k }, t, 1, false);
       break;
     }
@@ -420,7 +420,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       stand(out, cam, WHO.joaquin, ON_TABLE, { expr: f < 986 ? "relief" : "nervous", shrug: f < 986 ? 1 : 0.3 }, t, 1, false);
       FAMILY.forEach((p, k) => {
         const fo: FrontOpts = { expr: f < 1000 ? "shock" : "stern" };
-        if (k === 3) fo.prop = ["broom", f < 1010 ? q(1 - smooth((f - 990) / 12), 6) : 0];
+        if (k === 3) fo.prop = ["broom", f < 1010 ? q(1 - smooth((f - 990) / 12), 16) : 0];
         stand(out, cam, WHO.family[k], p, fo, t);
       });
       break;
@@ -434,7 +434,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 21: case 22: case 23: case 24: {
       const shock = id === 24 && f >= 1626;
-      riders(out, cam, id, f, t, (r) => ({ expr: shock ? "shock" : id === 23 ? "neutral" : r === "braniff" ? "grin" : "smile_closed", shrug: shock ? 1 : 0, wave: !shock && id === 22 && r === "old" ? q(0.5 + 0.5 * Math.sin(t * 6), 4) : undefined }));
+      riders(out, cam, id, f, t, (r) => ({ expr: shock ? "shock" : id === 23 ? "neutral" : r === "braniff" ? "grin" : "smile_closed", shrug: shock ? 1 : 0, wave: !shock && id === 22 && r === "old" ? q(0.5 + 0.5 * Math.sin(t * 6), 16) : undefined }));
       if (id >= 23) REBELS.forEach((p, k) => {
         stand(out, cam, WHO.rebels[k], p, { expr: id === 23 ? "stern" : "stern", look: k % 2 ? 1 : -1 }, t);
         if (id === 24 && f >= 1623) {
@@ -467,7 +467,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 27: {
       // a boy lets the first lantern go; then the plaza full of people watching thousands rise
       stand(out, cam, WHO.family[2], [6.5, 0, 10.0], { expr: f < 1800 ? "grin" : "smile_closed", wave: f < 1775 ? 1 : undefined, look: 1 }, t);
-      FIESTA.forEach((p, k) => stand(out, cam, WHO.folk[(k * 3 + 1) % WHO.folk.length], p, { expr: k % 2 ? "smile_closed" : "relief", look: k % 2 ? 1 : -1, wave: k === 2 && f > 1830 ? q(0.5 + 0.5 * Math.sin(t * 5), 4) : undefined }, t));
+      FIESTA.forEach((p, k) => stand(out, cam, WHO.folk[(k * 3 + 1) % WHO.folk.length], p, { expr: k % 2 ? "smile_closed" : "relief", look: k % 2 ? 1 : -1, wave: k === 2 && f > 1830 ? q(0.5 + 0.5 * Math.sin(t * 5), 16) : undefined }, t));
       for (let k = 0; k < 30; k++) {
         const a = hh(k, 101) * Math.PI * 2, d = 9 + hh(k, 102) * 22;
         stand(out, cam, WHO.folk[k % WHO.folk.length], [Math.cos(a) * d, 0, Math.sin(a) * d], { expr: "smile_closed", look: 0 }, 0, 1, false);
