@@ -238,7 +238,7 @@ const S6a = (f: number) => { const h = HORSE_PATH(f); return dolly(add(h, [1.2, 
 const S6b = (f: number) => { const h = HORSE_PATH(f); return dolly(add(h, [3.6, 1.4, 4.4]), add(h, [0.6, 2.4, 0]), pushK(f, 436, 0.0025, 0.005, 24), { fov: 40, roll: 0.035 }); };
 const S7a = (f: number) => dolly(B(2.6, 2.6, 6.8), B(0.3, 2.2, 0.2), pushK(f, 472, 0.0025), { fov: 42 });
 const S7b = (f: number) => zoom(B(-7, 1.7, 15), bal(7, f, [0, 6.5, 0]), 46, pushK(f, 534, 0.002), { roll: -0.04 });
-const S8a = (f: number) => zoom(B(-4, 1.5, 17), bal(8, f, [0, 3, 0]), 56, pushK(f, 560, 0.002), { roll: 0.05 });
+const S8a = (f: number) => { const b = basketAt(8, f); return zoom(B(-4, 1.6, 19), [b[0], 1.6 + (b[1] + 3 - 1.6) * 0.55, b[2]], 62, pushK(f, 560, 0.002), { roll: 0.05 }); };
 const S9a = (f: number) => zoom(add(basketAt(9, f), [-26, 10, 34]), bal(9, f, [0, 5, 0]), 46, pushK(f, 600, 0.0025, 0.006, 26));
 const S10a = (f: number) => zoom([-30, 32, 26], bal(10, f, [0, 6, 0]), 44, pushK(f, 639, 0.003));
 const S11a = (f: number) => zoom([-30, 52, 70], bal(11, f, [0, -4, 0]), 52, pushK(f, 670, 0.0015, 0.004, 30), { roll: 0.03 });
@@ -256,13 +256,13 @@ const S19a = (f: number): Shot => zoom([4, 1.2, 14], bal(19, f, [0, 5.5, 0]), 50
 const S20a = (f: number) => zoom([40, 26, 30], bal(20, f, [0, 5, 0]), 40, pushK(f, 1328, 0.002));
 const S21a = (f: number) => zoom(C(-110, 22, 70), bal(21, f, [0, 6, 0]), 44, pushK(f, 1380, 0.0015));
 const S22a = (f: number) => dolly(bal(22, f, [2.2, 1.6, 4.4]), bal(22, f, [0, 1.25, 0]), pushK(f, 1450, 0.0022, 0.005, 24), { fov: 42 });
-const S23a = (f: number) => zoom(bal(23, f, [-3, 5, 9]), C(10, 0, -5), 52, pushK(f, 1536, 0.002), { roll: 0.03 });
-const S24a = (f: number) => zoom(C(-10, 1.2, 24), C(8, 12, -5), 60, pushK(f, 1594, 0.002, 0.007, 20), { roll: -0.05 });
+const S23a = (f: number) => zoom(bal(23, f, [-2.6, 3.8, 4.4]), bal(23, f, [5, -15, -2]), 58, pushK(f, 1536, 0.002), { roll: 0.03 });
+const S24a = (f: number) => zoom(C(-4, 1.2, 16), C(8, 13, -5), 64, pushK(f, 1594, 0.002, 0.007, 20), { roll: -0.05 });
 const S24b = (f: number) => dolly(bal(24, f, [-2.4, 1.4, 4.2]), bal(24, f, [0, 1.3, 0]), pushK(f, 1623, 0.003, 0.008, 20), { fov: 44, roll: 0.04 });
 const S25a = (f: number) => zoom(C(30, 1.6, 16), add(LANDING, [0, 2.5, 0]), 46, pushK(f, 1652, 0.002));
 const S25b = (f: number) => dolly(add(LANDING, [2.2, 1.3, 5.5]), add(LANDING, [3.6, 0.7, 0.4]), pushK(f, 1696, 0.0025), { fov: 42 });
 const S26a = (f: number) => dolly(R(1.8, 1.5, 2.6), R(-0.6, 1.4, -2.6), pushK(f, 1720, 0.0015), { fov: 42 });
-const S27a = (f: number): Shot => { const l = lanternAt(0, f) ?? [6.1, 1, 9.6]; return { pos: [l[0] + 0.3, Math.max(1.4, l[1] - 1.2), l[2] + 3.2], look: [l[0], l[1] + 0.4, l[2]], fov: 46, roll: 0.02 }; };
+const S27a = (f: number): Shot => { const l = lanternAt(0, f) ?? [6.1, 1, 9.6]; return { pos: [l[0] + 0.4, Math.max(1.4, l[1] - 1.4), l[2] + 4.6], look: [l[0], l[1] + 0.4, l[2]], fov: 46, roll: 0.02 }; };
 const S27b = (f: number) => zoom([0, 3.5, 34], [0, 16, -10], 50, pushK(f, 1862, 0.0018, 0.004, 30));
 const S27c = (f: number) => zoom([-6, 2.0, 16], [0, 12, -6], 52, pushK(f, 1947, 0.002), { roll: -0.03 });
 

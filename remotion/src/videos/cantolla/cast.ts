@@ -289,8 +289,19 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     case 1: {
       riders(out, cam, id, f, t, () => ({ expr: f < 50 ? "grin" : f < 70 ? "nervous" : "shock", wave: f < 46 ? q(0.5 + 0.5 * Math.sin(t * 10), 4) : undefined, shrug: f >= 70 ? 1 : 0 }));
       // pigeons burst out of the east belfry and cross the lens
-      pigeons(out, f, 18, [CATH.towerX, CATH.body + 3, CATH.z - 5], [-0.35, 0.25, 0.9], 9, 1.0, 9);
-      pigeons(out, f, 30, [CATH.towerX + 2, CATH.body + 4, CATH.z - 3], [-0.6, 0.15, 0.75], 6, 1.0, 11);
+      // pigeons burst across the lens (camera-relative flock, right to left, a few metres in front)
+      if (f >= 16 && f < 70) {
+        const cc = camAt(1, f), fw = tmp.set(cc.look[0] - cc.pos[0], cc.look[1] - cc.pos[1], cc.look[2] - cc.pos[2]).normalize();
+        for (let k = 0; k < 11; k++) {
+          const u = (f - 16 - hh(k, 61) * 14) / 30;
+          if (u < 0 || u > 1.6) continue;
+          const d = 4.5 + 5 * hh(k, 62), lat = 4.5 - 7.5 * u * (0.8 + 0.4 * hh(k, 63)), up = (hh(k, 64) - 0.5) * 3 + 0.8 * u;
+          const x = cc.pos[0] + fw.x * d + cam.right.x * lat, y = cc.pos[1] + fw.y * d + up, z = cc.pos[2] + fw.z * d + cam.right.z * lat;
+          const w = q(((f + k * 3) % 6) / 6, 6);
+          push(out, `pigL${w}`, 300, 200, (p) => { p.g.translate(300, 0); p.g.scale(-1, 1); fxPigeon(p, w); }, x, y, z, 0.75, 0.5);
+        }
+      }
+      pigeons(out, f, 18, [CATH.towerX, CATH.body + 3, CATH.z - 5], [-0.35, 0.25, 0.9], 6, 1.0, 9);
       break;
     }
     case 2: {

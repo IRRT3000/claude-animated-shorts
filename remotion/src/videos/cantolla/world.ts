@@ -504,7 +504,7 @@ export class World {
     this.ball = new THREE.Mesh(new THREE.SphereGeometry(0.3, 32, 16), lam("beachBall", () => ({ map: beachTex() })));
     this.ball.castShadow = true; this.ball.visible = false; R.add(this.ball);
     const lg = new THREE.CylinderGeometry(0.26, 0.2, 0.5, 12); lg.translate(0, 0.25, 0);
-    this.lanterns = new THREE.InstancedMesh(lg, new THREE.MeshBasicMaterial({ color: new THREE.Color(2.6, 1.35, 0.55), fog: false }), LANTERN_N);
+    this.lanterns = new THREE.InstancedMesh(lg, new THREE.MeshBasicMaterial({ color: new THREE.Color(1.9, 1.0, 0.42), fog: false }), LANTERN_N);
     this.lanternGlow = new THREE.InstancedMesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: glowTex(), color: new THREE.Color(1.6, 0.8, 0.3), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }), LANTERN_N);
     for (const m of [this.lanterns, this.lanternGlow]) { m.frustumCulled = false; m.layers.set(NOINK); m.visible = false; R.add(m); }
   }
@@ -597,7 +597,7 @@ export class World {
         const p = lanternAt(k, f);
         if (!p) { m.makeScale(0, 0, 0); this.lanterns.setMatrixAt(k, m); this.lanternGlow.setMatrixAt(k, m); continue; }
         m.compose(V(...p), q.identity(), one); this.lanterns.setMatrixAt(k, m);
-        m.compose(V(p[0], p[1] + 0.25, p[2]), cam.quaternion, V(1.4, 1.4, 1.4)); this.lanternGlow.setMatrixAt(k, m);
+        const gs = Math.min(1.4, 0.18 * cam.position.distanceTo(this.v.set(p[0], p[1], p[2]))); m.compose(V(p[0], p[1] + 0.25, p[2]), cam.quaternion, V(gs, gs, gs)); this.lanternGlow.setMatrixAt(k, m);
       }
       this.lanterns.instanceMatrix.needsUpdate = true; this.lanternGlow.instanceMatrix.needsUpdate = true;
     }
