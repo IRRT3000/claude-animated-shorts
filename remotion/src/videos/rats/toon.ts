@@ -1339,7 +1339,7 @@ export const ratCard = (p: Pen, o: RatOpts = {}) => {
     else { p.stroke([[380, by - 60], [420, by - 10]], 18, furD); paw(424, by - 6); }
     ear(330, by - 230, 46);
     head(370, by - 165, 78, 66, -6);
-    if (!tail) ratStub(p, 205, 940);
+    if (!tail) ratStub(p, 205, 940, 1.5);
     ratFace(p, 370, by - 165, 72, expr, blink);
   } else if (mode === "lounge") { // on its back, belly up, paws in the air, very pleased
     const by = 905 + 3 * Math.sin(two * ph);
@@ -1368,7 +1368,7 @@ export const ratCard = (p: Pen, o: RatOpts = {}) => {
     ear(222, 640, 48); ear(378, 640, 48);
     const hp = ellPts(300, 700, 92, 76); p.shadedFill(hp, fur, furD, light, 92); p.inkRing(hp, 8, th);
     if (tail) ratTail(p, tailCurve(300, 940, 470, 880, 10 * Math.sin(two * ph), 90));
-    else ratStub(p, 300, 920, 1.25);
+    else ratStub(p, 300, 920, 1.8);
   }
   p.g.restore();
 };

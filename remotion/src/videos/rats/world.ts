@@ -333,19 +333,26 @@ export class World {
         const zc = z + 0.5, gx = gapAt(zc);
         const piece = (t0: number, t1: number) => {
           if (t1 <= t0) return;
-          const g = new THREE.CylinderGeometry(SEW_R, SEW_R, 1.0, 20, 1, true, t0, t1 - t0); g.rotateX(Math.PI / 2);
+          const g = new THREE.CylinderGeometry(SEW_R, SEW_R, 1.0, Math.max(1, Math.round((t1 - t0) / (Math.PI / 20))), 1, true, t0, t1 - t0); g.rotateX(Math.PI / 2);
           const u3 = g.attributes.uv as THREE.BufferAttribute; for (let i = 0; i < u3.count; i++) u3.setXY(i, u3.getX(i) * 3.4, u3.getY(i) * 0.5);
           g.translate(X, SEW_H, Z0 + zc); sb.add(g, br);
         };
         if (gx === null) piece(Math.PI / 2, (3 * Math.PI) / 2);
-        else { const tc = Math.PI - Math.asin(gx / SEW_R), d = 0.56 / SEW_R; piece(Math.PI / 2, tc - d); piece(tc + d, (3 * Math.PI) / 2); }
+        else { // same 20-segment grid as the whole rings (matching seams), the segments under the shaft left out
+          const tc = Math.PI - Math.asin(gx / SEW_R), d = 0.56 / SEW_R, st = Math.PI / 20;
+          for (let i = 0; i < 20; i++) { const a0 = Math.PI / 2 + i * st; if (Math.abs(a0 + st / 2 - tc) >= d) piece(a0, a0 + st); }
+        }
       }
       for (const s of [-1, 1]) { const cap = new THREE.PlaneGeometry(2 * SEW_W, SEW_H + SEW_R + 1); cap.rotateY(s > 0 ? Math.PI : 0); cap.translate(X, (SEW_H + SEW_R - 1) / 2, Z0 + s * L); sb.add(cap, DARKM()); }
       // the ladder shaft (over the west walkway) and the grate shaft (over the channel)
       for (const [sx, sz, top] of [[-1.2, 0, 6.5], [0, CAT_Z, 4.25]] as const) {
-        const y0 = SEW_H + Math.sqrt(SEW_R * SEW_R - (Math.abs(sx) - 0.55) ** 2) - 0.02;
-        for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const)
-          sb.add(boxGeo(V(X + sx + a, y0, Z0 + sz + c), V(X + sx + d, top, Z0 + sz + e), 2), br);
+        // each wall starts on the vault under it: sliced across x so none pokes into the tunnel or leaves a gap
+        const vy = (x0: number, x1: number) => SEW_H + Math.sqrt(Math.max(0, SEW_R * SEW_R - Math.max(Math.abs(x0), Math.abs(x1)) ** 2)) - 0.04;
+        for (const [a, c, d, e] of [[-0.55, -0.55, 0.55, -0.5], [-0.55, 0.5, 0.55, 0.55], [-0.55, -0.55, -0.5, 0.55], [0.5, -0.55, 0.55, 0.55]] as const) {
+          const n = d - a > 0.5 ? 8 : 1;
+          for (let k = 0; k < n; k++) { const x0 = sx + a + ((d - a) * k) / n, x1 = sx + a + ((d - a) * (k + 1)) / n;
+            sb.add(boxGeo(V(X + x0, vy(x0, x1), Z0 + sz + c), V(X + x1, top, Z0 + sz + e), 2), br); }
+        }
       }
       // ladder: rails and rungs from the walkway up the shaft
       for (const s of [-1, 1]) sb.add(boxGeo(V(X - 1.2 + s * 0.24 - 0.025, 0, Z0 - 0.48), V(X - 1.2 + s * 0.24 + 0.025, 6.4, Z0 - 0.43)), MAT.iron());

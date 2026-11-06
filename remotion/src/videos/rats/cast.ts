@@ -361,10 +361,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const paid = f >= PAID;
       stand(out, cam, WHO.clerk, CLERK_P, { expr: paid ? "smile" : "neutral", prop: paid && f < PAID + 26 ? ["coin", q((t * 2) % 1, 8)] : null, look: 1 }, t);
       stand(out, cam, WHO.off[0], C(-1.3, 0.04, -14.6), { expr: "stern", look: 1 }, t);
-      const cust = C(1.05, 0.04, -12.2), dropped = f >= 34;
+      const cust = C(1.4, 0.04, -11.85), dropped = f >= 34;
       stand(out, cam, WHO.hunter[0], cust, { expr: paid ? "grin" : "neutral", prop: dropped ? (paid ? ["coin", q((t * 3) % 1, 8)] : null) : "sack", look: -1 }, t);
       if (dropped) sacks(out, deskTop(0.35, 0.05), 0.12, 0.75);
-      coin(out, deskTop(0.6, 0.4), f, PAID, 0.14);
+      coin(out, deskTop(0.6, 0.4), f, PAID, 0.2);
       stand(out, cam, WHO.folk[2], C(2.3, 0.04, -10.6), { expr: "smile", prop: "sack", look: -1 }, t);
       stand(out, cam, WHO.folk[5], C(3.1, 0.04, -9.0), { expr: "neutral", prop: "sack", look: -1 }, t);
       break;
@@ -376,8 +376,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const f0 = FARMING - 4 + (i % 7) * 1.5 + (i >= 7 ? 3 : 0);
         if (f < f0) return;
         const up = q(smooth((f - f0) / 5), 6), base: V3 = [c[0] - 0.1, 0.7 - 0.25 * (1 - up), c[2]];
-        rat(out, cam, base, { mode: i % 3 ? "beg" : "sit", expr: i % 2 ? "happy" : "smug", v: i % 4 }, 0.36, [i % 2 ? 1 : -1, 0], false, i);
-        if (i % 2 === 0) rat(out, cam, [c[0] + 0.22, 0.7 - 0.25 * (1 - up), c[2] + 0.05], { mode: "sit", expr: "happy", v: (i + 1) % 4 }, 0.3, [-1, 0], false, i + 30);
+        rat(out, cam, base, { mode: i % 3 ? "beg" : "sit", expr: i % 2 ? "happy" : "smug", v: i % 4 }, 0.48, [i % 2 ? 1 : -1, 0], false, i);
+        if (i % 2 === 0) rat(out, cam, [c[0] + 0.22, 0.7 - 0.25 * (1 - up), c[2] + 0.05], { mode: "sit", expr: "happy", v: (i + 1) % 4 }, 0.4, [-1, 0], false, i + 30);
         puff(out, [c[0], 1.0, c[2] + 0.35], f, f0, 0.45);
       });
       break;
@@ -400,16 +400,16 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       if (f < 322) {
         for (let k = 0; k < 4; k++) ratRun(out, cam, S(-1.5 + (k % 2) * 0.3, 0, -12 - k * 2.2), S(-1.6 + (k % 2) * 0.35, 0, 1 - k * 1.1), f, 290 + k * 5, 318 + k * 6, { expr: "happy", v: k }, 0.4, "sit", k);
       } else if (f < 380) {
-        rat(out, cam, S(-1.15, 0, 0.9), { mode: "lounge", expr: f >= WARM ? "happy" : "sleep", ph: t * 0.4, v: 0 }, 0.42, [1, 0], true, 1);
+        rat(out, cam, S(-1.15, 0, 0.9), { mode: "sit", expr: f >= WARM ? "happy" : "sleep", ph: t * 0.4, v: 0 }, 0.42, [1, 0], true, 1);
         rat(out, cam, S(-1.75, 0, 0.15), { mode: "sit", expr: "happy", v: 1 }, 0.4, [1, 0], true, 2);
         rat(out, cam, S(-1.5, 0, -0.9), { mode: "sit", expr: "smug", v: 2 }, 0.38, [1, 0], true, 3);
         rat(out, cam, S(-0.95, 0, 0.1), { mode: "beg", expr: "happy", v: 3 }, 0.36, [-1, 0], true, 4);
         if (f >= 326 && f < 357) { const u = q((t * 1.2) % 1, 12); push(out, `hearts${u}`, 300, 300, (pp) => fxHearts(pp, u), S(-1.4, 0, 0.4)[0], 0.55, S(0, 0, 0.4)[2], 0.55, 0.55); }
-        if (f >= WARM) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (pp) => fxHeat(pp, u), S(-1.3, 0, 0.6)[0], 0.5, S(0, 0, 0.6)[2], 0.4, 0.53, { soft: true }); }
+        if (f >= WARM) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (pp) => fxHeat(pp, u), S(-1.3, 0, 0.6)[0], 0.95, S(0, 0, 0.6)[2], 0.4, 0.53, { soft: true }); }
       } else {
         const sad = f >= PRED + 6, paw = f >= PRED - 2 && f < PRED + 14;
         push(out, `cat${sad ? 1 : 0}`, 400, 500, (pp) => fxCat(pp, sad ? 1 : 0, 0), S(0, 0, 0)[0], 4.32, CAT_Z - 0.05, 0.9, 1.12, { down: true });
-        if (paw) { const u = Math.sin(clamp01((f - PRED + 2) / 16) * Math.PI); push(out, "paw", 200, 200, (pp) => { pp.ell(100, 100, 50, 60, "#e89a4a", 10); for (const k of [-1, 0, 1]) pp.stroke([[100 + k * 22, 70], [100 + k * 22, 110]], 6); }, S(0.08, 0, 0)[0], 4.22 - 0.1 * u, CAT_Z + 0.05, 0.16, 0.16, { down: true }); }
+        if (paw) { const u = Math.sin(clamp01((f - PRED + 2) / 16) * Math.PI); push(out, "paw", 200, 200, (pp) => { pp.ell(100, 100, 50, 60, "#e89a4a", 10); for (const k of [-1, 0, 1]) pp.stroke([[100 + k * 22, 70], [100 + k * 22, 110]], 6); }, S(0.08, 0, 0)[0], 4.22 - 0.1 * u, CAT_Z + 0.05, 0.3, 0.3, { down: true }); }
         rat(out, cam, S(0.95, 0, CAT_Z + 0.9), { mode: "beg", expr: f >= PRED + 4 ? "smug" : "happy", v: 1 }, 0.42, [-1, 0], true, 5);
       }
       break;
@@ -426,7 +426,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
     }
     case 6: {
       const k = fogAt(id, f);
-      plague(out, C(-10, 16, -90), C(0, 12, -27), k, 16, 16, f);
+      plague(out, C(-10, 14, -80), C(0, 7, -12), k, 22, 14, f);
       for (const [w, x] of [[WHO.off[0], -2.6], [WHO.off[1], 2.2], [WHO.off[2], 0.2]] as const) stand(out, cam, w, C(x, 0.62, -18.6 + (x > 1 ? 0.3 : 0)), { expr: k > 0.4 ? "nervous" : "neutral", look: -1 }, t);
       break;
     }
@@ -447,7 +447,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const swing = (k: number) => q(0.5 + 0.5 * Math.sin(t * 7 + k * 2), 6);
       stand(out, cam, WHO.hunter[1], S(-1.5, 0.0, 1.8), { expr: "grin", prop: ["net", swing(0)] }, t);
       stand(out, cam, WHO.hunter[0], S(1.5, 0.0, -0.6), { expr: "stern", prop: "lantern" }, t);
-      stand(out, cam, WHO.hunter[2], S(-1.6, 0.0, -2.2), { expr: "grin", prop: "club" }, t);
+      stand(out, cam, WHO.hunter[2], S(-1.8, 0.0, -1.6), { expr: "grin", prop: "club" }, t);
       for (let k = 0; k < 8; k++) {
         const x = k % 2 ? -1.55 : 1.55, f0 = 612 + k * 3;
         ratRun(out, cam, S(x + (hh(k, 1) - 0.5) * 0.3, 0, 0.5 - k * 0.4), S(x, 0, -9 - k), f, f0, f0 + 30, { expr: "shock", v: k }, 0.38, "run", k);
@@ -486,17 +486,18 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const ring = q(0.5 + 0.5 * Math.sin(t * 18), 6), go = f >= EVERYONE - 2;
         stand(out, cam, WHO.off[0], C(-1.0, 0.04, -12.0), { expr: go ? "stern" : "neutral", prop: ["bell", go ? ring : 0] }, t);
         stand(out, cam, WHO.clerk, CLERK_P, { expr: "smile" }, t);
-        burst(out, C(-0.6, 2.4, -11.9), f, EVERYONE - 2, 1.2);
+        burst(out, C(-0.6, 2.4, -11.9), f, EVERYONE - 2, 2.0);
         const kit = [["club"], ["net", 0.4], "sack", ["club"], "lantern", ["net", 0.6], "club", "sack"] as const;
         for (let k = 0; k < 8; k++) {
-          const sd = k % 2 ? 1 : -1, p0 = C(sd * (9 + k * 0.6), 0.04, -4 + k * 0.9), p1 = C(sd * (1.6 + (k >> 1) * 0.75), 0.04, -9.6 + (k >> 1) * 0.7);
+          const sd = k % 2 ? 1 : -1, p0 = C(sd * (4.2 + k * 0.25), 0.04, -6 + k * 0.5), p1 = C(sd * (1.6 + (k >> 1) * 0.75), 0.04, -9.6 + (k >> 1) * 0.7);
           const who = k < 4 ? WHO.folk[6 + k] : k < 6 ? WHO.hunter[k - 2] : k === 6 ? WHO.lady : WHO.folk[12];
           const pr = (Array.isArray(kit[k]) ? (kit[k].length > 1 ? kit[k] : kit[k][0]) : kit[k]) as never;
-          walk(out, cam, who, p0, p1, f, EVERYONE + k * 2, EVERYONE + 30 + k * 2, "grin", { prop: pr });
+          walk(out, cam, who, p0, p1, f, EVERYONE - 10 + k * 2, EVERYONE + 20 + k * 2, "grin", { prop: pr });
         }
       } else if (f < 886) { // one cent per rat
         stand(out, cam, WHO.clerk, CLERK_P, { expr: f >= CENT - 2 ? "grin" : "smile", prop: ["coin", q((t * 1.5) % 1, 12)] }, t);
-        coin(out, deskTop(0.0, 0.3), f, CENT - 2, 0.16);
+        coin(out, deskTop(0.0, 0.3), f, CENT - 2, 0.2);
+        if (f >= CENT + 14) push(out, "coinHold", 200, 200, (pp) => fxCoin(pp, 0), deskTop(0.0, 0.3)[0], DESK_TOP + 0.12, deskTop(0, 0.3)[2], 0.2, 0.2);
         sparkle(out, C(0.35, 1.75, -13.6), f, CENT, 0.4, 10);
       } else if (f < 1006) { // nobody wanted piles of dead rats
         const k = smooth((f - 896) / 50), smell = f >= STINK - 4;
@@ -542,7 +543,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
           if (f < NOTAIL - 4) ratRun(out, cam, C(4.5, 0.04, 38.2), C(0.2, 0.04, 37.9), f, 1198, NOTAIL - 6, { expr: "happy", tail: false, v: 1 }, 0.42, "run", 1);
           else rat(out, cam, C(0.2, 0.04, 37.9), { mode: "back", tail: false, v: 1 }, 0.42, [1, 0], true, 1);
         }
-        sparkle(out, C(0.2, 0.3, 38.05), f, NOTAIL + 2, 0.25, 8);
+        sparkle(out, C(0.32, 0.12, 38.05), f, NOTAIL + 2, 0.22, 8);
       } else if (f < 1318) { // a hunter grabs a rat by the gutter
         const got = f >= GRAB;
         stand(out, cam, WHO.hunter[2], C(-23.5, 0.04, 50.3), { expr: got ? "grin" : "stern", prop: got ? ["ratHeld", q((t * 2) % 1, 6)] : null, look: -1 }, t);
@@ -553,9 +554,9 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const cut = f >= SNIP;
         stand(out, cam, WHO.hunter[2], C(-23.5, 0.04, 50.3), { expr: cut ? "grin" : "stern", prop: [cut ? "ratHeldNo" : "ratHeld", q((t * 2) % 1, 6)] as never, look: -1 }, t);
         const k = f < SNIP - 4 ? 0 : clamp01((f - SNIP + 4) / 4);
-        if (f < SNIP + 6) push(out, `snips${q(k, 4)}`, 400, 300, (pp) => fxSnips(pp, q(k, 4)), -23.3, 1.42, 50.45, 0.32, 0.24);
-        puff(out, C(-23.3, 1.38, 50.5), f, SNIP, 0.45);
-        if (cut) { const u = clamp01((f - SNIP) / 10); push(out, "tailfx", 300, 120, fxTail, -23.25, 1.36 - 1.2 * u * u, 50.5, 0.28, 0.11, { rot: u * 2 }); }
+        if (f < SNIP + 6) push(out, `snips${q(k, 4)}`, 400, 300, (pp) => fxSnips(pp, q(k, 4)), -23.85, 1.18, 50.2, 0.32, 0.24);
+        puff(out, C(-23.85, 1.15, 50.2), f, SNIP, 0.45);
+        if (cut) { const u = clamp01((f - SNIP) / 10); push(out, "tailfx", 300, 120, fxTail, -23.85, 1.12 - 1.0 * u * u, 50.2, 0.28, 0.11, { rot: u * 2 }); }
       } else { // let go: the rat runs into the grate, waving
         const g: V3 = [GRATE[0], 0.07, GRATE[2]];
         if (f < LETGO + 4) ratRun(out, cam, C(-23.4, 0.06, 50.2), g, f, 1350, LETGO + 2, { expr: "happy", tail: false, v: 2 }, 0.4, "run", 2);
@@ -620,10 +621,10 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         const p = add(CLERK_P, [0, 0, 0.1]);
         out.places.push(person(cam, WHO.clerk, p[0], p[1], p[2], FRONT, { mode: "sit", seat: Math.round(0.47 / SU), expr: f >= TAILS ? "sad" : "tired", blink: lidAt(t, 1), headTilt: -6 }, {}, 1));
         blob(out, p[0], p[1], p[2]);
-        basket(out, cam, deskTop(0.85, 0.05), 1, 0.8);
-        sparkle(out, deskTop(0.85, 0.4), f, TAILS, 0.3, 8);
+        basket(out, cam, deskTop(0.85, 0.05), 1, 1.2);
+        sparkle(out, deskTop(0.85, 1.0), f, TAILS, 0.3, 8);
       } else { // a rat can live without one
-        const wink = f >= ONE - 2 && f < ONE + 20, off = f >= 1966;
+        const wink = f >= ONE - 2 && f < ONE + 20, off = false;
         if (!off) rat(out, cam, add(MAN, [0, 0.07, 0]), { mode: "beg", expr: wink ? "wink" : "smug", tail: false, v: 1, ph: t }, 0.42, [-1, 0], true, 1);
         else ratRun(out, cam, add(MAN, [0, 0.07, 0]), add(MAN, [-1.2, 0.04, 0.4]), f, 1966, 1984, { expr: "happy", tail: false, v: 1 }, 0.42, "run", 1);
         sparkle(out, add(MAN, [0.1, 0.32, 0.05]), f, ONE + 2, 0.22, 9);

@@ -135,45 +135,45 @@ export const CLERK_P: V3 = C(0.1, 0.04, -13.9);   // the clerk behind the desk
 export const CUST_P: V3 = C(0.5, 0.04, -12.0);    // whoever stands at the desk
 export const OFF_P: V3 = C(-2.2, 0.04, -14.6);    // the official beside the desk
 export const GENT_P: V3 = B(0.0, 0.04, -1.2);   // the gentleman in the bathroom
-export const FARMER_P: V3 = F(0.75, 0.04, -2.1);   // the rat farmer
-export const OWNER_P: V3 = add(GARDEN, [-2.6, 0.04, 1.4]); // the villa owner
-export const GARD_P: V3 = add(GARDEN, [-0.6, 0.04, 0.4]);  // the gardener
+export const FARMER_P: V3 = F(-0.5, 0.04, -1.8);   // the rat farmer
+export const OWNER_P: V3 = add(GARDEN, [-2.1, 0.04, 1.2]); // the villa owner
+export const GARD_P: V3 = add(GARDEN, [-1.0, 0.04, 0.6]);  // the gardener
 export const eye = (p: V3, h = 1.45): V3 => [p[0], p[1] + h, p[2]];
 
 // framings; each pushes in from the frame its key starts
-const S1a = (f: number) => dolly(C(1.9, 1.5, -6.6), C(0.2, 1.2, -13.2), pushK(f, 0, 0.0028, 0.007, 24), { fov: 42 });           // the desk: sack, coin
+const S1a = (f: number) => dolly(C(2.2, 1.5, -6.4), C(0.45, 1.2, -13.0), pushK(f, 0, 0.0028, 0.007, 24), { fov: 42 });           // the desk: sack, coin
 const S1b = (f: number) => dolly(C(0.9, 1.25, -10.6), C(0.15, 1.0, -13.0), pushK(f, 66, 0.003, 0.008, 22), { fov: 40, roll: -0.03 }); // close: the coin, "kill rats"
-const S2a = (f: number) => dolly(F(1.0, 1.25, 2.2), F(0.25, 0.95, -3.9), pushK(f, 106, 0.0026, 0.007, 24), { fov: 46, roll: 0.03 }); // farmer + cages
-const S3a = (f: number) => zoom(C(-6, 9, 168), C(0, 6, 40), 50, pushK(f, 165, 0.0016));                                       // over the lake to the city
+const S2a = (f: number) => dolly(F(1.0, 1.35, 2.4), F(0.6, 1.0, -3.9), pushK(f, 106, 0.0026, 0.007, 24), { fov: 46, roll: 0.03 }); // farmer + cages
+const S3a = (f: number) => zoom(C(-1, 9, 168), C(0, 6, 40), 50, pushK(f, 165, 0.0016));                                       // over the lake to the city
 const S3b = (f: number) => zoom(C(-0.5, 5.5, 50), C(0.5, 3.0, 12), 54, pushK(f, 225, 0.002));                         // the boulevard
 const S3c = (f: number) => dolly(add(MAN, [-0.9, 1.15, 2.4]), add(MAN, [0, 0.05, 0]), pushK(f, 246, 0.003, 0.008, 22), { fov: 42 }); // the shiny manhole
 const S4a = (f: number) => dolly(S(1.3, 1.7, 9), S(-0.4, 1.6, -6), pushK(f, 278, 0.0022), { fov: 50 });                           // the new tunnel
 const S4b = (f: number) => dolly(S(0.2, 0.62, 2.6), S(-1.35, 0.25, 0.3), pushK(f, 322, 0.0026, 0.007, 24), { fov: 44, roll: -0.03 }); // rats lounging
 const S4c = (f: number) => dolly(S(0.35, 0.55, CAT_Z + 1.0), S(0, 4.2, CAT_Z - 0.1), pushK(f, 380, 0.003, 0.008, 22), { fov: 50, roll: 0.04 }); // up the grate: the cat
-const S5a = (f: number) => dolly(B(0.55, 1.15, 1.7), B(0.3, 0.72, -1.6), pushK(f, 414, 0.0028, 0.008, 24), { fov: 44 });           // bathroom: the toilet
-const S6a = (f: number) => zoom(C(14, 4, 40), C(0, 12, -24), 46, pushK(f, 474, 0.0016, 0.004, 30), { roll: -0.02 });               // dusk: the tower, the fog
+const S5a = (f: number) => dolly(B(0.6, 1.35, 2.6), B(0.35, 1.15, -1.5), pushK(f, 414, 0.0028, 0.008, 24), { fov: 44 });           // bathroom: the toilet
+const S6a = (f: number) => zoom(C(7, 3, 6), C(0, 6.5, -20), 50, pushK(f, 474, 0.0016, 0.004, 30), { roll: -0.02 });               // dusk: the tower, the fog
 const S7a = (f: number) => dolly(add(MAN, [3.4, 1.7, 4.8]), add(MAN, [-0.2, 0.7, 0]), pushK(f, 538, 0.0024, 0.006, 24), { fov: 44 }); // hunters down the manhole
-const S8a = (f: number) => dolly(S(0.6, 1.15, 4.2), S(-0.5, 0.8, -1.0), pushK(f, 610, 0.003, 0.008, 20), { fov: 46, roll: 0.03 });  // nets swing
+const S8a = (f: number) => dolly(S(1.0, 1.3, 5.6), S(-0.7, 0.9, 0.4), pushK(f, 610, 0.003, 0.008, 20), { fov: 52, roll: 0.03 });  // nets swing
 const S9a = (f: number) => dolly(add(PILE, [-1.0, 1.7, 7.4]), add(PILE, [0.3, 1.6, 0]), pushK(f, 645, 0.0022, 0.006, 24), { fov: 44 }); // the pile grows
 const S9b = (f: number) => zoom(add(PILE, [-1.6, 1.1, 8.5]), add(PILE, [0.3, 2.2, 0]), 50, pushK(f, 700, 0.0018, 0.006, 24), { roll: -0.03 }); // twenty thousand: a mountain
 const S10a = (f: number) => dolly(S(-0.2, 0.9, 4.2), S(-1.1, 0.7, 0.0), pushK(f, 750, 0.0026), { fov: 44 });                    // wasn't enough
 const S11a = (f: number) => zoom(C(4.5, 2.4, -2.5), C(0, 1.0, -12), 48, pushK(f, 782, 0.0018, 0.005, 24));                             // everyone a rat hunter
-const S11b = (f: number) => dolly(C(0.8, 1.35, -11.0), C(0.05, 0.95, -13.1), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 }); // one cent
+const S11b = (f: number) => dolly(C(1.0, 1.45, -10.5), C(0.3, 1.2, -13.5), pushK(f, 846, 0.003, 0.008, 22), { fov: 40, roll: 0.03 }); // one cent
 const S11c = (f: number) => dolly(C(-2.0, 1.6, -7.2), C(0.0, 1.3, -13.4), pushK(f, 886, 0.0022, 0.006, 24), { fov: 44 });       // sacks, the stink
 const S11d = (f: number) => dolly(C(0.5, 1.6, -11.0), C(0.1, 1.55, -13.9), pushK(f, 1006, 0.003, 0.008, 22), { fov: 40 });       // just bring the tail
-const S11e = (f: number) => dolly(C(2.6, 1.7, -6.6), C(0.0, 1.0, -13.2), pushK(f, 1050, 0.0022, 0.006, 24), { fov: 46 });       // the tails pour in
+const S11e = (f: number) => dolly(C(2.9, 1.7, -6.4), C(0.6, 1.0, -13.0), pushK(f, 1050, 0.0022, 0.006, 24), { fov: 46 });       // the tails pour in
 const S11f = (f: number) => zoom(C(-3.5, 1.1, -5.0), C(0.0, 0.7, -13.0), 50, pushK(f, 1100, 0.002, 0.006, 24), { roll: -0.03 }); // rats all round
 const S12a = (f: number) => dolly(C(-0.6, 0.75, 41.0), C(0.7, 0.55, 35.2), pushK(f, 1170, 0.0024, 0.006, 24), { fov: 48 });          // officials + the tailless rat
 const S12b = (f: number) => dolly(C(-21.6, 1.5, 44.5), C(-23.8, 1.0, 50.0), pushK(f, 1270, 0.0024, 0.006, 24), { fov: 44 });       // the alley: grab
-const S12c = (f: number) => dolly(C(-22.6, 1.5, 47.9), C(-23.4, 1.35, 50.3), pushK(f, 1318, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // snip
+const S12c = (f: number) => dolly(C(-22.7, 1.5, 47.4), C(-23.65, 1.3, 50.25), pushK(f, 1318, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // snip
 const S12d = (f: number) => dolly(C(-23.3, 0.42, 49.4), C(-23.9, 0.18, 51.1), pushK(f, 1348, 0.0026, 0.006, 24), { fov: 42 });      // let go: into the grate
 const S13a = (f: number) => dolly(S(0.9, 0.7, 3.2), S(-1.3, 0.35, 0.3), pushK(f, 1385, 0.0026, 0.007, 24), { fov: 46 });           // more rats
 const S14a = (f: number) => zoom(F(-3.2, 2.0, 4.2), F(0.3, 0.85, -4.2), 48, pushK(f, 1450, 0.0018, 0.005, 24));                          // the farms
-const S15a = (f: number) => dolly(add(GARDEN, [0.2, 1.5, 6.4]), add(GARDEN, [-1.6, 1.0, 0.9]), pushK(f, 1550, 0.0024, 0.006, 24), { fov: 46 }); // a weed, a coin
+const S15a = (f: number) => dolly(add(GARDEN, [0.0, 1.5, 7.6]), add(GARDEN, [-1.55, 1.0, 0.9]), pushK(f, 1550, 0.0024, 0.006, 24), { fov: 46 }); // a weed, a coin
 const S15b = (f: number) => zoom(add(GARDEN, [2.5, 3.2, 8.5]), add(GARDEN, [-1, 0.5, -0.5]), 50, pushK(f, 1618, 0.0018, 0.006, 24)); // full of weeds
-const S15c = (f: number) => dolly(C(1.4, 1.5, -9.8), C(0.0, 1.05, -13.3), pushK(f, 1690, 0.003, 0.008, 22), { fov: 42, roll: -0.03 }); // scrapped
+const S15c = (f: number) => dolly(C(1.8, 1.6, -9.0), C(0.0, 1.05, -13.3), pushK(f, 1690, 0.003, 0.008, 22), { fov: 42, roll: -0.03 }); // scrapped
 const S16a = (f: number) => zoom(C(-2.5, 3.0, 46), C(1.0, 2.6, 18), 50, pushK(f, 1735, 0.0018));                                   // plague down the boulevard
-const S16b = (f: number) => dolly(C(-1.3, 1.45, -9.8), C(0.35, 1.05, -13.4), pushK(f, 1792, 0.0024, 0.007, 24), { fov: 44 });          // it paid for tails
+const S16b = (f: number) => dolly(C(-1.6, 1.5, -8.9), C(0.55, 1.15, -13.3), pushK(f, 1792, 0.0024, 0.007, 24), { fov: 44 });          // it paid for tails
 const S16c = (f: number) => dolly(add(MAN, [0.15, 0.32, 1.25]), add(MAN, [0.0, 0.16, 0.0]), pushK(f, 1890, 0.0028, 0.007, 24), { fov: 40, roll: -0.03 }); // the rat on the manhole
 
 const CAMS: Record<number, Key[]> = {
