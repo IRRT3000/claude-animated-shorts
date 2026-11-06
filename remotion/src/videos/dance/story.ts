@@ -89,7 +89,7 @@ export const layersAt = (f: number): { id: number; alpha: number }[] => {
 export const STEP_OUT = 282;      // "stepped": Troffea's door opens, she steps into the street
 export const FIRST_DANCE = 322;   // "dancing": she starts
 /** the days time-lapse in shot 4 ("didn't stop for days"): 0 day .. 1 night */
-export const nightAt = (id: number, f: number) => (id === 4 && f >= 398 ? 0.5 - 0.5 * Math.cos(clamp01((f - 398) / 42) * 3 * Math.PI * 2) : 0);
+export const nightAt = (id: number, f: number) => (id === 4 && f >= 398 ? 0.5 - 0.5 * Math.cos(clamp01((f - 398) / 46) * 2 * Math.PI * 2) : 0);
 /** neighbours joining in shot 5: how many of the 30 are dancing */
 export const joinedAt = (f: number) => Math.floor(clamp01((f - 455) / 46) * 30);
 /** the guild hall doors burst open on "cleared" */
@@ -172,35 +172,35 @@ const S2a = (f: number) => dolly(add(DOC_P, [0.0, 1.6, 5.6]), add(DOC_P, [-0.25,
 const S3a = (f: number) => zoom(T(-2.0, 1.6, -28), T(0, 30, -80), 68, pushK(f, 186, 0.0018));                                      // Strasbourg: the street + the cathedral
 const S3b = (f: number) => dolly(T(-3.2, 1.6, -45.5), T(2.8, 1.3, -50.2), pushK(f, 238, 0.0022, 0.006, 24), { fov: 42 });         // her door: she steps out
 const S4a = (f: number) => dolly(add(TROF_ST, [-1.4, 1.45, 3.0]), eye(TROF_ST, 1.1), pushK(f, 345, 0.0026, 0.006, 24), { fov: 40, roll: -0.03 }); // alone, no music
-const S4b = (f: number) => zoom(T(-6.5, 3.4, -40), T(1.5, 1.6, -51), 46, pushK(f, 394, 0.0018));                                   // days: time-lapse
+const S4b = (f: number) => zoom(T(-3.5, 0.9, -38), T(1.5, 5.5, -52), 52, pushK(f, 394, 0.0018));                                    // days: time-lapse, sky in frame
 const S5a = (f: number) => zoom(T(-7.5, 5.0, -36), T(1.0, 1.0, -50), 50, pushK(f, 445, 0.0018, 0.004, 24));                       // thirty neighbours
 const S6a = (f: number) => zoom(T(-20, 20, 30), T(1, 0, -10), 52, pushK(f, 515, 0.0016, 0.005, 30));                              // four hundred on the square
-const S6b = (f: number) => dolly(T(0.7, 0.35, 4.6), T(0.1, 0.22, 3.0), pushK(f, 612, 0.003, 0.008, 20), { fov: 40, roll: 0.035 }); // bleeding feet
+const S6b = (f: number) => dolly(T(0.6, 0.62, 5.0), T(0.1, 0.42, 3.0), pushK(f, 612, 0.003, 0.008, 20), { fov: 38, roll: 0.035 }); // bleeding feet
 const S7a = (f: number) => dolly(add(DOC_P, [0.1, 1.8, 7.5]), add(DOC_P, [-0.8, 1.35, 0]), pushK(f, 650, 0.0022), { fov: 42 });     // the diagnosis
-const S7b = (f: number) => dolly(add(DOC_P, [-0.5, 1.85, 2.3]), add(DOC_P, [-0.58, 1.85, 0]), pushK(f, 700, 0.003, 0.008, 20), { fov: 38, roll: 0.03 }); // hot blood: the flask
+const S7b = (f: number) => dolly(add(DOC_P, [-0.75, 1.8, 2.6]), add(DOC_P, [-0.78, 1.75, 0]), pushK(f, 700, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // hot blood: the flask
 const S7c = (f: number) => dolly(add(DOC_P, [-0.5, 1.7, 7.5]), add(DOC_P, [-0.8, 1.25, 0]), pushK(f, 737, 0.0022, 0.006, 24), { fov: 42 }); // dance it out
 const S8a = (f: number) => dolly(T(-4.0, 2.2, -5.0), T(-13.0, 1.8, -13.0), pushK(f, 828, 0.0024, 0.006, 24), { fov: 46 });       // the guild hall doors
 const S8b = (f: number) => zoom(T(9, 3.2, 9), T(0, 1.1, -6), 46, pushK(f, 887, 0.0018, 0.005, 24));                               // the stage goes up
-const S8c = (f: number) => dolly(T(1.0, 2.4, 4.5), T(0, 2.3, -6.5), pushK(f, 953, 0.003, 0.007, 24), { fov: 42, roll: -0.03 });   // a band
+const S8c = (f: number) => dolly(T(0.8, 2.6, 2.5), T(0, 2.5, -6.5), pushK(f, 953, 0.003, 0.007, 24), { fov: 40, roll: -0.03 });     // a band
 const S8d = (f: number) => dolly(add(STRONG_P, [0.3, 1.6, 5.6]), add(STRONG_P, [0, 1.4, 0]), pushK(f, 984, 0.0024, 0.006, 24), { fov: 46 }); // strong men
 const S9a = (f: number) => dolly(T(2.5, 2.2, 9.5), T(0, 1.8, -5.5), pushK(f, 1072, 0.0024, 0.006, 24), { fov: 44 });                  // the music worked
 const S9b = (f: number) => zoom(T(14, 9, 22), T(-1, 0.5, -6), 52, pushK(f, 1112, 0.0018, 0.006, 30));                             // on everyone
 const S10a = (f: number) => dolly(add(MASTER_P, [1.0, 1.55, 2.8]), eye(MASTER_P, 1.3), pushK(f, 1177, 0.0026, 0.006, 24), { fov: 40 }); // the spin
 const S10b = (f: number) => zoom(T(-8, 2.6, 10), T(0, 1.2, -6), 46, pushK(f, 1226, 0.002, 0.006, 24), { roll: 0.03 });            // tore down the stage
-const S10c = (f: number) => dolly(T(8.5, 1.9, 13), T(2.0, 1.1, 1.5), pushK(f, 1263, 0.0022), { fov: 40 });                        // the band goes home
+const S10c = (f: number) => dolly(T(6.5, 1.7, 9.5), T(2.5, 1.1, 2.5), pushK(f, 1263, 0.0022), { fov: 42 });                       // the band goes home
 const S10d = (f: number) => dolly(T(-1.5, 1.5, 9.0), T(-6.5, 1.8, 13.5), pushK(f, 1293, 0.0026, 0.007, 24), { fov: 42, roll: -0.03 }); // the ban
 const S11a = (f: number) => zoom(T(18, 18, 30), T(-2, 1, -14), 50, pushK(f, 1342, 0.0016));                                       // night: panic
-const S11b = (f: number) => dolly(add(STALL, [-2.4, 1.6, 5.4]), add(STALL, [0.2, 1.2, 0.6]), pushK(f, 1408, 0.0026, 0.006, 24), { fov: 42 }); // hungry, sick
+const S11b = (f: number) => dolly(add(STALL, [-1.6, 1.6, 6.4]), add(STALL, [-0.3, 1.2, 1.2]), pushK(f, 1408, 0.0016), { fov: 42 }); // hungry, sick
 const S11c = (f: number) => dolly(add(COLUMN, [0.6, 2.2, 4.4]), add(COLUMN, [0, COL_H + 0.9, 0]), pushK(f, 1447, 0.0024, 0.007, 24), { fov: 50, roll: 0.035 }); // the saint
 const S12a = (f: number) => dolly(add(BENCH, [5.0, 1.25, 0.0]), add(BENCH, [0.3, 1.0, 0.0]), pushK(f, 1526, 0.0024, 0.006, 24), { fov: 46 }); // the yawns
-const S12b = (f: number) => dolly(add(BENCH, [5.2, 1.4, 1.6]), add(BENCH, [1.0, 1.0, 0.3]), pushK(f, 1612, 0.0022), { fov: 44 }); // the neighbour dances
-const S12c = (f: number) => dolly(add(BENCH, [2.7, 0.4, 1.5]), add(BENCH, [0.6, 0.3, 0.85]), pushK(f, 1643, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // his feet
-const S13a = (f: number) => { const w = wagonPose(13, f); return zoom(H(-12, 5, 12), [w.p[0] + Math.sin(w.yaw) * 1.6, w.p[1] + 1.2, w.p[2] + Math.cos(w.yaw) * 1.6], 40, pushK(f, 1680, 0.0016)); }; // the wagon, tracked
+const S12b = (f: number) => dolly(add(BENCH, [6.0, 1.4, 0.8]), add(BENCH, [1.0, 1.0, 0.25]), pushK(f, 1612, 0.0022), { fov: 44 }); // the neighbour dances
+const S12c = (f: number) => dolly(add(BENCH, [2.7, 0.4, 1.5]), add(BENCH, [0.6, 0.3, 0.75]), pushK(f, 1643, 0.003, 0.008, 20), { fov: 40, roll: 0.03 }); // his feet
+const S13a = (f: number) => { const w = wagonPose(13, f); return zoom(H(-12, 5, 12), [w.p[0] + Math.sin(w.yaw) * 1.6, w.p[1] + 1.2, w.p[2] + Math.cos(w.yaw) * 1.6], 32, pushK(f, 1680, 0.0016)); }; // the wagon, tracked
 const S13b = (f: number) => dolly(H(5.5, 2.3, -26), H(0, 2.4, -41), pushK(f, 1745, 0.0022, 0.006, 24), { fov: 46 });             // the shrine
 const S14a = (f: number) => dolly(H(0.9, 1.5, -32.4), H(0.0, 1.2, -36.2), pushK(f, 1794, 0.0026, 0.007, 24), { fov: 42 });    // red shoes
-const S14b = (f: number) => dolly(H(-4.5, 2.4, -23), H(0, 1.0, -36), pushK(f, 1848, 0.0018, 0.006, 24), { fov: 46, roll: 0.03 }); // the dancing stopped
-const S15a = (f: number) => dolly(T(5.8, 1.4, 4.6), T(0, 0.8, -2.4), pushK(f, 1906, 0.0022, 0.006, 24), { fov: 46 });          // the band, idle
-const S16a = (f: number) => dolly(H(1.3, 0.45, -32.4), H(0.2, 0.35, -35.0), pushK(f, 1976, 0.0026, 0.007, 24), { fov: 40, roll: -0.03 }); // new shoes
+const S14b = (f: number) => dolly(H(-2.8, 1.6, -29.5), H(0, 0.9, -35.5), pushK(f, 1848, 0.0018, 0.006, 24), { fov: 44, roll: 0.03 }); // the dancing stopped
+const S15a = (f: number) => dolly(T(4.2, 1.3, 2.6), T(0, 0.75, -2.4), pushK(f, 1906, 0.0022, 0.006, 24), { fov: 42 });          // the band, idle
+const S16a = (f: number) => dolly(H(0.85, 0.22, -33.5), H(0.2, 0.2, -35.0), pushK(f, 1976, 0.0026, 0.007, 24), { fov: 38, roll: -0.03 }); // new shoes, at ground level
 
 const CAMS: Record<number, Key[]> = {
   1: [{ f: 0, s: S1a }, { f: 84, cut: true, s: S1b }],
@@ -255,7 +255,7 @@ export const DOF: Dof[] = [
   { f: 394, cInf: 5 },
   { f: 445, cInf: 4 },
   { f: 515, cInf: 0 },
-  { f: 612, cInf: 15 },
+  { f: 612, cInf: 9 },
   { f: 650, cInf: 11 },
   { f: 700, cInf: 15 },
   { f: 737, cInf: 10 },

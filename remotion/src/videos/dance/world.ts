@@ -202,7 +202,7 @@ export class World {
       b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] - 1.7), V(x1 + 0.25, 3.7, GUILD[2] - 1.45)), MAT.woodD());
       b.add(boxGeo(V(x1 - 0.02, 0, GUILD[2] + 1.45), V(x1 + 0.25, 3.7, GUILD[2] + 1.7)), MAT.woodD());
       b.add(boxGeo(V(x1 - 0.02, 3.45, GUILD[2] - 1.7), V(x1 + 0.25, 3.8, GUILD[2] + 1.7)), MAT.woodD());
-      b.add(boxGeo(V(x1 - 3, 0, GUILD[2] - 1.45), V(x1 - 0.05, 3.45, GUILD[2] + 1.45)), DARK());
+      b.add(boxGeo(V(x1 - 3, 0, GUILD[2] - 1.45), V(x1 + 0.02, 3.45, GUILD[2] + 1.45)), DARK()); // the open doorway (covers the painted facade)
       // a guild sign: a gold pretzel-less emblem board on an iron arm (no lettering)
       b.add(boxGeo(V(x1, 4.6, GUILD[2] - 0.05), V(x1 + 1.4, 4.68, GUILD[2] + 0.05)), MAT.iron());
       b.add(boxGeo(V(x1 + 0.5, 3.9, GUILD[2] - 0.04), V(x1 + 1.3, 4.6, GUILD[2] + 0.04)), MAT.gold());

@@ -394,7 +394,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       const flask = f < 790 ? q(hot ? 0.6 + 0.4 * ((t * 3) % 1) : 0.02 * Math.sin(t), 10) : 0;
       stand(out, cam, WHO.doc, add(DOC_P, [-1.0, 0, -0.1]), { expr: f < 700 ? "stern" : hot ? "shock" : "stern", prop: f < 790 ? ["flask", flask] : null, wave: f >= 790 ? q(0.6 + 0.4 * Math.sin(t * 8), 6) : undefined }, t);
       stand(out, cam, WHO.doc2, add(DOC_P, [-1.9, 0, -0.6]), { expr: f >= 795 ? "grin" : "stern", look: 1, shrug: f >= 800 ? q(smooth((f - 800) / 8), 8) : 0 }, t);
-      if (hot) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (p) => fxHeat(p, u), pat[0], 2.55, pat[2], 0.55, 0.75, { soft: true }); }
+      if (hot) { const u = q((t * 1.5) % 1, 12); push(out, `heat${u}`, 300, 400, (p) => fxHeat(p, u), pat[0], 2.3, pat[2] + 0.05, 0.42, 0.56, { soft: true }); }
       if (f >= 795) { const u = q((t * 2) % 1, 8); push(out, `dm${u}`, 600, 600, (p) => fxDanceMarks(p, u), pat[0], 1.25, pat[2] + 0.05, 1.5, 1.5); }
       crowd(out, cam, t, 40, { skip: (p) => Math.hypot(p[0] - DOC_P[0], p[2] - DOC_P[2]) < 3.4 || (p[2] > DOC_P[2] - 1 && Math.abs(p[0] - DOC_P[0]) < 4) });
       break;
@@ -423,11 +423,11 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         crowd(out, cam, t, 50, { skip: (p) => (Math.abs(p[0]) < 5.5 && p[2] > -9.5) || p[2] > 0 });
       } else {
         const held = f >= 1003;
-        dance(out, cam, WHO.folk[18], STRONG_P, t, { energy: held ? 0.35 : 0.15, expr: "tired", fo: { armsUp: held ? 1 : 0, tilt: held ? 0 : 9 } });
+        dance(out, cam, WHO.folk[18], add(STRONG_P, [0, held ? 0.16 : 0, 0]), t, { energy: held ? 0.12 : 0.15, expr: held ? "dazed" : "tired", shadow: !held, fo: { armsUp: held ? 1 : 0, tilt: held ? 0 : 9, headTilt: held ? 16 : 6 } });
         if (held) {
           const r2 = cam.right;
-          stand(out, cam, WHO.strong[0], [STRONG_P[0] - r2.x * 0.78, 0.04, STRONG_P[2] - r2.z * 0.78 - 0.05], { expr: "grin", wave: 0.9, look: 1 }, t, 1.06);
-          out.places.push(person(cam, WHO.strong[1], STRONG_P[0] + r2.x * 0.78, 0.04, STRONG_P[2] + r2.z * 0.78 - 0.05, { side: false, mirror: true }, { mode: "stand", expr: "grin", wave: 0.9, look: -1, blink: lidAt(t, 11) }, {}, 1.06));
+          stand(out, cam, WHO.strong[0], [STRONG_P[0] - r2.x * 0.78, 0.04, STRONG_P[2] - r2.z * 0.78 - 0.05], { expr: "pained", wave: 0.9, look: 1, tilt: 4 }, t, 1.06);
+          out.places.push(person(cam, WHO.strong[1], STRONG_P[0] + r2.x * 0.78, 0.04, STRONG_P[2] + r2.z * 0.78 - 0.05, { side: false, mirror: true }, { mode: "stand", expr: "pained", wave: 0.9, look: -1, tilt: 4, blink: lidAt(t, 11) }, {}, 1.06));
           out.places[out.places.length - 1].mirror = true;
           blob(out, STRONG_P[0] + r2.x * 0.78, 0.04, STRONG_P[2] + r2.z * 0.78, 1.06);
         }
@@ -439,7 +439,7 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       band(out, cam, f, t, true);
       if (f < 1112) {
         for (let k = 0; k < 6; k++) dance(out, cam, WHO.folk[20 + k], T(-2.5 + k * 1.0, 0.04, -1.2 + (k % 2) * 1.1), t, { energy: 1, expr: k % 2 ? "grin" : "laugh" });
-        crowd(out, cam, t, 40, { skip: (p) => Math.abs(p[0]) < 5 && p[2] > -9 && p[2] < 2 });
+        crowd(out, cam, t, 40, { skip: (p) => (Math.abs(p[0]) < 5 && p[2] > -9) || p[2] > 1 });
       } else {
         const all = f >= EVERYONE - 2;
         crowd(out, cam, t, all ? 240 : 150, { skip: (p) => Math.hypot(p[0] - 9, p[2] - 4) < 5 });
@@ -461,8 +461,8 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         out.places.push({ ...pl, sx: q(turn, 12) });
         blob(out, MASTER_P[0], MASTER_P[1], MASTER_P[2]);
         if (sp > 0 && sp < 1) { const u = q(sp, 12); push(out, `spin${u}`, 600, 300, (p) => fxSpin(p, u), MASTER_P[0], 0.3, MASTER_P[2] + 0.1, 1.5, 0.6); }
-        stand(out, cam, WHO.council[0], add(MASTER_P, [0.9, 0, 1.1]), { expr: f < 1210 ? "laugh" : "nervous", look: -1 }, t);
-        stand(out, cam, WHO.council[1], add(MASTER_P, [1.6, 0, -0.4]), { expr: f < 1210 ? "grin" : "shock", look: -1 }, t);
+        stand(out, cam, WHO.council[0], add(MASTER_P, [-1.1, 0, -0.9]), { expr: f < 1210 ? "laugh" : "nervous", look: 1 }, t);
+        stand(out, cam, WHO.council[1], add(MASTER_P, [0.9, 0, -1.6]), { expr: f < 1210 ? "grin" : "shock", look: -1 }, t);
       } else if (f < 1263) {
         band(out, cam, f, t, false, "shock", T(0, 0.04, -1.2));
         crowd(out, cam, t, 60, { skip: (p) => Math.abs(p[0]) < 5 && p[2] > -9 && p[2] < 2 });
@@ -481,12 +481,12 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
       break;
     }
     case 11: {
-      if (f < 1408) crowd(out, cam, t, 45, { energy: 0.6, expr: "tired" });
+      if (f < 1408) crowd(out, cam, t, 90, { energy: 0.95, expr: "pained" });
       else if (f < 1447) {
-        stand(out, cam, WHO.hungry, add(STALL, [-0.5, 0.04, 1.2]), { expr: "sad", prop: "bowl" }, t);
+        stand(out, cam, WHO.hungry, add(STALL, [-0.9, 0.04, 1.5]), { expr: "sad", prop: "bowl" }, t);
         const cough = f >= 1426 ? ((f - 1426) % 22) / 22 : -1;
-        stand(out, cam, WHO.sick, add(STALL, [0.5, 0.04, 2.0]), { expr: cough >= 0 && cough < 0.4 ? "pained" : "tired", tilt: cough >= 0 && cough < 0.4 ? -6 : 0 }, t);
-        if (cough >= 0 && cough < 0.7) { const u = q(cough / 0.7, 10); push(out, `cough${u}`, 400, 300, (p) => fxCough(p, u), STALL[0] + 0.85, 1.6, STALL[2] + 2.1, 0.7, 0.52, { soft: true }); }
+        stand(out, cam, WHO.sick, add(STALL, [0.25, 0.04, 2.2]), { expr: cough >= 0 && cough < 0.4 ? "pained" : "tired", tilt: cough >= 0 && cough < 0.4 ? -6 : 0 }, t);
+        if (cough >= 0 && cough < 0.7) { const u = q(cough / 0.7, 10); push(out, `cough${u}`, 400, 300, (p) => fxCough(p, u), STALL[0] + 0.5, 1.75, STALL[2] + 2.3, 0.5, 0.38, { soft: true }); }
       } else {
         const curse = f >= 1475;
         out.places.push(person(cam, WHO.statue, COLUMN[0], COL_H, COLUMN[2], FRONT, { mode: "stand", expr: "stern", wave: curse ? 1 : undefined, blink: 0, look: -0.5 }, {}, 1.2));
@@ -505,11 +505,11 @@ export const stage = (id: number, f: number, cam: CamInfo): Stage => {
         sitAt(out, cam, WHO.folk[28], b, { expr: y2 ? "yawn" : f > YAWN2 + 24 ? "nervous" : "neutral", headTilt: y2 ? 8 : 0, look: -1 }, t, 0.12);
       } else {
         const go = f >= NDANCE;
-        if (go) dance(out, cam, WHO.folk[27], add(BENCH, [1.5, 0.04, -0.4]), t, { energy: q(smooth((f - NDANCE) / 6), 6), expr: "dazed" });
+        if (go) dance(out, cam, WHO.folk[27], add(BENCH, [1.5, 0.04, -0.1]), t, { energy: q(smooth((f - NDANCE) / 6), 6), expr: "dazed" });
         else sitAt(out, cam, WHO.folk[27], a, { expr: "smile_closed", look: 1 }, t, 0.12);
         const feet = f >= FEET;
-        if (f < 1643) stand(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.85]), { expr: go ? "shock" : "neutral", look: -1 }, t);
-        else dance(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.85]), t, { energy: feet ? q(0.15 + 0.4 * smooth((f - FEET) / 14), 10) : 0, expr: "shock", n: 24 });
+        if (f < 1643) stand(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.75]), { expr: go ? "shock" : "neutral", look: -1 }, t);
+        else dance(out, cam, WHO.folk[28], add(BENCH, [0.6, 0.04, 0.75]), t, { energy: feet ? q(0.15 + 0.4 * smooth((f - FEET) / 14), 10) : 0, expr: "shock", n: 24 });
       }
       break;
     }

@@ -17,7 +17,7 @@ export const LIGHTS: Record<LightName, LightPreset> = {
   // Strasbourg by moonlight: cool blue key, deep indigo shade, a little warm lift so faces stay readable
   moon: {
     az: 120, el: 35,
-    lit: [0.62, 0.78, 1.18], shade: [0.1, 0.11, 0.24], lift: [0.04, 0.05, 0.12], lambert: 0.4, sideK: 0.82, term: 0.15,
+    lit: [0.38, 0.48, 0.82], shade: [0.07, 0.08, 0.19], lift: [0.03, 0.04, 0.1], lambert: 0.4, sideK: 0.82, term: 0.15,
     charTint: [0.78, 0.86, 1.08], charShade: 0.84, charGrad: 0.1, bodyGrad: 0.24, sideTint: [0.85, 0.88, 1.0],
     blob: [0.5, 0.5, 0.62], actorShadow: false,
     top: "#101a3a", hor: "#34406e", skyCurve: [0.0, 0.5, 0.6], fog: "#2c3866", fogNear: 30, fogFar: 320, sunDisc: "#000000",

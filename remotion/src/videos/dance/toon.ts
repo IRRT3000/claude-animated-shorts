@@ -493,6 +493,13 @@ export type FrontOpts = {
 };
 
 const footStroke = (p: Pen, a: P2, b: P2, w: number, col: string) => {
+  if (col === "#d42a2a") { // the red shoes: big, glossy, with a cream buckle
+    const W = w * 1.75, d: P2 = [b[0] - a[0], b[1] - a[1]], b2: P2 = [a[0] + d[0] * 1.25, a[1] + d[1] * 1.25];
+    p.stroke([a, b2], W + 4, INK); p.stroke([a, b2], W, col);
+    p.stroke([[a[0] + d[0] * 0.15, a[1] - W * 0.22], [a[0] + d[0] * 0.75, a[1] + d[1] * 0.75 - W * 0.22]], W * 0.18, "#ff8a7a");
+    p.dot(a[0] + d[0] * 0.4, a[1] + d[1] * 0.4 - W * 0.3, W * 0.2, "#f4e2c8");
+    return;
+  }
   if (col !== INK) p.stroke([a, b], w + 3, INK);
   p.stroke([a, b], w, col);
 };
@@ -541,7 +548,9 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
       p.stroke(curve([hx, hy], kn, [fx, fy]), legW, legCol);
       const toe = k > 0.3 ? -6 * u * k : 0.5 * u;
       footStroke(p, [fx - side * 3 * u, fy], [fx + side * 13 * u, fy + toe], footW, footCol);
-      if (sore) { p.dot(fx + side * 5 * u, fy - 2 * u, 3.4 * u, "#d0343a"); p.dot(fx + side * 11 * u, fy + 1 * u, 2.4 * u, "#e0505a"); }
+      if (sore) { // a bandage round the ankle and a red stain on the toe
+        p.stroke([[fx - 7 * u, fy - 9 * u], [fx + 7 * u, fy - 7 * u]], 4.2 * u, "#f4efe2"); p.stroke([[fx - 7 * u, fy - 13 * u], [fx + 7 * u, fy - 11 * u]], 3.6 * u, "#f4efe2");
+        p.ell(fx + side * 9 * u, fy - 1 * u, 5 * u, 3.4 * u, "#d0343a", 1.2 * u); }
     }
   } else if (o.dress) {
     for (const side of [-1, 1]) {
@@ -769,10 +778,12 @@ export const bodyFront = (p: Pen, o: Outfit, opts: FrontOpts) => {
       p.poly(Rb([[hx - 7 * u, hy - 16 * u], [hx + 7 * u, hy - 16 * u], [hx + 15 * u, hy - 40 * u], [hx - 15 * u, hy - 40 * u]]), "#d9a842", 2 * u);
       p.dot(hx, hy, 5.5 * u);
     } else if (kind === "shoes") { // a pair of red shoes held out
-      for (const [x, s] of [[300 - 14 * u, -1], [300 + 14 * u, 1]] as const) {
-        const y = first[1] + 4 * u;
-        p.poly([[x - 12 * u, y - 6 * u], [x + 12 * u, y - 6 * u], [x + 14 * u + s * 4 * u, y + 8 * u], [x - 14 * u + s * 4 * u, y + 8 * u]], "#d42a2a", 2.2 * u);
-        p.stroke([[x - 6 * u, y - 4 * u], [x + 6 * u, y - 4 * u]], 1.4 * u, "#f4e2c8");
+      for (const [x, s] of [[300 - 30 * u, -1], [300 + 30 * u, 1]] as const) { // two red shoes, toes out, heel up
+        const y = first[1] - 10 * u;
+        const sh: P2[] = [[x - s * 22 * u, y - 18 * u], [x - s * 6 * u, y - 18 * u], [x + s * 2 * u, y - 4 * u], [x + s * 26 * u, y + 2 * u], [x + s * 28 * u, y + 14 * u], [x - s * 24 * u, y + 14 * u]];
+        p.poly(sh, "#d42a2a", 2.4 * u);
+        p.stroke([[x - s * 18 * u, y - 10 * u], [x + s * 18 * u, y + 4 * u]], 2.2 * u, "#ff8a7a");
+        p.dot(x - s * 8 * u, y - 10 * u, 4 * u, "#f4e2c8");
       }
       p.dot(first[0], first[1], 5.5 * u); p.dot(last[0], last[1], 5.5 * u);
     } else if (kind === "bowl") { // an empty wooden bowl
